@@ -26,7 +26,8 @@ $appComponent = new AppComponent(); ?>
         <div class="container detail user-profile">
 
             <div class="row mb-50">
-                <div class="col-sm-12 col-xs-12">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
                         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-tab-8 col-xs-offset-2">
                             <div class="row ">
@@ -67,11 +68,12 @@ $appComponent = new AppComponent(); ?>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-            <div class="row mt-20">
-                <div class="col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
                     <div class="view">
                         <!-- Nav tabs -->

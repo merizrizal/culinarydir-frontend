@@ -4,20 +4,22 @@ namespace frontend\assets;
 
 use yii\web\AssetBundle;
 
-/**
- * Main frontend application asset bundle.
- */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot/media';
+    public $baseUrl = '@web/media';
+
     public $css = [
-        'css/site.css',
+        'lib/asicon/asicon.css',
+        'lib/animate.css/animate.css',
+        'css/style.css',
+        'css/colors/default.css',
     ];
     public $js = [
+        'js/plugins.js',
+        'js/main.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'common\assets\AppAsset',
     ];
 }

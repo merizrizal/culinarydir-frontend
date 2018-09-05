@@ -5,6 +5,7 @@ use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
+use common\components\Helper;
 
 Pjax::begin([
     'enablePushState' => false,
@@ -99,7 +100,7 @@ if (!empty($modelUserPostMain)):
                         <div class="widget-posts-body">
                             <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
                             <br>
-                            <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                            <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
                         </div>
                     </div>
                 </div>
@@ -114,7 +115,7 @@ if (!empty($modelUserPostMain)):
                         <div class="widget-posts-body">
                             <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
                             <br>
-                            <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                            <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
                         </div>
                     </div>
                 </div>
@@ -324,7 +325,7 @@ if (!empty($modelUserPostMain)):
 
                                                             <div class="widget-comments-body">
                                                                 <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
-                                                                <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                 <br>
                                                                 <p class="review-description">
 

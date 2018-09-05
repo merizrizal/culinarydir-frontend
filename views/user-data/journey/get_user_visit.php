@@ -57,7 +57,7 @@ $linkPager = LinkPager::widget([
             foreach ($modelUserVisit as $dataUserVisit): ?>
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
-                    <div class="box">
+                    <div class="box user">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
                                 <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserVisit['business']['id']]) ?>">

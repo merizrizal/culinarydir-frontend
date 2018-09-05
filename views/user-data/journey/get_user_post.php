@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use yii\widgets\ActiveForm;
+use common\components\Helper;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
 
@@ -86,7 +87,7 @@ $jspopover = ''; ?>
                                 <div class="widget-posts-body">
                                     <?= Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]); ?>
                                     <br>
-                                    <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostMain['created_at']) ?></small>
+                                    <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +103,7 @@ $jspopover = ''; ?>
                                 <div class="widget-posts-body">
                                     <?= Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]); ?>
                                     <br>
-                                    <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostMain['created_at']) ?></small>
+                                    <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
                                 </div>
                             </div>
                         </div>
@@ -269,7 +270,7 @@ $jspopover = ''; ?>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4 col-sm-5 col-tab-6 col-xs-12">
+                                <div class="col-sm-7 col-tab-7 col-xs-12">
                                     <ul class="list-inline list-review mt-0 mb-0">
                                         <li>
 
@@ -309,32 +310,32 @@ $jspopover = ''; ?>
 
                                     </ul>
                                 </div>
+                                <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
+                                    <ul class="list-inline list-review mt-0 mb-0">
 
-                                <?php
-                                if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
+                                        <?php
+                                        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
 
-                                    <div class="col-md-8 col-sm-7 col-tab-6 visible-lg visible-md visible-sm visible-tab">
-                                        <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
 
-                                                <?= Html::a('<i class="fa fa-trash-alt"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
 
                                             </li>
-                                        </ul>
-                                    </div>
-                                    <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
-                                        <ul class="list-inline list-review mt-0 mb-0">
-                                            <li>
 
-                                                <?= Html::a('<i class="fa fa-trash-alt"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                        <?php
+                                        endif; ?>
 
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    </ul>
+                                </div>
+                                <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
+                                    <ul class="list-inline list-review mt-0 mb-0">
+                                        <li>
 
-                                <?php
-                                endif; ?>
+                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
 
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <hr class="divider-w mt-10">
@@ -378,7 +379,7 @@ $jspopover = ''; ?>
 
                                                                     <div class="widget-comments-body">
                                                                         <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
-                                                                        <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                        <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                         <br>
                                                                         <p class="review-description">
 

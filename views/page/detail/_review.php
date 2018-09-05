@@ -5,10 +5,13 @@ use yii\web\JsExpression;
 use kartik\file\FileInput;
 use kartik\rating\StarRating;
 use sycomponent\Tools;
+use common\components\Helper;
 
 kartik\popover\PopoverXAsset::register($this);
 
-$reviewTotal = !empty($modelUserPostMain) ? 1 : 0; ?>
+$reviewTotal = !empty($modelUserPostMain) ? 1 : 0;
+
+Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -40,7 +43,7 @@ $reviewTotal = !empty($modelUserPostMain) ? 1 : 0; ?>
                                         <div class="widget-posts-body">
                                             <div class="my-review-user-name"><?= !empty($modelUserPostMain['user']['full_name']) ? $modelUserPostMain['user']['full_name'] : null ?></div>
 
-                                            <small class="my-review-created"><?= !empty($modelUserPostMain['created_at']) ? Yii::$app->formatter->asRelativeTime($modelUserPostMain['created_at']) : null ?></small>
+                                            <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +56,7 @@ $reviewTotal = !empty($modelUserPostMain) ? 1 : 0; ?>
                                         <div class="widget-posts-body">
                                             <div class="my-review-user-name"><?= !empty($modelUserPostMain['user']['full_name']) ? $modelUserPostMain['user']['full_name'] : null ?></div>
 
-                                            <small class="my-review-created"><?= !empty($modelUserPostMain['created_at']) ? Yii::$app->formatter->asRelativeTime($modelUserPostMain['created_at']) : null ?></small>
+                                            <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +304,7 @@ $reviewTotal = !empty($modelUserPostMain) ? 1 : 0; ?>
 
                                                                                 <div class="widget-comments-body">
                                                                                     <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
-                                                                                    <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                                    <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                     <br>
                                                                                     <p class="review-description">
 

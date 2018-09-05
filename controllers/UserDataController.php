@@ -154,7 +154,9 @@ class UserDataController extends base\BaseController
                             'business_image.type' => 'Profile',
                             'business_image.is_primary' => true]);
                     },
-                    'userPostMains parent',
+                    'userPostMains child' => function($query) {
+                        $query->andOnCondition(['child.is_publish' => true]);
+                    },
                     'user',
                     'userVotes',
                     'userVotes.ratingComponent',
