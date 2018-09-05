@@ -5,7 +5,7 @@ namespace frontend\models;
  * @property string $password_repeat
  */
 
-class UserRegister extends \backend\models\User
+class UserRegister extends \core\models\User
 {
     public $password_repeat;
 

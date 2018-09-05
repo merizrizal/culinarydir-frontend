@@ -2,7 +2,7 @@
 namespace frontend\models;
 
 use Yii;
-use backend\models\User;
+use core\models\User;
 
 /**
  * Change Password
@@ -15,7 +15,7 @@ class ChangePassword extends \sybase\SybaseModel
     public $confirm_pass;
 
     /**
-     * @var \backend\models\User
+     * @var \core\models\User
      */
     private $_user;
     

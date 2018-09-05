@@ -2,16 +2,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\UserPostMain;
-use backend\models\UserPost;
-use backend\models\UserVote;
-use backend\models\UserLove;
-use backend\models\UserVisit;
-use backend\models\UserPostComment;
-use backend\models\UserPostLove;
-use backend\models\UserReport;
-use backend\models\BusinessDetail;
-use backend\models\BusinessDetailVote;
+use core\models\UserPostMain;
+use core\models\UserPost;
+use core\models\UserVote;
+use core\models\UserLove;
+use core\models\UserVisit;
+use core\models\UserPostComment;
+use core\models\UserPostLove;
+use core\models\UserReport;
+use core\models\BusinessDetail;
+use core\models\BusinessDetailVote;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;
 use yii\web\Response;

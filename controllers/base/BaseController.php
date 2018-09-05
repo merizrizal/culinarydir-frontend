@@ -92,7 +92,7 @@ class BaseController extends \yii\web\Controller
 
         if (empty(Yii::$app->session->get('user_app_module'))) {
 
-            $userAppModule = \backend\models\UserAppModule::find()
+            $userAppModule = \core\models\UserAppModule::find()
                             ->andWhere(['sub_program' => Yii::$app->params['subprogramLocal']])
                             ->asArray()->all();
 

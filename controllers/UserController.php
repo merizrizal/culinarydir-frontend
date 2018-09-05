@@ -2,8 +2,8 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\UserPerson;
-use backend\models\User;
+use core\models\UserPerson;
+use core\models\User;
 use frontend\models\ChangePassword;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;

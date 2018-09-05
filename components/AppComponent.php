@@ -4,7 +4,7 @@ namespace frontend\components;
 
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
-use backend\models\Facility;
+use core\models\Facility;
 
 class AppComponent extends Widget {
 
