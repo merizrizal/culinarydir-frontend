@@ -27,6 +27,22 @@ return [
         'session' => [
             'name' => 'front-asikmakan',
         ],
+        'authClientCollection' => [
+            'class' => yii\authclient\Collection::class,
+            'clients' => [
+                'google' => [
+                    'class' => yii\authclient\clients\Google::class,
+                    'clientId' => '533913805654-ave8bn06l80mf1boijhihhtga4u1dqcp.apps.googleusercontent.com',
+                    'clientSecret' => '0l3v0kRkFXWaj9sAnJfndhok',
+                ],
+                'facebook' => [
+                    'class' => yii\authclient\clients\Facebook::class,
+                    'clientId' => '1889323104521718',
+                    'clientSecret' => 'a2c4811f5dc22e291030257ba107d3cb',
+                    'attributeNames' => ['name', 'email', 'first_name', 'last_name', 'address'],
+                ],
+            ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
