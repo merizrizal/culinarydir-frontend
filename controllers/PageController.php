@@ -39,7 +39,30 @@ class PageController extends base\BaseHistoryUrlController
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $modelUserPostMain = UserPostMain::find()
+                ->joinWith([
+                    'business',
+                    'user',
+                    'userPostMains child' => function($query) {
+                        $query->andOnCondition(['child.is_publish' => true])
+                                ->orderBy(['child.created_at' => SORT_ASC]);
+                    },
+                    'userVotes' => function($query) {
+                        $query->orderBy(['rating_component_id' => SORT_ASC]);
+                    },
+                    'userVotes.ratingComponent rating_component' => function($query) {
+                        $query->andOnCondition(['rating_component.is_active' => true]);
+                    },
+                    'userPostComments',
+                    'userPostComments.user user_comment',
+                ])
+                ->andWhere(['user_post_main.parent_id' => null])
+                ->andWhere(['user_post_main.is_publish' => true])
+                ->asArray()->all();
+
+        return $this->render('index', [
+            'modelUserPostMain' => $modelUserPostMain
+        ]);
     }
 
     public function actionResultList()
@@ -192,8 +215,58 @@ class PageController extends base\BaseHistoryUrlController
                 ->distinct()
                 ->asArray()->one();
 
-        return $this->render('detail_promo',[
+        return $this->render('detail_promo', [
             'modelBusinessPromo' => $modelBusinessPromo,
+        ]);
+    }
+
+    public function actionReview($id)
+    {
+        $modelUserPostMain = UserPostMain::find()
+                ->joinWith([
+                    'business',
+                    'user',
+                    'userPostMains child' => function($query) {
+                        $query->andOnCondition(['child.is_publish' => true])
+                                ->orderBy(['child.created_at' => SORT_ASC]);
+                    },
+                    'userVotes' => function($query) {
+                        $query->orderBy(['rating_component_id' => SORT_ASC]);
+                    },
+                    'userVotes.ratingComponent rating_component' => function($query) {
+                        $query->andOnCondition(['rating_component.is_active' => true]);
+                    },
+                    'userPostLoves' => function($query) {
+                        $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+                    },
+                    'userPostComments',
+                    'userPostComments.user user_comment',
+                ])
+                ->andWhere(['user_post_main.id' => $id])
+                ->asArray()->one();
+
+        return $this->render('review', [
+            'modelUserPostMain' => $modelUserPostMain,
+        ]);
+    }
+
+    public function actionPhoto($id)
+    {
+        $modelUserPostMain = UserPostMain::find()
+                ->joinWith([
+                    'business',
+                    'user',
+                    'userPostLoves' => function($query) {
+                        $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+                    },
+                    'userPostComments',
+                    'userPostComments.user user_comment',
+                ])
+                ->andWhere(['user_post_main.id' => $id])
+                ->asArray()->one();
+
+        return $this->render('photo', [
+            'modelUserPostMain' => $modelUserPostMain,
         ]);
     }
 

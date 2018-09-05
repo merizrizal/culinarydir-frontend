@@ -198,12 +198,24 @@ class ActionController extends base\BaseController
 
             $flag = $modelUserPostMainPhoto->save();
 
+            $dataSocialShare = [];
+
+            if (!empty($post['social_media_share'])) {
+
+                foreach ($post['social_media_share'] as $socialShare) {
+
+                    $dataSocialShare[$socialShare] = true;
+                }
+            }
+
             $result = [];
 
             if ($flag) {
 
                 $transaction->commit();
 
+                $result['userPostMainPhoto'] = $modelUserPostMainPhoto->toArray();
+                $result['socialShare'] = $dataSocialShare;
                 $result['status'] = 'sukses';
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Sukses.';
@@ -216,7 +228,13 @@ class ActionController extends base\BaseController
                 $result['status'] = 'gagal';
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Gagal.';
-                $result['message'] = 'Foto anda gagal di simpan.';
+                $result['message'] = '
+                    Foto Anda gagal di simpan.<br>
+                    <ol>
+                        <li>Pastikan panjang caption Anda lebih dari 20 karakter.</li>
+                        <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>
+                    </ol>
+                ';
                 $result['type'] = 'danger';
             }
 
@@ -411,14 +429,14 @@ class ActionController extends base\BaseController
                 $result['status'] = 'sukses';
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Report Tersimpan.';
-                $result['message'] = 'Report anda berhasil di simpan.';
+                $result['message'] = 'Report Anda berhasil di simpan.';
                 $result['type'] = 'success';
             } else {
 
                 $result['status'] = 'gagal';
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Report Gagal.';
-                $result['message'] = 'Report anda gagal di simpan.';
+                $result['message'] = 'Report Anda gagal di simpan.';
                 $result['type'] = 'danger';
             }
 
@@ -574,6 +592,19 @@ class ActionController extends base\BaseController
             }
         }
 
+        if ($flag) {
+
+            $dataSocialShare = [];
+
+            if (!empty($post['social_media_share'])) {
+
+                foreach ($post['social_media_share'] as $socialShare) {
+
+                    $dataSocialShare[$socialShare] = true;
+                }
+            }
+        }
+
         $result = [];
 
         if ($flag) {
@@ -590,6 +621,7 @@ class ActionController extends base\BaseController
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
+            $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
         } else {
@@ -600,7 +632,7 @@ class ActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal.';
             $result['message'] = '
-                Review anda gagal di simpan.<br>
+                Review Anda gagal di simpan.<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review.</li>
                     <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>
@@ -753,6 +785,19 @@ class ActionController extends base\BaseController
             }
         }
 
+        if ($flag) {
+
+            $dataSocialShare = [];
+
+            if (!empty($post['social_media_share'])) {
+
+                foreach ($post['social_media_share'] as $socialShare) {
+
+                    $dataSocialShare[$socialShare] = true;
+                }
+            }
+        }
+
         $result = [];
 
         if ($flag) {
@@ -769,6 +814,7 @@ class ActionController extends base\BaseController
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
+            $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
         } else {
@@ -779,7 +825,7 @@ class ActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal.';
             $result['message'] = '
-                Review baru anda gagal di simpan.<br>
+                Review baru Anda gagal di simpan.<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review.</li>
                     <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>

@@ -60,10 +60,10 @@ if (!empty($modelUserPostMain)):
     foreach ($modelUserPostMain as $dataUserPostMain):
 
     $jspopover .= '
-        $("#user-rating-popover' . $dataUserPostMain['id'] . '").popoverButton({
+        $("#user-rating-popover-' . $dataUserPostMain['id'] . '").popoverButton({
             trigger: "hover",
             placement: "right right-top",
-            target: "#user-container-popover' . $dataUserPostMain['id'] . '"
+            target: "#user-container-popover-' . $dataUserPostMain['id'] . '"
         });
     ';
 
@@ -124,12 +124,12 @@ if (!empty($modelUserPostMain)):
                     <h3 class="mt-0 mb-0">
                         <div class="rating">
 
-                            <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                            <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover-' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
 
                         </div>
                     </h3>
 
-                    <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
+                    <div id="user-container-popover-<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
                         <div class="arrow"></div>
                         <div class="popover-header popover-title"><button type="button" class="close" data-dismiss="popover-x">&times;</button></div>
                         <div class="popover-body popover-content">
@@ -162,7 +162,7 @@ if (!empty($modelUserPostMain)):
 
                                                             <div class="col-sm-7 col-xs-7">
 
-                                                                <?= $dataUserVote['vote_value'] . ' ' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
 
                                                             </div>
                                                         </div>
@@ -189,9 +189,9 @@ if (!empty($modelUserPostMain)):
 
                     </p>
 
-                    <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                    <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review-container">
                         <div class="col-sm-12 col-xs-12">
-                            <ul class="works-grid works-grid-gut works-grid-5">
+                            <ul class="works-grid works-grid-gut works-grid-5" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
 
                                 <?php
                                 if (!empty($dataUserPostMain['userPostMains'])):
@@ -253,7 +253,7 @@ if (!empty($modelUserPostMain)):
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
 
@@ -278,6 +278,27 @@ if (!empty($modelUserPostMain)):
 
                                     <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
+
+                                </li>
+                                <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
+                            <ul class="list-inline list-review mt-0 mb-0">
+                                <li>
+
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
+                            <ul class="list-inline list-review mt-0 mb-0">
+                                <li>
+
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
 
                                 </li>
                             </ul>
@@ -380,18 +401,6 @@ endif; ?>
 </div>
 
 <?php
-$csscript = '
-    .popover-title {
-        display: none;
-    }
-
-    .user-comment-review {
-        margin-left: 70px;
-    }
-';
-
-$this->registerCss($csscript);
-
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
@@ -452,7 +461,7 @@ $jscript = '
         });
 
         thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
+        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review-container").hide();
 
         thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
@@ -515,7 +524,7 @@ $jscript = '
 
         if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
             thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function() {
-                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
+                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review-container").toggle(500);
 
                 return false;
             });
@@ -533,6 +542,46 @@ $jscript = '
                 titleSrc: "title",
                 tError: "The image could not be loaded."
             }
+        });
+
+        $(".review-" + thisObj.val() + "-option").hide();
+
+        $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
+
+            $(".review-" + thisObj.val() + "-option").slideToggle();
+        });
+
+        thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
+
+            var businessName = $(".business-name").text().trim();
+            var rating = thisObj.parent().find(".rating").text().trim();
+            var url = window.location.href;
+
+                url = url.replace("detail", "review").replace($("#business_id").val(), thisObj.val());
+            var title = "Rating " + rating + " untuk " + businessName;
+            var description = thisObj.parent().find(".review-description").text();
+            var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
+
+            FB.ui({
+                method: "share_open_graph",
+                action_type: "og.likes",
+                action_properties: JSON.stringify({
+                        object: {
+                            "og:url": url,
+                            "og:title": title,
+                            "og:description": description,
+                            "og:image": image
+                        }
+                })
+            },
+            function (response) {
+                if (response && !response.error_message) {
+
+                    messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+                }
+            });
+
+            return false;
         });
     });
 

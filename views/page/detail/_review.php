@@ -51,8 +51,9 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="widget">
                                         <div class="widget-posts-image">
 
-                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?></div>
+                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
 
+                                        </div>
                                         <div class="widget-posts-body">
                                             <div class="my-review-user-name"><?= !empty($modelUserPostMain['user']['full_name']) ? $modelUserPostMain['user']['full_name'] : null ?></div>
 
@@ -106,14 +107,16 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                                             'displayOnly' => true,
                                                                                             'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                                                                             'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                                                                            'captionElement' => '.rating-' . strtolower($dataRatingComponent['id']),
+                                                                                            'captionElement' => '.rating-' . $dataRatingComponent['id'],
+                                                                                            'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '" : val + " &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '";}'),
+                                                                                            'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
                                                                                         ]
                                                                                     ]); ?>
 
                                                                                 </div>
 
                                                                                 <div class="col-sm-7 col-xs-7">
-                                                                                    <div class="rating-<?= strtolower($dataRatingComponent['id']) ?>"></div>
+                                                                                    <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
                                                                                 </div>
                                                                             </div>
                                                                         </li>
@@ -426,7 +429,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                             'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
                                                                             'showClear' => false,
                                                                             'clearCaption' => $dataRatingComponent['name'],
-                                                                            'captionElement' => '.rating-' . strtolower($dataRatingComponent['id']),
+                                                                            'captionElement' => '.rating-' . $dataRatingComponent['id'],
                                                                             'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '" : val + " &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '";}'),
                                                                             'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
                                                                         ]
@@ -435,7 +438,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                 </div>
 
                                                                 <div class="col-sm-6 col-xs-6 business-rating-components">
-                                                                    <div class="rating-<?= strtolower($dataRatingComponent['id']) ?>"></div>
+                                                                    <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -522,6 +525,29 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
+                                <?php
+                                $socialMediaItems = [
+                                    'facebook' => 'Berbagi ke Facebook',
+                                ];
+
+                                $options = [
+                                    'class' => 'social-media-share-list',
+                                    'separator' => '&nbsp;&nbsp;&nbsp;',
+                                    'item' => function ($index, $label, $name, $checked, $value) {
+                                        return '<label style="font-weight: normal;">' .
+                                                Html::checkbox($name, $checked, [
+                                                    'value' => $value,
+                                                    'class' => $value . '-review-share-trigger icheck',
+                                                ]) . ' ' . $label .
+                                                '</label>';
+                                    },
+                                ];
+
+                                echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
+
+                            </div>
+                            <div class="form-group">
+
                                 <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['class' => 'btn btn-default btn-standard btn-round']) ?>
 
                                 <?= Html::a('<i class="fa fa-times"></i> Cancel', null, ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
@@ -567,27 +593,12 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 </ul>
 
 <?php
-$csscript = '
-    .rating-md {
-        font-size: 0;
-    }
-
-    .rating-md > .rating-stars > .rating-input {
-        display: none;
-    }
-
-    .rating-container .filled-stars {
-        -webkit-text-stroke: 0;
-        text-shadow: none;
-    }
-';
-
-$this->registerCss($csscript);
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
 
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 
-$this->registerJsFile(Yii::$app->request->baseUrl . '/media/lib/readmore.js/readmore.min.js', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     var prevReview;
@@ -808,6 +819,8 @@ $jscript = '
         });
     });
 
+    myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
+
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -937,6 +950,42 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
+                    if ($.trim(response.socialShare)){
+
+                        $.each(response.socialShare, function(socialName, value) {
+
+                            if (socialName === "facebook" && response.socialShare[socialName]) {
+
+                                var businessName = $(".business-name").text().trim();
+                                var url = window.location.href;
+
+                                    url = url.replace("detail", "review").replace($("#business_id").val(), myUserPostMainId);
+                                var title = "Rating " + newOverall + " untuk " + businessName;
+                                var description = response.userPostMain.text;
+                                var image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
+
+                                FB.ui({
+                                    method: "share_open_graph",
+                                    action_type: "og.likes",
+                                    action_properties: JSON.stringify({
+                                            object: {
+                                                "og:url": url,
+                                                "og:title": title,
+                                                "og:description": description,
+                                                "og:image": image
+                                            }
+                                    })
+                                },
+                                function (response) {
+                                    if (response && !response.error_message) {
+
+                                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+                                    }
+                                });
+                            }
+                        });
+                    }
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
 
@@ -999,8 +1048,6 @@ $jscript = '
             }
         });
     }
-
-    myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
 
     $("#edit-review-container").find(".my-likes-review-trigger").on("click", function() {
 
@@ -1222,6 +1269,12 @@ $jscript = '
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find(".temp-rating-" + $(this).val() + "").val());
             }
         });
+
+        return false;
+    });
+
+    $(".facebook-review-share-trigger").on("ifChecked", function() {
+        checkFBLoginStatus($(this));
 
         return false;
     });

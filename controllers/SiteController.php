@@ -6,6 +6,8 @@ use common\models\LoginForm;
 use frontend\models\UserRegister;
 use backend\models\Person;
 use backend\models\UserPerson;
+use backend\models\User;
+use backend\models\UserSocialMedia;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -48,13 +50,36 @@ class SiteController extends base\BaseController
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => \yii\authclient\AuthAction::class,
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
         ];
     }
 
     public function actionRegister()
     {
+        $get = Yii::$app->request->get();
         $modelUserRegister = new UserRegister();
         $modelPerson = new Person();
+        $modelUserSocialMedia = new UserSocialMedia();
+
+        if (!empty($get['socmed'])) {
+
+            $modelUserRegister->email = $get['email'];
+            $modelPerson->first_name = $get['first_name'];
+            $modelPerson->last_name = $get['last_name'];
+
+            if ($get['socmed'] === 'Facebook') {
+
+                $modelUserSocialMedia->facebook_id = $get['socmedId'];
+
+            } else if ($get['socmed'] === 'Google') {
+
+                $modelUserSocialMedia->google_id = $get['socmedId'];
+
+            }
+        }
 
         if (Yii::$app->request->isAjax && $modelUserRegister->load(Yii::$app->request->post())) {
 
@@ -96,6 +121,23 @@ class SiteController extends base\BaseController
                 $flag = $modelUserPerson->save();
             }
 
+            if ($flag && (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id']))) {
+
+                $modelUserSocialMedia->user_id = $modelUserRegister->id;
+
+                if (!empty($post['UserSocialMedia']['google_id'])) {
+
+                    $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
+
+                } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
+
+                    $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
+
+                }
+
+                $flag = $modelUserSocialMedia->save();
+            }
+
             if ($flag) {
 
                 $transaction->commit();
@@ -128,6 +170,9 @@ class SiteController extends base\BaseController
         return $this->render('register', [
             'modelUserRegister' => $modelUserRegister,
             'modelPerson' => $modelPerson,
+            'modelUserSocialMedia' => $modelUserSocialMedia,
+            'socmed' => !empty($get['socmed']) ? $get['socmed'] : null,
+            'socmedId' => !empty($get['socmedId']) ? $get['socmedId'] : null,
         ]);
     }
 
@@ -168,4 +213,101 @@ class SiteController extends base\BaseController
         return $this->goHome();
     }
 
+    public function onAuthSuccess($client)
+    {
+        $socmed = '';
+        $socmedEmail = '';
+        $first_name = '';
+        $last_name = '';
+        $loginFlag = false;
+        $userAttributes = $client->getUserAttributes();
+
+        if ($client->id === 'facebook') {
+
+            $socmed = 'Facebook';
+            $socmedEmail = $userAttributes['email'];
+            $first_name = $userAttributes['first_name'];
+            $last_name = $userAttributes['last_name'];
+
+        } else if ($client->id === 'google') {
+
+            $socmed = 'Google';
+            $socmedEmail = $userAttributes['emails'][0]['value'];
+            $first_name = $userAttributes['name']['givenName'];
+            $last_name = $userAttributes['name']['familyName'];
+
+        }
+
+        $modelUser = User::find()
+                ->joinWith(['userSocialMedia'])
+                ->andWhere(['email' => $socmedEmail])
+                ->one();
+
+        if (empty($modelUser)) {
+
+            return $this->redirect(['site/register',
+                'socmed' => $socmed,
+                'email' => $socmedEmail,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'socmedId' => $userAttributes['id']
+            ]);
+
+        } else {
+
+            $modelUserSocialMedia = !empty($modelUser->userSocialMedia) ? $modelUser->userSocialMedia : new UserSocialMedia();
+
+            if ($socmed === 'Facebook') {
+
+                if (empty($modelUserSocialMedia['facebook_id'])) {
+
+                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->facebook_id = $userAttributes['id'];
+                    $loginFlag = $modelUserSocialMedia->save();
+
+                } else {
+
+                    if ($modelUserSocialMedia['facebook_id'] === $userAttributes['id']) {
+                        $loginFlag = true;
+                    }
+                }
+
+            } else if ($socmed === 'Google') {
+
+                if (empty($modelUserSocialMedia['google_id'])) {
+
+                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->google_id = $userAttributes['id'];
+                    $loginFlag = $modelUserSocialMedia->save();
+
+                } else {
+
+                    if ($modelUserSocialMedia['google_id'] === $userAttributes['id']) {
+                        $loginFlag = true;
+                    }
+                }
+            }
+
+            if ($loginFlag) {
+                
+                $model = new LoginForm();
+                $model->useSocmed = true;
+                $model->login_id = $socmedEmail;
+
+                if ($model->login()) {
+                    return $this->goBack(['page/default']);
+                }
+
+            } else {
+
+                Yii::$app->session->setFlash('message', [
+                    'type' => 'danger',
+                    'delay' => 1000,
+                    'icon' => 'aicon aicon-icon-info',
+                    'message' => 'Gagal Login',
+                    'title' => 'Gagal Login',
+                ]);
+            }
+        }
+    }
 }

@@ -57,6 +57,30 @@ use kartik\file\FileInput; ?>
 
                         <div class="form-group">
 
+                            <?php
+                            $socialMediaItems = [
+                                'facebook' => 'Berbagi ke Facebook',
+                            ];
+
+                            $options = [
+                                'class' => 'social-media-share-list',
+                                'separator' => '&nbsp;&nbsp;&nbsp;',
+                                'item' => function ($index, $label, $name, $checked, $value) {
+                                    return '<label style="font-weight: normal;">' .
+                                            Html::checkbox($name, $checked, [
+                                                'value' => $value,
+                                                'class' => $value . '-photo-share-trigger icheck',
+                                            ]) . ' ' . $label .
+                                            '</label>';
+                                },
+                            ];
+
+                            echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
+
+                        </div>
+
+                        <div class="form-group">
+
                             <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload photo', ['class' => 'btn btn-default btn-standard btn-round']) ?>
 
                             <?= Html::a('<i class="fa fa-times"></i> Cancel', null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
@@ -194,7 +218,6 @@ $jscript = '
             },
             success: function(response) {
 
-                $("#post-text").val("");
                 $("#add-photo-input").fileinput("clear");
 
                 if (response.status == "sukses") {
@@ -203,8 +226,48 @@ $jscript = '
 
                     getUserPhoto($("#business_id").val());
 
+                    if ($.trim(response.socialShare)){
+
+                        $.each(response.socialShare, function(socialName, value) {
+
+                            if (socialName === "facebook" && response.socialShare[socialName]) {
+
+                                var businessName = $(".business-name").text().trim();
+                                var url = window.location.href;
+
+                                    url = url.replace("detail", "photo").replace($("#business_id").val(), response.userPostMainPhoto.id);
+                                var title = "Foto untuk " + businessName;
+                                var description = response.userPostMainPhoto.text;
+                                var image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto.image;
+
+                                FB.ui({
+                                    method: "share_open_graph",
+                                    action_type: "og.likes",
+                                    action_properties: JSON.stringify({
+                                            object: {
+                                                "og:url": url,
+                                                "og:title": title,
+                                                "og:description": description,
+                                                "og:image": image
+                                            }
+                                    })
+                                },
+                                function (response) {
+                                    if (response && !response.error_message) {
+
+                                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Foto berhasil di posting ke Facebook Anda.", "success");
+                                    }
+                                });
+                            }
+                        });
+                    }
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
+
+                    $("#post-photo-container").find(".form-group").removeClass("has-success");
+                    $("#post-photo-container").find(".form-group").removeClass("has-error");
+                    $("#post-photo-container").find(".form-group").find(".help-block").html("");
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
@@ -244,6 +307,12 @@ $jscript = '
     }
 
     getUserPhoto($("#business_id").val());
+
+    $(".facebook-photo-share-trigger").on("ifChecked", function() {
+        checkFBLoginStatus($(this));
+
+        return false;
+    });
 ';
 
 $this->registerJs($jscript); ?>

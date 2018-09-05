@@ -167,7 +167,7 @@ $appComponent = new AppComponent(); ?>
                                         <div class="box-title">
                                             <div class="row">
                                                 <div class="col-sm-7 col-tab-7 col-xs-12">
-                                                    <h4 class="font-alt mb-0"><?= $modelBusiness['name']; ?></h4>
+                                                    <h4 class="font-alt mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
                                                 </div>
 
                                                 <div class="visible-xs col-xs-12 clearfix"></div>
@@ -826,22 +826,22 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId            : "1567716833343397",
-            autoLogAppEvents : true,
-            xfbml            : true,
-            version          : "v3.1"
-        });
-    };
+    function checkFBLoginStatus(element) {
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, "script", "facebook-jssdk"));
+        FB.getLoginStatus(function(response) {
+
+            if (response.status !== "connected") {
+
+                FB.login(function(response) {
+                    if (response.status !== "connected") {
+
+                        element.parent().removeClass("checked");
+                        element.iCheck("uncheck");
+                    }
+                });
+            }
+        });
+    }
 
     $("#see-map-shortcut").on("click", function(event) {
 
@@ -973,7 +973,9 @@ $jscript = '
         FB.ui({
             method: "share",
             href: url,
-        }, function(response){});
+        }, function(response){
+
+        });
 
         return false;
     });

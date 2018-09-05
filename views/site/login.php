@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\authclient\widgets\AuthChoice;
 
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
@@ -78,16 +79,48 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-md-12">
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
 
-                                        <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
+                                            <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
 
-                                        <hr class="divider-w mt-20 mb-10">
+                                            <div class="mt-20 mb-20 align-center"> OR </div>
 
-                                        <div class="text-center">
-                                            <h4>
-                                                <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
-                                            </h4>
+                                            <div class="mt-10">
+
+                                                <?php $authAuthChoice = AuthChoice::begin([
+                                                    'baseAuthUrl' => ['site/auth'],
+                                                    'popupMode' => false,
+                                                ]);
+
+                                                    foreach ($authAuthChoice->getClients() as $client):
+
+                                                        $btnType = '';
+
+                                                        if ($client->getName() === 'facebook') {
+                                                            $btnType = 'btn-primary';
+                                                        } else if ($client->getName() === 'google') {
+                                                            $btnType = 'btn-border-d';
+                                                        }
+
+                                                        echo $authAuthChoice->clientLink($client,
+                                                            '<i class="fab fa-' . $client->getName() . '"></i> Sign in with ' . $client->getTitle(), [
+                                                            'class' => 'btn ' . $btnType . ' btn-block btn-round',
+                                                        ]);
+
+                                                    endforeach;
+
+                                                AuthChoice::end(); ?>
+
+                                            </div>
+
+                                            <hr class="divider-w mt-20 mb-10">
+
+                                            <div class="text-center">
+                                                <h4>
+                                                    <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
+                                                </h4>
+                                            </div>
                                         </div>
                                     </div>
 

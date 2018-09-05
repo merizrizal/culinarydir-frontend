@@ -62,13 +62,14 @@ $linkPager = LinkPager::widget([
                             <div class="gallery-image">
                                 <div class="work-image">
 
-                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['image'], 200, 200), ['class' => 'img-component']) ?>
+                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['image'], 200, 200), ['class' => 'img-component', 'data-id' => $dataUserPostMain['id']]) ?>
 
                                 </div>
                                 <div class="work-caption">
-                                    <div class="work-descr hidden-xs"><?= !empty($dataUserPostMain['text']) ? $dataUserPostMain['text'] : '' ?></div>
+                                    <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMain['text']) ? $dataUserPostMain['text'] : '' ?></div>
                                     <div class="work-descr">
                                         <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMain['image'] ?>"><i class="fa fa-search"></i></a>
+                                        <a class="btn btn-d btn-small btn-xs btn-circle share-image-<?= $dataUserPostMain['id'] ?>-trigger"><i class="fa fa-share-alt"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +135,42 @@ $jscript = '
             titleSrc: "title",
             tError: "The image could not be loaded."
         }
+    });
+
+    $("#photo-gallery").find(".work-item").each(function() {
+
+        var thisObj = $(this);
+        var photoId = $(this).find(".work-image").children().data("id");
+
+        $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
+
+            var businessName = $(".business-name").text().trim();
+            var url = window.location.href;
+
+                url = url.replace("detail", "photo").replace($("#business_id").val(), photoId);
+            var title = "Foto untuk " + businessName;
+            var description = thisObj.find(".photo-caption").text();
+            var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
+
+            FB.ui({
+                method: "share_open_graph",
+                action_type: "og.likes",
+                action_properties: JSON.stringify({
+                        object: {
+                            "og:url": url,
+                            "og:title": title,
+                            "og:description": description,
+                            "og:image": image
+                        }
+                })
+            },
+            function (response) {
+                if (response && !response.error_message) {
+
+                    messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Foto berhasil di posting ke Facebook Anda.", "success");
+                }
+            });
+        });
     });
 
     $(".total-photo").html("' . $totalCount . '");
