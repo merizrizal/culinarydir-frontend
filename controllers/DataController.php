@@ -2,14 +2,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\ProductCategory;
-use backend\models\Business;
-use backend\models\BusinessDetail;
-use backend\models\BusinessDetailVote;
-use backend\models\UserPostMain;
-use backend\models\UserPostComment;
-use backend\models\RatingComponent;
-use backend\models\BusinessPromo;
+use core\models\ProductCategory;
+use core\models\Business;
+use core\models\BusinessDetail;
+use core\models\BusinessDetailVote;
+use core\models\UserPostMain;
+use core\models\UserPostComment;
+use core\models\RatingComponent;
+use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 

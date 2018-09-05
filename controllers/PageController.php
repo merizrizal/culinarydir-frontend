@@ -2,12 +2,12 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\Business;
-use backend\models\BusinessPromo;
-use backend\models\ProductCategory;
-use backend\models\RatingComponent;
-use backend\models\UserReport;
-use backend\models\UserPostMain;
+use core\models\Business;
+use core\models\BusinessPromo;
+use core\models\ProductCategory;
+use core\models\RatingComponent;
+use core\models\UserReport;
+use core\models\UserPostMain;
 use frontend\models\Post;
 use yii\filters\VerbFilter;
 
@@ -120,8 +120,8 @@ class PageController extends base\BaseHistoryUrlController
                             'user_visit.is_active' => true
                         ]);
                     },
-                    'businessMenus' => function($query) {
-                        $query->andOnCondition(['business_menu.not_active' => false]);
+                    'businessProducts' => function($query) {
+                        $query->andOnCondition(['business_product.not_active' => false]);
                     },
                 ])
                 ->andWhere(['business.id' => $id])

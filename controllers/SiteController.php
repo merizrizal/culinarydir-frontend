@@ -4,10 +4,10 @@ namespace frontend\controllers;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\UserRegister;
-use backend\models\Person;
-use backend\models\UserPerson;
-use backend\models\User;
-use backend\models\UserSocialMedia;
+use core\models\Person;
+use core\models\UserPerson;
+use core\models\User;
+use core\models\UserSocialMedia;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -59,7 +59,12 @@ class SiteController extends base\BaseController
 
     public function actionRegister()
     {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         $get = Yii::$app->request->get();
+        
         $modelUserRegister = new UserRegister();
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
@@ -289,7 +294,7 @@ class SiteController extends base\BaseController
             }
 
             if ($loginFlag) {
-                
+
                 $model = new LoginForm();
                 $model->useSocmed = true;
                 $model->login_id = $socmedEmail;

@@ -123,14 +123,14 @@ $appComponent = new AppComponent(); ?>
 
                                                         <?php
                                                         $imagesMenu = [];
-                                                        if (!empty($modelBusiness['businessMenus'])):
-                                                            foreach ($modelBusiness['businessMenus'] as $dataBusinessMenu) {
+                                                        if (!empty($modelBusiness['businessProducts'])):
+                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
 
                                                                 $imagesMenu[] = [
                                                                     'title' => '',
-                                                                    'href' => Yii::getAlias('@uploadsUrl') . '/img/business_menu/' . $dataBusinessMenu['image'],
+                                                                    'href' => Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'],
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => Yii::getAlias('@uploadsUrl') . '/img/business_menu/' . $dataBusinessMenu['image'],
+                                                                    'poster' => Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'],
                                                                 ];
                                                             }
 
@@ -708,7 +708,7 @@ $appComponent = new AppComponent(); ?>
                                             <div role="tabpanel" class="tab-pane fade p-0" id="view-menu">
 
                                                 <?= $this->render('detail/_menu.php', [
-                                                    'modelBusinessMenu' => $modelBusiness['businessMenus'],
+                                                    'modelBusinessProduct' => $modelBusiness['businessProducts'],
                                                 ]) ?>
 
                                             </div>

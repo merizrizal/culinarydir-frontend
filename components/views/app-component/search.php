@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use backend\models\City;
-use backend\models\Category;
+use core\models\City;
+use core\models\Category;
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);

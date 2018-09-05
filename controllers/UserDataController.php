@@ -2,11 +2,11 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\UserVisit;
-use backend\models\UserLove;
-use backend\models\UserPostMain;
+use core\models\UserVisit;
+use core\models\UserLove;
+use core\models\UserPostMain;
 use frontend\models\Post;
-use backend\models\BusinessPromo;
+use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 

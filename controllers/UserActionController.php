@@ -2,11 +2,11 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\UserPostMain;
-use backend\models\UserPost;
-use backend\models\UserVote;
-use backend\models\BusinessDetail;
-use backend\models\BusinessDetailVote;
+use core\models\UserPostMain;
+use core\models\UserPost;
+use core\models\UserVote;
+use core\models\BusinessDetail;
+use core\models\BusinessDetailVote;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 
