@@ -41,7 +41,7 @@ use sycomponent\Tools; ?>
                                                 <div class="row">
 
                                                     <?php
-                                                    if (!empty($modelBusinessPromo['image']) && file_exists(Yii::getAlias('@uploads') . '/img/business_promo/' . $modelBusinessPromo['image'])): ?>
+                                                    if (!empty($modelBusinessPromo['image'])): ?>
 
                                                         <div class="col-sm-9 col-sm-offset-3">
 

@@ -92,15 +92,9 @@ $jspopover = ''; ?>
 
                                                 <?php
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImages) {
-                                                    if (!empty($dataBusinessImages['image'] && file_exists(Yii::getAlias('@uploads') . '/img/registry_business/' . $dataBusinessImages['image']))) {
 
-                                                        echo Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImages['image'], 651, 395), ['class' => 'img-responsive img-component']);
+                                                    echo Html::img(!empty($dataBusinessImages['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImages['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']);
 
-                                                    } else {
-
-                                                        echo Html::img(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']);
-
-                                                    }
                                                 } ?>
 
                                             </a>
@@ -205,14 +199,8 @@ $jspopover = ''; ?>
 
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+                                                    $href = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
 
-                                                    if (!empty($dataBusinessImage['image'] && file_exists(Yii::getAlias('@uploads') . '/img/registry_business/' . $dataBusinessImage['image']))) {
-
-                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
-                                                    }
-                                                    
                                                     $images[] = [
                                                             'title' => '',
                                                             'href' => $href,
@@ -231,15 +219,8 @@ $jspopover = ''; ?>
                                             } else {
 
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
-                                                    if (!empty($dataBusinessImage['image'] && file_exists(Yii::getAlias('@uploads') . '/img/registry_business/' . $dataBusinessImage['image']))) {
 
-                                                        echo Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276), ['class' => 'img-responsive img-component']);
-
-                                                    } else {
-
-                                                        echo Html::img(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']);
-
-                                                    }
+                                                    echo Html::img(!empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Html::img(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']));
                                                 }
                                             } ?>
 
