@@ -10,6 +10,7 @@ use core\models\UserReport;
 use core\models\UserPostMain;
 use frontend\models\Post;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * Page Controller
@@ -60,8 +61,13 @@ class PageController extends base\BaseHistoryUrlController
                 ->andWhere(['user_post_main.is_publish' => true])
                 ->asArray()->all();
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => $modelUserPostMain,
+        ]);
+
         return $this->render('index', [
-            'modelUserPostMain' => $modelUserPostMain
+            'modelUserPostMain' => $modelUserPostMain,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

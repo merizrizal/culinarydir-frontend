@@ -4,6 +4,7 @@ use yii\web\JsExpression;
 use yii\helpers\BaseStringHelper;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
+use ereminmdev\yii2\infinite_scroll;
 use frontend\components\AppComponent;
 
 /* @var $this yii\web\View */
@@ -271,6 +272,37 @@ $this->registerMetaTag([
                     endforeach; ?>
 
                 </div>
+
+                <div class="load-more">
+
+                    <?= infinite_scroll\InfiniteScroll::widget([
+                        'pagination' => $dataProvider->getPagination(),
+                        'clientOptions' => [
+                            'container' => '.items',
+                            'item' => '.item',
+                            'pagination' => '.pagination',
+                        ],
+                        'clientExtensions' => [
+                            infinite_scroll\InfiniteScroll::EXT_TRIGGER => [
+                                'offset' => 1,
+                                'text' => Yii::t('app', 'Load more...'),
+                                'html' => '<div class="ias-trigger ias-trigger-next"><a class="btn btn-default">{text}</a></div>',
+                                'textPrev' => Yii::t('app', 'Load previous...'),
+                                'htmlPrev' => '<div class="ias-trigger ias-trigger-prev"><a class="btn btn-default">{text}</a></div>',
+                            ],
+                            infinite_scroll\InfiniteScroll::EXT_SPINNER => [
+                                'html' => '<div class="ias-spinner"><i class="fa fa-refresh fa-spin fa-lg"></i></div>',
+                            ],
+                            infinite_scroll\InfiniteScroll::EXT_NONE_LEFT => [
+                                'html' => 'You reached the end.',
+                            ],
+                        ],
+                        'clientEvents' => [
+                            'rendered' => new JsExpression('function() { console.log("on rendered"); }'),
+                        ],
+                    ]) ?>
+
+                </div>
             </div>
         </div>
     </section>
@@ -313,15 +345,16 @@ $jscript = '
         return false;
     });
 
-    $(".review-container").find(".share-review-" + reviewId.val() + "-trigger").on("click", function() {
+    thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
 
-        var businessName = $(".business-name").val();
-        var rating = $(".review-container").find(".rating").text().trim();
-
+        var businessName = $(".business-name").text().trim();
+        var rating = thisObj.parent().find(".rating").text().trim();
         var url = window.location.href;
+
+            url = url.replace("detail", "review").replace($("#business_id").val(), thisObj.val());
         var title = "Rating " + rating + " untuk " + businessName;
-        var description = $(".review-container").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + $(".review-container").find("#user-" + reviewId.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
+        var description = thisObj.parent().find(".review-description").text();
+        var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
 
         FB.ui({
             method: "share_open_graph",
