@@ -86,13 +86,7 @@ $jspopover = ''; ?>
                                         <?php
                                         $businessPromoImage = '';
 
-                                        $src = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
-
-                                        if (!empty($dataBusinessPromo['image'] && file_exists(Yii::getAlias('@uploads') . '/img/business_promo/' . $dataBusinessPromo['image']))) {
-
-                                            $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
-
-                                        }
+                                        $src = !empty($dataBusinessPromo['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
                                         echo Html::img($src, ['class' => 'img-responsive img-component']);
 
