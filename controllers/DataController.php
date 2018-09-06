@@ -42,7 +42,6 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelProductCategory = ProductCategory::find()
-                ->joinWith(['parent parent'])
                 ->orderBy(['name' => SORT_ASC])
                 ->andFilterWhere(['ilike', 'product_category.name', Yii::$app->request->post('keyword')])
                 ->asArray()->all();
@@ -52,7 +51,7 @@ class DataController extends base\BaseController
         foreach ($modelProductCategory as $dataProductCategory)
         {
 
-            if (empty($dataProductCategory['parent']['id'])) {
+            if ($dataProductCategory['is_parent']) {
 
                 $productCategory['parent'][] = $dataProductCategory;
             } else {
