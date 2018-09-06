@@ -105,160 +105,167 @@ $this->registerMetaTag([
             <div class="view">
                 <div class="row recent-post">
                 <div class="font-alt mb-20 align-center visible-xs">Recent Activity</div>
-                <div class="font-alt mb-20 visible-tab" style="margin-left: 10px;">Recent Activity</div>
+                <div class="font-alt mb-20 align-center visible-tab">Recent Activity</div>
                 <div class="font-alt mb-20 visible-lg visible-md visible-sm">Recent Activity</div>
 
                     <?php
-                    foreach ($modelUserPostMain as $dataUserPostMain): ?>
+                    foreach ($modelUserPostMain as $dataUserPostMain):
 
-                        <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
-                            <div class="box">
-                                <div class="post">
-                                    <div class="head">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-xs-3">
-                                                <a href="<?= Yii::$app->urlManager->createUrl(['/user/user-profile', 'user' => $dataUserPostMain['user']['username']]); ?>">
+                        if ($dataUserPostMain['type'] === 'Review'): ?>
 
-                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 100, 100) : '/img/user/default-avatar.png'), [
-                                                        'class' => 'img-responsive img-circle img-profile-thumb img-component'
-                                                    ]) ?>
+                            <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
+                                <div class="box">
+                                    <div class="post">
+                                        <div class="head">
+                                            <div class="row">
+                                                <div class="user-photo col-lg-3 col-xs-3">
+                                                    <a href="<?= Yii::$app->urlManager->createUrl(['/user/user-profile', 'user' => $dataUserPostMain['user']['username']]); ?>">
 
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-9 col-xs-9">
-                                                <div class="full-name">
+                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 100, 100) : '/img/user/default-avatar.png'), [
+                                                            'class' => 'img-responsive img-circle img-profile-thumb img-component',
+                                                            'height' => 50,
+                                                            'width' => 50
+                                                        ]) ?>
 
-                                                    <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
-
+                                                    </a>
                                                 </div>
-                                                <div class="created-at">
+                                                <div class="user-name col-lg-9 col-xs-9">
+                                                    <div class="full-name">
 
-                                                    <?= Yii::$app->formatter->asDate($dataUserPostMain['created_at'], 'medium'); ?>
+                                                        <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
 
+                                                    </div>
+                                                    <div class="created-at">
+
+                                                        <small><?= Yii::$app->formatter->asDate($dataUserPostMain['created_at'], 'medium'); ?></small>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="post-thumbnail">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-xs-12">
-
-                                                <?php
-                                                $url = 'page';
-
-                                                if ($dataUserPostMain['type'] === 'Review') {
-                                                    $url .= '/review';
-                                                } else if ($dataUserPostMain['type'] === 'Photo') {
-                                                    $url .= '/photo';
-                                                } ?>
-
-                                                <a href="<?= Yii::$app->urlManager->createUrl([$url, 'id' => $dataUserPostMain['id']]); ?>">
+                                        <div class="post-thumbnail">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-xs-12">
 
                                                     <?php
-                                                    $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', 'no-image-available.jpg', 360, 135.283));
+                                                    $url = 'page';
 
-                                                    if ($dataUserPostMain['type'] === 'Photo') {
+                                                    if ($dataUserPostMain['type'] === 'Review') {
+                                                        $url .= '/review';
+                                                    } else if ($dataUserPostMain['type'] === 'Photo') {
+                                                        $url .= '/photo';
+                                                    } ?>
 
-                                                        if (!empty($dataUserPostMain['image']) && file_exists(Yii::getAlias('@uploads') . '/img/user_post/' . $dataUserPostMain['image'])) {
-                                                            $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['image'], 360, 135.283));
+                                                    <a href="<?= Yii::$app->urlManager->createUrl([$url, 'id' => $dataUserPostMain['id']]); ?>">
+
+                                                        <?php
+                                                        $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', 'no-image-available.jpg', 360, 135.283));
+
+                                                        if ($dataUserPostMain['type'] === 'Photo') {
+
+                                                            if (!empty($dataUserPostMain['image']) && file_exists(Yii::getAlias('@uploads') . '/img/user_post/' . $dataUserPostMain['image'])) {
+                                                                $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['image'], 360, 135.283));
+                                                            }
+
+                                                        } else if ($dataUserPostMain['type'] === 'Review' && !empty($dataUserPostMain['userPostMains'])) {
+
+                                                            if (!empty($dataUserPostMain['userPostMains'][0]['image']) && file_exists(Yii::getAlias('@uploads') . '/img/user_post/' . $dataUserPostMain['userPostMains'][0]['image'])) {
+                                                                $img= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['userPostMains'][0]['image'], 360, 135.283));
+                                                            }
+
                                                         }
 
-                                                    } else if ($dataUserPostMain['type'] === 'Review' && !empty($dataUserPostMain['userPostMains'])) {
+                                                        echo $img; ?>
 
-                                                        if (!empty($dataUserPostMain['userPostMains'][0]['image']) && file_exists(Yii::getAlias('@uploads') . '/img/user_post/' . $dataUserPostMain['userPostMains'][0]['image'])) {
-                                                            $img= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['userPostMains'][0]['image'], 360, 135.283));
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="post-header">
+                                            <div class="row buttons">
+                                                <div class="col-sm-12 col-xs-12 col">
+                                                    <ul class="list-inline mt-0 mb-10">
+                                                        <li>
+
+                                                            <small><i class="fa fa-thumbs-up"></i><?= !empty($dataUserPostMain['love_value']) ? ' ' . $dataUserPostMain['love_value'] . ' Likes' : ' ' . 0 . ' Like' ?></small>
+
+                                                        </li>
+                                                        <li>
+
+                                                            <small><i class="fa fa-comments"></i><?= !empty($dataUserPostMain['userPostComments']) ? ' ' . count($dataUserPostMain['userPostComments']) . ' Comments' : ' ' . 0 . ' Comment' ?></small>
+
+                                                        </li>
+                                                        <li>
+
+                                                            <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-feature']); ?></small>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="row business-name">
+                                                <div class="col-sm-12 col-xs-12 col">
+                                                    <h5 class="font-alt m-0">
+
+                                                        <?= Html::a($dataUserPostMain['business']['name'], Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']])); ?>
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-4 col-tab-6 col-sm-5 col-xs-5 col">
+                                                    <div class="widget star-rating">
+
+                                                        <?php
+                                                        $ratingValue = 0;
+
+                                                        foreach ($dataUserPostMain['userVotes'] as $dataUserVotes) {
+                                                            $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($dataUserPostMain['userVotes']) ? ($dataUserVotes['vote_value'] / count($dataUserPostMain['userVotes'])) : 0;
                                                         }
 
-                                                    }
+                                                        echo StarRating::widget([
+                                                            'id' => 'rating-' . $dataUserPostMain['id'],
+                                                            'name' => 'rating_' . $dataUserPostMain['id'],
+                                                            'value' => !empty($ratingValue) ? $ratingValue : 0,
+                                                            'pluginOptions' => [
+                                                                'displayOnly' => true,
+                                                                'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                                'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                'captionElement' => '.rating-' . strtolower($dataUserPostMain['id']),
+                                                                'starCaptions' => new JsExpression('function(val){return val == 0 ? "0 &nbsp;&nbsp;&nbsp; vote" : val + " &nbsp;&nbsp;&nbsp; votes";}'),
+                                                                'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
+                                                            ]
+                                                        ]); ?>
 
-                                                    echo $img; ?>
-
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-header">
-                                        <div class="row buttons">
-                                            <div class="col-sm-12 col-xs-12 col">
-                                                <ul class="list-inline mt-0 mb-10">
-                                                    <li>
-
-                                                        <small><i class="fa fa-thumbs-up"></i><?= !empty($dataUserPostMain['love_value']) ? ' ' . $dataUserPostMain['love_value'] . ' Likes' : ' ' . 0 . ' Like' ?></small>
-
-                                                    </li>
-                                                    <li>
-
-                                                        <small><i class="fa fa-comments"></i><?= !empty($dataUserPostMain['userPostComments']) ? ' ' . count($dataUserPostMain['userPostComments']) . ' Comments' : ' ' . 0 . ' Comment' ?></small>
-
-                                                    </li>
-                                                    <li>
-
-                                                        <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-feature']); ?></small>
-
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="row business-name">
-                                            <div class="col-sm-12 col-xs-12 col">
-                                                <h5 class="font-alt m-0">
-
-                                                    <?= Html::a($dataUserPostMain['business']['name'], Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']])); ?>
-
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-4 col-tab-6 col-sm-5 col-xs-5 col">
-                                                <div class="widget star-rating">
-
-                                                    <?php
-                                                    $ratingValue = 0;
-
-                                                    foreach ($dataUserPostMain['userVotes'] as $dataUserVotes) {
-                                                        $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($dataUserPostMain['userVotes']) ? ($dataUserVotes['vote_value'] / count($dataUserPostMain['userVotes'])) : 0;
-                                                    }
-
-                                                    echo StarRating::widget([
-                                                        'id' => 'rating-' . $dataUserPostMain['id'],
-                                                        'name' => 'rating_' . $dataUserPostMain['id'],
-                                                        'value' => !empty($ratingValue) ? $ratingValue : 0,
-                                                        'pluginOptions' => [
-                                                            'displayOnly' => true,
-                                                            'filledStar' => '<span class="aicon aicon-star-full"></span>',
-                                                            'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                                            'captionElement' => '.rating-' . strtolower($dataUserPostMain['id']),
-                                                            'starCaptions' => new JsExpression('function(val){return val == 0 ? "0 &nbsp;&nbsp;&nbsp; vote" : val + " &nbsp;&nbsp;&nbsp; votes";}'),
-                                                            'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
-                                                        ]
-                                                    ]); ?>
-
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8 col-tab-6 col-sm-7 col-xs-7 col pb-10">
+                                                    <div class="rating">
+                                                        <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format((float) $ratingValue, 1, '.', '') ?></span></h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-xs-6 review-rating-components">
+                                                    <div class="rating-<?= strtolower($dataUserPostMain['id']) ?>"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-8 col-tab-6 col-sm-7 col-xs-7 col pb-10">
-                                                <div class="rating">
-                                                    <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format((float) $ratingValue, 1, '.', '') ?></span></h4>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-xs-6 review-rating-components">
-                                                <div class="rating-<?= strtolower($dataUserPostMain['id']) ?>"></div>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="post-entry">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-xs-12">
+                                        <div class="post-entry">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-xs-12">
 
-                                                <?= BaseStringHelper::truncate($dataUserPostMain['text'], 85, '. . .'); ?>
+                                                    <?= BaseStringHelper::truncate($dataUserPostMain['text'], 85, '. . .'); ?>
 
-                                                <?= (!empty($dataUserPostMain['text']) ? '<br>' : '') . Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', [$url, 'id' => $dataUserPostMain['id']]) ?>
+                                                    <?= (!empty($dataUserPostMain['text']) ? '<br>' : '') . Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', [$url, 'id' => $dataUserPostMain['id']]) ?>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        <?php
+                        endif; ?>
 
                     <?php
                     endforeach; ?>
