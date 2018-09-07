@@ -81,12 +81,7 @@ $linkPager = LinkPager::widget([
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
-
-                                                if (!empty($dataBusinessImage['image'] && file_exists(Yii::getAlias('@uploads') . '/img/registry_business/' . $dataBusinessImage['image']))) {
-
-                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-                                                }
+                                                $href = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
 
                                                 $images[] = [
                                                     'title' => '',
@@ -109,14 +104,8 @@ $linkPager = LinkPager::widget([
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $src = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                                $src = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                                if (!empty($dataBusinessImage['image'] && file_exists(Yii::getAlias('@uploads') . '/img/registry_business/' . $dataBusinessImage['image']))) {
-
-                                                    $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
-                                                }
-                                                
                                                 echo Html::img($src, ['class' => 'img-responsive img-component']);
 
                                                 $businessImage[] = $src;

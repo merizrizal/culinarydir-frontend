@@ -86,16 +86,7 @@ $jspopover = ''; ?>
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
 
-                                        <?php
-                                        if (!empty($dataBusinessPromo['image'] && file_exists(Yii::getAlias('@uploads') . '/img/business_promo/' . $dataBusinessPromo['image']))) {
-
-                                            echo Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276), ['class' => 'img-responsive img-component']);
-
-                                        } else {
-
-                                            echo Html::img(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']);
-
-                                        } ?>
+                                        <?= Html::img(!empty($dataBusinessPromo['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']); ?>
 
                                     </div>
 
