@@ -54,7 +54,7 @@ $appComponent = new AppComponent(); ?>
                     <?php
                     $flashKeyword = Yii::$app->session->getFlash('keyword'); ?>
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> Back to Result List', [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result') . '', [
                         'page/result-list',
                         'special' => !empty($flashKeyword['special']) ? $flashKeyword['special'] : 0,
                         'city_id' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
