@@ -53,7 +53,6 @@ class PageController extends base\BaseHistoryUrlController
                 ])
                 ->andWhere(['user_post_main.parent_id' => null])
                 ->andWhere(['user_post_main.is_publish' => true])
-                ->andWhere(['user_post_main.type' => 'Review'])
                 ->orderBy(['user_post_main.created_at' => SORT_DESC])
                 ->distinct()
                 ->asArray();
@@ -61,15 +60,17 @@ class PageController extends base\BaseHistoryUrlController
         $dataProvider = new ActiveDataProvider([
             'query' => $modelUserPostMain,
             'pagination' => [
-                'pageSize' => 2,
+                'pageSize' => 3,
             ]
         ]);
 
         $modelUserPostMain = $dataProvider->getModels();
-        
+        $pagination = $dataProvider->getPagination();
+
         return $this->render('index', [
-            'modelUserPostMain' => $modelUserPostMain,
             'dataProvider' => $dataProvider,
+            'pagination' => $pagination,
+            'modelUserPostMain' => $modelUserPostMain,
         ]);
     }
 
