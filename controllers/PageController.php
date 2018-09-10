@@ -45,29 +45,32 @@ class PageController extends base\BaseHistoryUrlController
                     'business',
                     'user',
                     'userPostMains child' => function($query) {
-                        $query->andOnCondition(['child.is_publish' => true])
-                                ->orderBy(['child.created_at' => SORT_ASC]);
+                        $query->andOnCondition(['child.is_publish' => true]);
                     },
-                    'userVotes' => function($query) {
-                        $query->orderBy(['rating_component_id' => SORT_ASC]);
-                    },
-                    'userVotes.ratingComponent rating_component' => function($query) {
-                        $query->andOnCondition(['rating_component.is_active' => true]);
-                    },
+                    'userVotes',
                     'userPostComments',
                     'userPostComments.user user_comment',
                 ])
                 ->andWhere(['user_post_main.parent_id' => null])
                 ->andWhere(['user_post_main.is_publish' => true])
-                ->asArray()->all();
+                ->orderBy(['user_post_main.created_at' => SORT_DESC])
+                ->distinct()
+                ->asArray();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $modelUserPostMain,
+            'pagination' => [
+                'pageSize' => 3,
+            ]
         ]);
 
+        $modelUserPostMain = $dataProvider->getModels();
+        $pagination = $dataProvider->getPagination();
+
         return $this->render('index', [
-            'modelUserPostMain' => $modelUserPostMain,
             'dataProvider' => $dataProvider,
+            'pagination' => $pagination,
+            'modelUserPostMain' => $modelUserPostMain,
         ]);
     }
 
