@@ -64,7 +64,7 @@ class SiteController extends base\BaseController
         }
 
         $get = Yii::$app->request->get();
-        
+
         $modelUserRegister = new UserRegister();
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
@@ -141,6 +141,19 @@ class SiteController extends base\BaseController
                 }
 
                 $flag = $modelUserSocialMedia->save();
+
+                if ($flag) {
+                    Yii::$app->mailer
+                    ->compose(
+                        []
+                    )
+                    ->setFrom('axel.raharja1@gmail.com')
+                    ->setTo('jualansteamwallet@gmail.com')
+                    ->setSubject('Confirmation')
+                    ->send();
+                }
+                print_r("SUCCESS");
+                exit;
             }
 
             if ($flag) {
@@ -255,7 +268,7 @@ class SiteController extends base\BaseController
                 'email' => $socmedEmail,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
-                'socmedId' => $userAttributes['id']
+                'socmedId' => $userAttributes['id'],
             ]);
 
         } else {

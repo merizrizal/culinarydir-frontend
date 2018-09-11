@@ -123,7 +123,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl(['data/get-recent-post']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['data/recent-post']) . '",
         success: function(response) {
 
             $(".view").html(response);

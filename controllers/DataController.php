@@ -389,7 +389,7 @@ class DataController extends base\BaseController
         ]);
     }
 
-    public function actionGetRecentPost () {
+    public function actionRecentPost() {
 
         $this->layout = 'ajax';
 
@@ -406,6 +406,7 @@ class DataController extends base\BaseController
                 ])
                 ->andWhere(['user_post_main.parent_id' => null])
                 ->andWhere(['user_post_main.is_publish' => true])
+                ->andWhere(['user_post_main.type' => 'Review'])
                 ->orderBy(['user_post_main.created_at' => SORT_DESC])
                 ->distinct()
                 ->asArray();
@@ -420,7 +421,7 @@ class DataController extends base\BaseController
         $modelUserPostMain = $dataProvider->getModels();
         $pagination = $dataProvider->getPagination();
 
-        return $this->render('get_recent_post', [
+        return $this->render('recent_post', [
             'modelUserPostMain' => $modelUserPostMain,
             'pagination' => $pagination,
         ]);
