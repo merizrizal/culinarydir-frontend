@@ -39,30 +39,26 @@ use sycomponent\Tools; ?>
                                         <div class="tab-content box bg-white">
                                             <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                                 <div class="row">
+                                                    <div class="col-sm-10 col-sm-offset-1">
 
-                                                    <?php
-                                                    if (!empty($modelBusinessPromo['image'])): ?>
-
-                                                        <div class="align-center">
+                                                        <?php
+                                                        if (!empty($modelBusinessPromo['image'])): ?>
 
                                                             <?= Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image']); ?>
 
-                                                        </div>
+                                                        <?php
+                                                        else: ?>
 
-                                                    <?php
-                                                    else: ?>
-
-                                                        <div class="col-sm-12">
                                                             <div class="titan-caption">
                                                                 <div class="caption-content">
                                                                     <div class="font-alt titan-title-size-2">Foto tidak tersedia</div>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                    <?php
-                                                    endif; ?>
+                                                        <?php
+                                                        endif; ?>
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
