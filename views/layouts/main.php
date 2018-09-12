@@ -73,7 +73,7 @@ AppAsset::register($this); ?>
         }(document, "script", "facebook-jssdk"));
     ';
 
-    $this->registerJs($jscript); ?>
+    $this->registerJs($jscript, \yii\web\View::POS_END); ?>
 
 <?php $this->endBody() ?>
 </body>
