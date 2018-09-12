@@ -160,7 +160,7 @@ $jspopover = ''; ?>
                     $businessCoordinate = explode(',', $dataBusinessPromo['business']['businessLocation']['coordinate']);
                     $businessLatitude = $businessCoordinate[0];
                     $businessLongitude = $businessCoordinate[1];
-                    $businessPromoDetail[$dataBusinessPromo['business']['id']][] = [
+                    $businessPromoDetail[$dataBusinessPromo['business']['businessLocation']['coordinate']][] = [
                         'businessId' => $dataBusinessPromo['business']['id'],
                         'businessPromoImage' => $businessPromoImage,
                         'businessPromoTitle' => $dataBusinessPromo['title'],
@@ -253,6 +253,19 @@ $jscript = '
                     var businessLatLng = new google.maps.LatLng(businessPromoData[0].businessLatitude, businessPromoData[0].businessLongitude);
                     var businessPromoMarker;
 
+                    var callbackMarkerListener = function(businessPromoMarker, markerIndex) {
+
+                        return function () {
+
+                            mapInfoWindow.setOptions({
+                                content: infoWindowContent,
+                                maxWidth: 800,
+                            });
+
+                            mapInfoWindow.open(mapResult, markers[markerIndex]);
+                        }
+                    }
+
                     var infoWindowContent = "<div class=\"infowindow mt-10\">";
 
                     $.each(businessPromoData, function(key, value) {
@@ -272,47 +285,36 @@ $jscript = '
 
                         markers.push(businessPromoMarker);
 
-                        infoWindowContent += "<div class=\"row mb-10\">" +
-                            "<div class=\"col-sm-6 hidden-xs\">" +
-                            "<img src=\"" + value.businessPromoImage + "\" width=\"100%\">" +
-                            "</div>" +
-                            "<div class=\"col-sm-6 col-xs-12\">" +
-                            "<div class=\"short-desc\">" +
+                        $(".promo-" + businessId).on("click", callbackMarkerListener(businessPromoMarker, markerIndex));
+
+                        infoWindowContent +=
                             "<div class=\"row\">" +
-                            "<div class=\"col-sm-12 col-xs-12\">" +
-                            "<h4 class=\"font-alt m-0\">" + value.businessPromoTitle + "</h4>" +
+                                "<div class=\"col-sm-6 hidden-xs\">" +
+                                    "<img src=\"" + value.businessPromoImage + "\" width=\"100%\">" +
+                                "</div>" +
+                                "<div class=\"col-sm-6 col-xs-12\">" +
+                                    "<div class=\"short-desc\">" +
+                                        "<div class=\"row\">" +
+                                            "<div class=\"col-sm-12 col-xs-12\">" +
+                                                "<h4 class=\"font-alt m-0\">" + value.businessPromoTitle + "</h4>" +
+                                            "</div>" +
+                                        "</div>" +
+                                        "<div class=\"row\">" +
+                                            "<div class=\"col-sm-12 col-xs-12\">" +
+                                                "<h4 class=\"m-0\">" +
+                                                    "<small class=\"mt-10\">" + value.businessName + "</small>" +
+                                                "</h4>" +
+                                                "<hr class=\"divider-w mb-10\">" +
+                                                "<a class=\"text-main pull-right\" href=\"" + value.businessPromoUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
                             "</div>" +
-                            "</div>" +
-                            "<div class=\"row\">" +
-                            "<div class=\"col-sm-12 col-xs-12\">" +
-                            "<h4 class=\"m-0\">" +
-                            "<small class=\"mt-10\">" + value.businessName + "</small>" +
-                            "</h4>" +
-                            "<hr class=\"divider-w mb-10\">" +
-                            "<a class=\"text-main pull-right\" href=\"" + value.businessPromoUrl + "\">View Detail <i class=\"fa fa-angle-double-right\"></i></a>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>";
+                            "<hr class=\"divider-w mt-10 mb-10\">";
                     });
 
                     infoWindowContent += "</div>";
-
-                    var callbackMarkerListener = function(businessPromoMarker, markerIndex) {
-
-                        return function () {
-
-                            mapInfoWindow.setOptions({
-                                content: infoWindowContent,
-                                maxWidth: 800,
-                            });
-
-                            mapInfoWindow.open(mapResult, markers[markerIndex]);
-                        }
-                    }
-
-                    $(".promo-" + businessId).on("click", callbackMarkerListener(businessPromoMarker, markerIndex));
 
                     google.maps.event.addListener(businessPromoMarker, "click", callbackMarkerListener(businessPromoMarker, markerIndex));
 

@@ -212,7 +212,7 @@ $linkPager = LinkPager::widget([
                     $businessCoordinate = explode(',', $dataBusiness['businessLocation']['coordinate']);
                     $businessLatitude = $businessCoordinate[0];
                     $businessLongitude = $businessCoordinate[1];
-                    $businessDetail[$dataBusiness['id']][] = [
+                    $businessDetail[$dataBusiness['businessLocation']['coordinate']][] = [
                         'businessId' => $dataBusiness['id'],
                         'businessImage' => $businessImage,
                         'businessName' => $dataBusiness['name'],
@@ -324,6 +324,19 @@ $jscript = '
                     var businessLatLng = new google.maps.LatLng(businessData[0].businessLatitude, businessData[0].businessLongitude);
                     var businessMarker;
 
+                    var callbackMarkerListener = function(businessMarker, markerIndex) {
+
+                        return function () {
+
+                            mapInfoWindow.setOptions({
+                                content: infoWindowContent,
+                                maxWidth: 800,
+                            });
+
+                            mapInfoWindow.open(mapResult, markers[markerIndex]);
+                        }
+                    }
+
                     var infoWindowContent = "<div class=\"infowindow mt-10\">";
 
                     $.each(businessData, function(key, value) {
@@ -343,55 +356,46 @@ $jscript = '
 
                         markers.push(businessMarker);
 
-                        infoWindowContent += "<div class=\"col-sm-6 hidden-xs\">" +
-                            "<img src=\"" + value.businessImage[0] + "\" width=\"100%\">" +
-                            "</div>" +
-                            "<div class=\"col-sm-6 col-xs-12\">" +
-                            "<div class=\"short-desc\">" +
+                        $(".place-" + value.businessId).on("click", callbackMarkerListener(businessMarker, markerIndex));
+
+                        infoWindowContent +=
                             "<div class=\"row\">" +
-                            "<div class=\"col-sm-12 col-xs-12\">" +
-                            "<h4 class=\"font-alt m-0\">" + value.businessName + "</h4>" +
+                                "<div class=\"col-sm-6 hidden-xs\">" +
+                                    "<img src=\"" + value.businessImage[0] + "\" width=\"100%\">" +
+                                "</div>" +
+                                "<div class=\"col-sm-6 col-xs-12\">" +
+                                    "<div class=\"short-desc\">" +
+                                        "<div class=\"row\">" +
+                                            "<div class=\"col-sm-12 col-xs-12\">" +
+                                                "<h4 class=\"font-alt m-0\">" + value.businessName + "</h4>" +
+                                            "</div>" +
+                                        "</div>" +
+                                        "<div class=\"row\">" +
+                                            "<div class=\"col-sm-12 col-xs-12\">" +
+                                                "<h4 class=\"m-0\">" +
+                                                    "<small class=\"mt-10\">" + trim(value.businessCategory, " / ") + "</small>" +
+                                                "</h4>" +
+                                                "<div class=\"widget\">" +
+                                                    "<ul class=\"icon-list\">" +
+                                                        "<li>" +
+                                                            "<i class=\"aicon aicon-home\"></i> " + value.businessAddress +
+                                                        "</li>" +
+                                                        "<li>" +
+                                                            "<i class=\"aicon aicon-rupiah\"></i> " + value.businessPrice +
+                                                        "</li>" +
+                                                    "</ul>" +
+                                                "</div>" +
+                                                "<hr class=\"divider-w mb-10\">" +
+                                                "<a class=\"text-main pull-right\" href=\"" + value.businessUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
                             "</div>" +
-                            "</div>" +
-                            "<div class=\"row\">" +
-                            "<div class=\"col-sm-12 col-xs-12\">" +
-                            "<h4 class=\"m-0\">" +
-                            "<small class=\"mt-10\">" + trim(value.businessCategory, " / ") + "</small>" +
-                            "</h4>" +
-                            "<div class=\"widget\">" +
-                            "<ul class=\"icon-list\">" +
-                            "<li>" +
-                            "<i class=\"aicon aicon-home\"></i> " + value.businessAddress +
-                            "</li>" +
-                            "<li>" +
-                            "<i class=\"aicon aicon-rupiah\"></i> " + value.businessPrice +
-                            "</li>" +
-                            "</ul>" +
-                            "</div>" +
-                            "<hr class=\"divider-w mb-10\">" +
-                            "<a class=\"text-main pull-right\" href=\"" + value.businessUrl + "\">View Detail <i class=\"fa fa-angle-double-right\"></i></a>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>";
+                            "<hr class=\"divider-w mt-10 mb-10\">";
                     });
 
                     infoWindowContent += "</div>";
-
-                    var callbackMarkerListener = function(businessMarker, markerIndex) {
-
-                        return function () {
-
-                            mapInfoWindow.setOptions({
-                                content: infoWindowContent,
-                                maxWidth: 800,
-                            });
-
-                            mapInfoWindow.open(mapResult, markers[markerIndex]);
-                        }
-                    }
-
-                    $(".place-" + businessId).on("click", callbackMarkerListener(businessMarker, markerIndex));
 
                     google.maps.event.addListener(businessMarker, "click", callbackMarkerListener(businessMarker, markerIndex));
 

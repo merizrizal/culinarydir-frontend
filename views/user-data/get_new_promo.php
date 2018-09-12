@@ -122,37 +122,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$csscript = '
-    .pagination {
-        margin: 0;
-    }
-
-    .pagination > .disabled > span {
-        display: none;
-    }
-
-    .pagination > li > a {
-        color: #000;
-        border: 1px solid #ddd;
-    }
-
-    .pagination > .active > a {
-        z-index: 3;
-        color: #fff;
-        cursor: default;
-        background-color: rgb(229, 38, 38);
-        border-color: rgb(229, 38, 38);
-    }
-
-    .pagination > .active > a:hover {
-        color: #fff;
-        background-color: rgb(229, 38, 38);
-        border-color: rgb(229, 38, 38);
-    }
-';
-
-$this->registerCss($csscript);
-
 frontend\components\GrowlCustom::widget();
 
 $jscript = '
