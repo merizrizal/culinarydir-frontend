@@ -72,7 +72,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                                 </div>
                                                 <div class="col-md-5">
 
-                                                    <?php // echo Html::a('Forgot Password?', ['site/request-password-reset']) ?>
+                                                    <?= Html::a(Yii::t('app', 'Forgot Password') . ' ?', ['site/request-reset-password'], ['class' => 'form-group']) ?>
 
                                                 </div>
                                             </div>
@@ -137,6 +137,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+
 $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
@@ -144,5 +146,11 @@ $jscript = '
         minimumResultsForSearch: -1
     });
 ';
+
+if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
+
+    $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "Reset Berhasil", "' . $message . '", "success");';
+}
+
 $this->registerJs($jscript); ?>
 

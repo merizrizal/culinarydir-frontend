@@ -4,6 +4,8 @@ namespace frontend\controllers;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\UserRegister;
+use frontend\models\RequestResetPassword;
+use frontend\models\ResetPassword;
 use core\models\Person;
 use core\models\UserPerson;
 use core\models\User;
@@ -64,7 +66,7 @@ class SiteController extends base\BaseController
         }
 
         $get = Yii::$app->request->get();
-        
+
         $modelUserRegister = new UserRegister();
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
@@ -216,6 +218,56 @@ class SiteController extends base\BaseController
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestResetPassword()
+    {
+        $model = new RequestResetPassword();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+
+                Yii::$app->session->setFlash('resetSuccess', 'Mohon periksa E-mail Anda untuk informasi lebih lanjut.');
+            } else {
+
+                Yii::$app->session->setFlash('resetError', 'Mohon maaf, permintaan reset password untuk E-mail terkait gagal.');
+            }
+        }
+
+        return $this->render('request_reset_password', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPassword($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+
+            Yii::$app->session->setFlash('resetSuccess', 'Password baru Anda tersimpan.');
+
+            return $this->redirect(['login']);
+        }
+
+        return $this->render('reset_password', [
+            'model' => $model,
+        ]);
     }
 
     public function onAuthSuccess($client)
