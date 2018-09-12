@@ -30,9 +30,9 @@ $linkPager = LinkPager::widget([
 
 <div class="row mt-10 mb-20">
 
-    <div class="font-alt mb-20 align-center visible-xs">Recent Activity</div>
-    <div class="col-sm-6 font-alt mb-20 align-center visible-tab">Recent Activity</div>
-    <div class="col-sm-6 font-alt mb-20 visible-lg visible-md visible-sm">Recent Activity</div>
+    <div class="font-alt mb-20 align-center visible-xs"> <?= Yii::t('app', 'Recent Activity'); ?> </div>
+    <div class="col-sm-6 font-alt mb-20 align-center visible-tab"> <?= Yii::t('app', 'Recent Activity'); ?> </div>
+    <div class="col-sm-6 font-alt mb-20 visible-lg visible-md visible-sm"> <?= Yii::t('app', 'Recent Activity'); ?> </div>
 
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
 
