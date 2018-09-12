@@ -96,23 +96,35 @@ $appComponent = new AppComponent(); ?>
 
                                                         <?php
                                                         $images = [];
-                                                        foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+                                                        if (!empty($modelBusiness['businessImages'])):
+                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                            $images[] = [
-                                                                'title' => '',
-                                                                'href' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
-                                                                'type' => 'image/jpeg',
-                                                                'poster' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
-                                                            ];
-                                                        }
+                                                                $images[] = [
+                                                                    'title' => '',
+                                                                    'href' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
+                                                                    'type' => 'image/jpeg',
+                                                                    'poster' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
+                                                                ];
+                                                            }
 
-                                                        echo dosamigos\gallery\Carousel::widget([
-                                                            'items' => $images,
-                                                            'json' => true,
-                                                            'templateOptions' => ['id'=>'gallery_business'],
-                                                            'clientOptions' => ['container'=>'#gallery_business'],
-                                                            'options' => ['id'=>'gallery_business'],
-                                                        ]); ?>
+                                                            echo dosamigos\gallery\Carousel::widget([
+                                                                'items' => $images,
+                                                                'json' => true,
+                                                                'templateOptions' => ['id'=>'gallery_business'],
+                                                                'clientOptions' => ['container'=>'#gallery_business'],
+                                                                'options' => ['id'=>'gallery_business'],
+                                                            ]);
+
+                                                        else: ?>
+
+                                                            <div class="titan-caption">
+                                                                <div class="caption-content">
+                                                                    <div class="font-alt titan-title-size-2">Saat ini menu belum tersedia </div>
+                                                                </div>
+                                                            </div>
+
+                                                        <?php
+                                                        endif; ?>
 
                                                     </div>
                                                 </div>
@@ -534,24 +546,24 @@ $appComponent = new AppComponent(); ?>
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-sm-8 col-tab-12 col-xs-12">
-                                                                    <h3 class="mt-0 mb-0">
+                                                                    <h4 class="mt-0 mb-0">
 
                                                                         <?= Html::a($dataBusinessPromo['title'], ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
 
-                                                                    </h3>
+                                                                    </h4>
                                                                     <p class="description mb-10">
 
                                                                         <?= $dataBusinessPromo['short_description'] ?>
 
                                                                     </p>
-                                                                    <h4>
+                                                                    <p>
 
                                                                         <?= 'Berlaku ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium') ?>
 
-                                                                    </h4>
+                                                                    </p>
                                                                     <p>
 
-                                                                        <?= Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
+                                                                        <?= Html::a('<span class="text-red">' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
 
                                                                     </p>
                                                                 </div>
