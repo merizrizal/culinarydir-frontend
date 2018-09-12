@@ -95,10 +95,10 @@ $linkPager = LinkPager::widget([
                                     <div class="col-sm-12 col-xs-12">
 
                                         <?php
-                                        $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', 'no-image-available.jpg', 360, 135.283));
+                                        $img = Html::img(Yii::$app->urlManager->baseUrl . '/media/img/360x135.283no-image-available.jpg', ['class' => 'img-responsive img-component']);
 
                                         if (!empty($dataUserPostMain['userPostMains'][0]['image'])) {
-                                            $img= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['userPostMains'][0]['image'], 360, 135.283));
+                                            $img = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['userPostMains'][0]['image'], 360, 135.283));
                                         } ?>
 
                                         <?= Html::a($img, Yii::$app->urlManager->createUrl(['page/review', 'id' => $dataUserPostMain['id']])); ?>

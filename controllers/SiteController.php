@@ -143,13 +143,19 @@ class SiteController extends base\BaseController
                 $flag = $modelUserSocialMedia->save();
 
                 if ($flag) {
-                    Yii::$app->mailer
-                    ->compose(
-                        []
+                    Yii::$app->mailer->compose([
+                            'html' => 'registerConfirmation-html',
+                            'text' => 'registerConfirmation-text'
+                        ],
+                        [
+                            'email' => $post['UserRegister']['email'],
+                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                            'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
+                        ]
                     )
-                    ->setFrom('axel.raharja1@gmail.com')
-                    ->setTo('jualansteamwallet@gmail.com')
-                    ->setSubject('Confirmation')
+                    ->setFrom('asikmakan.bandung@gmail.com')
+                    ->setTo($post['UserRegister']['email'])
+                    ->setSubject('Welcome to ' . Yii::$app->name)
                     ->send();
                 }
                 print_r("SUCCESS");
