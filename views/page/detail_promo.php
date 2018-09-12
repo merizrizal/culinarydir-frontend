@@ -11,7 +11,7 @@ use sycomponent\Tools; ?>
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> Back', [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back'), [
                         'page/detail',
                         'id' => $modelBusinessPromo['business_id'],
                         '#' => 'special',
