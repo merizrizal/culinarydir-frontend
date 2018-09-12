@@ -43,9 +43,9 @@ use sycomponent\Tools; ?>
                                                     <?php
                                                     if (!empty($modelBusinessPromo['image'])): ?>
 
-                                                        <div class="col-sm-9 col-sm-offset-3">
+                                                        <div class="align-center">
 
-                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $modelBusinessPromo['image'], 490, 276), ['class' => 'img-responsive img-component']); ?>
+                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image']); ?>
 
                                                         </div>
 

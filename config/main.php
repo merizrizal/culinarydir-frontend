@@ -32,13 +32,13 @@ return [
             'clients' => [
                 'google' => [
                     'class' => yii\authclient\clients\Google::class,
-                    'clientId' => '533913805654-ave8bn06l80mf1boijhihhtga4u1dqcp.apps.googleusercontent.com',
-                    'clientSecret' => '0l3v0kRkFXWaj9sAnJfndhok',
+                    'clientId' => $params['google']['clientId'],
+                    'clientSecret' => $params['google']['clientSecret'],
                 ],
                 'facebook' => [
                     'class' => yii\authclient\clients\Facebook::class,
-                    'clientId' => '1889323104521718',
-                    'clientSecret' => 'a2c4811f5dc22e291030257ba107d3cb',
+                    'clientId' => $params['facebook']['clientId'],
+                    'clientSecret' => $params['facebook']['clientSecret'],
                     'attributeNames' => ['name', 'email', 'first_name', 'last_name', 'address'],
                 ],
             ],
