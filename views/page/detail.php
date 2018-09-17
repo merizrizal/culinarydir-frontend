@@ -99,11 +99,13 @@ $appComponent = new AppComponent(); ?>
                                                         if (!empty($modelBusiness['businessImages'])):
                                                             foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
 
+                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+
                                                                 $images[] = [
                                                                     'title' => '',
-                                                                    'href' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
+                                                                    'href' => $href,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'],
+                                                                    'poster' => $href,
                                                                 ];
                                                             }
 
@@ -119,7 +121,7 @@ $appComponent = new AppComponent(); ?>
 
                                                             <div class="titan-caption">
                                                                 <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2">Saat ini menu belum tersedia </div>
+                                                                    <div class="font-alt titan-title-size-2">Saat ini foto belum tersedia </div>
                                                                 </div>
                                                             </div>
 
@@ -138,11 +140,13 @@ $appComponent = new AppComponent(); ?>
                                                         if (!empty($modelBusiness['businessProducts'])):
                                                             foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
 
+                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+
                                                                 $imagesMenu[] = [
                                                                     'title' => '',
-                                                                    'href' => Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'],
+                                                                    'href' => $href,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'],
+                                                                    'poster' => $href,
                                                                 ];
                                                             }
 
@@ -541,7 +545,16 @@ $appComponent = new AppComponent(); ?>
                                                                 <div class="col-sm-4 col-tab-12 col-xs-12">
                                                                     <a href="<?= Yii::$app->urlManager->createUrl(['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>">
 
-                                                                        <?= Html::img(!empty($dataBusinessPromo['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']); ?>
+                                                                        <?php
+                                                                        $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                                                        if (!empty($dataBusinessPromo['image'])) {
+
+                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
+
+                                                                        }
+
+                                                                        echo Html::img($img); ?>
 
                                                                     </a>
                                                                 </div>
