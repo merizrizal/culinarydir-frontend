@@ -62,7 +62,16 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
                                 <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']) ?>">
 
-                                    <?= Html::img(!empty($dataBusinessPromo['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']); ?>
+                                    <?php
+                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                    if (!empty($dataBusinessPromo['image'])) {
+
+                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
+
+                                    }
+
+                                    echo Html::img($img); ?>
 
                                 </a>
                             </div>

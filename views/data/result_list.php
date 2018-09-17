@@ -93,7 +93,15 @@ $jspopover = ''; ?>
                                                 <?php
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImages) {
 
-                                                    echo Html::img(!empty($dataBusinessImages['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImages['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']);
+                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                                    if (!empty($dataBusinessImages['image'])) {
+
+                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImages['image'], 490, 276);
+
+                                                    }
+
+                                                    echo Html::img($img);
 
                                                 } ?>
 
@@ -199,7 +207,13 @@ $jspopover = ''; ?>
 
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                    $href = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                                    if (!empty($dataBusinessImage['image'])) {
+
+                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+
+                                                    }
 
                                                     $images[] = [
                                                             'title' => '',
@@ -220,7 +234,15 @@ $jspopover = ''; ?>
 
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                    echo Html::img(!empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Html::img(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']));
+                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                                    if (!empty($dataBusinessImage['image'])) {
+
+                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+
+                                                    }
+
+                                                    echo Html::img($img);
                                                 }
                                             } ?>
 
@@ -231,7 +253,7 @@ $jspopover = ''; ?>
 
                                         if (!empty($dataBusiness['userLoves'][0])) {
                                             $classLove = 'fas fa-heart';
-                                        }?>
+                                        } ?>
 
                                         <div class="col-tab-5 col visible-tab text-center">
                                             <div class="love love-<?= $dataBusiness['id'] ?>">

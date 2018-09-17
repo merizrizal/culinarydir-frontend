@@ -81,7 +81,13 @@ $linkPager = LinkPager::widget([
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $href = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+                                                $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+
+                                                if (!empty($dataBusinessImage['image'])) {
+
+                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+
+                                                }
 
                                                 $images[] = [
                                                     'title' => '',
@@ -104,7 +110,13 @@ $linkPager = LinkPager::widget([
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $src = !empty($dataBusinessImage['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                                $src = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                                if (!empty($dataBusinessImage['image'])) {
+
+                                                    $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+
+                                                }
 
                                                 echo Html::img($src, ['class' => 'img-responsive img-component']);
 
@@ -310,7 +322,7 @@ $jscript = '
             mapResult = new google.maps.Map(mapResultContainer, mapOptions);
             mapInfoWindow = new google.maps.InfoWindow();
 
-            if(mapObject) {
+            if (mapObject) {
 
                 var mapInfoWindow = new google.maps.InfoWindow();
                 var mapObject = mapObject.replace();
