@@ -31,7 +31,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                     <h4 class="font-alt">Masuk</h4>
                                     <hr class="divider-w mb-20">
 
-                                    <?php $form = ActiveForm::begin([
+                                    <?php
+                                    $form = ActiveForm::begin([
                                         'id' => 'login-form',
                                         'action' => 'login',
                                         'options' => [
@@ -89,7 +90,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
 
                                                 <div class="mt-10">
 
-                                                    <?php $authAuthChoice = AuthChoice::begin([
+                                                    <?php
+                                                    $authAuthChoice = AuthChoice::begin([
                                                         'baseAuthUrl' => ['site/auth'],
                                                         'popupMode' => false,
                                                     ]);
