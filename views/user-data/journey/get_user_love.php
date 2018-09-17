@@ -62,7 +62,16 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
                                 <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserLove['business']['id']]) ?>">
 
-                                    <?= Html::img(!empty($dataUserLove['business']['businessImages'][0]['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 347.333, 210.283) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg', ['class' => 'img-responsive img-component']); ?>
+                                    <?php
+                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+
+                                    if (!empty($dataUserLove['business']['businessImages'][0]['image'])) {
+
+                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 347.333, 210.283);
+
+                                    }
+
+                                    echo Html::img($img); ?>
 
                                 </a>
                             </div>

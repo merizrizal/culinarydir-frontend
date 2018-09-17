@@ -82,7 +82,16 @@ $jspopover = ''; ?>
                                     <div class="widget-posts-image">
                                         <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>">
 
-                                            <?= Html::img(!empty($dataUserPostMain['business']['businessImages'][0]['image']) ? Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 60, 60) : Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-60-60.jpg', ['class' => 'img-responsive img-rounded img-place-thumb img-component']); ?>
+                                            <?php
+                                            $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-60-60.jpg';
+
+                                            if (!empty($dataUserPostMain['business']['businessImages'][0]['image'])) {
+
+                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 60, 60);
+
+                                            }
+
+                                            echo Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']); ?>
 
                                         </a>
                                     </div>
