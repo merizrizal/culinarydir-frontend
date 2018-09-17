@@ -413,9 +413,6 @@ class DataController extends base\BaseController
 
         $dataProvider = new ActiveDataProvider([
             'query' => $modelUserPostMain,
-            'pagination' => [
-                'pageSize' => 3,
-            ]
         ]);
 
         $modelUserPostMain = $dataProvider->getModels();
