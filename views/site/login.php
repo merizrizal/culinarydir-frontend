@@ -78,16 +78,20 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
 
-                                        <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
+                                                <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
 
-                                        <hr class="divider-w mt-20 mb-10">
+                                                <hr class="divider-w mt-20 mb-10">
 
-                                        <div class="text-center">
-                                            <h4>
-                                                <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
-                                            </h4>
+                                                <div class="text-center">
+                                                    <h4>
+                                                        <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
+                                                    </h4>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -104,12 +108,9 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
 </div>
 
 <?php
-$jscript = '
-    $("#person-city_id").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'City') . '",
-        minimumResultsForSearch: -1
-    });
-';
-$this->registerJs($jscript); ?>
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
+
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
+
+$this->registerJs(Yii::$app->params['checkbox-radio-script']()); ?>
 

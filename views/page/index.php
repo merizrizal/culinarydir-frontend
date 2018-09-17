@@ -27,23 +27,6 @@ $this->registerMetaTag([
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
 
-                        <!--<div class="overlay-coming-soon">
-
-                            <div class="titan-caption">
-                                <div class="caption-content">
-                                    <div class="font-alt mb-30 titan-title-size-3">Asikmakan</div>
-                                    <div class="font-alt mb-30 titan-title-size-4">Coming Soon</div>
-                                    <div class="font-alt">Website masih dalam tahap development</div>
-                                    <div class="font-alt mt-10">
-                                        <a class="section-scroll text-center text-white" href="#footer">
-                                            <i class="fa fa-angle-double-down fa-4x animate-bounce"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>-->
-
                         <?php
                         $appComponent = new AppComponent();
                         echo $appComponent->search(); ?>
@@ -51,7 +34,7 @@ $this->registerMetaTag([
                     </div>
                 </div>
             </div>
-            <div class="row mt-40">				
+            <div class="row mt-40">
                 <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
                     <a class="section-scroll text-center text-white" href="#footer">
                         <i class="fa fa-angle-double-down fa-4x animate-bounce"></i>
@@ -101,18 +84,3 @@ $this->registerMetaTag([
 </section>
 
 <?= $appComponent->searchJsComponent(); ?>
-
-<?php
-$csscript = '
-    .overlay-coming-soon {
-        z-index: 1010;
-        background: rgba(100, 100, 100, 0.7);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-';
-
-$this->registerCss($csscript); ?>
