@@ -31,7 +31,8 @@ $this->registerMetaTag([
                                         <small>Silakan masukkan email Anda. Link untuk mereset password akan dikirim ke email Anda.</small>
                                     </h4>
 
-                                    <?php $form = ActiveForm::begin([
+                                    <?php
+                                    $form = ActiveForm::begin([
                                         'id' => 'request-reset-password-form',
                                         'options' => [
                                         ],

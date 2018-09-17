@@ -10,7 +10,8 @@ use kartik\file\FileInput; ?>
             <div class="overlay" style="display: none;"></div>
             <div class="loading-img" style="display: none"></div>
 
-            <?php $form = ActiveForm::begin([
+            <?php
+            $form = ActiveForm::begin([
                 'id' => 'post-photo-form',
                 'action' => ['action/submit-photo'],
                 'fieldConfig' => [

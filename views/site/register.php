@@ -56,7 +56,8 @@ if (!empty($getFlashMessage)) {
                                     <h4 class="font-alt">Daftar</h4>
                                     <hr class="divider-w mb-20">
 
-                                    <?php $form = ActiveForm::begin([
+                                    <?php
+                                    $form = ActiveForm::begin([
                                         'id' => 'register-form',
                                         'action' => 'register',
                                         'options' => [

@@ -340,7 +340,8 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                     <input type="text" class="form-control" placeholder="Bagikan pengalamanmu disini" />
                 </div>
 
-                <?php $form = ActiveForm::begin([
+                <?php
+                $form = ActiveForm::begin([
                     'id' => 'review-form',
                     'action' => ['action/submit-review'],
                     'enableClientValidation' => false,

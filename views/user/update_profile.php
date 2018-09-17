@@ -62,7 +62,8 @@ if (!empty($getFlashMessage)) {
                                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <div class="widget">
 
-                                        <?php $form = ActiveForm::begin([
+                                        <?php
+                                        $form = ActiveForm::begin([
                                             'id' => 'update-profile-form',
                                             'action' => ['user/update-profile'],
                                             'options' => ['enctype' => 'multipart/form-data'],
