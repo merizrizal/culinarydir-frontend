@@ -80,6 +80,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                     </div>
 
                                     <div class="row">
+<<<<<<< HEAD
                                         <div class="form-group col-md-12">
 
                                             <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
@@ -120,6 +121,20 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                                 <h4>
                                                     <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
                                                 </h4>
+=======
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+
+                                                <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
+
+                                                <hr class="divider-w mt-20 mb-10">
+
+                                                <div class="text-center">
+                                                    <h4>
+                                                        <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
+                                                    </h4>
+                                                </div>
+>>>>>>> 2.0.0
                                             </div>
                                         </div>
                                     </div>
