@@ -603,7 +603,6 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/i
 
 $jscript = '
     var prevReview;
-    var myUserPostMainId;
 
     $("#write-review-container").hide();
     $("#close-review-container").hide();
@@ -820,7 +819,7 @@ $jscript = '
         });
     });
 
-    myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
+    var myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
 
     $("form#review-form").on("beforeSubmit", function(event) {
 
@@ -909,8 +908,6 @@ $jscript = '
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
 
-                    myUserPostMainId = response.userPostMain.id;
-
                     $("#edit-review-container").find(".my-total-comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("my-total-comments-review");
 
                     $("#form-review-uploaded-photo .review-post-gallery").magnificPopup({
@@ -959,11 +956,11 @@ $jscript = '
 
                                 var businessName = $(".business-name").text().trim();
                                 var url = window.location.href;
-
-                                    url = url.replace("detail", "review").replace($("#business_id").val(), myUserPostMainId);
                                 var title = "Rating " + newOverall + " untuk " + businessName;
                                 var description = response.userPostMain.text;
                                 var image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
+
+                                url = url.replace("detail", "review").replace($("#business_id").val(), response.userPostMain.id);
 
                                 FB.ui({
                                     method: "share_open_graph",

@@ -146,11 +146,11 @@ $jscript = '
 
             var businessName = $(".business-name").text().trim();
             var url = window.location.href;
-
-                url = url.replace("detail", "photo").replace($("#business_id").val(), photoId);
             var title = "Foto untuk " + businessName;
             var description = thisObj.find(".photo-caption").text();
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
+
+            url = url.replace("detail", "photo").replace($("#business_id").val(), photoId);
 
             FB.ui({
                 method: "share_open_graph",

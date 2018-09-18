@@ -556,11 +556,11 @@ $jscript = '
             var businessName = $(".business-name").text().trim();
             var rating = thisObj.parent().find(".rating").text().trim();
             var url = window.location.href;
-
-                url = url.replace("detail", "review").replace($("#business_id").val(), thisObj.val());
             var title = "Rating " + rating + " untuk " + businessName;
             var description = thisObj.parent().find(".review-description").text();
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
+
+            url = url.replace("detail", "review").replace($("#business_id").val(), thisObj.val());
 
             FB.ui({
                 method: "share_open_graph",

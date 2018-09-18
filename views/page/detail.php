@@ -16,30 +16,14 @@ $this->registerMetaTag([
     'content' => 'asik, makan, kuliner, bandung, jakarta'
 ]);
 
-$this->registerMetaTag([
-    'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']])
-]);
+$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
+$ogTitle = (!empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan');
+$ogDescription = (!empty($modelBusiness['about']) ? $modelBusiness['about'] : 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan');
+$ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
 
-$this->registerMetaTag([
-    'property' => 'og:type',
-    'content' => 'website'
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:title',
-    'content' => !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan'
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:description',
-    'content' => !empty($modelBusiness['about']) ? $modelBusiness['about'] : 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:image',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelBusiness['businessImages'][0]['image'], 490, 276))
-]);
+if (!empty($modelBusiness['businessImages'][0]['image'])) {
+    $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelBusiness['businessImages'][0]['image'], 490, 276));
+}
 
 $appComponent = new AppComponent(); ?>
 
@@ -984,13 +968,23 @@ $jscript = '
 
     $(".share-feature").on("click", function() {
 
-        url = window.location.href;
-
         FB.ui({
-            method: "share",
-            href: url,
-        }, function(response){
+            method: "share_open_graph",
+            action_type: "og.likes",
+            action_properties: JSON.stringify({
+                    object: {
+                        "og:url": "' . $ogUrl . '",
+                        "og:title": "' . $ogTitle . '",
+                        "og:description": "' . $ogDescription . '",
+                        "og:image": "' . $ogImage . '"
+                    }
+            })
+        },
+        function (response) {
+            if (response && !response.error_message) {
 
+                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+            }
         });
 
         return false;

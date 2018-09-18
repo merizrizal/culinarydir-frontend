@@ -235,11 +235,11 @@ $jscript = '
 
                                 var businessName = $(".business-name").text().trim();
                                 var url = window.location.href;
-
-                                    url = url.replace("detail", "photo").replace($("#business_id").val(), response.userPostMainPhoto.id);
                                 var title = "Foto untuk " + businessName;
                                 var description = response.userPostMainPhoto.text;
                                 var image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto.image;
+
+                                url = url.replace("detail", "photo").replace($("#business_id").val(), response.userPostMainPhoto.id);
 
                                 FB.ui({
                                     method: "share_open_graph",
