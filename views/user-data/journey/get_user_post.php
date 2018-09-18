@@ -142,7 +142,8 @@ $jspopover = ''; ?>
                                         <div class="arrow"></div>
                                         <div class="popover-body popover-content">
 
-                                            <?php $form = ActiveForm::begin([
+                                            <?php
+                                            $form = ActiveForm::begin([
                                                 'id' => 'rating-popover-form-' . $dataUserPostMain['id'],
                                                 'action' => null,
                                                 'fieldConfig' => [

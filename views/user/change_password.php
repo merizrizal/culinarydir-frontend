@@ -51,7 +51,8 @@ if (!empty($getFlashMessage)) {
                                     <h4 class="font-alt">Change Password</h4>
                                     <hr class="divider-w mb-20">
 
-                                    <?php $form = ActiveForm::begin([
+                                    <?php
+                                    $form = ActiveForm::begin([
                                         'id' => 'change-password-form',
                                         'action' => ['user/change-password'],
                                         'fieldConfig' => [

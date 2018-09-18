@@ -31,7 +31,8 @@ $this->registerMetaTag([
                                         <small>Silakan masukkan password baru Anda.</small>
                                     </h4>
 
-                                    <?php $form = ActiveForm::begin([
+                                    <?php
+                                    $form = ActiveForm::begin([
                                         'id' => 'reset-password-form',
                                         'options' => [
                                         ],
