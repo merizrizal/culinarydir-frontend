@@ -145,11 +145,7 @@ class SiteController extends base\BaseController
                 $flag = $modelUserSocialMedia->save();
 
                 if ($flag) {
-                    Yii::$app->mailer->compose([
-                            'html' => 'registerConfirmation-html',
-                            'text' => 'registerConfirmation-text'
-                        ],
-                        [
+                    Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
                             'email' => $post['UserRegister']['email'],
                             'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
                             'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
@@ -160,8 +156,26 @@ class SiteController extends base\BaseController
                     ->setSubject('Welcome to ' . Yii::$app->name)
                     ->send();
                 }
-                print_r("SUCCESS");
-                exit;
+
+            } else {
+
+                if ($flag) {
+                    $modelUserRegister->not_active = true;
+                    $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
+
+                    $flag = $modelUserRegister->save();
+
+                    Yii::$app->mailer->compose(['html' => 'account_activation'], [
+                            'email' => $post['UserRegister']['email'],
+                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                            'user' => $modelUserRegister
+                        ]
+                    )
+                    ->setFrom('asikmakan.bandung@gmail.com')
+                    ->setTo($post['UserRegister']['email'])
+                    ->setSubject(Yii::$app->name . ' Account Activation')
+                    ->send();
+                }
             }
 
             if ($flag) {
@@ -385,5 +399,22 @@ class SiteController extends base\BaseController
                 ]);
             }
         }
+    }
+
+    public function actionActivateAccount($token) {
+
+        $modelUser = User::find()
+            ->andWhere(['account_activation_token' => $token])
+            ->andWhere(['not_active' => true])
+            ->one();
+
+        if (!empty($modelUser)) {
+
+            Yii::$app->db->createCommand()
+                    ->update('user', ['not_active' => false], "account_activation_token = '" . $token . "'")
+                    ->execute();
+        }
+
+        return $this->redirect(['login']);
     }
 }
