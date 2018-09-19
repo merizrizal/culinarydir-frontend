@@ -1,9 +1,11 @@
 <?php
 use yii\helpers\Html;
 use yii\web\JsExpression;
-use yii\helpers\BaseStringHelper;
+use yii\helpers\StringHelper;
 use sycomponent\Tools;
 use kartik\rating\StarRating; ?>
+
+<?= Html::hiddenInput('user_post_main_id', $model['id'], ['class' => 'user-post-main-id']) ?>
 
 <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
     <div class="recent-post">
@@ -38,7 +40,7 @@ use kartik\rating\StarRating; ?>
                 </div>
                 <div class="post-thumbnail">
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-sm-12 col-xs-12" id="user-<?= $model['id']; ?>-photos-review">
 
                             <?php
                             $img = Html::img(Yii::$app->urlManager->baseUrl . '/media/img/360x135.283no-image-available.jpg', ['class' => 'img-responsive img-component']);
@@ -74,9 +76,9 @@ use kartik\rating\StarRating; ?>
                             </ul>
                         </div>
                     </div>
-                    <div class="row business-name">
+                    <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
-                            <h5 class="font-alt m-0">
+                            <h5 class="font-alt m-0 business-name">
 
                                 <?= Html::a($model['business']['name'], Yii::$app->urlManager->createUrl(['page/detail', 'id' => $model['business']['id']])); ?>
 
@@ -123,8 +125,7 @@ use kartik\rating\StarRating; ?>
                 <div class="post-entry">
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
-                            <?php //stringhelper aja ?>
-                            <?= BaseStringHelper::truncate($model['text'], 85, '. . .'); ?>
+                            <div class="review-description"><?= StringHelper::truncate($model['text'], 85, '. . .'); ?></div>
 
                             <?= (!empty($model['text']) ? '<br>' : '') . Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]) ?>
 
@@ -135,3 +136,47 @@ use kartik\rating\StarRating; ?>
         </div>
     </div>
 </div>
+
+<?php
+frontend\components\RatingColor::widget();
+
+$jscript = '
+    $(".user-post-main-id").each(function() {
+        var thisObj = $(this);
+
+        ratingColor($(".rating"), "span");
+
+        $(".share-feature-" + thisObj.val() + "-trigger").on("click", function() {
+
+            var businessName = thisObj.parent().find(".business-name").text().trim();
+            var rating = thisObj.parent().find(".rating").text().trim();
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
+            var title = "Rating " + rating + " untuk " + businessName;
+            var description = thisObj.parent().find(".review-description").text();
+            var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
+
+            FB.ui({
+                method: "share_open_graph",
+                action_type: "og.likes",
+                action_properties: JSON.stringify({
+                    object: {
+                        "og:url": url,
+                        "og:title": title,
+                        "og:description": description,
+                        "og:image": image
+                    }
+                })
+            },
+            function (response) {
+                if (response && !response.error_message) {
+
+                    messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+                }
+            });
+
+            return false;
+        });
+    });
+';
+
+$this->registerJs($jscript); ?>
