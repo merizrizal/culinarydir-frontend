@@ -102,7 +102,23 @@ if (!empty($modelUserPostMain)):
         $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
 
         ksort($ratingComponent);
-        krsort($userReviewComment); ?>
+        krsort($userReviewComment);
+
+        $layoutUser = '
+            <div class="widget-posts-image">
+                <a href="' . Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '">
+
+                    ' . Html::img($imgBusinessProfile, ['class' => 'img-responsive img-rounded img-place-thumb img-component']) . '
+
+                </a>
+            </div>
+
+            <div class="widget-posts-body">
+                ' . Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
+                <br>
+                <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
+            </div>
+        ' ?>
 
             <div class="review-post">
 
@@ -111,36 +127,16 @@ if (!empty($modelUserPostMain)):
                 <div class="row mb-10">
                     <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                         <div class="widget img-place">
-                            <div class="widget-posts-image">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>">
 
-                                    <?= Html::img($imgBusinessProfile, ['class' => 'img-responsive img-rounded img-place-thumb img-component']); ?>
+                            <?= $layoutUser ?>
 
-                                </a>
-                            </div>
-
-                            <div class="widget-posts-body">
-                                <?= Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]); ?>
-                                <br>
-                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xs-9 visible-xs">
                         <div class="widget">
-                            <div class="widget-posts-image">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>">
 
-                                    <?= Html::img($imgBusinessProfile, ['class' => 'img-responsive img-rounded img-place-thumb img-component']); ?>
+                            <?= $layoutUser ?>
 
-                                </a>
-                            </div>
-
-                            <div class="widget-posts-body">
-                                <?= Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]); ?>
-                                <br>
-                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-3">

@@ -102,7 +102,23 @@ if (!empty($modelUserPostMain)):
         $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
 
         ksort($ratingComponent);
-        krsort($userReviewComment); ?>
+        krsort($userReviewComment);
+
+        $layoutUser = '
+            <div class="widget-posts-image">
+                <a href="' . Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '">
+
+                    ' . Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
+
+                </a>
+            </div>
+
+            <div class="widget-posts-body">
+                ' . Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
+                <br>
+                <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
+            </div>
+        '; ?>
 
             <div class="review-post">
 
@@ -111,36 +127,16 @@ if (!empty($modelUserPostMain)):
                 <div class="row mb-10">
                     <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                         <div class="widget">
-                            <div class="widget-posts-image">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>">
 
-                                    <?= Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                            <?= $layoutUser ?>
 
-                                </a>
-                            </div>
-
-                            <div class="widget-posts-body">
-                                <?= Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]); ?>
-                                <br>
-                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xs-9 visible-xs">
                         <div class="widget">
-                            <div class="widget-posts-image">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>">
 
-                                    <?= Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                            <?= $layoutUser ?>
 
-                                </a>
-                            </div>
-
-                            <div class="widget-posts-body">
-                                <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
-                                <br>
-                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-3">
@@ -457,7 +453,7 @@ $jscript = '
         });
 
         thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review-container").hide();
+        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
 
         thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
@@ -520,7 +516,7 @@ $jscript = '
 
         if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
             thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function() {
-                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review-container").toggle(500);
+                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
 
                 return false;
             });
