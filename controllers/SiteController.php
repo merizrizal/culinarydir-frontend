@@ -71,30 +71,13 @@ class SiteController extends base\BaseController
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
 
-        if (!empty($get['socmed'])) {
+        if ($modelUserRegister->load($post = Yii::$app->request->post())) {
 
-            $modelUserRegister->email = $get['email'];
-            $modelPerson->first_name = $get['first_name'];
-            $modelPerson->last_name = $get['last_name'];
+            if (Yii::$app->request->isAjax) {
 
-            if ($get['socmed'] === 'Facebook') {
-
-                $modelUserSocialMedia->facebook_id = $get['socmedId'];
-
-            } else if ($get['socmed'] === 'Google') {
-
-                $modelUserSocialMedia->google_id = $get['socmedId'];
-
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($modelUserRegister);
             }
-        }
-
-        if (Yii::$app->request->isAjax && $modelUserRegister->load(Yii::$app->request->post())) {
-
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($modelUserRegister);
-        }
-
-        if (!empty(($post = Yii::$app->request->post()))) {
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
@@ -128,53 +111,58 @@ class SiteController extends base\BaseController
                 $flag = $modelUserPerson->save();
             }
 
-            if ($flag && (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id']))) {
+            if ($flag) {
 
-                $modelUserSocialMedia->user_id = $modelUserRegister->id;
+                if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
 
-                if (!empty($post['UserSocialMedia']['google_id'])) {
+                    $modelUserSocialMedia->user_id = $modelUserRegister->id;
 
-                    $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
+                    if (!empty($post['UserSocialMedia']['google_id'])) {
 
-                } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
+                        $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
 
-                    $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
+                    } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
 
-                }
+                        $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
 
-                $flag = $modelUserSocialMedia->save();
+                    }
 
-                if ($flag) {
-                    Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
-                            'email' => $post['UserRegister']['email'],
-                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                            'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
-                        ]
-                    )
-                    ->setFrom('asikmakan.bandung@gmail.com')
-                    ->setTo($post['UserRegister']['email'])
-                    ->setSubject('Welcome to ' . Yii::$app->name)
-                    ->send();
-                }
+                    $flag = $modelUserSocialMedia->save();
 
-            } else {
+                    if ($flag) {
 
-                if ($flag) {
+                        Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
+                                'email' => $post['UserRegister']['email'],
+                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
+                            ]
+                        )
+                        ->setFrom(Yii::$app->params['supportEmail'])
+                        ->setTo($post['UserRegister']['email'])
+                        ->setSubject('Welcome to ' . Yii::$app->name)
+                        ->send();
+                    }
+
+                } else {
+
                     $modelUserRegister->not_active = true;
                     $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
 
                     $flag = $modelUserRegister->save();
 
-                    Yii::$app->mailer->compose(['html' => 'account_activation'], [
-                            'email' => $post['UserRegister']['email'],
-                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                            'user' => $modelUserRegister
-                        ]
-                    )
-                    ->setFrom('asikmakan.bandung@gmail.com')
-                    ->setTo($post['UserRegister']['email'])
-                    ->setSubject(Yii::$app->name . ' Account Activation')
-                    ->send();
+                    if ($flag) {
+
+                        Yii::$app->mailer->compose(['html' => 'account_activation'], [
+                                'email' => $post['UserRegister']['email'],
+                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'user' => $modelUserRegister
+                            ]
+                        )
+                        ->setFrom(Yii::$app->params['supportEmail'])
+                        ->setTo($post['UserRegister']['email'])
+                        ->setSubject(Yii::$app->name . ' Account Activation')
+                        ->send();
+                    }
                 }
             }
 
@@ -204,6 +192,23 @@ class SiteController extends base\BaseController
                     'message' => 'Gagal mendaftar di Asikmakan',
                     'title' => 'Gagal Mendaftar',
                 ]);
+            }
+        }
+
+        if (!empty($get['socmed'])) {
+
+            $modelUserRegister->email = $get['email'];
+            $modelPerson->first_name = $get['first_name'];
+            $modelPerson->last_name = $get['last_name'];
+
+            if ($get['socmed'] === 'Facebook') {
+
+                $modelUserSocialMedia->facebook_id = $get['socmedId'];
+
+            } else if ($get['socmed'] === 'Google') {
+
+                $modelUserSocialMedia->google_id = $get['socmedId'];
+
             }
         }
 
