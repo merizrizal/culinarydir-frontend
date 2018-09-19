@@ -55,7 +55,7 @@ $linkPager = LinkPager::widget([
             <?php
             if(!empty($modelUserPostMainPhoto)):
 
-                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto):?>
+                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): ?>
 
                     <li class="work-item">
                         <div class="gallery-item place-gallery">

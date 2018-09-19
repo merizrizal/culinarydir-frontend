@@ -154,18 +154,21 @@ class UserDataController extends base\BaseController
                             'business_image.type' => 'Profile',
                             'business_image.is_primary' => true]);
                     },
+                    'user',
                     'userPostMains child' => function($query) {
                         $query->andOnCondition(['child.is_publish' => true]);
                     },
-                    'user',
                     'userVotes',
-                    'userVotes.ratingComponent',
-                    'userPostComments',
-                    'userPostComments.user user_comment',
+                    'userVotes.ratingComponent rating_component' => function($query) {
+                        $query->andOnCondition(['rating_component.is_active' => true]);
+                    },
                     'userPostLoves' => function($query) {
                         $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
                     },
+                    'userPostComments',
+                    'userPostComments.user user_comment',
                 ])
+                ->andWhere(['user_post_main.parent_id' => null])
                 ->andWhere(['user_post_main.type' => 'Review'])
                 ->andWhere(['user_post_main.is_publish' => true]);
 
@@ -185,23 +188,20 @@ class UserDataController extends base\BaseController
             'query' => $modelUserPostMain,
         ]);
 
-        $modelPost = new Post();
-
         $modelUserPostMain = $provider->getModels();
         $pagination = $provider->getPagination();
 
-        $perpage = $pagination->pageSize;
+        $pageSize = $pagination->pageSize;
         $totalCount = $pagination->totalCount;
         $offset = $pagination->offset;
 
         $startItem = !empty($modelUserPostMain) ? $offset + 1 : 0;
-        $endItem = min(($offset + $perpage), $totalCount);
+        $endItem = min(($offset + $pageSize), $totalCount);
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('journey/get_user_post', [
             'modelUserPostMain' => $modelUserPostMain,
-            'modelPost' => $modelPost,
             'pagination' => $pagination,
             'startItem' => $startItem,
             'endItem' => $endItem,
