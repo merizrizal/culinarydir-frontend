@@ -394,33 +394,33 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
-                ->joinWith([
-                    'business',
-                    'user',
-                    'userPostMains child' => function($query) {
-                        $query->andOnCondition(['child.is_publish' => true]);
-                    },
-                    'userVotes',
-                    'userPostComments',
-                    'userPostComments.user user_comment',
-                ])
-                ->andWhere(['user_post_main.parent_id' => null])
-                ->andWhere(['user_post_main.is_publish' => true])
-                ->andWhere(['user_post_main.type' => 'Review'])
-                ->orderBy(['user_post_main.created_at' => SORT_DESC])
-                ->distinct()
-                ->asArray();
+            ->joinWith([
+                'business',
+                'user',
+                'userPostMains child' => function($query) {
+                    $query->andOnCondition(['child.is_publish' => true]);
+                },
+                'userVotes',
+                'userPostComments',
+                'userPostComments.user user_comment',
+            ])
+            ->andWhere(['user_post_main.parent_id' => null])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['user_post_main.type' => 'Review'])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
+            ->distinct()
+            ->asArray();
 
-        $dataProvider = new ActiveDataProvider([
+        $dataProviderUserPostMain = new ActiveDataProvider([
             'query' => $modelUserPostMain,
+            'pagination' => [
+                'pageSize' => 3,
+                'route' => 'data/recent-post',
+            ]
         ]);
 
-        $modelUserPostMain = $dataProvider->getModels();
-        $pagination = $dataProvider->getPagination();
-
         return $this->render('recent_post', [
-            'modelUserPostMain' => $modelUserPostMain,
-            'pagination' => $pagination,
+            'dataProviderUserPostMain' => $dataProviderUserPostMain,
         ]);
     }
 }
