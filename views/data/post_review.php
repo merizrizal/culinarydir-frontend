@@ -59,321 +59,317 @@ if (!empty($modelUserPostMain)):
 
     foreach ($modelUserPostMain as $dataUserPostMain):
 
-    $jspopover .= '
-        $("#user-rating-popover-' . $dataUserPostMain['id'] . '").popoverButton({
-            trigger: "hover",
-            placement: "right right-top",
-            target: "#user-container-popover-' . $dataUserPostMain['id'] . '"
-        });
-    ';
+        $jspopover .= '
+            $("#user-rating-popover' . $dataUserPostMain['id'] . '").popoverButton({
+                trigger: "hover",
+                placement: "right right-top",
+                target: "#user-container-popover' . $dataUserPostMain['id'] . '"
+            });
+        ';
 
-    $ratingComponent = [];
-    $totalVoteValue = 0;
+        $imgUserProfile = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-    foreach ($dataUserPostMain['userVotes'] as $dataUserVote) {
+        if (!empty($dataUserPostMain['user']['image'])) {
 
-        if (!empty($dataUserVote['ratingComponent'])) {
-
-            $totalVoteValue += $dataUserVote['vote_value'];
-
-            $ratingComponent[$dataUserVote['rating_component_id']] = $dataUserVote;
+            $imgUserProfile = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 200, 200);
         }
-    }
 
-    $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
+        $totalVoteValue = 0;
+        $ratingComponent = [];
+        $userReviewComment = [];
 
-    ksort($ratingComponent); ?>
+        if (!empty($dataUserPostMain['userVotes'])) {
 
-        <div class="review-post">
+            foreach ($dataUserPostMain['userVotes'] as $dataUserVote) {
 
-            <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
+                if (!empty($dataUserVote['ratingComponent'])) {
 
-            <div class="row mb-10">
-                <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
-                    <div class="widget">
-                        <div class="widget-posts-image">
+                    $totalVoteValue += $dataUserVote['vote_value'];
 
-                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
+                    $ratingComponent[$dataUserVote['rating_component_id']] = $dataUserVote;
+                }
+            }
+        }
 
+        if (!empty($dataUserPostMain['userPostComments'])) {
+
+            foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment){
+
+                $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
+            }
+        }
+
+        $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
+
+        ksort($ratingComponent);
+        krsort($userReviewComment); ?>
+
+            <div class="review-post">
+
+                <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
+
+                <div class="row mb-10">
+                    <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
+                        <div class="widget">
+                            <div class="widget-posts-image">
+                                <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>">
+
+                                    <?= Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+
+                                </a>
+                            </div>
+
+                            <div class="widget-posts-body">
+                                <?= Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]); ?>
+                                <br>
+                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-xs-9 visible-xs">
+                        <div class="widget">
+                            <div class="widget-posts-image">
+                                <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>">
 
-                        <div class="widget-posts-body">
-                            <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
-                            <br>
-                            <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                                    <?= Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+
+                                </a>
+                            </div>
+
+                            <div class="widget-posts-body">
+                                <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
+                                <br>
+                                <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+
+                        <h3 class="mt-0 mb-0">
+                            <div class="rating">
+
+                                <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+
+                            </div>
+                        </h3>
+
+                        <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
+                            <div class="arrow"></div>
+                            <div class="popover-body popover-content">
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="widget star-rating">
+                                            <ul class="icon-list">
+
+                                                <?php
+                                                if (!empty($ratingComponent)):
+
+                                                    foreach ($ratingComponent as $dataUserVote): ?>
+
+                                                        <li>
+                                                            <div class="row">
+                                                                <div class="col-sm-5 col-xs-5">
+
+                                                                    <?= StarRating::widget([
+                                                                        'id' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
+                                                                        'name' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
+                                                                        'value' => $dataUserVote['vote_value'],
+                                                                        'pluginOptions' => [
+                                                                            'displayOnly' => true,
+                                                                            'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                                            'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                        ]
+                                                                    ]); ?>
+
+                                                                </div>
+
+                                                                <div class="col-sm-7 col-xs-7">
+
+                                                                    <?= $dataUserVote['vote_value'] . ' ' . $dataUserVote['ratingComponent']['name']; ?>
+
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                    <?php
+                                                    endforeach;
+                                                endif; ?>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-9 visible-xs">
-                    <div class="widget">
-                        <div class="widget-posts-image">
 
-                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+                        <p class="review-description">
 
+                            <?= $dataUserPostMain['text']; ?>
+
+                        </p>
+
+                        <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                            <div class="col-sm-12 col-xs-12">
+                                <ul class="works-grid works-grid-gut works-grid-5">
+
+                                    <?php
+                                    if (!empty($dataUserPostMain['userPostMains'])):
+
+                                        foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
+
+                                            <li class="work-item gallery-photo-review">
+                                                <div class="gallery-item post-gallery">
+                                                    <div class="gallery-image">
+                                                        <a class="gallery" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>" title="">
+                                                            <div class="work-image">
+
+                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+
+                                                            </div>
+                                                            <div class="work-caption">
+                                                                <div class="work-descr"><?= !empty($dataUserPostMainChild['text']) ? $dataUserPostMainChild['text'] : '' ?></div>
+                                                                <div class="work-descr">
+                                                                    <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        <?php
+                                        endforeach;
+                                    endif; ?>
+
+                                </ul>
+                            </div>
                         </div>
 
-                        <div class="widget-posts-body">
-                            <?= Html::a($dataUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']])); ?>
-                            <br>
-                            <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']); ?></small>
+                        <div class="row visible-xs">
+                            <div class="col-xs-3">
+                                <ul class="list-inline mt-0 mb-0">
+                                    <li>
+
+                                        <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' ?></small>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <ul class="list-inline mt-0 mb-0">
+                                    <li>
+
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment' ?></small>
+
+                                    </li>
+                                    <li>
+
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo' ?></small>
+
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
 
-                    <h3 class="mt-0 mb-0">
-                        <div class="rating">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <ul class="list-inline list-review mt-0 mb-0">
+                                    <li>
 
-                            <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover-' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                                        <?php
+                                        $selected = '';
 
+                                        if (!empty($dataUserPostMain['userPostLoves'][0])) {
+                                            $selected = 'selected';
+                                        } ?>
+
+                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+
+                                    </li>
+                                    <li>
+
+                                        <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
+
+                                    </li>
+                                    <li>
+
+                                        <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
+
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </h3>
 
-                    <div id="user-container-popover-<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
-                        <div class="arrow"></div>
-                        <div class="popover-header popover-title"><button type="button" class="close" data-dismiss="popover-x">&times;</button></div>
-                        <div class="popover-body popover-content">
-                            <div class="row">
-                                <div class="col-sm-12 col-xs-12">
-                                    <div class="widget star-rating">
-                                        <ul class="icon-list">
+                        <hr class="divider-w mt-10">
+
+                        <div class="row">
+                            <div class="user-comment-review" id="user-<?= $dataUserPostMain['id']; ?>-comments-review">
+                                <div class="col-sm-12">
+                                    <div class="input-group mt-10 mb-10">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-comment"></i></span>
+
+                                        <?= Html::textInput('comment_input', null, ['id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
+
+                                    </div>
+
+                                    <div class="overlay" style="display: none;"></div>
+                                    <div class="loading-img" style="display: none"></div>
+                                    <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
+                                        <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
 
                                             <?php
-                                            if (!empty($ratingComponent)):
+                                            if (!empty($userReviewComment)):
 
-                                                foreach ($ratingComponent as $dataUserVote): ?>
+                                                foreach ($userReviewComment as $dataUserPostComment): ?>
 
-                                                    <li>
-                                                        <div class="row">
-                                                            <div class="col-sm-5 col-xs-5">
+                                                    <div class="comment-post">
+                                                        <div class="row mb-10">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <div class="widget">
+                                                                    <div class="widget-comments-image">
 
-                                                                <?= StarRating::widget([
-                                                                    'id' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
-                                                                    'name' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
-                                                                    'value' => $dataUserVote['vote_value'],
-                                                                    'pluginOptions' => [
-                                                                        'displayOnly' => true,
-                                                                        'filledStar' => '<span class="aicon aicon-star-full"></span>',
-                                                                        'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                                                    ]
-                                                                ]); ?>
+                                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
 
-                                                            </div>
+                                                                    </div>
 
-                                                            <div class="col-sm-7 col-xs-7">
+                                                                    <div class="widget-comments-body">
+                                                                        <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
+                                                                        <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                        <br>
+                                                                        <p class="review-description">
 
-                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                            <?= $dataUserPostComment['text']; ?>
 
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </li>
+                                                    </div>
 
                                                 <?php
                                                 endforeach;
                                             endif; ?>
 
-                                        </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <hr class="divider-w mb-10">
             </div>
 
-            <div class="row">
-                <div class="col-sm-12 col-xs-12">
-                    <p class="review-description">
-
-                        <?= $dataUserPostMain['text']; ?>
-
-                    </p>
-
-                    <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review-container">
-                        <div class="col-sm-12 col-xs-12">
-                            <ul class="works-grid works-grid-gut works-grid-5" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
-
-                                <?php
-                                if (!empty($dataUserPostMain['userPostMains'])):
-
-                                    foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
-
-                                        <li class="work-item gallery-photo-review">
-                                            <div class="gallery-item post-gallery">
-                                                <div class="gallery-image">
-                                                    <a class="gallery" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>" title="">
-                                                        <div class="work-image">
-
-                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
-
-                                                        </div>
-                                                        <div class="work-caption">
-                                                            <div class="work-descr"><?= !empty($dataUserPostMainChild['text']) ? $dataUserPostMainChild['text'] : '' ?></div>
-                                                            <div class="work-descr">
-                                                                <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                    <?php
-                                    endforeach;
-                                endif; ?>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="row visible-xs">
-                        <div class="col-xs-3">
-                            <ul class="list-inline mt-0 mb-0">
-                                <li>
-
-                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' ?></small>
-
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <ul class="list-inline mt-0 mb-0">
-                                <li>
-
-                                    <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment' ?></small>
-
-                                </li>
-                                <li>
-
-                                    <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo' ?></small>
-
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-7 col-tab-7 col-xs-12">
-                            <ul class="list-inline list-review mt-0 mb-0">
-                                <li>
-
-                                    <?php
-                                    $selected = '';
-
-                                    if (!empty($dataUserPostMain['userPostLoves'][0])) {
-                                        $selected = 'selected';
-                                    } ?>
-
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-
-                                </li>
-                                <li>
-
-                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
-
-                                </li>
-                                <li>
-
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
-
-                                </li>
-                                <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
-                            <ul class="list-inline list-review mt-0 mb-0">
-                                <li>
-
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
-
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
-                            <ul class="list-inline list-review mt-0 mb-0">
-                                <li>
-
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
-
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <hr class="divider-w mt-10">
-
-                    <div class="row">
-                        <div class="user-comment-review" id="user-<?= $dataUserPostMain['id']; ?>-comments-review">
-                            <div class="col-sm-12">
-                                <div class="input-group mt-10 mb-10">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-comment"></i></span>
-
-                                    <?= Html::textInput('comment_input', null, ['id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
-
-                                </div>
-
-                                <div class="overlay" style="display: none;"></div>
-                                <div class="loading-img" style="display: none"></div>
-                                <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
-                                    <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
-
-                                        <?php
-                                        $userReviewComment = [];
-
-                                        foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment){
-
-                                            $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
-                                        }
-
-                                        krsort($userReviewComment);
-
-                                        foreach ($userReviewComment as $dataUserPostComment): ?>
-
-                                            <div class="comment-post">
-                                                <div class="row mb-10">
-                                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="widget">
-                                                            <div class="widget-comments-image">
-
-                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-
-                                                            </div>
-
-                                                            <div class="widget-comments-body">
-                                                                <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
-                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                <br>
-                                                                <p class="review-description">
-
-                                                                    <?= $dataUserPostComment['text']; ?>
-
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        <?php
-                                        endforeach; ?>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <hr class="divider-w mb-10">
-        </div>
-
-    <?php
+        <?php
     endforeach;
 endif; ?>
 
