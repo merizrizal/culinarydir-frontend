@@ -77,121 +77,123 @@ class SiteController extends base\BaseController
 
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($modelUserRegister);
-            }
 
-            $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-
-            $modelPerson->first_name = $post['Person']['first_name'];
-            $modelPerson->last_name = $post['Person']['last_name'];
-            $modelPerson->email = $post['UserRegister']['email'];
-            $modelPerson->phone = $post['Person']['phone'];
-            $modelPerson->city_id = $post['Person']['city_id'];
-
-            $flag = $modelPerson->save();
-
-            if ($flag) {
-
-                $modelUserRegister->user_level_id = 4;
-                $modelUserRegister->email = $post['UserRegister']['email'];
-                $modelUserRegister->username = $post['UserRegister']['username'];
-                $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
-                $modelUserRegister->setPassword($post['UserRegister']['password']);
-                $modelUserRegister->password_repeat = $modelUserRegister->password;
-
-                $flag = $modelUserRegister->save();
-            }
-
-            if ($flag) {
-
-                $modelUserPerson = new UserPerson();
-                $modelUserPerson->user_id = $modelUserRegister->id;
-                $modelUserPerson->person_id = $modelPerson->id;
-
-                $flag = $modelUserPerson->save();
-            }
-
-            if ($flag) {
-
-                if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
-
-                    $modelUserSocialMedia->user_id = $modelUserRegister->id;
-
-                    if (!empty($post['UserSocialMedia']['google_id'])) {
-
-                        $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
-
-                    } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
-
-                        $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
-
-                    }
-
-                    $flag = $modelUserSocialMedia->save();
-
-                    if ($flag) {
-
-                        Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
-                                'email' => $post['UserRegister']['email'],
-                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
-                            ]
-                        )
-                        ->setFrom(Yii::$app->params['supportEmail'])
-                        ->setTo($post['UserRegister']['email'])
-                        ->setSubject('Welcome to ' . Yii::$app->name)
-                        ->send();
-                    }
-
-                } else {
-
-                    $modelUserRegister->not_active = true;
-                    $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
-
-                    $flag = $modelUserRegister->save();
-
-                    if ($flag) {
-
-                        Yii::$app->mailer->compose(['html' => 'account_activation'], [
-                                'email' => $post['UserRegister']['email'],
-                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                'user' => $modelUserRegister
-                            ]
-                        )
-                        ->setFrom(Yii::$app->params['supportEmail'])
-                        ->setTo($post['UserRegister']['email'])
-                        ->setSubject(Yii::$app->name . ' Account Activation')
-                        ->send();
-                    }
-                }
-            }
-
-            if ($flag) {
-
-                $transaction->commit();
-
-                Yii::$app->session->setFlash('message', [
-                    'type' => 'success',
-                    'delay' => 1000,
-                    'icon' => 'aicon aicon-icon-tick-in-circle',
-                    'message' => 'Anda telah terdaftar di Asikmakan',
-                    'title' => 'Berhasil Mendaftar',
-                ]);
-
-                return $this->redirect(['site/register']);
             } else {
 
-                $transaction->rollBack();
+                $transaction = Yii::$app->db->beginTransaction();
+                $flag = false;
 
-                $modelUserRegister->password = '';
+                $modelPerson->first_name = $post['Person']['first_name'];
+                $modelPerson->last_name = $post['Person']['last_name'];
+                $modelPerson->email = $post['UserRegister']['email'];
+                $modelPerson->phone = $post['Person']['phone'];
+                $modelPerson->city_id = $post['Person']['city_id'];
 
-                Yii::$app->session->setFlash('message', [
-                    'type' => 'danger',
-                    'delay' => 1000,
-                    'icon' => 'aicon aicon-icon-info',
-                    'message' => 'Gagal mendaftar di Asikmakan',
-                    'title' => 'Gagal Mendaftar',
-                ]);
+                $flag = $modelPerson->save();
+
+                if ($flag) {
+
+                    $modelUserRegister->user_level_id = 4;
+                    $modelUserRegister->email = $post['UserRegister']['email'];
+                    $modelUserRegister->username = $post['UserRegister']['username'];
+                    $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
+                    $modelUserRegister->setPassword($post['UserRegister']['password']);
+                    $modelUserRegister->password_repeat = $modelUserRegister->password;
+
+                    $flag = $modelUserRegister->save();
+                }
+
+                if ($flag) {
+
+                    $modelUserPerson = new UserPerson();
+                    $modelUserPerson->user_id = $modelUserRegister->id;
+                    $modelUserPerson->person_id = $modelPerson->id;
+
+                    $flag = $modelUserPerson->save();
+                }
+
+                if ($flag) {
+
+                    if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
+
+                        $modelUserSocialMedia->user_id = $modelUserRegister->id;
+
+                        if (!empty($post['UserSocialMedia']['google_id'])) {
+
+                            $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
+
+                        } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
+
+                            $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
+
+                        }
+
+                        $flag = $modelUserSocialMedia->save();
+
+                        if ($flag) {
+
+                            Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
+                                    'email' => $post['UserRegister']['email'],
+                                    'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                    'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
+                                ]
+                            )
+                            ->setFrom(Yii::$app->params['supportEmail'])
+                            ->setTo($post['UserRegister']['email'])
+                            ->setSubject('Welcome to ' . Yii::$app->name)
+                            ->send();
+                        }
+
+                    } else {
+
+                        $modelUserRegister->not_active = true;
+                        $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
+
+                        $flag = $modelUserRegister->save();
+
+                        if ($flag) {
+
+                            Yii::$app->mailer->compose(['html' => 'account_activation'], [
+                                    'email' => $post['UserRegister']['email'],
+                                    'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                    'user' => $modelUserRegister
+                                ]
+                            )
+                            ->setFrom(Yii::$app->params['supportEmail'])
+                            ->setTo($post['UserRegister']['email'])
+                            ->setSubject(Yii::$app->name . ' Account Activation')
+                            ->send();
+                        }
+                    }
+                }
+
+                if ($flag) {
+
+                    $transaction->commit();
+
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'success',
+                        'delay' => 1000,
+                        'icon' => 'aicon aicon-icon-tick-in-circle',
+                        'message' => 'Anda telah terdaftar di Asikmakan',
+                        'title' => 'Berhasil Mendaftar',
+                    ]);
+
+                    return $this->redirect(['site/register']);
+                } else {
+
+                    $transaction->rollBack();
+
+                    $modelUserRegister->password = '';
+
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'danger',
+                        'delay' => 1000,
+                        'icon' => 'aicon aicon-icon-info',
+                        'message' => 'Gagal mendaftar di Asikmakan',
+                        'title' => 'Gagal Mendaftar',
+                    ]);
+                }
             }
         }
 
