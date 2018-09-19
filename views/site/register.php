@@ -148,6 +148,7 @@ if (!empty($getFlashMessage)) {
                                             ])->textInput([
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Email',
+                                                'readonly' => !empty($socmed) ? true : false,
                                             ]) ?>
 
                                         </div>
