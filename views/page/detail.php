@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use frontend\components\AppComponent;
@@ -975,7 +976,7 @@ $jscript = '
                     object: {
                         "og:url": "' . $ogUrl . '",
                         "og:title": "' . $ogTitle . '",
-                        "og:description": "' . $ogDescription . '",
+                        "og:description": "' . preg_replace('/[\r\n]+/','' , strip_tags($ogDescription)) . '",
                         "og:image": "' . $ogImage . '"
                     }
             })
