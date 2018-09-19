@@ -94,13 +94,14 @@ $this->registerMetaTag([
 
 <section class="module-extra-small in-result bg-main">
     <div class="container detail">
-        <div class="view" id="recent-activity">
+        <div class="view">
 
             <div class="row mt-10 mb-20">
                 <div class="col-lg-12 font-alt"> <?= Yii::t('app', 'Recent Activity'); ?> </div>
             </div>
 
             <?= ListView::widget([
+                'id' => 'recent-activity',
                 'dataProvider' => $dataProviderUserPostMain,
                 'itemView' => '@frontend/views/data/_recent_post',
                 'layout' => '
@@ -117,9 +118,6 @@ $this->registerMetaTag([
                     'maxButtonCount' => 0,
                     'prevPageLabel' => false,
                     'nextPageLabel' => Yii::t('app', 'Next'),
-                    'linkOptions' => [
-                        'class' => 'recent-post',
-                    ],
                     'options' => ['id' => 'pagination-recent-post', 'class' => 'pagination'],
                 ]
             ]); ?>
@@ -130,11 +128,40 @@ $this->registerMetaTag([
 
 <?= $appComponent->searchJsComponent(); ?>
 
+<div id="temp-listview-recent-post" class="hidden">
+
+</div>
+
 <?php
 $jscript = '
-    $("#pagination-recent-post li.next a").on("click", function() {
+    $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {
 
         var thisObj = $(this);
+        var thisText = thisObj.html();
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: thisObj.attr("href"),
+            beforeSend: function(xhr) {
+                thisObj.html("Loading...");
+            },
+            success: function(response) {
+
+                $("#temp-listview-recent-post").html(response);
+
+                $("#temp-listview-recent-post").find("#recent-activity").children(".row").children("div").each(function() {
+                    $("#recent-activity").children(".row").append($(this));
+                });
+
+                thisObj.parent().parent().parent().parent().remove();
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                thisObj.html(thisText);
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
 
         return false;
     });

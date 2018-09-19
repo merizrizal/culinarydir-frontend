@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\web\JsExpression;
-use yii\helpers\BaseStringHelper;
+use yii\helpers\StringHelper;
 use sycomponent\Tools;
 use kartik\rating\StarRating; ?>
 
@@ -123,8 +123,8 @@ use kartik\rating\StarRating; ?>
                 <div class="post-entry">
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
-                            <?php //stringhelper aja ?>
-                            <?= BaseStringHelper::truncate($model['text'], 85, '. . .'); ?>
+                            
+                            <?= StringHelper::truncate($model['text'], 85, '. . .'); ?>
 
                             <?= (!empty($model['text']) ? '<br>' : '') . Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]) ?>
 
