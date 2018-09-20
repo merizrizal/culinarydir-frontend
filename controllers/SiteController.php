@@ -116,6 +116,7 @@ class SiteController extends base\BaseController
 
                     if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
 
+                        $socmedFLag = true;
                         $modelUserSocialMedia->user_id = $modelUserRegister->id;
 
                         if (!empty($post['UserSocialMedia']['google_id'])) {
@@ -144,8 +145,11 @@ class SiteController extends base\BaseController
 
                     } else {
 
+                        $socmedFLag = false;
+                        $randomString = Yii::$app->security->generateRandomString();
+                        $randomStringHalf = substr($randomString, 16);
                         $modelUserRegister->not_active = true;
-                        $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
+                        $modelUserRegister->account_activation_token = substr($randomString, 0, 15) . $modelUserRegister->id . $randomStringHalf . '_' . time();
 
                         if (($flag = $modelUserRegister->save())) {
 
@@ -171,7 +175,7 @@ class SiteController extends base\BaseController
                         'type' => 'success',
                         'delay' => 1000,
                         'icon' => 'aicon aicon-icon-tick-in-circle',
-                        'message' => 'Anda telah terdaftar di Asikmakan',
+                        'message' => $socmedFLag ? 'Anda telah terdaftar di Asikmakan' : 'Anda telah terdaftar di Asikmakan.<br>Mohon periksa email anda untuk aktivasi akun Asikmakan.',
                         'title' => 'Berhasil Mendaftar',
                     ]);
 
@@ -400,6 +404,8 @@ class SiteController extends base\BaseController
                     'message' => 'Gagal Login',
                     'title' => 'Gagal Login',
                 ]);
+
+                return $this->redirect(['login']);
             }
         }
     }
@@ -413,11 +419,25 @@ class SiteController extends base\BaseController
 
         if (!empty($modelUser)) {
 
-            Yii::$app->db->createCommand()
-                    ->update('user', ['not_active' => false], "account_activation_token = '" . $token . "'")
-                    ->execute();
+            $modelUser->not_active = false;
+            $flag = $modelUser->save();
+
+            if (!$flag) {
+
+                Yii::$app->session->setFlash('message', [
+                    'type' => 'danger',
+                    'delay' => 1000,
+                    'icon' => 'aicon aicon-icon-info',
+                    'message' => 'Gagal Aktivasi Akun Anda',
+                    'title' => 'Gagal Aktivasi',
+                ]);
+
+                return $this->redirect(['register']);
+            }
         }
 
-        return $this->redirect(['login']);
-    }
+        return $this->render('_account_activation', [
+            'modelUser' => $modelUser,
+        ]);
+     }
 }

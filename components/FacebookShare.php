@@ -16,12 +16,12 @@ class FacebookShare extends Widget {
                     method: "share_open_graph",
                     action_type: "og.likes",
                     action_properties: JSON.stringify({
-                            object: {
-                                "og:url": params.ogUrl,
-                                "og:title": params.ogTitle,
-                                "og:description": params.ogDescription,
-                                "og:image": params.ogImage
-                            }
+                        object: {
+                            "og:url": params.ogUrl,
+                            "og:title": params.ogTitle,
+                            "og:description": params.ogDescription,
+                            "og:image": params.ogImage
+                        }
                     })
                 },
                 function (response) {

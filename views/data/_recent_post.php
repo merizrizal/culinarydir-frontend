@@ -142,6 +142,7 @@ use kartik\rating\StarRating; ?>
 
 <?php
 frontend\components\RatingColor::widget();
+frontend\components\FacebookShare::widget();
 
 $jscript = '
     ratingColor($(".rating-' . $model['id'] . '"), "span");
@@ -155,23 +156,11 @@ $jscript = '
         var description = "' . $model['text'] . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";
 
-        FB.ui({
-            method: "share_open_graph",
-            action_type: "og.likes",
-            action_properties: JSON.stringify({
-                object: {
-                    "og:url": url,
-                    "og:title": title,
-                    "og:description": description,
-                    "og:image": image
-                }
-            })
-        },
-        function (response) {
-            if (response && !response.error_message) {
-
-                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil diposting ke Facebook Anda.", "success");
-            }
+        facebookShare({
+            ogUrl: url,
+            ogTitle: title,
+            ogDescription: description,
+            ogImage: image
         });
 
         return false;
