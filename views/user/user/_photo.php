@@ -15,7 +15,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "POST",
-            url: $(this).attr("data-href"),
+            url: $(this).data("href"),
             beforeSend: function(xhr) {
                 $(".user-post-photo").siblings(".overlay").show();
                 $(".user-post-photo").siblings(".loading-img").show();

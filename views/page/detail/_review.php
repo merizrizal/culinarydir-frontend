@@ -1200,7 +1200,7 @@ $jscript = '
 
         $("#modal-confirmation").modal("show");
 
-        $("#modal-confirmation").find("#btn-delete").attr("data-href", $(this).attr("href"));
+        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         return false;
     });
@@ -1210,7 +1210,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "POST",
-            url: $(this).attr("data-href"),
+            url: $(this).data("href"),
             success: function(response) {
 
                 $("#modal-confirmation").modal("hide");
