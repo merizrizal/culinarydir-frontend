@@ -100,13 +100,13 @@ $this->params['beforeEndBody'][] = function() {
                 <div class="col-md-10 col-sm-10 col-xs-12 text-left mb-10">
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
                         <label class="btn btn-radius-500">
-                            <input class="radio-500" type="radio" name="radius" data-radius="500" autocomplete="off" checked> 500 m
+                            <input class="radius-500" type="radio" name="radius" data-radius="500" autocomplete="off" checked> 500 m
                         </label>
                         <label class="btn btn-radius-1000">
-                            <input class="radio-1000" type="radio" name="radius" data-radius="1000" autocomplete="off"> 1 km
+                            <input class="radius-1000" type="radio" name="radius" data-radius="1000" autocomplete="off"> 1 km
                         </label>
                         <label class="btn btn-radius-2000">
-                            <input class="radio-2000" type="radio" name="radius" data-radius="2000" autocomplete="off"> 2 km
+                            <input class="radius-2000" type="radio" name="radius" data-radius="2000" autocomplete="off"> 2 km
                         </label>
                     </div>
                 </div>
@@ -237,21 +237,21 @@ $jscript = '
             circleRadius.bindTo("center", marker, "position");
         });
 
-        $(".radio-500").on("ifChecked", function() {
+        $(".radius-500").on("ifChecked", function() {
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(15);
             circleRadius.setRadius(radius);
         });
 
-        $(".radio-1000").on("ifChecked", function() {
+        $(".radius-1000").on("ifChecked", function() {
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(14);
             circleRadius.setRadius(radius);
         });
 
-        $(".radio-2000").on("ifChecked", function() {
+        $(".radius-2000").on("ifChecked", function() {
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(13);
