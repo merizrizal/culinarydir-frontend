@@ -71,7 +71,7 @@ class SiteController extends base\BaseController
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
 
-        if ($modelUserRegister->load($post = Yii::$app->request->post())) {
+        if ($modelUserRegister->load(($post = Yii::$app->request->post()))) {
 
             if (Yii::$app->request->isAjax) {
 
@@ -128,9 +128,7 @@ class SiteController extends base\BaseController
 
                         }
 
-                        $flag = $modelUserSocialMedia->save();
-
-                        if ($flag) {
+                        if (($flag = $modelUserSocialMedia->save())) {
 
                             Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
                                     'email' => $post['UserRegister']['email'],
@@ -149,9 +147,7 @@ class SiteController extends base\BaseController
                         $modelUserRegister->not_active = true;
                         $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
 
-                        $flag = $modelUserRegister->save();
-
-                        if ($flag) {
+                        if (($flag = $modelUserRegister->save())) {
 
                             Yii::$app->mailer->compose(['html' => 'account_activation'], [
                                     'email' => $post['UserRegister']['email'],

@@ -272,7 +272,7 @@ $appComponent = new AppComponent(); ?>
 
                                                                                     $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00')) ? true : false; ?>
 
-                                                                                    <li><?= ($is24Hour) ? Yii::t('app', $days[(intval($dataBusinessHour['day']) - 1)]) . ': ' . Yii::t('app','24 Hours') : Yii::t('app', $days[(intval($dataBusinessHour['day']) - 1)]) . ': ' . Yii::$app->formatter->asTime($dataBusinessHour['open_at']) . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at']) ?></li>
+                                                                                    <li><?= Yii::t('app', $days[(intval($dataBusinessHour['day']) - 1)]) . ': ' . ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) ?></li>
 
                                                                                 <?php
                                                                                 endforeach; ?>

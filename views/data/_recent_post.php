@@ -121,9 +121,16 @@ use kartik\rating\StarRating; ?>
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
 
-                            <?= StringHelper::truncate($model['text'], 85, '. . .'); ?>
+                            <?php
+                            $textReview = '';
+                            if (!empty($model['text'])) {
 
-                            <?= (!empty($model['text']) ? '<br>' : '') . Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]) ?>
+                                $textReview = StringHelper::truncate($model['text'], 85, '. . .') . '<br>';
+                            }
+
+                            $textReview .= Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
+
+                            echo $textReview; ?>
 
                         </div>
                     </div>
@@ -163,7 +170,7 @@ $jscript = '
         function (response) {
             if (response && !response.error_message) {
 
-                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil diposting ke Facebook Anda.", "success");
             }
         });
 

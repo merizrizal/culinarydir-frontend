@@ -97,7 +97,7 @@ $this->registerMetaTag([
         <div class="view">
 
             <div class="row mt-10 mb-20">
-                <div class="col-lg-12 font-alt"> <?= Yii::t('app', 'Recent Activity'); ?> </div>
+                <div class="col-lg-12 font-alt"><?= Yii::t('app', 'Recent Activity'); ?></div>
             </div>
 
             <?= ListView::widget([
@@ -109,7 +109,7 @@ $this->registerMetaTag([
                         {items}
                         <div>
                             <div class="clearfix"></div>
-                            <div class="col-lg-12">{pager}</div>
+                            <div class="col-lg-12 align-center">{pager}</div>
                         <div>
                     </div>
                 ',
@@ -117,7 +117,7 @@ $this->registerMetaTag([
                     'class' => LinkPager::class,
                     'maxButtonCount' => 0,
                     'prevPageLabel' => false,
-                    'nextPageLabel' => Yii::t('app', 'Next'),
+                    'nextPageLabel' => Yii::t('app', 'Load More'),
                     'options' => ['id' => 'pagination-recent-post', 'class' => 'pagination'],
                 ]
             ]); ?>
