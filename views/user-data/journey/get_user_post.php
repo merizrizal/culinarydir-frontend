@@ -124,6 +124,8 @@ if (!empty($modelUserPostMain)):
 
                 <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
 
+                <?= Html::hiddenInput('business_name', $dataUserPostMain['business']['name'], ['class' => 'business-name']) ?>
+
                 <div class="row mb-10">
                     <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                         <div class="widget img-place">
@@ -299,21 +301,18 @@ if (!empty($modelUserPostMain)):
                                         <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
 
                                     </li>
-
-                                    <?php
-                                    if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
-
-                                        <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                            <i class="fa fa-ellipsis-h"></i>
-                                        </li>
-
-                                    <?php
-                                    endif;?>
-
+                                    <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                 <ul class="list-inline list-review mt-0 mb-0">
+                                    <li>
+
+                                        <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+
+                                    </li>
 
                                     <?php
                                     if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
@@ -333,9 +332,22 @@ if (!empty($modelUserPostMain)):
                                 <ul class="list-inline list-review mt-0 mb-0">
                                     <li>
 
-                                        <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                        <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
 
                                     </li>
+
+                                    <?php
+                                    if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
+
+                                        <li>
+
+                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+
+                                        </li>
+
+                                    <?php
+                                    endif; ?>
+
                                 </ul>
                             </div>
                         </div>
@@ -376,7 +388,7 @@ if (!empty($modelUserPostMain)):
                                                                         <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
                                                                         <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                         <br>
-                                                                        <p class="review-description">
+                                                                        <p class="comment-description">
 
                                                                             <?= $dataUserPostComment['text']; ?>
 
@@ -433,6 +445,7 @@ endif;?>
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
+frontend\components\FacebookShare::widget();
 
 $jscript = '
     $("#pjax-user-post-container").on("pjax:send", function() {
@@ -615,6 +628,24 @@ $jscript = '
 
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
+            });
+
+            return false;
+        });
+
+        thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
+
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
+            var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + thisObj.parent().find(".business-name").val();
+            var description = thisObj.parent().find(".review-description").text();
+            var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
+
+            facebookShare({
+                ogUrl: url,
+                ogTitle: title,
+                ogDescription: description,
+                ogImage: image,
+                type: "Review"
             });
 
             return false;

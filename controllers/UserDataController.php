@@ -5,7 +5,6 @@ use Yii;
 use core\models\UserVisit;
 use core\models\UserLove;
 use core\models\UserPostMain;
-use frontend\models\Post;
 use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
@@ -214,7 +213,10 @@ class UserDataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelUserPostMainPhoto = UserPostMain::find()
-                ->joinWith('user')
+                ->joinWith([
+                    'user',
+                    'business',
+                ])
                 ->andWhere(['type' => 'Photo'])
                 ->andWhere(['is_publish' => true]);
 

@@ -58,17 +58,21 @@ $linkPager = LinkPager::widget([
                 foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): ?>
 
                     <li class="work-item">
+
+                        <?= Html::hiddenInput('business_name', $dataUserPostMainPhoto['business']['name'], ['class' => 'business-name']) ?>
+
                         <div class="gallery-item place-gallery">
                             <div class="gallery-image">
                                 <div class="work-image">
 
-                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainPhoto['image'], 200, 200), ['class' => 'img-component']) ?>
+                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainPhoto['image'], 200, 200), ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
 
                                 </div>
                                 <div class="work-caption">
                                     <div class="work-descr hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
                                     <div class="work-descr">
                                         <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image'] ?>"><i class="fa fa-search"></i></a>
+                                        <a class="btn btn-d btn-small btn-xs btn-circle share-image-<?= $dataUserPostMainPhoto['id'] ?>-trigger"><i class="fa fa-share-alt"></i></a>
 
                                         <?php
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']): ?>
@@ -116,6 +120,9 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+frontend\components\FacebookShare::widget();
+
 $jscript = '
     $("#pjax-user-photo-container").on("pjax:send", function() {
         $("#photo-gallery").parent().parent().siblings(".overlay").show();
@@ -152,6 +159,30 @@ $jscript = '
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         return false;
+    });
+
+    $("#photo-gallery").find(".work-item").each(function() {
+
+        var thisObj = $(this);
+        var photoId = $(this).find(".work-image").children().data("id");
+
+        $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
+
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
+            var title = "Foto untuk " + thisObj.find(".business-name").val();
+            var description = thisObj.find(".photo-caption").text();
+            var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
+
+            facebookShare({
+                ogUrl: url,
+                ogTitle: title,
+                ogDescription: description,
+                ogImage: image,
+                type: "Foto"
+            });
+
+            return false;
+        });
     });
 
     $(".total-user-photo").html("' . $totalCount . '");
