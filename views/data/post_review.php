@@ -351,13 +351,23 @@ if (!empty($modelUserPostMain)):
                                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                                 <div class="widget">
                                                                     <div class="widget-comments-image">
+                                                                        <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
 
-                                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                            <?php
+                                                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
+                                                                            if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                            }
+
+                                                                            echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+
+                                                                        </a>
                                                                     </div>
 
                                                                     <div class="widget-comments-body">
-                                                                        <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
+                                                                        <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
                                                                         <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                         <br>
                                                                         <p class="comment-description">
@@ -576,7 +586,8 @@ $jscript = '
                 ogUrl: url,
                 ogTitle: title,
                 ogDescription: description,
-                ogImage: image
+                ogImage: image,
+                type: "Review"
             });
 
             return false;

@@ -956,7 +956,8 @@ $jscript = '
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
             ogDescription: "' . preg_replace('/[\r\n]+/','' , strip_tags($ogDescription)) . '",
-            ogImage: "' . $ogImage . '"
+            ogImage: "' . $ogImage . '",
+            type: "Halaman Bisnis"
         });
 
         return false;

@@ -11,7 +11,30 @@ kartik\popover\PopoverXAsset::register($this);
 
 $reviewTotal = !empty($modelUserPostMain) ? 1 : 0;
 
-Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
+Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+
+$imgUserProfile = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+if (!empty(Yii::$app->user->getIdentity()->image)) {
+
+    $imgUserProfile = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200);
+}
+
+$layoutUser = '
+    <div class="widget-posts-image">
+        <a href="' . Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '">
+
+            ' . Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
+
+        </a>
+    </div>
+
+    <div class="widget-posts-body">
+        ' . Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
+        <br>
+        <small>' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
+    </div>
+'; ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -36,29 +59,16 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             <div class="row mb-10">
                                 <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                                     <div class="widget">
-                                        <div class="widget-posts-image">
 
-                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?></div>
+                                        <?= $layoutUser ?>
 
-                                        <div class="widget-posts-body">
-                                            <div class="my-review-user-name"><?= !empty($modelUserPostMain['user']['full_name']) ? $modelUserPostMain['user']['full_name'] : null ?></div>
-
-                                            <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-9 visible-xs">
                                     <div class="widget">
-                                        <div class="widget-posts-image">
 
-                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
+                                        <?= $layoutUser ?>
 
-                                        </div>
-                                        <div class="widget-posts-body">
-                                            <div class="my-review-user-name"><?= !empty($modelUserPostMain['user']['full_name']) ? $modelUserPostMain['user']['full_name'] : null ?></div>
-
-                                            <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-3">
@@ -300,13 +310,23 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                                                             <div class="widget">
                                                                                 <div class="widget-comments-image">
+                                                                                    <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
 
-                                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                                    <?php
+                                                                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
+                                                                                    if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                    }
+
+                                                                                    echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+
+                                                                                    </a>
                                                                                 </div>
 
                                                                                 <div class="widget-comments-body">
-                                                                                    <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
+                                                                                    <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
                                                                                     <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                     <br>
                                                                                     <p class="comment-description">
@@ -967,7 +987,8 @@ $jscript = '
                                     ogUrl: url,
                                     ogTitle: title,
                                     ogDescription: description,
-                                    ogImage: image
+                                    ogImage: image,
+                                    type: "Review"
                                 });
                             }
                         });
@@ -1179,7 +1200,7 @@ $jscript = '
 
         $("#modal-confirmation").modal("show");
 
-        $("#modal-confirmation").find("#btn-delete").attr("data-href", $(this).attr("href"));
+        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         return false;
     });
@@ -1189,7 +1210,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "POST",
-            url: $(this).attr("data-href"),
+            url: $(this).data("href"),
             success: function(response) {
 
                 $("#modal-confirmation").modal("hide");
