@@ -967,7 +967,8 @@ $jscript = '
                                     ogUrl: url,
                                     ogTitle: title,
                                     ogDescription: description,
-                                    ogImage: image
+                                    ogImage: image,
+                                    type: "Review"
                                 });
                             }
                         });

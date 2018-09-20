@@ -27,7 +27,7 @@ class FacebookShare extends Widget {
                 function (response) {
                     if (response && !response.error_message) {
 
-                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
+                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", params.type + " berhasil di posting ke Facebook Anda.", "success");
                     }
                 });
             }
