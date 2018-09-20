@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use frontend\components\AppComponent;
@@ -19,7 +18,7 @@ $this->registerMetaTag([
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
 $ogTitle = (!empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan');
-$ogDescription = (!empty($modelBusiness['about']) ? $modelBusiness['about'] : 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan');
+$ogDescription = (!empty($modelBusiness['about']) ? $modelBusiness['about'] : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com');
 $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
@@ -822,28 +821,12 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/
 
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
+frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    function checkFBLoginStatus(element) {
-
-        FB.getLoginStatus(function(response) {
-
-            if (response.status !== "connected") {
-
-                FB.login(function(response) {
-                    if (response.status !== "connected") {
-
-                        element.parent().removeClass("checked");
-                        element.iCheck("uncheck");
-                    }
-                });
-            }
-        });
-    }
-
     $("#see-map-shortcut").on("click", function(event) {
 
         if (!$("a[aria-controls=\"view-map\"]").parent().hasClass("active")) {
@@ -969,23 +952,11 @@ $jscript = '
 
     $(".share-feature").on("click", function() {
 
-        FB.ui({
-            method: "share_open_graph",
-            action_type: "og.likes",
-            action_properties: JSON.stringify({
-                    object: {
-                        "og:url": "' . $ogUrl . '",
-                        "og:title": "' . $ogTitle . '",
-                        "og:description": "' . preg_replace('/[\r\n]+/','' , strip_tags($ogDescription)) . '",
-                        "og:image": "' . $ogImage . '"
-                    }
-            })
-        },
-        function (response) {
-            if (response && !response.error_message) {
-
-                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
-            }
+        facebookShare({
+            ogUrl: "' . $ogUrl . '",
+            ogTitle: "' . $ogTitle . '",
+            ogDescription: "' . preg_replace('/[\r\n]+/','' , strip_tags($ogDescription)) . '",
+            ogImage: "' . $ogImage . '"
         });
 
         return false;

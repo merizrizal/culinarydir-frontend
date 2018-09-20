@@ -272,7 +272,7 @@ if (!empty($modelUserPostMain)):
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-sm-7 col-tab-7 col-xs-12">
                                 <ul class="list-inline list-review mt-0 mb-0">
                                     <li>
 
@@ -297,6 +297,27 @@ if (!empty($modelUserPostMain)):
 
                                         <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
+
+                                    </li>
+                                    <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
+                                <ul class="list-inline list-review mt-0 mb-0">
+                                    <li>
+
+                                        <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
+                                <ul class="list-inline list-review mt-0 mb-0">
+                                    <li>
+
+                                        <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
 
                                     </li>
                                 </ul>
@@ -339,7 +360,7 @@ if (!empty($modelUserPostMain)):
                                                                         <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
                                                                         <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                         <br>
-                                                                        <p class="review-description">
+                                                                        <p class="comment-description">
 
                                                                             <?= $dataUserPostComment['text']; ?>
 
@@ -396,6 +417,7 @@ endif; ?>
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
+frontend\components\FacebookShare::widget();
 
 $jscript = '
     $("#pjax-review-container").on("pjax:send", function() {
@@ -545,32 +567,16 @@ $jscript = '
 
         thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
 
-            var businessName = $(".business-name").text().trim();
-            var rating = thisObj.parent().find(".rating").text().trim();
-            var url = window.location.href;
-            var title = "Rating " + rating + " untuk " + businessName;
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
+            var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
             var description = thisObj.parent().find(".review-description").text();
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
 
-            url = url.replace("detail", "review").replace($("#business_id").val(), thisObj.val());
-
-            FB.ui({
-                method: "share_open_graph",
-                action_type: "og.likes",
-                action_properties: JSON.stringify({
-                    object: {
-                        "og:url": url,
-                        "og:title": title,
-                        "og:description": description,
-                        "og:image": image
-                    }
-                })
-            },
-            function (response) {
-                if (response && !response.error_message) {
-
-                    messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
-                }
+            facebookShare({
+                ogUrl: url,
+                ogTitle: title,
+                ogDescription: description,
+                ogImage: image
             });
 
             return false;

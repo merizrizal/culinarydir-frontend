@@ -108,6 +108,9 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+frontend\components\FacebookShare::widget();
+
 $jscript = '
     $("#pjax-photo-container").on("pjax:send", function() {
         $("#photo-gallery").parent().parent().siblings(".overlay").show();
@@ -144,32 +147,19 @@ $jscript = '
 
         $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
 
-            var businessName = $(".business-name").text().trim();
-            var url = window.location.href;
-            var title = "Foto untuk " + businessName;
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
+            var title = "Foto untuk " + $(".business-name").text().trim();
             var description = thisObj.find(".photo-caption").text();
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
 
-            url = url.replace("detail", "photo").replace($("#business_id").val(), photoId);
-
-            FB.ui({
-                method: "share_open_graph",
-                action_type: "og.likes",
-                action_properties: JSON.stringify({
-                        object: {
-                            "og:url": url,
-                            "og:title": title,
-                            "og:description": description,
-                            "og:image": image
-                        }
-                })
-            },
-            function (response) {
-                if (response && !response.error_message) {
-
-                    messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Foto berhasil di posting ke Facebook Anda.", "success");
-                }
+            facebookShare({
+                ogUrl: url,
+                ogTitle: title,
+                ogDescription: description,
+                ogImage: image
             });
+
+            return false;
         });
     });
 

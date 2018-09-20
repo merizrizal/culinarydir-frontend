@@ -309,7 +309,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                                     <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
                                                                                     <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                     <br>
-                                                                                    <p class="review-description">
+                                                                                    <p class="comment-description">
 
                                                                                         <?= $dataUserPostComment['text']; ?>
 
@@ -769,6 +769,8 @@ $jscript = '
         $("#post-review-text").val(prevReview);
         $("#post-photo-input").fileinput("clear");
 
+        $(".facebook-review-share-trigger").iCheck("uncheck");
+
         return false;
     });
 
@@ -948,37 +950,24 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
+                    $(".facebook-review-share-trigger").iCheck("uncheck");
+
                     if ($.trim(response.socialShare)){
 
                         $.each(response.socialShare, function(socialName, value) {
 
                             if (socialName === "facebook" && response.socialShare[socialName]) {
 
-                                var businessName = $(".business-name").text().trim();
-                                var url = window.location.href;
-                                var title = "Rating " + newOverall + " untuk " + businessName;
+                                var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
+                                var title = "Rating " + $("#edit-review-container").find(".my-rating").text().trim() + " untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMain.text;
                                 var image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
 
-                                url = url.replace("detail", "review").replace($("#business_id").val(), response.userPostMain.id);
-
-                                FB.ui({
-                                    method: "share_open_graph",
-                                    action_type: "og.likes",
-                                    action_properties: JSON.stringify({
-                                            object: {
-                                                "og:url": url,
-                                                "og:title": title,
-                                                "og:description": description,
-                                                "og:image": image
-                                            }
-                                    })
-                                },
-                                function (response) {
-                                    if (response && !response.error_message) {
-
-                                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
-                                    }
+                                facebookShare({
+                                    ogUrl: url,
+                                    ogTitle: title,
+                                    ogDescription: description,
+                                    ogImage: image
                                 });
                             }
                         });
@@ -1267,12 +1256,6 @@ $jscript = '
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find(".temp-rating-" + $(this).val() + "").val());
             }
         });
-
-        return false;
-    });
-
-    $(".facebook-review-share-trigger").on("ifChecked", function() {
-        checkFBLoginStatus($(this));
 
         return false;
     });

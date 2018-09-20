@@ -191,6 +191,8 @@ $jscript = '
         $("#post-photo-container").find(".form-group").removeClass("has-error");
         $("#post-photo-container").find(".form-group").find(".help-block").html("");
 
+        $(".facebook-photo-share-trigger").iCheck("uncheck");
+
         return false;
     });
 
@@ -227,37 +229,24 @@ $jscript = '
 
                     getUserPhoto($("#business_id").val());
 
+                    $(".facebook-photo-share-trigger").iCheck("uncheck");
+
                     if ($.trim(response.socialShare)){
 
                         $.each(response.socialShare, function(socialName, value) {
 
                             if (socialName === "facebook" && response.socialShare[socialName]) {
 
-                                var businessName = $(".business-name").text().trim();
-                                var url = window.location.href;
-                                var title = "Foto untuk " + businessName;
+                                var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + response.userPostMainPhoto.id;
+                                var title = "Foto untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMainPhoto.text;
                                 var image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto.image;
 
-                                url = url.replace("detail", "photo").replace($("#business_id").val(), response.userPostMainPhoto.id);
-
-                                FB.ui({
-                                    method: "share_open_graph",
-                                    action_type: "og.likes",
-                                    action_properties: JSON.stringify({
-                                            object: {
-                                                "og:url": url,
-                                                "og:title": title,
-                                                "og:description": description,
-                                                "og:image": image
-                                            }
-                                    })
-                                },
-                                function (response) {
-                                    if (response && !response.error_message) {
-
-                                        messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Foto berhasil di posting ke Facebook Anda.", "success");
-                                    }
+                                facebookShare({
+                                    ogUrl: url,
+                                    ogTitle: title,
+                                    ogDescription: description,
+                                    ogImage: image
                                 });
                             }
                         });
@@ -308,12 +297,6 @@ $jscript = '
     }
 
     getUserPhoto($("#business_id").val());
-
-    $(".facebook-photo-share-trigger").on("ifChecked", function() {
-        checkFBLoginStatus($(this));
-
-        return false;
-    });
 ';
 
 $this->registerJs($jscript); ?>
