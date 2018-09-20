@@ -11,7 +11,7 @@ use yii\widgets\LinkPager; ?>
             {items}
             <div>
                 <div class="clearfix"></div>
-                <div class="col-lg-12">{pager}</div>
+                <div class="col-lg-12 align-center">{pager}</div>
             <div>
         </div>
     ',
@@ -19,7 +19,7 @@ use yii\widgets\LinkPager; ?>
         'class' => LinkPager::class,
         'maxButtonCount' => 0,
         'prevPageLabel' => false,
-        'nextPageLabel' => Yii::t('app', 'Next'),
+        'nextPageLabel' => Yii::t('app', 'Load More'),
         'options' => ['id' => 'pagination-recent-post', 'class' => 'pagination'],
     ]
 ]); ?>

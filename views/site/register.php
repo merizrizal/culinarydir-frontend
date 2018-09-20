@@ -178,31 +178,32 @@ if (!empty($getFlashMessage)) {
 
                                             <?= Html::submitButton('Daftar', ['class' => 'btn btn-block btn-round btn-d']) ?>
 
-                                            <div class="mt-20 mb-20 align-center"> OR </div>
+                                            <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
 
                                             <div class="mt-10">
 
-                                                <?php $authAuthChoice = AuthChoice::begin([
+                                                <?php
+                                                $authAuthChoice = AuthChoice::begin([
                                                     'baseAuthUrl' => ['site/auth'],
                                                     'popupMode' => false,
                                                 ]);
 
-                                                    foreach ($authAuthChoice->getClients() as $client):
+                                                foreach ($authAuthChoice->getClients() as $client):
 
-                                                        $btnType = '';
+                                                    $btnType = '';
 
-                                                        if ($client->getName() === 'facebook') {
-                                                            $btnType = 'btn-primary';
-                                                        } else if ($client->getName() === 'google') {
-                                                            $btnType = 'btn-border-d';
-                                                        }
+                                                    if ($client->getName() === 'facebook') {
+                                                        $btnType = 'btn-primary';
+                                                    } else if ($client->getName() === 'google') {
+                                                        $btnType = 'btn-border-d';
+                                                    }
 
-                                                        echo $authAuthChoice->clientLink($client,
-                                                            '<i class="fab fa-' . $client->getName() . '"></i> Sign in with ' . $client->getTitle(), [
-                                                            'class' => 'btn ' . $btnType . ' btn-block btn-round',
-                                                        ]);
+                                                    echo $authAuthChoice->clientLink($client,
+                                                        '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
+                                                        'class' => 'btn ' . $btnType . ' btn-block btn-round',
+                                                    ]);
 
-                                                    endforeach;
+                                                endforeach;
 
                                                 AuthChoice::end(); ?>
 
@@ -240,4 +241,3 @@ $jscript = '
 ';
 
 $this->registerJs($jscript); ?>
-
