@@ -25,13 +25,6 @@ class BaseController extends \yii\web\Controller
 
                             foreach ($userAkses as $value) {
 
-                                $module = '';
-
-                                if (!empty($action->controller->module->id)){
-
-                                    $module = $action->controller->module->id . '/';
-                                }
-
                                 if (
                                         $value['userAppModule']['nama_module'] === $action->controller->id
                                         && $value['userAppModule']['module_action'] === $action->id

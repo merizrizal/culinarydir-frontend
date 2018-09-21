@@ -2,7 +2,6 @@
 namespace frontend\controllers\base;
 
 use Yii;
-use yii\filters\AccessControl;
 
 class BaseHistoryUrlController extends BaseController
 {
