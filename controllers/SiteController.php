@@ -13,6 +13,7 @@ use core\models\UserSocialMedia;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /**
  * Site controller
@@ -171,11 +172,20 @@ class SiteController extends base\BaseController
 
                     $transaction->commit();
 
+                    if (!$socmedFLag) {
+                        return $this->render('message', [
+                            'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                            'title' => Yii::t('app', 'You Have Registered To') . Yii::$app->name,
+                            'messages' => 'Silakan aktivasi akun Anda dengan mengklik link yang sudah kami kirimkan ke email Anda di ' . $post['UserRegister']['email'] . '.',
+                            'links' => '',
+                        ]);
+                    }
+
                     Yii::$app->session->setFlash('message', [
                         'type' => 'success',
                         'delay' => 1000,
                         'icon' => 'aicon aicon-icon-tick-in-circle',
-                        'message' => $socmedFLag ? 'Anda telah terdaftar di Asikmakan' : 'Anda telah terdaftar di Asikmakan.<br>Mohon periksa email anda untuk aktivasi akun Asikmakan.',
+                        'message' => 'Anda telah terdaftar di Asikmakan',
                         'title' => 'Berhasil Mendaftar',
                     ]);
 
@@ -436,8 +446,11 @@ class SiteController extends base\BaseController
             }
         }
 
-        return $this->render('_account_activation', [
-            'modelUser' => $modelUser,
+        return $this->render('message', [
+            'fullname' => $modelUser['full_name'],
+            'title' => Yii::t('app', 'Your Account Has Been Activated'),
+            'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
+            'links' => Html::a(Yii::t('app', 'Login To') . Yii::$app->name, ['site/login']),
         ]);
-     }
+    }
 }

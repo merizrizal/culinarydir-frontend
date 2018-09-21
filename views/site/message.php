@@ -1,7 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
 $this->registerMetaTag([
@@ -23,14 +21,14 @@ $this->registerMetaTag([
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4 class="font-alt"><?= Yii::t('app', 'Your Account Has Been Activated') ?></h4>
+                                    <h4 class="font-alt"><?= $title ?></h4>
                                     <hr class="divider-w mb-20">
 
-                                    <h5>Halo, <?= $modelUser['full_name'] ?> !</h5>
+                                    <h5>Halo, <?= $fullname ?> !</h5>
 
-                                    <div class="mb-10"><small>Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.</small></div>
+                                    <div class="mb-10"><small><?= $messages ?></small></div>
 
-                                    <?= Html::a(Yii::t('app', 'Login To') . Yii::$app->name, ['site/login']) ?>
+                                    <?= $links ?>
 
                                 </div>
                             </div>
