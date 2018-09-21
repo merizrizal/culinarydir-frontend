@@ -128,7 +128,7 @@ use kartik\rating\StarRating; ?>
                                 $textReview = StringHelper::truncate($model['text'], 85, '. . .') . '<br>';
                             }
 
-                            $textReview .= Html::a('<span class="text-red"> View detail <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
+                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
 
                             echo $textReview; ?>
 
