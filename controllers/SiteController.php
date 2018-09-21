@@ -278,14 +278,29 @@ class SiteController extends base\BaseController
     public function actionRequestResetPassword()
     {
         $model = new RequestResetPassword();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(($post = Yii::$app->request->post())) && $model->validate()) {
+
+            $modelUser = User::findByEmail($post);
+
             if ($model->sendEmail()) {
 
-                Yii::$app->session->setFlash('resetSuccess', 'Mohon periksa E-mail Anda untuk informasi lebih lanjut.');
+                $messageParams = [
+                    'fullname' => $modelUser['full_name'],
+                    'title' => Yii::t('app', 'Request Password Reset'),
+                    'messages' => Yii::t('app', 'Check your email for further instructions'),
+                    'links' => '',
+                ];
             } else {
 
-                Yii::$app->session->setFlash('resetError', 'Mohon maaf, permintaan reset password untuk E-mail terkait gagal.');
+                $messageParams = [
+                    'fullname' => $modelUser['full_name'],
+                    'title' => Yii::t('app', 'Request Password Reset'),
+                    'messages' => Yii::t('app', 'An error has occurred while requesting password reset'),
+                    'links' => '',
+                ];
             }
+
+            return $this->render('message', $messageParams);
         }
 
         return $this->render('request_reset_password', [
