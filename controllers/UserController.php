@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
+use yii\base\InvalidArgumentException;
 
 /**
  * User Controller
@@ -66,7 +67,7 @@ class UserController extends base\BaseHistoryUrlController
             return ActiveForm::validate($modelUserPerson->user);
         }
 
-        if (!empty(($post = Yii::$app->request->post()))) {
+        if (!empty(Yii::$app->request->post())) {
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
@@ -135,7 +136,7 @@ class UserController extends base\BaseHistoryUrlController
 
         try {
             $modelChangePassword = new ChangePassword($id);
-        } catch (InvalidParamException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
