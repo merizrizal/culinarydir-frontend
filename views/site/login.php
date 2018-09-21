@@ -69,11 +69,6 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                                     <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                                                 </div>
-                                                <div class="col-md-5">
-
-                                                    <?php // echo Html::a('Forgot Password?', ['site/request-password-reset']) ?>
-
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

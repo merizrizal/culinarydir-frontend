@@ -32,7 +32,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= 'Showing ' . $startItem . ' - ' . $endItem . ' of ' . $totalCount . ' results'; ?>
+        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -120,14 +120,13 @@ if (!empty($modelUserPostMain)):
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-
-                    <h3 class="mt-0 mb-0">
-                        <div class="rating">
-
+                    <div class="rating">
+						<h3 class="mt-0 mb-0">
+                            
                             <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
-
-                        </div>
-                    </h3>
+						
+                    	</h3>
+                    </div>
 
                     <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
                         <div class="arrow"></div>
@@ -359,7 +358,7 @@ endif; ?>
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= 'Showing ' . $startItem . ' - ' . $endItem . ' of ' . $totalCount . ' results'; ?>
+        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">

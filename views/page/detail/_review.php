@@ -21,7 +21,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
             <div class="loading-img" style="display: none"></div>
 
             <div class="box-title" id="title-write-review">
-                <h4 class="mt-0 mb-0 inline-block"><?= !empty($modelUserPostMain) ? 'Your Review' : 'Write a Review' ?></h4>
+                <h4 class="mt-0 mb-0 inline-block"><?= !empty($modelUserPostMain) ? Yii::t('app', 'Your Review') : Yii::t('app', 'Write a Review') ?></h4>
                 <span class="pull-right inline-block" id="close-review-container"><a class="text-main" href=""><i class="fa fa-close"></i> Cancel</a></span>
             </div>
 
