@@ -120,12 +120,13 @@ if (!empty($modelUserPostMain)):
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
+
                     <div class="rating">
-						<h3 class="mt-0 mb-0">
-                            
+                    	<h3 class="mt-0 mb-0">
+                        
                             <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
-						
-                    	</h3>
+
+                        </h3>
                     </div>
 
                     <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
