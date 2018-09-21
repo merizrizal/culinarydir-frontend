@@ -13,7 +13,6 @@ use core\models\UserSocialMedia;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 
@@ -467,7 +466,7 @@ class SiteController extends base\BaseController
             'fullname' => $modelUser['full_name'],
             'title' => Yii::t('app', 'Your Account Has Been Activated'),
             'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
-            'links' => Html::a(Yii::t('app', 'Login To') . Yii::$app->name, ['site/login']),
+            'links' => ['name' => Yii::t('app', 'Login To') . Yii::$app->name, 'url' => ['site/login']],
         ]);
     }
 }

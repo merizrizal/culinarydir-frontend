@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
@@ -28,7 +29,7 @@ $this->registerMetaTag([
 
                                     <div class="mb-10"><small><?= $messages ?></small></div>
 
-                                    <?= $links ?>
+                                    <?= !empty($links) ? Html::a($links['name'], $links['url']) : '' ?>
 
                                 </div>
                             </div>
