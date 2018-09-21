@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 
+/* @var $this yii\web\View */
+
 $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
