@@ -116,6 +116,7 @@ class SiteController extends base\BaseController
 
                     if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
 
+                        $socmedFLag = true;
                         $modelUserSocialMedia->user_id = $modelUserRegister->id;
 
                         if (!empty($post['UserSocialMedia']['google_id'])) {
@@ -144,8 +145,11 @@ class SiteController extends base\BaseController
 
                     } else {
 
+                        $socmedFLag = false;
+                        $randomString = Yii::$app->security->generateRandomString();
+                        $randomStringHalf = substr($randomString, 16);
                         $modelUserRegister->not_active = true;
-                        $modelUserRegister->account_activation_token = Yii::$app->security->generateRandomString() . '_' . time();
+                        $modelUserRegister->account_activation_token = substr($randomString, 0, 15) . $modelUserRegister->id . $randomStringHalf . '_' . time();
 
                         if (($flag = $modelUserRegister->save())) {
 
@@ -166,6 +170,15 @@ class SiteController extends base\BaseController
                 if ($flag) {
 
                     $transaction->commit();
+
+                    if (!$socmedFLag) {
+                        return $this->render('message', [
+                            'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                            'title' => Yii::t('app', 'You Have Registered To') . Yii::$app->name,
+                            'messages' => 'Silakan aktivasi akun Anda dengan mengklik link yang sudah kami kirimkan ke email Anda di ' . $post['UserRegister']['email'] . '.',
+                            'links' => '',
+                        ]);
+                    }
 
                     Yii::$app->session->setFlash('message', [
                         'type' => 'success',
@@ -264,14 +277,29 @@ class SiteController extends base\BaseController
     public function actionRequestResetPassword()
     {
         $model = new RequestResetPassword();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(($post = Yii::$app->request->post())) && $model->validate()) {
+
+            $modelUser = User::findByEmail($post);
+
             if ($model->sendEmail()) {
 
-                Yii::$app->session->setFlash('resetSuccess', 'Mohon periksa E-mail Anda untuk informasi lebih lanjut.');
+                $messageParams = [
+                    'fullname' => $modelUser['full_name'],
+                    'title' => Yii::t('app', 'Request Password Reset'),
+                    'messages' => Yii::t('app', 'Check your email for further instructions'),
+                    'links' => '',
+                ];
             } else {
 
-                Yii::$app->session->setFlash('resetError', 'Mohon maaf, permintaan reset password untuk E-mail terkait gagal.');
+                $messageParams = [
+                    'fullname' => $modelUser['full_name'],
+                    'title' => Yii::t('app', 'Request Password Reset'),
+                    'messages' => Yii::t('app', 'An error has occurred while requesting password reset'),
+                    'links' => '',
+                ];
             }
+
+            return $this->render('message', $messageParams);
         }
 
         return $this->render('request_reset_password', [
@@ -400,6 +428,8 @@ class SiteController extends base\BaseController
                     'message' => 'Gagal Login',
                     'title' => 'Gagal Login',
                 ]);
+
+                return $this->redirect(['login']);
             }
         }
     }
@@ -413,11 +443,28 @@ class SiteController extends base\BaseController
 
         if (!empty($modelUser)) {
 
-            Yii::$app->db->createCommand()
-                    ->update('user', ['not_active' => false], "account_activation_token = '" . $token . "'")
-                    ->execute();
+            $modelUser->not_active = false;
+            $flag = $modelUser->save();
+
+            if (!$flag) {
+
+                Yii::$app->session->setFlash('message', [
+                    'type' => 'danger',
+                    'delay' => 1000,
+                    'icon' => 'aicon aicon-icon-info',
+                    'message' => 'Gagal Aktivasi Akun Anda',
+                    'title' => 'Gagal Aktivasi',
+                ]);
+
+                return $this->redirect(['register']);
+            }
         }
 
-        return $this->redirect(['login']);
+        return $this->render('message', [
+            'fullname' => $modelUser['full_name'],
+            'title' => Yii::t('app', 'Your Account Has Been Activated'),
+            'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
+            'links' => ['name' => Yii::t('app', 'Login To') . Yii::$app->name, 'url' => ['site/login']],
+        ]);
     }
 }
