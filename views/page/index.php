@@ -58,7 +58,7 @@ $this->registerMetaTag([
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12 text-center">
-                <div class="titan-title-tagline mb-20">Cari tempat makan favoritmu</div>
+                <div class="titan-title-tagline mb-20">Masih dalam proses pendataan bisnis kuliner</div>
             </div>
         </div>
         <div class="row">
@@ -77,7 +77,7 @@ $this->registerMetaTag([
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12 text-center">
-                <div class="titan-title-tagline mb-20">Cari tempat makan favoritmu</div>
+                <div class="titan-title-tagline mb-20">Masih dalam proses pendataan bisnis kuliner</div>
             </div>
         </div>
         <div class="row">
