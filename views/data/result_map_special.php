@@ -31,7 +31,7 @@ $jspopover = ''; ?>
         <div class="row mt-10">
             <div class="col-lg-6 col-md-12 col-tab-6 col-xs-12 mb-10">
 
-                <?= 'Showing ' . $startItem . ' - ' . $endItem . ' of ' . $totalCount . ' results'; ?>
+                <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
 
             </div>
             <div class="col-lg-6 visible-lg text-right">

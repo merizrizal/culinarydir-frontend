@@ -16,9 +16,7 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
-]);
-
-$appComponent = new AppComponent(); ?>
+]); ?>
 
 <div class="main">
 
@@ -96,7 +94,7 @@ $appComponent = new AppComponent(); ?>
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-camera aicon-1-5x"></i>
-                                                <li>Photo</li>
+                                                <li><?= Yii::t('app', 'Photo') ?></li>
                                                 <span class="badge total-user-photo"></span>
                                             </ul>
                                         </li>

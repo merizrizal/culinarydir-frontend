@@ -84,11 +84,9 @@ use sycomponent\Tools; ?>
                                         <div class="box-content">
                                             <div class="row mt-0">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12 col">
-                                                    <h4 class="m-0">
-                                                        <h4 class="visible-lg visible-md visible-sm m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?> </small></h4>
-                                                        <h4 class="visible-tab m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small></h4>
-                                                        <small class="visible-xs mt-10"><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small>
-                                                    </h4>
+                                                    <h4 class="visible-lg visible-md visible-sm m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?> </small></h4>
+                                                    <h4 class="visible-tab m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small></h4>
+                                                    <small class="visible-xs mt-10"><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small>
                                                 </div>
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
