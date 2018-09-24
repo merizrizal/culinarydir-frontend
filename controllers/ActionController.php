@@ -78,6 +78,8 @@ class ActionController extends base\BaseController
             $modelUserPostComment->text = $post['text'];
 
             $flag = $modelUserPostComment->save();
+            
+            $result = [];
 
             if ($flag) {
 
