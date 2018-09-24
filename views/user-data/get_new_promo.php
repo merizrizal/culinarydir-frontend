@@ -23,7 +23,7 @@ $linkPager = LinkPager::widget([
 ]); ?>
 
 <div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none"></div>
+<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">

@@ -27,7 +27,7 @@ $linkPager = LinkPager::widget([
 kartik\popover\PopoverXAsset::register($this); ?>
 
 <div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none"></div>
+<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -93,7 +93,7 @@ if (!empty($modelUserPostMain)):
 
         if (!empty($dataUserPostMain['userPostComments'])) {
 
-            foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment){
+            foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment) {
 
                 $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
             }
@@ -261,12 +261,12 @@ if (!empty($modelUserPostMain)):
                                 <ul class="list-inline mt-0 mb-0">
                                     <li>
 
-                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment' ?></small>
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review"></span>' . Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]) ?></small>
 
                                     </li>
                                     <li>
 
-                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo' ?></small>
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review"></span>' . Yii::t('app', '{value, plural, =0{# Photo} =1{# Photo} other{# Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]) ?></small>
 
                                     </li>
                                 </ul>
@@ -285,19 +285,19 @@ if (!empty($modelUserPostMain)):
                                             $selected = 'selected';
                                         } ?>
 
-                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0]), null , ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
 
                                     </li>
                                     <li>
 
-                                        <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
 
                                     </li>
                                     <li>
 
-                                        <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
 
                                     </li>
@@ -379,13 +379,23 @@ if (!empty($modelUserPostMain)):
                                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                                 <div class="widget">
                                                                     <div class="widget-comments-image">
-
-                                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-
+																		<a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
+																		
+    																		<?php
+                                                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+    
+                                                                            if (!empty($dataUserPostComment['user']['image'])) {
+    
+                                                                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                            }
+    
+                                                                            echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                            
+                                                                        </a>
                                                                     </div>
 
                                                                     <div class="widget-comments-body">
-                                                                        <strong><?= $dataUserPostComment['user']['full_name']; ?>&nbsp;&nbsp;&nbsp;</strong>
+                                                                        <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
                                                                         <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                         <br>
                                                                         <p class="comment-description">
@@ -416,7 +426,7 @@ if (!empty($modelUserPostMain)):
 
         <?php
     endforeach;
-endif;?>
+endif; ?>
 
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -476,27 +486,21 @@ $jscript = '
                 },
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
                 success: function(response) {
-
                     if (response.status == "sukses") {
-
                         var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
 
-                        if(response.is_active) {
-
+                        if (response.is_active) {
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue + 1).toString());
                         } else {
-
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue - 1).toString());
                         }
                     } else {
-
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -514,7 +518,7 @@ $jscript = '
         });
 
         thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").on("keypress", function(event) {
-            if(event.which == 13 && $(this).val().trim()) {
+            if (event.which == 13 && $(this).val().trim()) {
                 var data = {
                     "user_post_main_id": thisObj.val(),
                     "text": $(this).val(),
@@ -529,9 +533,7 @@ $jscript = '
                         $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
                     },
                     success: function(response) {
-
                         if (response.status == "sukses") {
-
                             $("#input-" + response.user_post_main_id + "-comments-review").val("");
 
                             $.ajax({
@@ -542,16 +544,13 @@ $jscript = '
                                 },
                                 url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                                 success: function(response) {
-
                                     $(".comment-" + thisObj.val() + "-section").html(response);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
-
                                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                                 }
                             });
                         } else {
-
                             messageResponse(response.icon, response.title, response.message, response.type);
                         }
 
@@ -559,7 +558,6 @@ $jscript = '
                         $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-
                         messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                     }
                 });
@@ -591,12 +589,10 @@ $jscript = '
         $(".review-" + thisObj.val() + "-option").hide();
 
         $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
-
             $(".review-" + thisObj.val() + "-option").slideToggle();
         });
 
         thisObj.parent().find(".user-" + thisObj.val() + "-delete-review-trigger").on("click", function() {
-
             var form = $("form#rating-popover-form-" + thisObj.val()).serialize();
 
             $.ajax({
@@ -605,27 +601,21 @@ $jscript = '
                 data: form,
                 url: $(this).attr("href"),
                 success: function(response) {
-
                     if (response.status == "sukses") {
-
                         var totalUserPost = parseInt($(".total-user-post").html());
 
                         if (response.publish) {
-
                             $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
                             $(".total-user-post").html(totalUserPost + 1);
                         } else {
-
                             $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
                             $(".total-user-post").html(totalUserPost - 1);
                         }
                     } else {
-
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -634,7 +624,6 @@ $jscript = '
         });
 
         thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
-
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
             var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + thisObj.parent().find(".business-name").val();
             var description = thisObj.parent().find(".review-description").text();

@@ -27,7 +27,7 @@ if (!empty($userPostComment)):
 
                                         if (!empty($dataUserPostComment['user']['image'])) {
 
-                                            $imgUserProfileComment = Yii::getAlias('@uploadUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
                                         }
 
                                         echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>

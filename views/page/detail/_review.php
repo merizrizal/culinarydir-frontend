@@ -222,22 +222,22 @@ $layoutUser = '
                                                     if (!empty($modelUserPostMain['userPostLoves'][0])) {
                                                         $selected = 'selected';
                                                     } ?>
-
-                                                    <?= Html::a(!empty($modelUserPostMain['love_value']) ? '<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $modelUserPostMain['love_value'] . '</span> Like' : '<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">0</span> Like', null, ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a(!empty($modelUserPostMain['love_value']) ? '<i class="fa fa-thumbs-up"></i> Like' : '<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-
+                                                
+                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $modelUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0]), null , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+            
                                                 </li>
                                                 <li>
-
-                                                    <?= Html::a(!empty($modelUserPostMain['userPostComments']) ? '<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span> Comment' : '<i class="fa fa-comments"></i> <span class="my-total-comments-review">0</span> Comment', null, ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a(!empty($modelUserPostMain['userPostComments']) ? '<i class="fa fa-comments"></i> Comment' : '<i class="fa fa-comments"></i> Comment', null, ['class' => 'my-comments-review-trigger visible-xs']); ?>
-
+            
+                                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0]), null, ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'my-comments-review-trigger visible-xs']); ?>
+            
                                                 </li>
                                                 <li>
-
-                                                    <?= Html::a(!empty($modelUserPostMain['userPostMains']) ? '<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span> Photo' : '<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">0</span> Photo', null, ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a(!empty($modelUserPostMain['userPostMains']) ? '<i class="fa fa-camera-retro"></i> Photo' : '<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'my-photos-review-trigger visible-xs']); ?>
-
+            
+                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0]), null, ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'my-photos-review-trigger visible-xs']); ?>
+            
                                                 </li>
                                                 <li class="review-option-toggle visible-xs-inline-block">
                                                     <i class="fa fa-ellipsis-h"></i>
@@ -312,15 +312,15 @@ $layoutUser = '
                                                                                 <div class="widget-comments-image">
                                                                                     <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
 
-                                                                                    <?php
-                                                                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-
-                                                                                    if (!empty($dataUserPostComment['user']['image'])) {
-
-                                                                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                    }
-
-                                                                                    echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                                        <?php
+                                                                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+    
+                                                                                        if (!empty($dataUserPostComment['user']['image'])) {
+    
+                                                                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                        }
+    
+                                                                                        echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
 
                                                                                     </a>
                                                                                 </div>
@@ -628,7 +628,6 @@ $jscript = '
     $("#close-review-container").hide();
 
     $("#write-review-trigger").on("focusin", function(event) {
-
         var thisObj = $(this);
 
         $.ajax({
@@ -636,15 +635,12 @@ $jscript = '
             type: "POST",
             url: "' . Yii::$app->urlManager->createUrl(['redirect/write-review']) . '",
             success: function(response) {
-
                 thisObj.fadeOut(100, function() {
-
                     $("#write-review-container").fadeIn();
                     $("#close-review-container").fadeIn();
                 });
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -653,21 +649,16 @@ $jscript = '
     $(".review-option").hide();
 
     $(".review-option-toggle").on("click", function() {
-
         $(".review-option").slideToggle();
     });
 
     $(".edit-my-review-trigger").on("click", function(event) {
-
         $("#edit-review-container").fadeOut(100, function() {
-
             prevReview = $("#post-review-text").val();
 
             if ($("#form-review-uploaded-photo").find("li").length == 0) {
-
                 $("#form-photos-review-container").parent().addClass("hidden");
             } else {
-
                 $("#form-photos-review-container").parent().removeClass("hidden");
             }
 
@@ -677,7 +668,6 @@ $jscript = '
     });
 
     $(".delete-my-review-trigger").on("click", function(event) {
-
         var form = $("form#review-form").serialize();
 
         $.ajax({
@@ -686,27 +676,21 @@ $jscript = '
             data: form,
             url: $(this).attr("href"),
             success: function(response) {
-
                 if (response.status == "sukses") {
-
                     var totalUserPost = parseInt($(".total-review").html());
 
                     if (response.publish) {
-
                         $(".delete-my-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
                         $(".total-review").html(totalUserPost + 1);
                     } else {
-
                         $(".delete-my-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
                         $(".total-review").html(totalUserPost - 1);
                     }
                 } else {
-
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -715,18 +699,14 @@ $jscript = '
     });
 
     $("#write-review-shortcut").on("click", function(event) {
-
         if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
             $("a[aria-controls=\"view-review\"]").tab("show");
 
             $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
                 $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                 $(this).off("shown.bs.tab");
             });
         } else {
-
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         }
 
@@ -734,18 +714,14 @@ $jscript = '
     });
 
     $("#write-review-shortcut-xs").on("click", function(event) {
-
         if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
             $("a[aria-controls=\"view-review\"]").tab("show");
 
             $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
                 $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                 $(this).off("shown.bs.tab");
             });
         } else {
-
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         }
 
@@ -753,9 +729,7 @@ $jscript = '
     });
 
     $("#close-review-container > a, #cancel-write-review").on("click", function(event) {
-
         $("#write-review-container, #close-review-container").fadeOut(100, function() {
-
             $("#edit-review-container").fadeIn();
             $("#write-review-trigger").fadeIn();
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
@@ -764,23 +738,18 @@ $jscript = '
         var tempOverallRating = $(".temp-overall-rating").val();
 
         if (tempOverallRating == "") {
-
             $("#overall-rating").rating("reset");
             $(".rating-overall").children("span").html(parseFloat(parseFloat($("#overall-rating").val()).toFixed(1)));
         } else {
-
             $("#overall-rating").rating("update", tempOverallRating);
             $(".rating-overall").children("span").html(parseFloat(parseFloat(tempOverallRating).toFixed(1)));
         }
 
         $(".rating-component-id").each(function() {
-
             if ($(".temp-rating-" + $(this).val()).val() == "") {
-
                 $(this).parent().find("#rating-" + $(this).val() + "").rating("reset");
                 $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val() + "").val());
             } else {
-
                 $(this).parent().find("#rating-" + $(this).val() + "").rating("update", $(".temp-rating-" + $(this).val()).val());
                 $("#post-review-rating-" + $(this).val() + "").val($(".temp-rating-" + $(this).val()).val());
             }
@@ -795,11 +764,9 @@ $jscript = '
     });
 
     $("#overall-rating").on("change", function() {
-
         var thisObj = $(this);
 
         $(".rating-component-id").each(function() {
-
             $(this).parent().find("#rating-" + $(this).val() + "").rating("update", thisObj.val());
 
             $(this).parent().find("#post-review-rating-" + $(this).val() + "").val(thisObj.val());
@@ -807,11 +774,9 @@ $jscript = '
     });
 
     function setOverall() {
-
         var overall = 0;
 
         $(".rating-component-id").each(function() {
-
             var rating = parseInt($(this).parent().find("#rating-" + $(this).val() + "").val());
 
             overall += rating;
@@ -820,21 +785,17 @@ $jscript = '
         overall = overall / parseInt($(".rating-component-id").length);
 
         if (!isNaN(overall)) {
-
             $("#overall-rating").rating("update", overall);
             $(".rating-overall").children("span").html(parseFloat(overall.toFixed(1)));
         } else {
-
             $(".rating-overall").children("span").html("0");
         }
     }
 
     $(".rating-component-id").each(function() {
-
         var thisObj = $(this);
 
         thisObj.parent().find("#rating-" + thisObj.val() + "").on("change", function() {
-
             $("#post-review-rating-" + thisObj.val() + "").val($(this).val());
 
             setOverall();
@@ -844,7 +805,6 @@ $jscript = '
     var myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
 
     $("form#review-form").on("beforeSubmit", function(event) {
-
         var thisObj = $(this);
 
         var formData = new FormData(this);
@@ -861,13 +821,10 @@ $jscript = '
                 $("#title-write-review").siblings(".loading-img").show();
             },
             success: function(response) {
-
                 $("#post-photo-input").fileinput("clear");
 
                 if (response.status == "sukses") {
-
                     if (!response.updated) {
-
                         $(".total-review").html(parseInt($(".total-review").html()) + 1);
                     }
 
@@ -891,7 +848,6 @@ $jscript = '
                     });
 
                     $.each(response.userPostMainPhoto, function(i, item) {
-
                         var cloneImageReviewContainer = $("#container-temp-uploaded-photo").find("li").clone();
                         var cloneImageFormContainer = $("#container-temp-uploaded-photo").find("li").clone();
 
@@ -911,7 +867,6 @@ $jscript = '
                     var tempOverall = 0;
 
                     $(".rating-component-id").each(function() {
-
                         var tempRating = parseInt($("#post-review-rating-" + $(this).val() + "").val());
 
                         tempOverall += tempRating;
@@ -973,11 +928,8 @@ $jscript = '
                     $(".facebook-review-share-trigger").iCheck("uncheck");
 
                     if ($.trim(response.socialShare)){
-
                         $.each(response.socialShare, function(socialName, value) {
-
                             if (socialName === "facebook" && response.socialShare[socialName]) {
-
                                 var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
                                 var title = "Rating " + $("#edit-review-container").find(".my-rating").text().trim() + " untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMain.text;
@@ -996,7 +948,6 @@ $jscript = '
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
-
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
 
@@ -1004,7 +955,6 @@ $jscript = '
                 $("#title-write-review").siblings(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                 $("#title-write-review").siblings(".overlay").hide();
@@ -1016,7 +966,6 @@ $jscript = '
     });
 
     function getUserPost(business_id) {
-
         $.ajax({
             cache: false,
             type: "GET",
@@ -1025,11 +974,9 @@ $jscript = '
             },
             url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . '",
             success: function(response) {
-
                 $(".review-section").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -1038,7 +985,6 @@ $jscript = '
     getUserPost($("#business_id").val());
 
     function getPlaceVote(business_id) {
-
         $.ajax({
             cache: false,
             type: "POST",
@@ -1047,18 +993,15 @@ $jscript = '
             },
             url: "' . Yii::$app->urlManager->createUrl(['data/business-rating']) . '",
             success: function(response) {
-
                 $(".business-rating").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
     }
 
     $("#edit-review-container").find(".my-likes-review-trigger").on("click", function() {
-
         $.ajax({
             cache: false,
             type: "POST",
@@ -1067,27 +1010,21 @@ $jscript = '
             },
             url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
             success: function(response) {
-
                 if (response.status == "sukses") {
-
                     var loveValue = parseInt($("#edit-review-container").find(".my-likes-review-trigger").find("span.my-total-likes-review").html());
 
                     if(response.is_active) {
-
                         $("#edit-review-container").find(".my-likes-review-trigger").addClass("selected");
                         $("#edit-review-container").find("span.my-total-likes-review").html((loveValue + 1).toString());
                     } else {
-
                         $("#edit-review-container").find(".my-likes-review-trigger").removeClass("selected");
                         $("#edit-review-container").find("span.my-total-likes-review").html((loveValue - 1).toString());
                     }
                 } else {
-
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -1099,14 +1036,12 @@ $jscript = '
     $("#edit-review-container").find("#my-photos-review-container").hide();
 
     $("#edit-review-container").find(".my-comments-review-trigger").on("click", function() {
-
         $("#edit-review-container").find("#my-comments-review-container").slideToggle();
 
         return false;
     });
 
     $("#edit-review-container").find("#input-my-comments-review").on("keypress", function(event) {
-
         if(event.which == 13 && $(this).val().trim()) {
             var data = {
                 "user_post_main_id": myUserPostMainId,
@@ -1122,9 +1057,7 @@ $jscript = '
                     $(".my-comment-section").siblings(".loading-img").show();
                 },
                 success: function(response) {
-
                     if (response.status == "sukses") {
-
                         $("#input-my-comments-review").val("");
 
                         $.ajax({
@@ -1135,16 +1068,13 @@ $jscript = '
                             },
                             url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                             success: function(response) {
-
                                 $(".my-comment-section").html(response);
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
-
                                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                             }
                         });
                     } else {
-
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
 
@@ -1152,7 +1082,6 @@ $jscript = '
                     $(".my-comment-section").siblings(".loading-img").hide();
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -1160,7 +1089,6 @@ $jscript = '
     });
 
     $("#edit-review-container").find(".my-photos-review-trigger").on("click", function() {
-
         if ($("#edit-review-container").find("#my-photos-review-container").find(".gallery-photo-review").length) {
             $("#edit-review-container").find("#my-photos-review-container").toggle(500);
         }
@@ -1197,7 +1125,6 @@ $jscript = '
     });
 
     $("#form-photos-review-container").on("click", ".delete-image", function() {
-
         $("#modal-confirmation").modal("show");
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
@@ -1206,24 +1133,20 @@ $jscript = '
     });
 
     $("#modal-confirmation").find("#btn-delete").on("click", function() {
-
         $.ajax({
             cache: false,
             type: "POST",
             url: $(this).data("href"),
             success: function(response) {
-
                 $("#modal-confirmation").modal("hide");
 
                 if (response.status == "sukses") {
-
                     getUserPhoto($("#business_id").val());
 
                     $("#review-uploaded-photo").find("li#image-" + response.id).remove();
                     $("#form-review-uploaded-photo").find("li#image-" + response.id).remove();
 
                     if ($("#form-review-uploaded-photo").find("li").length == 0) {
-
                         $("#form-photos-review-container").parent().addClass("hidden");
                     }
 
@@ -1231,12 +1154,10 @@ $jscript = '
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
-
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
-
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -1266,14 +1187,10 @@ $jscript = '
     });
 
     $("#my-rating-popover").on("mouseenter.popoverX", function(event) {
-
         $(".rating-component-id").each(function() {
-
             if ($(".temp-rating-" + $(this).val()).val() == "") {
-
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find("#rating-" + $(this).val() + "").val());
             } else {
-
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find(".temp-rating-" + $(this).val() + "").val());
             }
         });

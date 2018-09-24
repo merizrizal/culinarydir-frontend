@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
-use frontend\components\AppComponent;
 use sycomponent\Tools;
 
 /* @var $this yii\web\View */
@@ -174,6 +173,7 @@ $this->registerMetaTag([
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">
                                 <?= $this->render('user/_new_promo') ?>
                             </div>
+                            
                         </div>
                     </div>
 

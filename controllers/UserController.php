@@ -85,9 +85,7 @@ class UserController extends base\BaseHistoryUrlController
 
                 if ($modelUser->load(Yii::$app->request->post())) {
 
-                    if (($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
-
-                    } else {
+                    if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
 
                         $modelUser->image = $modelUser->oldAttributes['image'];
                     }

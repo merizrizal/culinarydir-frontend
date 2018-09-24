@@ -23,7 +23,7 @@ $linkPager = LinkPager::widget([
 ]); ?>
 
 <div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none"></div>
+<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -180,28 +180,21 @@ $jscript = '
                     "business_id": thisObj.val()
                 },
                 success: function(response) {
-
                     if (response.status == "sukses") {
-
                         var count = parseInt($(".total-user-love").html());
 
                         if (response.is_active) {
-
                             thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
                             $(".total-user-love").html(count + 1);
-
                         } else {
-
                             thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
                             $(".total-user-love").html(count - 1);
                         }
                     } else {
-
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });

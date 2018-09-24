@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\components\AppComponent;
 use sycomponent\Tools;
 
 /* @var $this yii\web\View */
