@@ -25,7 +25,7 @@ $jscript = '
 
                 $("#modal-confirmation").modal("hide");
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     getUserPostPhoto();
 

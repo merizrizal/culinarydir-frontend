@@ -695,7 +695,7 @@ $jscript = '
             url: $(this).attr("href"),
             success: function(response) {
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     var totalUserPost = parseInt($(".total-review").html());
 
@@ -873,7 +873,7 @@ $jscript = '
 
                 $("#post-photo-input").fileinput("clear");
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     if (!response.updated) {
 
@@ -1080,7 +1080,7 @@ $jscript = '
             url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
             success: function(response) {
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     var loveValue = parseInt($("#edit-review-container").find(".my-likes-review-trigger").find("span.my-total-likes-review").html());
 
@@ -1138,7 +1138,7 @@ $jscript = '
                 },
                 success: function(response) {
 
-                    if (response.status == "sukses") {
+                    if (response.success) {
 
                         $("#input-my-comments-review").val("");
 
@@ -1233,7 +1233,7 @@ $jscript = '
 
                 $("#modal-confirmation").modal("hide");
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     getUserPhoto($("#business_id").val());
 
