@@ -162,7 +162,7 @@ $jscript = '
         if (coordinateMap.val() != "") {
 
             var keyCoordinate = coordinateMap.val().split(",");
-            defaultLatLng = {lat: parseFloat(keyCoordinate[0].trim()), lng: parseFloat(keyCoordinate[1].trim())};
+            defaultLatLng = {lat: parseFloat(keyCoordinate[0]), lng: parseFloat(keyCoordinate[1])};
         } else {
 
             var defaultLatLng = {lat: -6.9175, lng: 107.6191};
