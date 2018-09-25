@@ -6,6 +6,13 @@ use yii\widgets\Pjax;
 use sycomponent\Tools;
 use frontend\components\AddressType;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelBusiness core\models\Business */
+
 kartik\popover\PopoverXAsset::register($this);
 
 Pjax::begin([
@@ -56,8 +63,6 @@ $jspopover = ''; ?>
     </div>
 </div>
 
-<hr class="divider-w mt-10 mb-20">
-
 <div class="container">
     <div class="row">
 
@@ -77,122 +82,8 @@ $jspopover = ''; ?>
                             placement: "bottom bottom-left",
                             target: "#business-product-category-container-popover' . $dataBusiness['id'] . '"
                         });
-                    ';
+                    '; ?>
 
-                    if ($dataBusiness['membershipType']['name'] == 'Highlight'): ?>
-
-                        <!--Member Highlight Container-->
-                        <div class="row mb-20">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="box">
-
-                                    <div class="row">
-                                        <div class="col-sm-12 col-xs-12">
-                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusiness['id']]); ?>">
-
-                                                <?php
-                                                foreach ($dataBusiness['businessImages'] as $dataBusinessImages) {
-
-                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
-
-                                                    if (!empty($dataBusinessImages['image'])) {
-
-                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImages['image'], 490, 276);
-
-                                                    }
-
-                                                    echo Html::img($img);
-
-                                                } ?>
-
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-12 col-xs-12">
-                                            <div class="bg-white short-desc">
-                                                <div class="row">
-                                                    <div class="col-sm-7 col-xs-12">
-                                                        <h4 class="font-alt m-0"><?= Html::a($dataBusiness['name'], ['page/detail', 'id' => $dataBusiness['id']]); ?></h4>
-                                                    </div>
-
-                                                    <div class="visible-xs col-xs-12 clearfix"></div>
-
-                                                    <div class="col-sm-5 col-xs-12">
-                                                        <h4 class="m-0">
-
-                                                            <?php
-                                                            foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories): ?>
-
-                                                                <small class="mt-10"><?= $dataBusinessCategories['category']['name']; ?></small>
-
-                                                            <?php
-                                                            endforeach; ?>
-
-                                                        </h4>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-10">
-                                                    <div class="col-sm-9 col-xs-9">
-                                                        <div class="widget">
-                                                            <ul class="icon-list">
-                                                                <li>
-                                                                    <i class="aicon aicon-home"></i>
-
-                                                                    <?= AddressType::widget([
-                                                                        'addressType' => $dataBusiness['businessLocation']['address_type'],
-                                                                        'address' => $dataBusiness['businessLocation']['address']
-                                                                    ]) ?>
-
-                                                                </li>
-                                                                <li><i class="aicon aicon-rupiah"></i> Fitur ini akan segera hadir.</li>
-                                                                <li class="tag">
-
-                                                                    <?php
-                                                                    foreach ($dataBusiness['businessProductCategories'] as $dataBusinessProductCategories): ?>
-
-                                                                        <strong class="text-red">#</strong><?= $dataBusinessProductCategories['productCategory']['name']; ?>
-
-                                                                    <?php
-                                                                    endforeach; ?>
-
-                                                                </li>
-                                                                <li class="tag">
-
-                                                                    <?php
-                                                                    foreach ($dataBusiness['businessFacilities'] as $dataBusinessFacilities): ?>
-
-                                                                        <strong class="text-blue">#</strong><?= $dataBusinessFacilities['facility']['name']; ?>
-
-                                                                    <?php
-                                                                    endforeach; ?>
-
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-3 col-xs-3 text-center">
-                                                        <div class="rating pull-right">
-                                                            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                                            <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Member Highlight Container-->
-
-                    <?php
-                    else: ?>
-
-                        <!--Member Basic Container-->
                         <div class="row mb-10">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="box box-small">
@@ -216,11 +107,11 @@ $jspopover = ''; ?>
                                                     }
 
                                                     $images[] = [
-                                                            'title' => '',
-                                                            'href' => $href,
-                                                            'type' => 'image/jpeg',
-                                                            'poster' => $href,
-                                                        ];
+                                                        'title' => '',
+                                                        'href' => $href,
+                                                        'type' => 'image/jpeg',
+                                                        'poster' => $href,
+                                                    ];
                                                 }
 
                                                 echo dosamigos\gallery\Carousel::widget([
@@ -232,28 +123,20 @@ $jspopover = ''; ?>
                                                 ]);
                                             } else {
 
-                                                foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
+                                                $image = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                                if (!empty($dataBusiness['businessImages'][0]['image'])) {
 
-                                                    if (!empty($dataBusinessImage['image'])) {
-
-                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
-                                                    }
-
-                                                    echo Html::img($img);
+                                                    $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 490, 276);
                                                 }
+
+                                                echo Html::img($image);
                                             } ?>
 
                                         </div>
 
                                         <?php
-                                        $classLove = 'far fa-heart';
-
-                                        if (!empty($dataBusiness['userLoves'][0])) {
-                                            $classLove = 'fas fa-heart';
-                                        } ?>
+                                        $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart'; ?>
 
                                         <div class="col-tab-5 col visible-tab text-center">
                                             <div class="love love-<?= $dataBusiness['id'] ?>">
@@ -261,7 +144,7 @@ $jspopover = ''; ?>
                                             </div>
                                             <div class="rating rating-top">
                                                 <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                                <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
+                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                             </div>
                                         </div>
 
@@ -271,7 +154,7 @@ $jspopover = ''; ?>
                                             </div>
                                             <div class="rating rating-top">
                                                 <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                                <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
+                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                             </div>
                                         </div>
 
@@ -296,7 +179,6 @@ $jspopover = ''; ?>
                                                             foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
 
                                                                 $categories .= $dataBusinessCategories['category']['name'] . ' / ';
-
                                                             } ?>
 
                                                             <small class="mt-10"><?= trim($categories, ' / ') ?></small>
@@ -322,10 +204,10 @@ $jspopover = ''; ?>
                                                                         echo Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
                                                                     } else if (empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
 
-                                                                        echo '0 - ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
+                                                                        echo Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
                                                                     } else if (empty($dataBusiness['businessDetail']['price_max']) && !empty($dataBusiness['businessDetail']['price_min'])) {
 
-                                                                        echo Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - 0';
+                                                                        echo Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
                                                                     } else {
 
                                                                         echo '-';
@@ -338,20 +220,25 @@ $jspopover = ''; ?>
                                                                     $businessProductCategoryLimit = 3;
                                                                     $businessProductCategoryList = '';
                                                                     $businessProductCategoryPopover = '';
-                                                                    $businessProductCategoryHref = '<a href="#" id="business-product-category-popover' . $dataBusiness['id'] . '" class="popover-tag">';
 
                                                                     foreach($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory){
 
                                                                         if($key < $businessProductCategoryLimit) {
 
                                                                             $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        } else if($key > $businessProductCategoryLimit - 1) {
+                                                                        } else {
 
                                                                             $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                         }
                                                                     }
 
-                                                                    echo (count($dataBusiness['businessProductCategories']) > $businessProductCategoryLimit ? $businessProductCategoryHref . $businessProductCategoryList . '</a>' : $businessProductCategoryList); ?>
+                                                                    if (count($dataBusiness['businessProductCategories']) > $businessProductCategoryLimit) {
+
+                                                                        echo Html::a($businessProductCategoryList, '#', ['id' => 'business-product-category-popover' . $dataBusiness['id'], 'class' => 'popover-tag']);
+                                                                    } else {
+
+                                                                        echo $businessProductCategoryList;
+                                                                    } ?>
 
                                                                     <div id="business-product-category-container-popover<?= $dataBusiness['id']; ?>" class="popover popover-x popover-default">
                                                                         <div class="arrow mt-0"></div>
@@ -377,9 +264,7 @@ $jspopover = ''; ?>
                                                         </div>
                                                         <div class="rating pull-right">
                                                             <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-
-                                                            <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
-
+                                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -391,16 +276,13 @@ $jspopover = ''; ?>
                         </div>
                         <!--Member Basic Container-->
 
-                    <?php
-                    endif;
+                <?php
                 endforeach;
             endif; ?>
 
         </div>
     </div>
 </div>
-
-<hr class="divider-w mt-20 mb-10">
 
 <div class="container">
     <div class="row">
@@ -469,9 +351,10 @@ $jscript = '
 
     $(".love-button").on("click", function() {
 
-        var business_id = this.dataset.id;
+        var business_id = $(this).data("id");
 
         $.ajax({
+            cache: false,
             url: "'. Yii::$app->urlManager->createUrl('action/submit-user-love').'",
             type: "POST",
             data: {
@@ -479,7 +362,7 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.status == "sukses") {
+                if(response.success) {
 
                     if(response.is_active) {
                         $(".love-" + business_id).find("span.love-button").removeClass("far fa-heart").addClass("fas fa-heart");

@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use frontend\components\AppComponent;
 
+/* @var $this yii\web\View */
+/* @var $keyword array */
+
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
 
-/* @var $this yii\web\View */
-
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = Yii::t('app', 'Search Result');
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -61,10 +62,10 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
 
                     <?php
                     $urlResultMap = ['result-map'];
-                    $newUrlResultMap = array_merge($urlResultMap, Yii::$app->request->get()); ?>
+                    $urlResultMap = array_merge($urlResultMap, Yii::$app->request->get()); ?>
 
                     <?= Html::a('<i class="fa fa-list"></i> List', null, ['class' => 'btn btn-round btn-d']) ?>
-                    <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $newUrlResultMap, ['class' => 'btn btn-round btn-default']) ?>
+                    <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $urlResultMap, ['class' => 'btn btn-round btn-default']) ?>
 
                 </div>
                 <div class="col-xs-5">

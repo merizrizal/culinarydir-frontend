@@ -3,12 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use frontend\components\AppComponent;
 
+/* @var $this yii\web\View */
+/* @var $keyword array */
+
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
 
-/* @var $this yii\web\View */
-
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = Yii::t('app', 'Search Result') . ' - Map';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -44,23 +45,23 @@ $appComponent = new AppComponent(); ?>
 
             <?php
             $urlResultList = ['result-list'];
-            $newUrlResultList = array_merge($urlResultList, Yii::$app->request->get()); ?>
+            $urlResultList = array_merge($urlResultList, Yii::$app->request->get()); ?>
 
             <div class="col-md-7 col-sm-7 col-xs-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $newUrlResultList, ['class' => 'btn btn-round btn-default']); ?>
+                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
                 <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
 
             </div>
             <div class="col-tab-7 mt-10 mb-10 visible-tab text-center">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $newUrlResultList, ['class' => 'btn btn-round btn-default']); ?>
+                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
                 <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
 
             </div>
             <div class="col-xs-7 mt-10 mb-10 visible-xs text-center">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $newUrlResultList, ['class' => 'btn btn-round btn-default']); ?>
+                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
                 <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
 
             </div>

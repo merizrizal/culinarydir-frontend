@@ -22,10 +22,8 @@ $ogDescription = (!empty($modelBusiness['about']) ? $modelBusiness['about'] : 'T
 $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
-    $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelBusiness['businessImages'][0]['image'], 490, 276));
-}
-
-$appComponent = new AppComponent(); ?>
+    $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image']);
+} ?>
 
 <div class="main">
 
@@ -79,26 +77,29 @@ $appComponent = new AppComponent(); ?>
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $images = [];
+                                                        $imagesAmbience = [];
+                                                        
                                                         if (!empty($modelBusiness['businessImages'])):
-                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+                                                        
+                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage)
+                                                            {
 
-                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+                                                                $hrefAmbience = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
 
-                                                                $images[] = [
+                                                                $imagesAmbience[] = [
                                                                     'title' => '',
-                                                                    'href' => $href,
+                                                                    'href' => $hrefAmbience,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => $href,
+                                                                    'poster' => $hrefAmbience,
                                                                 ];
                                                             }
 
                                                             echo dosamigos\gallery\Carousel::widget([
-                                                                'items' => $images,
+                                                                'items' => $imagesAmbience,
                                                                 'json' => true,
-                                                                'templateOptions' => ['id'=>'gallery_business'],
-                                                                'clientOptions' => ['container'=>'#gallery_business'],
-                                                                'options' => ['id'=>'gallery_business'],
+                                                                'templateOptions' => ['id' => 'gallery_business'],
+                                                                'clientOptions' => ['container' => '#gallery_business'],
+                                                                'options' => ['id' => 'gallery_business'],
                                                             ]);
 
                                                         else: ?>
@@ -121,25 +122,28 @@ $appComponent = new AppComponent(); ?>
 
                                                         <?php
                                                         $imagesMenu = [];
+                                                        
                                                         if (!empty($modelBusiness['businessProducts'])):
-                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
+                                                        
+                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct)
+                                                            {
 
-                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+                                                                $hrefMenu = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
 
                                                                 $imagesMenu[] = [
                                                                     'title' => '',
-                                                                    'href' => $href,
+                                                                    'href' => $hrefMenu,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => $href,
+                                                                    'poster' => $hrefMenu,
                                                                 ];
                                                             }
 
                                                             echo dosamigos\gallery\Carousel::widget([
                                                                 'items' => $imagesMenu,
                                                                 'json' => true,
-                                                                'templateOptions' => ['id'=>'gallery_menu'],
-                                                                'clientOptions' => ['container'=>'#gallery_menu'],
-                                                                'options' => ['id'=>'gallery_menu'],
+                                                                'templateOptions' => ['id' => 'gallery_menu'],
+                                                                'clientOptions' => ['container' => '#gallery_menu'],
+                                                                'options' => ['id' => 'gallery_menu'],
                                                             ]);
 
                                                         else: ?>
@@ -177,15 +181,17 @@ $appComponent = new AppComponent(); ?>
 
                                                         <?php
                                                         $categories = '';
-                                                        foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
+                                                        
+                                                        foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory)
+                                                        {
 
                                                             $categories .= $dataBusinessCategory['category']['name'] . ' / ';
 
                                                         } ?>
 
                                                         <strong class="pull-right visible-lg visible-md visible-sm visible-tab m-0"><?= trim($categories, ' / ') ?></strong>
-                                                        <h6 class="visible-xs mt-10"><?= trim($categories, ' / ') ?></h6>
                                                     </h5>
+                                                    <h6 class="visible-xs mt-10"><?= trim($categories, ' / ') ?></h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -238,23 +244,25 @@ $appComponent = new AppComponent(); ?>
                                                                         <i class="aicon aicon-rupiah"></i>
 
                                                                         <?php
-                                                                        if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
-
+                                                                        if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
+                                                                        {
                                                                             echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        } else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
-
+                                                                        } 
+                                                                        else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
+                                                                        {
                                                                             echo '0 - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        } else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
-
+                                                                        }
+                                                                        else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min']))
+                                                                        {
                                                                             echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - 0';
-                                                                        } else {
-
+                                                                        }
+                                                                        else
+                                                                        {
                                                                             echo '-';
                                                                         } ?>
 
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
-
                                                                     <li class="icon-list-parent">
                                                                         <i class="aicon aicon-clock"></i>
 
@@ -280,11 +288,8 @@ $appComponent = new AppComponent(); ?>
                                                                             </ul>
 
                                                                         <?php
-                                                                        else: ?>
-
-                                                                            -
-
-                                                                        <?php
+                                                                        else:
+                                                                            echo '-';                                                                        
                                                                         endif;?>
 
                                                                     </li>
@@ -316,105 +321,84 @@ $appComponent = new AppComponent(); ?>
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <?php 
+                                            $layoutFirstList = '
+                                                <li>
+                                                    <a href="" id="write-review-shortcut">
+                                                        <ul class="text-center">
+                                                            <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
+                                                            <li>Review</li>
+                                                        </ul>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="" id="post-photo-shortcut">
+                                                        <ul class="text-center">
+                                                            <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
+                                                            <li>' . Yii::t('app', 'Photo') . '</li>
+                                                        </ul>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="" id="report-business-trigger">
+                                                        <ul class="text-center">
+                                                            <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
+                                                            <li>' . Yii::t('app', 'Report') . '</li>
+                                                        </ul>
+                                                    </a>
+                                                </li>
+                                            ';
+                                            
+                                            $layoutSecondList = '
+                                                <li>
+                                                    <a href="" class="message-feature">
+                                                        <ul class="text-center">
+                                                            <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
+                                                            <li>Message</li>
+                                                        </ul>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="" class="booking-feature">
+                                                        <ul class="text-center">
+                                                            <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
+                                                            <li>' . Yii::t('app', 'Booking') . '</li>
+                                                        </ul>
+                                                    </a>
+                                                </li>
+                                            ' ?>
 
                                             <div class="row mt-10 mb-10 visible-lg visible-md visible-sm visible-tab">
                                                 <div class="col-lg-4 col-md-5 col-sm-5 col-tab-6 widget pull-right">
                                                     <ul class="link-icon list-inline text-center">
-                                                        <li>
-                                                            <a href="" id="write-review-shortcut">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                                    <li>Review</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" id="post-photo-shortcut">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-camera aicon-1-2x"></i>
-                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" id="report-business-trigger">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-warning aicon-1-2x"></i>
-                                                                    <li><?= Yii::t('app', 'Report') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                    
+                                                    	<?= $layoutFirstList; ?>
+                                                    	
+                                                  	</ul>
                                                 </div>
                                                 <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 widget">
                                                     <ul class="link-icon list-inline">
-                                                        <li>
-                                                            <a href="#" class="message-feature">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
-                                                                    <li>Message</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="booking-feature">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-inspection-checklist aicon-1-2x"></i>
-                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
+                                                        
+                                                        <?= $layoutSecondList; ?>
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-10 mb-10 visible-xs">
                                                 <div class="col-xs-12 widget pull-right">
-                                                    <ul class="link-icon list-inline text-center">
-                                                        <li>
-                                                            <a href="" id="write-review-shortcut-xs">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                                    <li>Review</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" id="post-photo-shortcut-xs">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-camera aicon-1-2x"></i>
-                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" id="report-business-trigger-xs">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-warning aicon-1-2x"></i>
-                                                                    <li><?= Yii::t('app', 'Report') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
+                                                	<ul class="link-icon list-inline text-center">
+                                                    
+                                                    	<?= $layoutFirstList; ?>
+                                                    
                                                     </ul>
                                                 </div>
                                                 <div class="col-xs-12 widget">
                                                     <ul class="link-icon list-inline text-center">
-                                                        <li>
-                                                            <a href="#" class="message-feature">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
-                                                                    <li>Message</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="booking-feature">
-                                                                <ul class="text-center">
-                                                                    <i class="aicon aicon-inspection-checklist aicon-1-2x"></i>
-                                                                    <li>Booking</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
+                                                        
+                                                        <?= $layoutSecondList; ?>
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>
@@ -439,7 +423,7 @@ $appComponent = new AppComponent(); ?>
 
                                                     if (!empty($modelBusiness['userLoves'][0])) {
                                                         $selectedLove = 'selected';
-                                                    }?>
+                                                    } ?>
 
                                                     <ul class="list-inline mt-0 mb-0 visible-lg visible-md visible-sm visible-tab">
                                                         <li>
@@ -591,7 +575,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="aicon aicon-document-edit aicon-1-5x"></i>
+                                                                <li><i class="aicon aicon-document-edit aicon-1-5x"></i></li>
                                                                 <li>Review</li>
                                                                 <span class="badge total-review"></span>
                                                             </ul>
@@ -604,7 +588,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="aicon aicon-icon-restaurant aicon-1-5x"></i>
+                                                                <li><i class="aicon aicon-icon-restaurant aicon-1-5x"></i></li>
                                                                 <li><?= Yii::t('app', 'About') ?></li>
                                                             </ul>
                                                         </li>
@@ -616,7 +600,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="aicon aicon-camera aicon-1-5x"></i>
+                                                                <li><i class="aicon aicon-camera aicon-1-5x"></i></li>
                                                                 <li><?= Yii::t('app', 'Photo') ?></li>
                                                                 <span class="badge total-photo"></span>
                                                             </ul>
@@ -629,7 +613,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="aicon aicon-icon-budicon aicon-1-5x"></i>
+                                                                <li><i class="aicon aicon-icon-budicon aicon-1-5x"></i></li>
                                                                 <li>Menu</li>
                                                             </ul>
                                                         </li>
@@ -641,7 +625,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="aicon aicon-icon-thin-location-line aicon-1-5x"></i>
+                                                                <li><i class="aicon aicon-icon-thin-location-line aicon-1-5x"></i></li>
                                                                 <li>Map</li>
                                                             </ul>
                                                         </li>
@@ -653,7 +637,7 @@ $appComponent = new AppComponent(); ?>
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <i class="fa fa-ellipsis-h aicon-1-5x"></i>
+                                                                <li><i class="fa fa-ellipsis-h aicon-1-5x"></i></li>
                                                                 <li>More <span class="caret"></span></li>
                                                             </ul>
                                                         </li>
@@ -661,13 +645,13 @@ $appComponent = new AppComponent(); ?>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <li role="presentation">
-                                                        <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab"><h6><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6></a>
+                                                        <h6><a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</a></h6>
                                                     </li>
                                                     <li role="presentation">
-                                                        <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab"><h6><i class="aicon aicon-icon-budicon"></i> Menu</h6></a>
+                                                        <h6><a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab"><i class="aicon aicon-icon-budicon"></i> Menu</a></h6>
                                                     </li>
                                                     <li role="presentation">
-                                                        <a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab"><h6><i class="aicon aicon-icon-thin-location-line"></i> Map</h6></a>
+                                                        <h6><a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab"><i class="aicon aicon-icon-thin-location-line"></i> Map</a></h6>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -866,7 +850,7 @@ $jscript = '
     $(".love-place").on("click", function() {
 
         $.ajax({
-            url: "'. Yii::$app->urlManager->createUrl('action/submit-user-love').'",
+            url: "' . Yii::$app->urlManager->createUrl('action/submit-user-love') . '",
             type: "POST",
             data: {
                 "business_id": $(".business-id").val()
@@ -903,7 +887,7 @@ $jscript = '
     $(".been-here").on("click", function() {
 
         $.ajax({
-            url: "'. Yii::$app->urlManager->createUrl('action/submit-user-visit').'",
+            url: "' . Yii::$app->urlManager->createUrl('action/submit-user-visit') . '",
             type: "POST",
             data: {
                 "business_id": $(".business-id").val()
