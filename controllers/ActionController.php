@@ -436,7 +436,7 @@ class ActionController extends base\BaseController
                 $result['type'] = 'success';
             } else {
 
-                $result['success'] = true;
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Report Gagal';
                 $result['message'] = 'Report Anda gagal di simpan.';

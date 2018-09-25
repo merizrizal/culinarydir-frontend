@@ -24,10 +24,14 @@ class PageController extends base\BaseHistoryUrlController
      */
     public function behaviors()
     {
-        return array_merge($this->getAccess(), [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => []
+        return array_merge(
+            $this->getAccess(), 
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        
+                    ]
             ]
         ]);
     }
