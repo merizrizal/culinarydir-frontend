@@ -17,7 +17,6 @@
                 </ul>
 
                 <div class="tab-content p-15">
-
                     <div role="tabpanel" class="tab-pane fade in active p-0" id="view-review">
                         <?= $this->render('journey/_review', [
                             'username' => !empty($username) ? $username : null

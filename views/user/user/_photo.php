@@ -11,22 +11,27 @@
 <?php
 $jscript = '
     $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
         $.ajax({
             cache: false,
             type: "POST",
             url: $(this).data("href"),
             beforeSend: function(xhr) {
+
                 $(".user-post-photo").siblings(".overlay").show();
                 $(".user-post-photo").siblings(".loading-img").show();
             },
             success: function(response) {
+
                 $("#modal-confirmation").modal("hide");
 
                 if (response.status == "sukses") {
+
                     getUserPostPhoto();
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
 
@@ -34,12 +39,14 @@ $jscript = '
                 $(".user-post-photo").siblings(".loading-img").hide();
             },
             error: function(xhr, ajaxOptions, thrownError) {
+
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
     });
 
     function getUserPostPhoto() {
+
         $.ajax({
             cache: false,
             type: "GET",
@@ -48,9 +55,11 @@ $jscript = '
             },
             url: "' . Yii::$app->urlManager->createUrl(['user-data/get-user-post-photo']) . '",
             success: function(response) {
+
                $(".user-post-photo").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
+
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
