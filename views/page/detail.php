@@ -66,7 +66,7 @@ $appComponent = new AppComponent(); ?>
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active">
-                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> Suasana</a>
+                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Ambience') ?></a>
                                             </li>
                                             <li role="presentation">
                                                 <a href="#menu" aria-controls="menu" role="tab" data-toggle="tab"><i class="aicon aicon-icon-budicon"></i> Menu</a>
@@ -332,7 +332,7 @@ $appComponent = new AppComponent(); ?>
                                                             <a href="" id="post-photo-shortcut">
                                                                 <ul class="text-center">
                                                                     <i class="aicon aicon-camera aicon-1-2x"></i>
-                                                                    <li>Photo</li>
+                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -340,7 +340,7 @@ $appComponent = new AppComponent(); ?>
                                                             <a href="" id="report-business-trigger">
                                                                 <ul class="text-center">
                                                                     <i class="aicon aicon-warning aicon-1-2x"></i>
-                                                                    <li>Report</li>
+                                                                    <li><?= Yii::t('app', 'Report') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -360,7 +360,7 @@ $appComponent = new AppComponent(); ?>
                                                             <a href="#" class="booking-feature">
                                                                 <ul class="text-center">
                                                                     <i class="aicon aicon-inspection-checklist aicon-1-2x"></i>
-                                                                    <li>Booking</li>
+                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -383,7 +383,7 @@ $appComponent = new AppComponent(); ?>
                                                             <a href="" id="post-photo-shortcut-xs">
                                                                 <ul class="text-center">
                                                                     <i class="aicon aicon-camera aicon-1-2x"></i>
-                                                                    <li>Photo</li>
+                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -391,7 +391,7 @@ $appComponent = new AppComponent(); ?>
                                                             <a href="" id="report-business-trigger-xs">
                                                                 <ul class="text-center">
                                                                     <i class="aicon aicon-warning aicon-1-2x"></i>
-                                                                    <li>Report</li>
+                                                                    <li><?= Yii::t('app', 'Report') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -511,7 +511,7 @@ $appComponent = new AppComponent(); ?>
                                             <div class="box-title">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-xs-12">
-                                                        <h4 class="font-alt m-0">Spesial &amp; Diskon !!</h4>
+                                                        <h4 class="font-alt m-0"><?= Yii::t('app', 'Special & Discount') ?> !!</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -605,7 +605,7 @@ $appComponent = new AppComponent(); ?>
                                                         <li>
                                                             <ul class="text-center">
                                                                 <i class="aicon aicon-icon-restaurant aicon-1-5x"></i>
-                                                                <li>About</li>
+                                                                <li><?= Yii::t('app', 'About') ?></li>
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -617,7 +617,7 @@ $appComponent = new AppComponent(); ?>
                                                         <li>
                                                             <ul class="text-center">
                                                                 <i class="aicon aicon-camera aicon-1-5x"></i>
-                                                                <li>Photo</li>
+                                                                <li><?= Yii::t('app', 'Photo') ?></li>
                                                                 <span class="badge total-photo"></span>
                                                             </ul>
                                                         </li>
@@ -661,7 +661,7 @@ $appComponent = new AppComponent(); ?>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <li role="presentation">
-                                                        <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab"><h6><i class="aicon aicon-camera"></i> Photo (<span class="total-photo"></span>)</h6></a>
+                                                        <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab"><h6><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6></a>
                                                     </li>
                                                     <li role="presentation">
                                                         <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab"><h6><i class="aicon aicon-icon-budicon"></i> Menu</h6></a>

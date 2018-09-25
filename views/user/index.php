@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
-use frontend\components\AppComponent;
 use sycomponent\Tools;
 
 /* @var $this yii\web\View */
@@ -17,9 +16,7 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
-]);
-
-$appComponent = new AppComponent(); ?>
+]); ?>
 
 <div class="main">
 
@@ -46,7 +43,7 @@ $appComponent = new AppComponent(); ?>
                                             <small><?= $modelUser['email'] ?></small>
                                         </h3>
 
-                                        <?= Html::a('<i class="aicon aicon-pencil2"></i> Update Profile', ['user/update-profile'], ['class' => 'btn btn-round btn-d']) ?>
+                                        <?= Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-round btn-d']) ?>
 
                                     </div>
                                 </div>
@@ -69,7 +66,7 @@ $appComponent = new AppComponent(); ?>
                                         <small><?= $modelUser['email'] ?></small>
                                     </h3>
 
-                                    <?= Html::a('<i class="aicon aicon-pencil2"></i> Update Profile', ['user/update-profile'], ['class' => 'btn btn-round btn-d']) ?>
+                                    <?= Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-round btn-d']) ?>
 
                                 </div>
                             </div>
@@ -102,7 +99,7 @@ $appComponent = new AppComponent(); ?>
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-camera aicon-1-5x"></i>
-                                                <li>Photo</li>
+                                                <li><?= Yii::t('app', 'Photo') ?></li>
                                                 <span class="badge total-user-photo"></span>
                                             </ul>
                                         </li>
@@ -128,7 +125,7 @@ $appComponent = new AppComponent(); ?>
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-hot-promo aicon-1-5x"></i>
-                                                <li>New Promo</li>
+                                                <li><?= Yii::t('app', 'New Promo') ?></li>
                                                 <span class="badge total-new-promo"></span>
                                             </ul>
                                         </li>
@@ -151,7 +148,7 @@ $appComponent = new AppComponent(); ?>
                                         <a href="#view-saved-search" aria-controls="view-saved-search" role="tab" data-toggle="tab"><h6><i class="aicon aicon-savedsearch"></i> Saved Search (<span class="total-saved-search">0</span>)</h6></a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="#view-new-promo" aria-controls="view-new-promo" role="tab" data-toggle="tab"><h6><i class="aicon aicon-hot-promo"></i> New Promo (<span class="total-new-promo"></span>)</h6></a>
+                                        <a href="#view-new-promo" aria-controls="view-new-promo" role="tab" data-toggle="tab"><h6><i class="aicon aicon-hot-promo"></i> <?= Yii::t('app', 'New Promo') ?> (<span class="total-new-promo"></span>)</h6></a>
                                     </li>
                                 </ul>
                             </li>
@@ -176,6 +173,7 @@ $appComponent = new AppComponent(); ?>
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">
                                 <?= $this->render('user/_new_promo') ?>
                             </div>
+                            
                         </div>
                     </div>
 

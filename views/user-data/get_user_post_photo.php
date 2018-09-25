@@ -23,12 +23,12 @@ $linkPager = LinkPager::widget([
 ]); ?>
 
 <div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none"></div>
+<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= 'Showing ' . $startItem . ' - ' . $endItem . ' of ' . $totalCount . ' results'; ?>
+        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -53,7 +53,7 @@ $linkPager = LinkPager::widget([
         <ul class="works-grid works-grid-gut works-grid-4" id="photo-gallery">
 
             <?php
-            if(!empty($modelUserPostMainPhoto)):
+            if (!empty($modelUserPostMainPhoto)):
 
                 foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): ?>
 
@@ -99,7 +99,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= 'Showing ' . $startItem . ' - ' . $endItem . ' of ' . $totalCount . ' results'; ?>
+        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -153,7 +153,6 @@ $jscript = '
     });
 
     $(".delete-image").on("click", function() {
-
         $("#modal-confirmation").modal("show");
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
@@ -162,12 +161,10 @@ $jscript = '
     });
 
     $("#photo-gallery").find(".work-item").each(function() {
-
         var thisObj = $(this);
         var photoId = $(this).find(".work-image").children().data("id");
 
         $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
-
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
             var title = "Foto untuk " + thisObj.find(".business-name").val();
             var description = thisObj.find(".photo-caption").text();

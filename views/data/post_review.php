@@ -259,12 +259,12 @@ if (!empty($modelUserPostMain)):
                                 <ul class="list-inline mt-0 mb-0">
                                     <li>
 
-                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment' ?></small>
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review"></span>' . Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]) ?></small>
 
                                     </li>
                                     <li>
 
-                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo' ?></small>
+                                        <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review"></span>' . Yii::t('app', '{value, plural, =0{# Photo} =1{# Photo} other{# Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]) ?></small>
 
                                     </li>
                                 </ul>
@@ -283,19 +283,19 @@ if (!empty($modelUserPostMain)):
                                             $selected = 'selected';
                                         } ?>
 
-                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0]), null , ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
 
                                     </li>
                                     <li>
 
-                                        <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
 
                                     </li>
                                     <li>
 
-                                        <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                         <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
 
                                     </li>
@@ -456,27 +456,21 @@ $jscript = '
                 },
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
                 success: function(response) {
-
                     if (response.status == "sukses") {
-
                         var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
 
                         if(response.is_active) {
-
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue + 1).toString());
                         } else {
-
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue - 1).toString());
                         }
                     } else {
-
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -509,9 +503,7 @@ $jscript = '
                         $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
                     },
                     success: function(response) {
-
                         if (response.status == "sukses") {
-
                             $("#input-" + response.user_post_main_id + "-comments-review").val("");
 
                             $.ajax({
@@ -522,16 +514,13 @@ $jscript = '
                                 },
                                 url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                                 success: function(response) {
-
                                     $(".comment-" + thisObj.val() + "-section").html(response);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
-
                                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                                 }
                             });
                         } else {
-
                             messageResponse(response.icon, response.title, response.message, response.type);
                         }
 
@@ -539,7 +528,6 @@ $jscript = '
                         $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-
                         messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                     }
                 });
@@ -571,12 +559,10 @@ $jscript = '
         $(".review-" + thisObj.val() + "-option").hide();
 
         $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
-
             $(".review-" + thisObj.val() + "-option").slideToggle();
         });
 
         thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
-
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
             var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
             var description = thisObj.parent().find(".review-description").text();

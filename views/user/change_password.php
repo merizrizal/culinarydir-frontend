@@ -95,8 +95,6 @@ if (!empty($getFlashMessage)) {
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
-
 </div>
