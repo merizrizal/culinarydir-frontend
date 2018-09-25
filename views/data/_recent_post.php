@@ -3,7 +3,9 @@ use yii\helpers\Html;
 use yii\web\JsExpression;
 use yii\helpers\StringHelper;
 use sycomponent\Tools;
-use kartik\rating\StarRating; ?>
+use kartik\rating\StarRating;
+
+/* @var $model core\models\UserPostMain */ ?>
 
 <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
     <div class="recent-post">
@@ -44,7 +46,7 @@ use kartik\rating\StarRating; ?>
                             $img = Yii::$app->urlManager->baseUrl . '/media/img/360x135.283no-image-available.jpg';
 
                             if (!empty($model['userPostMains'][0]['image'])) {
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 360, 135.283);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 360, 135);
                             } ?>
 
                             <?= Html::a(Html::img($img, ['class' => 'img-responsive img-component']), Yii::$app->urlManager->createUrl(['page/review', 'id' => $model['id']])); ?>

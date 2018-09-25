@@ -4,7 +4,6 @@ namespace frontend\components;
 
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
-use core\models\Facility;
 
 class AppComponent extends Widget {
 
@@ -30,13 +29,9 @@ class AppComponent extends Widget {
     }
 
     public function search($config = []) {
-        $modelFacility = Facility::find()
-                    ->orderBy('name')
-                    ->asArray()->all();
-
+        
         return $this->render('app-component/search', ArrayHelper::merge($config, [
             'showFacilityFilter' => $this->showFacilityFilter,
-            'modelFacility' => $modelFacility,
         ]));
     }
 

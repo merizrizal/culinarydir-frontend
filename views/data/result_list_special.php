@@ -6,6 +6,13 @@ use yii\widgets\Pjax;
 use sycomponent\Tools;
 use frontend\components\AddressType;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelBusinessPromo core\models\BusinessPromo */
+
 kartik\popover\PopoverXAsset::register($this);
 
 Pjax::begin([
@@ -56,8 +63,6 @@ $jspopover = ''; ?>
     </div>
 </div>
 
-<hr class="divider-w mt-10 mb-20">
-
 <div class="container">
     <div class="row">
 
@@ -91,8 +96,7 @@ $jspopover = ''; ?>
 
                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
-
+                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
                                         }
 
                                         echo Html::img($img); ?>
@@ -104,9 +108,7 @@ $jspopover = ''; ?>
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="font-alt m-0">
-
                                                         <?= Html::a($dataBusinessPromo['title'], ['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']); ?>
-
                                                     </h4>
                                                 </div>
                                             </div>
@@ -144,20 +146,25 @@ $jspopover = ''; ?>
                                                                 $businessProductCategoryLimit = 3;
                                                                 $businessProductCategoryList = '';
                                                                 $businessProductCategoryPopover = '';
-                                                                $businessProductCategoryHref = '<a href="#" id="business-product-category-popover' . $dataBusinessPromo['id'] . '" class="popover-tag">';
 
                                                                 foreach ($dataBusinessPromo['business']['businessProductCategories'] as $key => $dataBusinessProductCategory) {
 
                                                                     if ($key < $businessProductCategoryLimit) {
 
                                                                         $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                    } else if ($key > $businessProductCategoryLimit - 1) {
+                                                                    } else {
 
                                                                         $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                     }
                                                                 }
 
-                                                                echo (count($dataBusinessPromo['business']['businessProductCategories']) > $businessProductCategoryLimit ? $businessProductCategoryHref . $businessProductCategoryList . '</a>' : $businessProductCategoryList); ?>
+                                                                if (count($dataBusinessPromo['business']['businessProductCategories']) > $businessProductCategoryLimit) {
+
+                                                                    echo Html::a($businessProductCategoryList, '#', ['id' => 'business-product-category-popover' . $dataBusinessPromo['id'], 'class' => 'popover-tag']);
+                                                                } else {
+
+                                                                    echo $businessProductCategoryList;
+                                                                }?>
 
                                                                 <div id="business-product-category-container-popover<?= $dataBusinessPromo['id']; ?>" class="popover popover-x popover-default">
                                                                     <div class="arrow mt-0"></div>
@@ -190,8 +197,6 @@ $jspopover = ''; ?>
         </div>
     </div>
 </div>
-
-<hr class="divider-w mt-20 mb-10">
 
 <div class="container">
     <div class="row">

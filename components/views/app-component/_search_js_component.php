@@ -210,11 +210,13 @@ $jscript = '
         circleRadius.bindTo("center", marker, "position");
 
         google.maps.event.addListener(map, "dragstart", function() {
+
             marker.setMap(null);
             circleRadius.setMap(null);
         });
 
         google.maps.event.addListener(map, "dragend", function() {
+
             latitude = map.getCenter().lat();
             longitude = map.getCenter().lng();
 
@@ -226,6 +228,7 @@ $jscript = '
         });
 
         google.maps.event.addListener(map, "zoom_changed", function() {
+
             marker.setMap(null);
             circleRadius.setMap(null);
 
@@ -240,6 +243,7 @@ $jscript = '
         });
 
         $(".radius-500").on("ifChecked", function() {
+
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(15);
@@ -247,6 +251,7 @@ $jscript = '
         });
 
         $(".radius-1000").on("ifChecked", function() {
+
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(14);
@@ -254,6 +259,7 @@ $jscript = '
         });
 
         $(".radius-2000").on("ifChecked", function() {
+
             radius = parseInt($(this).attr("data-radius"));
 
             map.setZoom(13);
@@ -261,6 +267,7 @@ $jscript = '
         });
 
         if (radiusMap.val() != "") {
+
             radius = parseInt(radiusMap.val());
 
             if (radius == 500) {
