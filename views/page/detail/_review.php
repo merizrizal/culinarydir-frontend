@@ -7,6 +7,8 @@ use kartik\rating\StarRating;
 use sycomponent\Tools;
 use common\components\Helper;
 
+/* @var $this yii\web\View */
+
 kartik\popover\PopoverXAsset::register($this);
 
 $reviewTotal = !empty($modelUserPostMain) ? 1 : 0;

@@ -279,6 +279,7 @@ $jscript = '
     });
 
     function getUserPhoto(business_id) {
+
         $.ajax({
             cache: false,
             type: "GET",

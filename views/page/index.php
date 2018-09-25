@@ -44,9 +44,11 @@ $this->registerMetaTag([
                 </div>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
-                        <a class="section-scroll text-center text-white" href="#recent-activity">
-                            <h5 class="font-alt"><?= Yii::t('app', 'Recent Activity') ?></h5>
-                        </a>
+                        <h5 class="font-alt">
+                        	<a class="section-scroll text-center text-white" href="#recent-activity">
+                            	<?= Yii::t('app', 'Recent Activity') ?>
+                        	</a>
+                        </h5>
                     </div>
                 </div>
             </div>
