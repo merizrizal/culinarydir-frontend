@@ -14,9 +14,11 @@ $jscript = '
         },
         url: "' . Yii::$app->urlManager->createUrl(['user-data/get-user-love']) . '",
         success: function(response) {
+
             $(".user-love-section").html(response);
         },
         error: function(xhr, ajaxOptions, thrownError) {
+
             messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
         }
     });
