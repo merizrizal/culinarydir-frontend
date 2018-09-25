@@ -23,7 +23,7 @@ AppAsset::register($this); ?>
         <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl . '/media/favicon.png' ?>" type="image/x-icon">
         <link rel="apple-touch-icon" href="<?= Yii::$app->request->baseUrl . '/media/favicon.png' ?>">
 
-        <title><?= Html::encode(Yii::$app->name) ?></title>
+        <title><?= Html::encode(Yii::$app->name) . ' - ' . Html::encode($this->title) ?></title>
         <?php $this->head(); ?>
     </head>
 <body>

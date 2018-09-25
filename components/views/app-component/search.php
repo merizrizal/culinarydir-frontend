@@ -4,8 +4,12 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use core\models\City;
 use core\models\Category;
+use core\models\Facility;
 
 /* @var $this yii\web\View */
+/* @var $keyword array */
+/* @var $id string */
+/* @var $showFacilityFilter boolean */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -170,7 +174,11 @@ $styleRadiusLabel = null; ?>
                         </div>
 
                         <?php
-                        if (!empty($showFacilityFilter)):
+                        if ($showFacilityFilter):
+                        
+                            $modelFacility = Facility::find()
+                                ->orderBy('name')
+                                ->asArray()->all();
 
                             $colDivider = ceil(count($modelFacility) / 3);
 
@@ -182,8 +190,8 @@ $styleRadiusLabel = null; ?>
                                         <span class="fa fa-chevron-circle-down"></span>
                                     </a>
                                     <div class="<?= !empty($keyword['facility']) ? 'collapse in facility-collapse' : 'collapse facility-collapse' ?>">
-                                        <div class="row mt-10">
-                                            <div class="form-group">
+                                    	<div class="form-group">
+                                        	<div class="row mt-10">                                            
 
                                                 <?= Html::checkboxList('facility_id', !empty($keyword['facility']) ? $keyword['facility'] : null,
                                                     ArrayHelper::map(
@@ -196,16 +204,21 @@ $styleRadiusLabel = null; ?>
                                                     [
                                                         'item' => function ($index, $label, $name, $checked, $value) use($colDivider, $column, $modelFacility) {
 
-                                                            $checkboxes =  '<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-tab-12 col">' .
-                                                                                '<label>' .
-                                                                                    Html::checkbox($name, $checked, [
-                                                                                        'value' => $value,
-                                                                                        'class' => 'facility icheck',
-                                                                                    ]) . ' ' . $label .
-                                                                                '</label>' .
-                                                                            '</div>';
+                                                            $checkboxes =  '
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-tab-12 col">
+                                                                        <label>' .
+                                                                            Html::checkbox($name, $checked, [
+                                                                                'value' => $value,
+                                                                                'class' => 'facility icheck',
+                                                                            ]) . ' ' . $label .
+                                                                        '</label>
+                                                                    </div>
+                                                                </div>
+                                                            ';
 
                                                             $index++;
+                                                            
                                                             if ($index === 1) {
 
                                                                 return $column . $checkboxes;
@@ -486,4 +499,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . Yii::$app->params['checkbox-radio-script']()); ?>
+$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>

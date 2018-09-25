@@ -251,6 +251,7 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
+            
             $userId = Yii::$app->user->getIdentity()->id;
 
             $modelUserLove = UserLove::find()
@@ -311,16 +312,16 @@ class ActionController extends base\BaseController
 
                 $transaction->commit();
 
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['is_active'] = $modelUserLove->is_active;
             } else {
 
                 $transaction->rollBack();
 
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Gagal';
-                $result['message'] = 'Gagal menyukai tempat ini.';
+                $result['message'] = 'Proses love gagal disimpan';
                 $result['type'] = 'danger';
             }
 

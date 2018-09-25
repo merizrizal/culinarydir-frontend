@@ -5,6 +5,13 @@ use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelBusinessPromo core\models\BusinessPromo */
+
 kartik\popover\PopoverXAsset::register($this);
 
 Pjax::begin([
@@ -91,7 +98,6 @@ $jspopover = ''; ?>
                                         if (!empty($dataBusinessPromo['image'])) {
 
                                             $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
-
                                         }
 
                                         echo Html::img($src, ['class' => 'img-responsive img-component']);
@@ -123,20 +129,25 @@ $jspopover = ''; ?>
                                                                 $businessProductCategoryLimit = 3;
                                                                 $businessProductCategoryList = '';
                                                                 $businessProductCategoryPopover = '';
-                                                                $businessProductCategoryHref = '<a href="#" id="business-product-category-popover' . $dataBusinessPromo['id'] . '" class="popover-tag">';
 
-                                                                foreach($dataBusinessPromo['business']['businessProductCategories'] as $key => $dataBusinessProductCategory){
+                                                                foreach ($dataBusinessPromo['business']['businessProductCategories'] as $key => $dataBusinessProductCategory) {
 
-                                                                    if($key < $businessProductCategoryLimit) {
+                                                                    if ($key < $businessProductCategoryLimit) {
 
                                                                         $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                    } else if($key > $businessProductCategoryLimit - 1) {
+                                                                    } else {
 
                                                                         $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                     }
                                                                 }
 
-                                                                echo (count($dataBusinessPromo['business']['businessProductCategories']) > $businessProductCategoryLimit ? $businessProductCategoryHref . $businessProductCategoryList . '</a>' : $businessProductCategoryList); ?>
+                                                                if (count($dataBusinessPromo['business']['businessProductCategories']) > $businessProductCategoryLimit) {
+
+                                                                    echo Html::a($businessProductCategoryList, '#', ['id' => 'business-product-category-popover' . $dataBusinessPromo['id'], 'class' => 'popover-tag']);
+                                                                } else {
+
+                                                                    echo $businessProductCategoryList;
+                                                                }?>
 
                                                                 <div id="business-product-category-container-popover<?= $dataBusinessPromo['id']; ?>" class="popover popover-x popover-default">
                                                                     <div class="arrow mt-0"></div>
@@ -166,7 +177,10 @@ $jspopover = ''; ?>
                     $businessCoordinate = explode(',', $dataBusinessPromo['business']['businessLocation']['coordinate']);
                     $businessLatitude = $businessCoordinate[0];
                     $businessLongitude = $businessCoordinate[1];
-                    $businessPromoDetail[$dataBusinessPromo['business']['businessLocation']['coordinate']][] = [
+
+                    $key = $dataBusinessPromo['business']['businessLocation']['coordinate'];
+
+                    $businessPromoDetail[$key][] = [
                         'businessId' => $dataBusinessPromo['business']['id'],
                         'businessPromoImage' => $businessPromoImage,
                         'businessPromoTitle' => $dataBusinessPromo['title'],
@@ -217,7 +231,6 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&
 $jscript = '
     var initMap = function() {
 
-        var mapInfoWindow;
         var mapResult;
         var mapOptions;
         var mapResultDefaultLatLng = {lat: -6.9175, lng: 107.6191};
@@ -231,7 +244,6 @@ $jscript = '
         if (mapResultContainer) {
 
             mapOptions = {
-                center: mapResultDefaultLatLng,
                 zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_BOTTOM
@@ -243,57 +255,55 @@ $jscript = '
             };
 
             mapResult = new google.maps.Map(mapResultContainer, mapOptions);
-            mapInfoWindow = new google.maps.InfoWindow();
 
             if (mapObject) {
 
                 var mapInfoWindow = new google.maps.InfoWindow();
-                var mapObject = mapObject.replace();
                 var businessPromoDetail = jQuery.parseJSON(mapObject);
-                var markers = [];
-                var markerIndex = 0;
                 var markerBounds = new google.maps.LatLngBounds();
+                var markers = {};
+                var infoWindowContent = {};
+                var businessLatLng = {};
 
-                $.each(businessPromoDetail, function(businessId, businessPromoData) {
+                var callbackMarkerListener = function(keyCoordinate) {
 
-                    var businessLatLng = new google.maps.LatLng(businessPromoData[0].businessLatitude, businessPromoData[0].businessLongitude);
-                    var businessPromoMarker;
+                    return function () {
 
-                    var callbackMarkerListener = function(businessPromoMarker, markerIndex) {
+                        mapInfoWindow.setOptions({
+                            content: infoWindowContent[keyCoordinate],
+                            maxWidth: 800,
+                        });
 
-                        return function () {
-
-                            mapInfoWindow.setOptions({
-                                content: infoWindowContent,
-                                maxWidth: 800,
-                            });
-
-                            mapInfoWindow.open(mapResult, markers[markerIndex]);
-                        }
+                        mapInfoWindow.open(mapResult, markers[keyCoordinate]);
                     }
+                };
 
-                    var infoWindowContent = "<div class=\"infowindow mt-10\">";
+                $.each(businessPromoDetail, function(keyCoordinate, businessPromoData) {
+
+                    var coordinate = keyCoordinate.split(",");
+                    businessLatLng[keyCoordinate] = new google.maps.LatLng(coordinate[0], coordinate[1]);
+
+                    infoWindowContent[keyCoordinate] = "<div class=\"infowindow mt-10\">";
+
+                    var businessPromoMarker = new google.maps.Marker({
+                        map: mapResult,
+                        position: businessLatLng[keyCoordinate],
+                        gestureHandling: "greedy",
+                        icon: {
+                            url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
+                            scaledSize: new google.maps.Size(28, 28),
+                            origin: new google.maps.Point(0,0),
+                            anchor: new google.maps.Point(10, 25)
+                        }
+                    });
+
+                    markers[keyCoordinate] = businessPromoMarker;
 
                     $.each(businessPromoData, function(key, value) {
 
-                        businessPromoMarker = new google.maps.Marker({
-                            map: mapResult,
-                            position: businessLatLng,
-                            gestureHandling: "greedy",
-                            title: value.businessName,
-                            icon: {
-                                url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
-                                scaledSize: new google.maps.Size(28, 28),
-                                origin: new google.maps.Point(0,0),
-                                anchor: new google.maps.Point(10, 25)
-                            }
-                        });
+                        $(".promo-" + value.businessId).on("click", callbackMarkerListener(keyCoordinate));
 
-                        markers.push(businessPromoMarker);
-
-                        $(".promo-" + value.businessId).on("click", callbackMarkerListener(businessPromoMarker, markerIndex));
-
-                        infoWindowContent +=
+                        infoWindowContent[keyCoordinate] +=
                             "<div class=\"row\">" +
                                 "<div class=\"col-sm-6 hidden-xs\">" +
                                     "<img src=\"" + value.businessPromoImage + "\" width=\"100%\">" +
@@ -302,15 +312,13 @@ $jscript = '
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h4 class=\"font-alt m-0\">" + value.businessPromoTitle + "</h4>" +
+                                                "<h5 class=\"font-alt m-0\">" + value.businessPromoTitle + "</h5>" +
                                             "</div>" +
                                         "</div>" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h4 class=\"m-0\">" +
-                                                    "<small class=\"mt-10\">" + value.businessName + "</small>" +
-                                                "</h4>" +
-                                                "<hr class=\"divider-w mb-10\">" +
+                                                value.businessName +
+                                                "<br>" +
                                                 "<a class=\"text-main pull-right\" href=\"" + value.businessPromoUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
                                             "</div>" +
                                         "</div>" +
@@ -320,13 +328,11 @@ $jscript = '
                             "<hr class=\"divider-w mt-10 mb-10\">";
                     });
 
-                    infoWindowContent += "</div>";
+                    infoWindowContent[keyCoordinate] += "</div>";
 
-                    google.maps.event.addListener(businessPromoMarker, "click", callbackMarkerListener(businessPromoMarker, markerIndex));
+                    google.maps.event.addListener(businessPromoMarker, "click", callbackMarkerListener(keyCoordinate));
 
-                    markerBounds.extend(businessLatLng);
-
-                    markerIndex++;
+                    markerBounds.extend(businessLatLng[keyCoordinate]);
                 });
 
                 mapResult.fitBounds(markerBounds);
@@ -358,6 +364,10 @@ $jscript = '
 
     $("#pjax-result-map-container").on("pjax:error", function (event) {
         event.preventDefault();
+    });
+
+    $(".popover-tag").on("click", function() {
+        return false;
     });
 ';
 

@@ -4,8 +4,9 @@ use yii\widgets\LinkPager;
 use frontend\components\AppComponent;
 
 /* @var $this yii\web\View */
+/* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = 'Home';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -15,7 +16,9 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
-]); ?>
+]);
+
+$appComponent = new AppComponent(); ?>
 
 <section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" id="home" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg' ?>">
     <div class="titan-caption">
@@ -29,9 +32,7 @@ $this->registerMetaTag([
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
 
-                        <?php
-                        $appComponent = new AppComponent();
-                        echo $appComponent->search(); ?>
+                        <?= $appComponent->search(); ?>
 
                     </div>
                 </div>

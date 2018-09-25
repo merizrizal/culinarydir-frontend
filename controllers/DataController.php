@@ -227,36 +227,32 @@ class DataController extends base\BaseController
         if (!$get['special']) {
 
             $modelBusiness = Business::find()
-                    ->joinWith([
-                        'membershipType',
-                        'businessCategories' => function($query) {
-                            $query->andOnCondition(['business_category.is_active' => true]);
-                        },
-                        'businessCategories.category',
-                        'businessFacilities' => function($query) {
-                            $query->andOnCondition(['business_facility.is_active' => true]);
-                        },
-                        'businessFacilities.facility',
-                        'businessImages' => function($query) {
-                            $query->andOnCondition(['type' => 'Profile']);
-                        },
-                        'businessLocation',
-                        'businessProductCategories' => function($query) {
-                            $query->andOnCondition(['business_product_category.is_active' => true]);
-                        },
-                        'businessProductCategories.productCategory',
-                        'businessDetail',
-                        'userLoves' => function($query) {
-                            $query->andOnCondition([
-                                'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                                'user_love.is_active' => true
-                            ]);
-                        },
-                    ])
-                    ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                    ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
-                    ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                    ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
+                ->joinWith([
+                    'membershipType',
+                    'businessCategories' => function($query) {
+                        $query->andOnCondition(['business_category.is_active' => true]);
+                    },
+                    'businessCategories.category',
+                    'businessImages' => function($query) {
+                        $query->andOnCondition(['type' => 'Profile']);
+                    },
+                    'businessLocation',
+                    'businessProductCategories' => function($query) {
+                        $query->andOnCondition(['business_product_category.is_active' => true]);
+                    },
+                    'businessProductCategories.productCategory',
+                    'businessDetail',
+                    'userLoves' => function($query) {
+                        $query->andOnCondition([
+                            'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                            'user_love.is_active' => true
+                        ]);
+                    },
+                ])
+                ->andFilterWhere(['business_location.city_id' => $get['city_id']])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
+                ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
+                ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
 
             if (!empty($get['price_min']) || !empty($get['price_max'])) {
 
@@ -273,7 +269,7 @@ class DataController extends base\BaseController
                 if ($get['price_min'] != 0 && $get['price_max'] != 0) {
 
                     $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']])
-                            ->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
+                        ->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
                 }
             }
 
@@ -292,8 +288,8 @@ class DataController extends base\BaseController
             }
 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
-                    ->distinct()
-                    ->asArray();
+                ->distinct()
+                ->asArray();
 
             $provider = new ActiveDataProvider([
                 'query' => $modelBusiness,
@@ -316,29 +312,29 @@ class DataController extends base\BaseController
 
                 $fileRender = 'result_map';
             }
-        } else if ($get['special']) {
+        } else {
 
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
             $modelBusinessPromo = BusinessPromo::find()
-                    ->joinWith([
-                        'business',
-                        'business.businessCategories' => function($query) {
-                            $query->andOnCondition(['business_category.is_active' => true]);
-                        },
-                        'business.businessCategories.category',
-                        'business.businessLocation',
-                        'business.businessProductCategories' => function($query) {
-                            $query->andOnCondition(['business_product_category.is_active' => true]);
-                        },
-                        'business.businessProductCategories.productCategory',
-                    ])
-                    ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                    ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
-                    ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                    ->andFilterWhere(['business_category.category_id' => $get['category_id']])
-                    ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
-                    ->andFilterWhere(['business_promo.not_active' => false]);
+                ->joinWith([
+                    'business',
+                    'business.businessCategories' => function($query) {
+                        $query->andOnCondition(['business_category.is_active' => true]);
+                    },
+                    'business.businessCategories.category',
+                    'business.businessLocation',
+                    'business.businessProductCategories' => function($query) {
+                        $query->andOnCondition(['business_product_category.is_active' => true]);
+                    },
+                    'business.businessProductCategories.productCategory',
+                ])
+                ->andFilterWhere(['business_location.city_id' => $get['city_id']])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
+                ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
+                ->andFilterWhere(['business_category.category_id' => $get['category_id']])
+                ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+                ->andFilterWhere(['business_promo.not_active' => false]);
 
             Yii::$app->formatter->timeZone = 'UTC';
 
@@ -353,8 +349,8 @@ class DataController extends base\BaseController
             }
 
             $modelBusinessPromo = $modelBusinessPromo->orderBy(['business_promo.id' => SORT_DESC])
-                    ->distinct()
-                    ->asArray();
+                ->distinct()
+                ->asArray();
 
             $provider = new ActiveDataProvider([
                 'query' => $modelBusinessPromo,

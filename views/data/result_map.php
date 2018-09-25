@@ -1,10 +1,18 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
 use frontend\components\AddressType;
+
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelBusiness core\models\Business */
 
 Pjax::begin([
     'enablePushState' => false,
@@ -73,7 +81,7 @@ $linkPager = LinkPager::widget([
                                     <div class="col-md-5 col-sm-6 col-xs-6 col" role="button">
 
                                         <?php
-                                        $businessImage = [];
+                                        $businessImage = null;
 
                                         if (count($dataBusiness['businessImages']) > 1) {
 
@@ -96,7 +104,7 @@ $linkPager = LinkPager::widget([
                                                     'poster' => $href,
                                                 ];
 
-                                                $businessImage[] = $href;
+                                                $businessImage = $href;
                                             }
 
                                             echo dosamigos\gallery\Carousel::widget([
@@ -108,20 +116,16 @@ $linkPager = LinkPager::widget([
                                             ]);
                                         } else {
 
-                                            foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
+                                            $image = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                                $src = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                            if (!empty($dataBusiness['businessImages'][0]['image'])) {
 
-                                                if (!empty($dataBusinessImage['image'])) {
-
-                                                    $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
-                                                }
-
-                                                echo Html::img($src, ['class' => 'img-responsive img-component']);
-
-                                                $businessImage[] = $src;
+                                                $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
                                             }
+
+                                            echo Html::img($image, ['class' => 'img-responsive img-component']);
+
+                                            $businessImage = $image;
                                         } ?>
 
                                     </div>
@@ -129,14 +133,14 @@ $linkPager = LinkPager::widget([
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
                                         <div class="rating rating-top">
                                             <h2 class="mt-10 mb-0"><span class="label label-success"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                            <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
+                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                         </div>
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
                                         <div class="rating rating-top">
                                             <h2 class="mt-10 mb-0"><span class="label label-success"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                            <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
+                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                         </div>
                                     </div>
 
@@ -158,10 +162,11 @@ $linkPager = LinkPager::widget([
                                                         foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
 
                                                             $businessCategory .= $dataBusinessCategories['category']['name'] . ' / ';
+                                                        }
 
-                                                        } ?>
+                                                        $businessCategory = trim($businessCategory, ' / '); ?>
 
-                                                        <small class="mt-10"><?= trim($businessCategory, ' / ') ?></small>
+                                                        <small class="mt-10"><?= $businessCategory ?></small>
 
                                                     </h4>
                                                     <div class="widget">
@@ -179,22 +184,17 @@ $linkPager = LinkPager::widget([
                                                                 <i class="aicon aicon-rupiah"></i>
 
                                                                 <?php
+                                                                $businessPrice = '-';
+
                                                                 if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
 
                                                                     $businessPrice = Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
-
                                                                 } else if (empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
 
-                                                                    $businessPrice = '0 - ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
-
+                                                                    $businessPrice = Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
                                                                 } else if (empty($dataBusiness['businessDetail']['price_max']) && !empty($dataBusiness['businessDetail']['price_min'])) {
 
-                                                                    $businessPrice = Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - 0';
-
-                                                                } else {
-
-                                                                    $businessPrice = '-';
-
+                                                                    $businessPrice = Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
                                                                 }
 
                                                                 echo $businessPrice ?>
@@ -207,9 +207,7 @@ $linkPager = LinkPager::widget([
                                                 <div class="visible-lg visible-md col-md-3 col text-center">
                                                     <div class="rating pull-right">
                                                         <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h3>
-
-                                                        <?= (!empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : '0'); ?> votes
-
+                                                        <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,7 +222,10 @@ $linkPager = LinkPager::widget([
                     $businessCoordinate = explode(',', $dataBusiness['businessLocation']['coordinate']);
                     $businessLatitude = $businessCoordinate[0];
                     $businessLongitude = $businessCoordinate[1];
-                    $businessDetail[$dataBusiness['businessLocation']['coordinate']][] = [
+
+                    $key = $dataBusiness['businessLocation']['coordinate'];
+
+                    $businessDetail[$key][] = [
                         'businessId' => $dataBusiness['id'],
                         'businessImage' => $businessImage,
                         'businessName' => $dataBusiness['name'],
@@ -241,7 +242,7 @@ $linkPager = LinkPager::widget([
 
                 endforeach;
 
-                $mapObject = json_encode($businessDetail); ?>
+                $mapObject = Json::encode($businessDetail); ?>
 
                 <textarea id="map-object" style="display: none"><?= $mapObject ?></textarea>
 
@@ -277,24 +278,8 @@ frontend\components\RatingColor::widget();
 $jscript = '
     ratingColor($(".rating"), "span");
 
-    function trim(word, mask) {
-
-        while (~mask.indexOf(word[0])) {
-
-            word = word.slice(1);
-        }
-
-        while (~mask.indexOf(word[word.length - 1])) {
-
-            word = word.slice(0, -1);
-        }
-
-        return word;
-    }
-
     var initMap = function() {
 
-        var mapInfoWindow;
         var mapResult;
         var mapOptions;
         var mapResultDefaultLatLng = {lat: -6.9175, lng: 107.6191};
@@ -308,7 +293,6 @@ $jscript = '
         if (mapResultContainer) {
 
             mapOptions = {
-                center: mapResultDefaultLatLng,
                 zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_BOTTOM
@@ -320,73 +304,69 @@ $jscript = '
             };
 
             mapResult = new google.maps.Map(mapResultContainer, mapOptions);
-            mapInfoWindow = new google.maps.InfoWindow();
 
             if (mapObject) {
 
                 var mapInfoWindow = new google.maps.InfoWindow();
-                var mapObject = mapObject.replace();
                 var businessDetail = jQuery.parseJSON(mapObject);
-                var markers = [];
-                var markerIndex = 0;
                 var markerBounds = new google.maps.LatLngBounds();
+                var markers = {};
+                var infoWindowContent = {};
+                var businessLatLng = {};
 
-                $.each(businessDetail, function(businessId, businessData) {
+                var callbackMarkerListener = function(keyCoordinate) {
 
-                    var businessLatLng = new google.maps.LatLng(businessData[0].businessLatitude, businessData[0].businessLongitude);
-                    var businessMarker;
+                    return function () {
 
-                    var callbackMarkerListener = function(businessMarker, markerIndex) {
+                        mapInfoWindow.setOptions({
+                            content: infoWindowContent[keyCoordinate],
+                            maxWidth: 800,
+                        });
 
-                        return function () {
-
-                            mapInfoWindow.setOptions({
-                                content: infoWindowContent,
-                                maxWidth: 800,
-                            });
-
-                            mapInfoWindow.open(mapResult, markers[markerIndex]);
-                        }
+                        mapInfoWindow.open(mapResult, markers[keyCoordinate]);
                     }
+                };
 
-                    var infoWindowContent = "<div class=\"infowindow mt-10\">";
+                $.each(businessDetail, function(keyCoordinate, businessData) {
+
+                    var coordinate = keyCoordinate.split(",");
+                    businessLatLng[keyCoordinate] = new google.maps.LatLng(coordinate[0], coordinate[1]);
+
+                    infoWindowContent[keyCoordinate] = "<div class=\"infowindow mt-10\">";
+
+                    var businessMarker = new google.maps.Marker({
+                        map: mapResult,
+                        position: businessLatLng[keyCoordinate],
+                        gestureHandling: "greedy",
+                        icon: {
+                            url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
+                            scaledSize: new google.maps.Size(28, 28),
+                            origin: new google.maps.Point(0,0),
+                            anchor: new google.maps.Point(10, 25)
+                        }
+                    });
+
+                    markers[keyCoordinate] = businessMarker;
 
                     $.each(businessData, function(key, value) {
 
-                        businessMarker = new google.maps.Marker({
-                            map: mapResult,
-                            position: businessLatLng,
-                            gestureHandling: "greedy",
-                            title: value.businessName,
-                            icon: {
-                                url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
-                                scaledSize: new google.maps.Size(28, 28),
-                                origin: new google.maps.Point(0,0),
-                                anchor: new google.maps.Point(10, 25)
-                            }
-                        });
+                        $(".place-" + value.businessId).on("click", callbackMarkerListener(keyCoordinate));
 
-                        markers.push(businessMarker);
-
-                        $(".place-" + value.businessId).on("click", callbackMarkerListener(businessMarker, markerIndex));
-
-                        infoWindowContent +=
+                        infoWindowContent[keyCoordinate] +=
                             "<div class=\"row\">" +
-                                "<div class=\"col-sm-6 hidden-xs\">" +
-                                    "<img src=\"" + value.businessImage[0] + "\" width=\"100%\">" +
+                                "<div class=\"col-sm-5 hidden-xs\">" +
+                                    "<img src=\"" + value.businessImage + "\" width=\"100%\">" +
                                 "</div>" +
-                                "<div class=\"col-sm-6 col-xs-12\">" +
+                                "<div class=\"col-sm-7 col-xs-12\">" +
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h4 class=\"font-alt m-0\">" + value.businessName + "</h4>" +
+                                                "<h5 class=\"font-alt m-0\">" + value.businessName + "</h5>" +
                                             "</div>" +
                                         "</div>" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h4 class=\"m-0\">" +
-                                                    "<small class=\"mt-10\">" + trim(value.businessCategory, " / ") + "</small>" +
-                                                "</h4>" +
+                                                value.businessCategory +
                                                 "<div class=\"widget\">" +
                                                     "<ul class=\"icon-list\">" +
                                                         "<li>" +
@@ -397,7 +377,6 @@ $jscript = '
                                                         "</li>" +
                                                     "</ul>" +
                                                 "</div>" +
-                                                "<hr class=\"divider-w mb-10\">" +
                                                 "<a class=\"text-main pull-right\" href=\"" + value.businessUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
                                             "</div>" +
                                         "</div>" +
@@ -407,13 +386,11 @@ $jscript = '
                             "<hr class=\"divider-w mt-10 mb-10\">";
                     });
 
-                    infoWindowContent += "</div>";
+                    infoWindowContent[keyCoordinate] += "</div>";
 
-                    google.maps.event.addListener(businessMarker, "click", callbackMarkerListener(businessMarker, markerIndex));
+                    google.maps.event.addListener(businessMarker, "click", callbackMarkerListener(keyCoordinate));
 
-                    markerBounds.extend(businessLatLng);
-
-                    markerIndex++;
+                    markerBounds.extend(businessLatLng[keyCoordinate]);
                 });
 
                 mapResult.fitBounds(markerBounds);
