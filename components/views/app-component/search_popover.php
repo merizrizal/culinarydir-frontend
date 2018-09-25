@@ -6,6 +6,8 @@ use core\models\City;
 use core\models\Category;
 
 /* @var $this yii\web\View */
+/* @var $keyword yii\web\View */
+/* @var $popover bool */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -13,12 +15,12 @@ kartik\select2\ThemeKrajeeAsset::register($this);
 if ($popover):
 
     PopoverX::begin([
-    'size' => PopoverX::SIZE_LARGE,
-    'placement' => PopoverX::ALIGN_BOTTOM_RIGHT,
-    'toggleButton' => ['label' => '<i class="fa fa-search"></i> Search', 'class' => 'btn btn-round btn-default btn-search-toggle'],
-    'headerOptions' => ['style' => 'display:none'],
-    'options' => ['id' => 'popover-search', 'class' => 'popover-search'],
-]); ?>
+        'size' => PopoverX::SIZE_LARGE,
+        'placement' => PopoverX::ALIGN_BOTTOM_RIGHT,
+        'toggleButton' => ['label' => '<i class="fa fa-search"></i> Search', 'class' => 'btn btn-round btn-default btn-search-toggle'],
+        'header' => '&nbsp;',
+        'options' => ['id' => 'popover-search', 'class' => 'popover-search'],
+    ]); ?>
 
     <div class="search-box popover-search-box">
 
@@ -26,16 +28,14 @@ if ($popover):
             'id' => 'widget-search-map'
         ]); ?>
 
-        <?php
-        if (empty($keyword['special'])) {
-
-            echo Html::hiddenInput('special', 0);
-
-        } else if (!empty($keyword['special'])) {
-
-            echo Html::hiddenInput('special', 1);
-
-        } ?>
+            <?php
+            if (empty($keyword['special'])) {
+    
+                echo Html::hiddenInput('special', 0);
+            } else if (!empty($keyword['special'])) {
+    
+                echo Html::hiddenInput('special', 1);
+            } ?>
 
             <div class="row">
                 <div class="col-sm-12 col-xs-12 col">
@@ -202,8 +202,8 @@ if ($popover):
 
     </div>
 
-<?php
-PopoverX::end();
+    <?php
+    PopoverX::end();
 else: ?>
 
     <div class="search-box">
@@ -212,16 +212,14 @@ else: ?>
             'id' => 'widget-search-map'
         ]); ?>
 
-        <?php
-        if (empty($keyword['special'])) {
-
-            echo Html::hiddenInput('special', 0);
-
-        } else if (!empty($keyword['special'])) {
-
-            echo Html::hiddenInput('special', 1);
-
-        } ?>
+            <?php
+            if (empty($keyword['special'])) {
+    
+                echo Html::hiddenInput('special', 0);    
+            } else if (!empty($keyword['special'])) {
+    
+                echo Html::hiddenInput('special', 1);    
+            } ?>
 
             <div class="row">
                 <div class="col-tab-6 col-xs-12 col">

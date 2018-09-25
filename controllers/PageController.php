@@ -17,20 +17,19 @@ use yii\data\ActiveDataProvider;
  */
 class PageController extends base\BaseHistoryUrlController
 {
+
     /**
+     *
      * @inheritdoc
      */
     public function behaviors()
     {
-        return array_merge(
-            $this->getAccess(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                    ],
-                ],
-            ]);
+        return array_merge($this->getAccess(), [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => []
+            ]
+        ]);
     }
 
     public function actionDefault()
@@ -44,12 +43,12 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'business',
                 'user',
-                'userPostMains child' => function($query)
-                {
+                'userPostMains child' => function ($query) {
+                    
                     $query->andOnCondition(['child.is_publish' => true]);
                 },
                 'userVotes',
-                'userPostComments',
+                'userPostComments'
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.is_publish' => true])
@@ -61,12 +60,12 @@ class PageController extends base\BaseHistoryUrlController
         $dataProviderUserPostMain = new ActiveDataProvider([
             'query' => $modelUserPostMain,
             'pagination' => [
-                'route' => 'data/recent-post',
+                'route' => 'data/recent-post'
             ]
         ]);
 
         return $this->render('index', [
-            'dataProviderUserPostMain' => $dataProviderUserPostMain,
+            'dataProviderUserPostMain' => $dataProviderUserPostMain
         ]);
     }
 
@@ -86,56 +85,56 @@ class PageController extends base\BaseHistoryUrlController
 
         $modelBusiness = Business::find()
             ->joinWith([
-                'businessCategories' => function($query)
-                {
+                'businessCategories' => function ($query) {
+                    
                     $query->andOnCondition(['business_category.is_active' => true]);
                 },
                 'businessCategories.category',
-                'businessFacilities' => function($query)
-                {
+                'businessFacilities' => function ($query) {
+                    
                     $query->andOnCondition(['business_facility.is_active' => true]);
                 },
                 'businessFacilities.facility',
                 'businessImages',
                 'businessLocation',
-                'businessProducts' => function($query)
-                {
+                'businessProducts' => function ($query) {
+                    
                     $query->andOnCondition(['business_product.not_active' => false]);
                 },
-                'businessProductCategories' => function($query)
-                {
+                'businessProductCategories' => function ($query) {
+                    
                     $query->andOnCondition(['business_product_category.is_active' => true]);
                 },
                 'businessProductCategories.productCategory',
                 'businessDetail',
-                'businessHours' => function($query)
-                {
+                'businessHours' => function ($query) {
+                    
                     $query->andOnCondition(['business_hour.is_open' => true]);
                 },
                 'businessDetailVotes',
-                'businessDetailVotes.ratingComponent rating_component' => function($query)
-                {
+                'businessDetailVotes.ratingComponent rating_component' => function ($query) {
+                    
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
-                'businessPromos' => function($query)
-                {
+                'businessPromos' => function ($query) {
+                    
                     $query->andOnCondition(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
-                'userLoves' => function($query)
-                {
+                'userLoves' => function ($query) {
+                    
                     $query->andOnCondition([
                         'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
                         'user_love.is_active' => true
                     ]);
                 },
-                'userVisits' => function($query)
-                {
+                'userVisits' => function ($query) {
+                    
                     $query->andOnCondition([
                         'user_visit.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
                         'user_visit.is_active' => true
                     ]);
-                },
+                }
             ])
             ->andWhere(['business.id' => $id])
             ->asArray()->one();
@@ -145,27 +144,28 @@ class PageController extends base\BaseHistoryUrlController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'user',
-                'userPostMains child' => function($query)
-                {
+                'userPostMains child' => function ($query) {
+                    
                     $query->andOnCondition(['child.is_publish' => true])
-                            ->orderBy(['child.created_at' => SORT_ASC]);
+                        ->orderBy(['child.created_at' => SORT_ASC]);
                 },
-                'userVotes' => function($query)
-                {
+                'userVotes' => function ($query) {
+                    
                     $query->orderBy(['rating_component_id' => SORT_ASC]);
                 },
-                'userVotes.ratingComponent rating_component' => function($query)
-                {
+                'userVotes.ratingComponent rating_component' => function ($query) {
+                    
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
-                'userPostLoves' => function($query)
-                {
+                'userPostLoves' => function ($query) {
+                    
                     $query->andOnCondition([
                         'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true]);
+                        'user_post_love.is_active' => true
+                    ]);
                 },
                 'userPostComments',
-                'userPostComments.user user_comment',
+                'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.business_id' => $id])
@@ -180,23 +180,22 @@ class PageController extends base\BaseHistoryUrlController
         $modelPostPhoto->setScenario('postPhoto');
 
         $modelRatingComponent = RatingComponent::find()
-                ->where(['is_active' => true])
-                ->orderBy(['order' => SORT_ASC])
-                ->asArray()->all();
+            ->where(['is_active' => true])
+            ->orderBy(['order' => SORT_ASC])
+            ->asArray()->all();
 
         $modelUserReport = new UserReport();
 
         $dataUserVoteReview = [];
 
-        if (!empty($modelUserPostMain['userVotes']))
-        {
+        if (!empty($modelUserPostMain['userVotes'])) {
             $ratingComponentValue = [];
             $totalVoteValue = 0;
 
-            foreach ($modelUserPostMain['userVotes'] as $dataUserVote)
-            {
-                if (!empty($dataUserVote['ratingComponent']))
-                {
+            foreach ($modelUserPostMain['userVotes'] as $dataUserVote) {
+                
+                if (!empty($dataUserVote['ratingComponent'])) {
+                    
                     $totalVoteValue += $dataUserVote['vote_value'];
 
                     $ratingComponentValue[$dataUserVote['rating_component_id']] = $dataUserVote['vote_value'];
@@ -207,12 +206,12 @@ class PageController extends base\BaseHistoryUrlController
 
             $dataUserVoteReview = [
                 'overallValue' => $overallValue,
-                'ratingComponentValue' => $ratingComponentValue,
+                'ratingComponentValue' => $ratingComponentValue
             ];
         }
 
-        if (!empty($modelUserPostMain))
-        {
+        if (!empty($modelUserPostMain)) {
+            
             $modelPost->text = $modelUserPostMain['text'];
         }
 
@@ -223,19 +222,19 @@ class PageController extends base\BaseHistoryUrlController
             'modelPost' => $modelPost,
             'modelPostPhoto' => $modelPostPhoto,
             'modelRatingComponent' => $modelRatingComponent,
-            'modelUserReport' => $modelUserReport,
+            'modelUserReport' => $modelUserReport
         ]);
     }
 
     public function actionDetailPromo($id)
     {
         $modelBusinessPromo = BusinessPromo::find()
-                ->andWhere(['id' => $id])
-                ->distinct()
-                ->asArray()->one();
+            ->andWhere(['id' => $id])
+            ->distinct()
+            ->asArray()->one();
 
         return $this->render('detail_promo', [
-            'modelBusinessPromo' => $modelBusinessPromo,
+            'modelBusinessPromo' => $modelBusinessPromo
         ]);
     }
 
@@ -245,31 +244,34 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'business',
                 'user',
-                'userPostMains child' => function($query)
-                {
+                'userPostMains child' => function ($query) {
+                    
                     $query->andOnCondition(['child.is_publish' => true])
-                            ->orderBy(['child.created_at' => SORT_ASC]);
+                        ->orderBy(['child.created_at' => SORT_ASC]);
                 },
-                'userVotes' => function($query)
-                {
+                'userVotes' => function ($query) {
+                    
                     $query->orderBy(['rating_component_id' => SORT_ASC]);
                 },
-                'userVotes.ratingComponent rating_component' => function($query)
-                {
+                'userVotes.ratingComponent rating_component' => function ($query) {
+                    
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
-                'userPostLoves' => function($query)
-                {
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+                'userPostLoves' => function ($query) {
+                    
+                    $query->andOnCondition([
+                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                        'user_post_love.is_active' => true
+                    ]);
                 },
                 'userPostComments',
-                'userPostComments.user user_comment',
+                'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.id' => $id])
             ->asArray()->one();
 
         return $this->render('review', [
-            'modelUserPostMain' => $modelUserPostMain,
+            'modelUserPostMain' => $modelUserPostMain
         ]);
     }
 
@@ -279,17 +281,21 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'business',
                 'user',
-                'userPostLoves' => function($query) {
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+                'userPostLoves' => function ($query) {
+                    
+                    $query->andOnCondition([
+                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                        'user_post_love.is_active' => true
+                    ]);
                 },
                 'userPostComments',
-                'userPostComments.user user_comment',
+                'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.id' => $id])
             ->asArray()->one();
 
         return $this->render('photo', [
-            'modelUserPostMain' => $modelUserPostMain,
+            'modelUserPostMain' => $modelUserPostMain
         ]);
     }
 
@@ -299,65 +305,65 @@ class PageController extends base\BaseHistoryUrlController
 
         $keyword = [];
 
-        if (!empty($get['special']))
-        {
+        if (!empty($get['special'])) {
+            
             $keyword['special'] = $get['special'];
         }
 
-        if (!empty($get['city_id']))
-        {
+        if (!empty($get['city_id'])) {
+            
             $keyword['city'] = $get['city_id'];
         }
 
-        if (!empty($get['name']))
-        {
+        if (!empty($get['name'])) {
+            
             $keyword['name'] = $get['name'];
         }
 
-        if (!empty($get['product_category']))
-        {
+        if (!empty($get['product_category'])) {
+            
             $modelProductCategory = ProductCategory::find()
-                    ->where(['id' => $get['product_category']])
-                    ->asArray()->one();
+                ->where(['id' => $get['product_category']])
+                ->asArray()->one();
 
             $keyword['product']['id'] = $get['product_category'];
             $keyword['product']['name'] = $modelProductCategory['name'];
         }
 
-        if (!empty($get['category_id']))
-        {
+        if (!empty($get['category_id'])) {
+            
             $keyword['category'] = $get['category_id'];
         }
 
-        if (!empty($get['price_min']))
-        {
+        if (!empty($get['price_min'])) {
+            
             $keyword['price_min'] = $get['price_min'];
         }
 
-        if (!empty($get['price_max']))
-        {
+        if (!empty($get['price_max'])) {
+            
             $keyword['price_max'] = $get['price_max'];
         }
 
-        if (!empty($get['coordinate_map']))
-        {
+        if (!empty($get['coordinate_map'])) {
+            
             $keyword['coordinate'] = $get['coordinate_map'];
         }
 
-        if (!empty($get['radius_map']))
-        {
+        if (!empty($get['radius_map'])) {
+            
             $keyword['radius'] = $get['radius_map'];
         }
 
-        if (!empty($get['facility_id']))
-        {
+        if (!empty($get['facility_id'])) {
+            
             $keyword['facility'] = $get['facility_id'];
         }
 
         Yii::$app->session->setFlash('keyword', $keyword);
 
         return $this->render($fileRender, [
-            'keyword' => $keyword,
+            'keyword' => $keyword
         ]);
     }
 }

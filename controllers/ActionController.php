@@ -336,6 +336,7 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
+            
             $userId = Yii::$app->user->getIdentity()->id;
 
             $modelUserVisit = UserVisit::find()
@@ -368,7 +369,7 @@ class ActionController extends base\BaseController
 
                 if (!empty($modelBusinessDetail)) {
 
-                    if($modelUserVisit->is_active == true) {
+                    if($modelUserVisit->is_active) {
 
                         $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value + 1;
 
@@ -376,11 +377,10 @@ class ActionController extends base\BaseController
                         $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value - 1;
                     }
 
-                    $modelBusinessDetail->business_id = $post['business_id'];
-
                     $flag = $modelBusinessDetail->save();
 
                 } else {
+                    
                     $modelBusinessDetail = new BusinessDetail();
 
                     $modelBusinessDetail->business_id = $post['business_id'];
@@ -396,16 +396,16 @@ class ActionController extends base\BaseController
 
                 $transaction->commit();
 
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['is_active'] = $modelUserVisit->is_active;
             } else {
 
                 $transaction->rollBack();
 
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Gagal';
-                $result['message'] = 'Gagal menandai tempat ini.';
+                $result['message'] = 'Proses been here gagal disimpan';
                 $result['type'] = 'danger';
             }
 
@@ -429,16 +429,16 @@ class ActionController extends base\BaseController
 
             if ($modelUserReport->save()) {
 
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
-                $result['title'] = 'Report Tersimpan.';
+                $result['title'] = 'Report Berhasil';
                 $result['message'] = 'Report Anda berhasil di simpan.';
                 $result['type'] = 'success';
             } else {
 
-                $result['status'] = 'gagal';
+                $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-info';
-                $result['title'] = 'Report Gagal.';
+                $result['title'] = 'Report Gagal';
                 $result['message'] = 'Report Anda gagal di simpan.';
                 $result['type'] = 'danger';
             }

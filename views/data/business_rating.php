@@ -1,12 +1,16 @@
 <?php
+use kartik\rating\StarRating; 
 
-use kartik\rating\StarRating; ?>
+/* @var $this yii\web\View */
+/* @var $modelBusinessDetail core\models\BusinessDetail */
+/* @var $modelBusinessDetailVote core\models\BusinessDetailVote */
+/* @var $modelRatingComponent core\models\RatingComponent */ ?>
 
 <div class="row">
     <div class="col-sm-6 col-xs-6 text-center">
         <div class="rating">
             <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format((float) $modelBusinessDetail['vote_value'], 1, '.', '') ?></span></h2>
-            <?= $modelBusinessDetail['voters'] ?> votes
+            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($modelBusinessDetail['voters']) ? $modelBusinessDetail['voters'] : 0]) ?>
         </div>
     </div>
     <div class="col-sm-6 col-xs-6">
