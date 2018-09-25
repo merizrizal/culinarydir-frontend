@@ -221,6 +221,14 @@ $layoutUser = '
 
                                                     if (!empty($modelUserPostMain['userPostLoves'][0])) {
                                                         $selected = 'selected';
+                                                    } 
+                                                    
+                                                    $commentCount = 0;
+                                                    $photoCount = 0;
+                                                    
+                                                    if (!empty($modelUserPostMain)) {
+                                                        $commentCount = count($modelUserPostMain['userPostComments']);
+                                                        $photoCount = count($modelUserPostMain['userPostMains']);
                                                     } ?>
                                                 
                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $modelUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0]), null , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
@@ -229,13 +237,13 @@ $layoutUser = '
                                                 </li>
                                                 <li>
             
-                                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0]), null, ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . $commentCount . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => $commentCount]), null, ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'my-comments-review-trigger visible-xs']); ?>
             
                                                 </li>
                                                 <li>
             
-                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0]), null, ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]), null, ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'my-photos-review-trigger visible-xs']); ?>
             
                                                 </li>
