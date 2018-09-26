@@ -459,25 +459,30 @@ frontend\components\FacebookShare::widget();
 
 $jscript = '
     $("#pjax-user-post-container").on("pjax:send", function() {
+
         $(".review-post").siblings(".overlay").show();
         $(".review-post").siblings(".loading-img").show();
     });
 
     $("#pjax-user-post-container").on("pjax:complete", function() {
+
         $(".review-section").siblings(".overlay").hide();
         $(".review-section").siblings(".loading-img").hide();
     });
 
     $("#pjax-user-post-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 
     $(".total-user-post").html("' . $totalCount . '");
 
     $(".user-post-main-id").each(function() {
+
         var thisObj = $(this);
 
         thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function(){
+
             $.ajax({
                 cache: false,
                 type: "POST",
@@ -486,21 +491,27 @@ $jscript = '
                 },
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
                 success: function(response) {
-                    if (response.status == "sukses") {
+
+                    if (response.success) {
+
                         var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
 
                         if (response.is_active) {
+
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue + 1).toString());
                         } else {
+
                             thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
                             thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue - 1).toString());
                         }
                     } else {
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
+
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -511,14 +522,17 @@ $jscript = '
         thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
         thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
 
-        thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function(){
+        thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
+
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
 
             return false;
         });
 
         thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").on("keypress", function(event) {
+
             if (event.which == 13 && $(this).val().trim()) {
+
                 var data = {
                     "user_post_main_id": thisObj.val(),
                     "text": $(this).val(),
@@ -533,7 +547,9 @@ $jscript = '
                         $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
                     },
                     success: function(response) {
-                        if (response.status == "sukses") {
+
+                        if (response.success) {
+
                             $("#input-" + response.user_post_main_id + "-comments-review").val("");
 
                             $.ajax({
@@ -544,13 +560,16 @@ $jscript = '
                                 },
                                 url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                                 success: function(response) {
+
                                     $(".comment-" + thisObj.val() + "-section").html(response);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
+
                                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                                 }
                             });
                         } else {
+
                             messageResponse(response.icon, response.title, response.message, response.type);
                         }
 
@@ -558,6 +577,7 @@ $jscript = '
                         $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
+
                         messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                     }
                 });
@@ -565,7 +585,9 @@ $jscript = '
         });
 
         if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
+
             thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function(){
+
                 thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
 
                 return false;
@@ -573,6 +595,7 @@ $jscript = '
         }
 
         thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
+
             delegate: "a.show-image",
             type: "image",
             gallery: {
@@ -589,10 +612,12 @@ $jscript = '
         $(".review-" + thisObj.val() + "-option").hide();
 
         $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
+
             $(".review-" + thisObj.val() + "-option").slideToggle();
         });
 
         thisObj.parent().find(".user-" + thisObj.val() + "-delete-review-trigger").on("click", function() {
+
             var form = $("form#rating-popover-form-" + thisObj.val()).serialize();
 
             $.ajax({
@@ -601,21 +626,27 @@ $jscript = '
                 data: form,
                 url: $(this).attr("href"),
                 success: function(response) {
-                    if (response.status == "sukses") {
+
+                    if (response.success) {
+
                         var totalUserPost = parseInt($(".total-user-post").html());
 
                         if (response.publish) {
+
                             $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
                             $(".total-user-post").html(totalUserPost + 1);
                         } else {
+
                             $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
                             $(".total-user-post").html(totalUserPost - 1);
                         }
                     } else {
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
+
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -624,6 +655,7 @@ $jscript = '
         });
 
         thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
+
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
             var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + thisObj.parent().find(".business-name").val();
             var description = thisObj.parent().find(".review-description").text();

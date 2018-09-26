@@ -67,157 +67,154 @@ if (!empty($getFlashMessage)) {
                                         ]
                                     ]);
 
-                                    if (!empty($socmed)) {
-
-                                        if ($socmed === 'Facebook') {
-
-                                            echo $form->field($modelUserSocialMedia, 'facebook_id')->hiddenInput(['class' => 'form-control']);
-
-                                        } else if ($socmed === 'Google') {
-
-                                            echo $form->field($modelUserSocialMedia, 'google_id')->hiddenInput(['class' => 'form-control']);
-
-                                        }
-
-                                    } ?>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelPerson, 'first_name')->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => Yii::t('app', 'First Name'),
-                                            ]) ?>
-
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelPerson, 'last_name')->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => Yii::t('app', 'Last Name'),
-                                            ]) ?>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelPerson, 'phone')->widget(MaskedInput::className(), [
-                                                'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
-                                                'options' => [
+                                        if (!empty($socmed)) {
+    
+                                            if ($socmed === 'Facebook') {
+    
+                                                echo $form->field($modelUserSocialMedia, 'facebook_id')->hiddenInput(['class' => 'form-control']);
+                                            } else if ($socmed === 'Google') {
+    
+                                                echo $form->field($modelUserSocialMedia, 'google_id')->hiddenInput(['class' => 'form-control']);
+                                            }
+                                        } ?>
+    
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelPerson, 'first_name')->textInput([
                                                     'class' => 'form-control',
-                                                    'placeholder' => Yii::t('app', 'Phone'),
-                                                ],
-                                            ]) ?>
-
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelPerson, 'city_id')->dropDownList(
-                                                ArrayHelper::map(
-                                                    City::find()->orderBy('name')->asArray()->all(),
-                                                    'id',
-                                                    function($data) {
-                                                        return $data['name'];
-                                                    }
-                                                ),
-                                                [
-                                                    'prompt' => '',
-                                                    'style' => 'width: 100%'
+                                                    'placeholder' => Yii::t('app', 'First Name'),
                                                 ]) ?>
-
+    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelPerson, 'last_name')->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => Yii::t('app', 'Last Name'),
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelUserRegister, 'username', [
-                                                'enableAjaxValidation' => true
-                                            ])->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Username',
-                                            ]) ?>
-
+    
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelPerson, 'phone')->widget(MaskedInput::className(), [
+                                                    'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
+                                                    'options' => [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => Yii::t('app', 'Phone'),
+                                                    ],
+                                                ]) ?>
+    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelPerson, 'city_id')->dropDownList(
+                                                    ArrayHelper::map(
+                                                        City::find()->orderBy('name')->asArray()->all(),
+                                                        'id',
+                                                        function($data) {
+                                                            return $data['name'];
+                                                        }
+                                                    ),
+                                                    [
+                                                        'prompt' => '',
+                                                        'style' => 'width: 100%'
+                                                    ]) ?>
+    
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelUserRegister, 'email', [
-                                                'enableAjaxValidation' => true
-                                            ])->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Email',
-                                                'readonly' => !empty($socmed),
-                                            ]) ?>
-
+    
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelUserRegister, 'username', [
+                                                    'enableAjaxValidation' => true
+                                                ])->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Username',
+                                                ]) ?>
+    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelUserRegister, 'email', [
+                                                    'enableAjaxValidation' => true
+                                                ])->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Email',
+                                                    'readonly' => !empty($socmed),
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelUserRegister, 'password')->passwordInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Password',
-                                            ]) ?>
-
+    
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelUserRegister, 'password')->passwordInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Password',
+                                                ]) ?>
+    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+    
+                                                <?= $form->field($modelUserRegister, 'password_repeat')->passwordInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Repeat Password',
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6">
-
-                                            <?= $form->field($modelUserRegister, 'password_repeat')->passwordInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Repeat Password',
-                                            ]) ?>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-
-                                            <?= Html::submitButton('Daftar', ['class' => 'btn btn-block btn-round btn-d']) ?>
-
-                                            <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
-
-                                            <div class="mt-10">
-
-                                                <?php
-                                                $authAuthChoice = AuthChoice::begin([
-                                                    'baseAuthUrl' => ['site/auth'],
-                                                    'popupMode' => false,
-                                                ]);
-
-                                                foreach ($authAuthChoice->getClients() as $client):
-
-                                                    $btnType = '';
-
-                                                    if ($client->getName() === 'facebook') {
-                                                        $btnType = 'btn-primary';
-                                                    } else if ($client->getName() === 'google') {
-                                                        $btnType = 'btn-border-d';
-                                                    }
-
-                                                    echo $authAuthChoice->clientLink($client,
-                                                        '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
-                                                        'class' => 'btn ' . $btnType . ' btn-block btn-round',
+    
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+    
+                                                <?= Html::submitButton('Daftar', ['class' => 'btn btn-block btn-round btn-d']) ?>
+    
+                                                <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
+    
+                                                <div class="mt-10">
+    
+                                                    <?php
+                                                    $authAuthChoice = AuthChoice::begin([
+                                                        'baseAuthUrl' => ['site/auth'],
+                                                        'popupMode' => false,
                                                     ]);
-
-                                                endforeach;
-
-                                                AuthChoice::end(); ?>
-
-                                            </div>
-
-                                            <hr class="divider-w mt-20 mb-10">
-
-                                            <div class="text-center">
-                                                <h4>
-                                                    <small>Sudah memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">Masuk</a></small>
-                                                </h4>
+    
+                                                        foreach ($authAuthChoice->getClients() as $client):
+        
+                                                            $btnType = '';
+        
+                                                            if ($client->getName() === 'facebook') {
+                                                                $btnType = 'btn-primary';
+                                                            } else if ($client->getName() === 'google') {
+                                                                $btnType = 'btn-border-d';
+                                                            }
+        
+                                                            echo $authAuthChoice->clientLink($client,
+                                                                '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
+                                                                'class' => 'btn ' . $btnType . ' btn-block btn-round',
+                                                            ]);
+        
+                                                        endforeach;
+    
+                                                    AuthChoice::end(); ?>
+    
+                                                </div>
+    
+                                                <hr class="divider-w mt-20 mb-10">
+    
+                                                <div class="text-center">
+                                                    <h4>
+                                                        <small>Sudah memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">Masuk</a></small>
+                                                    </h4>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                     <?php ActiveForm::end(); ?>
 

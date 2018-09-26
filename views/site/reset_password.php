@@ -41,24 +41,24 @@ $this->registerMetaTag([
                                         ]
                                     ]); ?>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <?= $form->field($model, 'password')->passwordInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'New Password',
-                                            ]) ?>
-
+                                        <div class="row">
+                                            <div class="col-md-12">
+    
+                                                <?= $form->field($model, 'password')->passwordInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'New Password',
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-
-                                            <?= Html::submitButton('Save', ['class' => 'btn btn-round btn-d']) ?>
-
+    
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+    
+                                                <?= Html::submitButton('Save', ['class' => 'btn btn-round btn-d']) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
 
                                     <?php ActiveForm::end(); ?>
 

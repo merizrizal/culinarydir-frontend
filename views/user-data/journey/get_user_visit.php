@@ -68,7 +68,6 @@ $linkPager = LinkPager::widget([
                                     if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
 
                                         $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 347.333, 210.283);
-
                                     }
 
                                     echo Html::img($img); ?>
@@ -133,16 +132,19 @@ $linkPager = LinkPager::widget([
 <?php
 $jscript = '
     $("#pjax-user-visit-container").on("pjax:send", function() {
+
         $(".user-visit-container").parent().siblings(".overlay").show();
         $(".user-visit-container").parent().siblings(".loading-img").show();
     });
 
     $("#pjax-user-visit-container").on("pjax:complete", function() {
+
         $(".user-visit-container").parent().siblings(".overlay").hide();
         $(".user-visit-container").parent().siblings(".loading-img").hide();
     });
 
     $("#pjax-user-visit-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 

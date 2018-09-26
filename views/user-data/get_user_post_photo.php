@@ -125,20 +125,24 @@ frontend\components\FacebookShare::widget();
 
 $jscript = '
     $("#pjax-user-photo-container").on("pjax:send", function() {
+
         $("#photo-gallery").parent().parent().siblings(".overlay").show();
         $("#photo-gallery").parent().parent().siblings(".loading-img").show();
     });
 
     $("#pjax-user-photo-container").on("pjax:complete", function() {
+
         $("#photo-gallery").parent().parent().siblings(".overlay").hide();
         $("#photo-gallery").parent().parent().siblings(".loading-img").hide();
     });
 
     $("#pjax-user-photo-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 
     $("#photo-gallery .place-gallery").magnificPopup({
+
         delegate: "a.show-image",
         type: "image",
         gallery: {
@@ -153,6 +157,7 @@ $jscript = '
     });
 
     $(".delete-image").on("click", function() {
+
         $("#modal-confirmation").modal("show");
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
@@ -161,10 +166,12 @@ $jscript = '
     });
 
     $("#photo-gallery").find(".work-item").each(function() {
+
         var thisObj = $(this);
         var photoId = $(this).find(".work-image").children().data("id");
 
         $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
+
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
             var title = "Foto untuk " + thisObj.find(".business-name").val();
             var description = thisObj.find(".photo-caption").text();

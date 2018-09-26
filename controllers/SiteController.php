@@ -79,7 +79,6 @@ class SiteController extends base\BaseController
 
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($modelUserRegister);
-
             } else {
 
                 $transaction = Yii::$app->db->beginTransaction();
@@ -124,11 +123,9 @@ class SiteController extends base\BaseController
                         if (!empty($post['UserSocialMedia']['google_id'])) {
 
                             $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
-
                         } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
 
                             $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
-
                         }
 
                         if (($flag = $modelUserSocialMedia->save())) {
@@ -144,7 +141,6 @@ class SiteController extends base\BaseController
                             ->setSubject('Welcome to ' . Yii::$app->name)
                             ->send();
                         }
-
                     } else {
 
                         $socmedFLag = false;
@@ -174,6 +170,7 @@ class SiteController extends base\BaseController
                     $transaction->commit();
 
                     if (!$socmedFLag) {
+                        
                         return $this->render('message', [
                             'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
                             'title' => Yii::t('app', 'You Have Registered To') . Yii::$app->name,
@@ -217,11 +214,9 @@ class SiteController extends base\BaseController
             if ($get['socmed'] === 'Facebook') {
 
                 $modelUserSocialMedia->facebook_id = $get['socmedId'];
-
             } else if ($get['socmed'] === 'Google') {
-
+                
                 $modelUserSocialMedia->google_id = $get['socmedId'];
-
             }
         }
 
@@ -230,7 +225,6 @@ class SiteController extends base\BaseController
             'modelPerson' => $modelPerson,
             'modelUserSocialMedia' => $modelUserSocialMedia,
             'socmed' => !empty($get['socmed']) ? $get['socmed'] : null,
-            'socmedId' => !empty($get['socmedId']) ? $get['socmedId'] : null,
         ]);
     }
 
@@ -351,20 +345,18 @@ class SiteController extends base\BaseController
             $socmedEmail = $userAttributes['email'];
             $first_name = $userAttributes['first_name'];
             $last_name = $userAttributes['last_name'];
-
         } else if ($client->id === 'google') {
-
+            
             $socmed = 'Google';
             $socmedEmail = $userAttributes['emails'][0]['value'];
             $first_name = $userAttributes['name']['givenName'];
             $last_name = $userAttributes['name']['familyName'];
-
         }
 
         $modelUser = User::find()
-                ->joinWith(['userSocialMedia'])
-                ->andWhere(['email' => $socmedEmail])
-                ->one();
+            ->joinWith(['userSocialMedia'])
+            ->andWhere(['email' => $socmedEmail])
+            ->one();
 
         if (empty($modelUser)) {
 
@@ -375,7 +367,6 @@ class SiteController extends base\BaseController
                 'last_name' => $last_name,
                 'socmedId' => $userAttributes['id'],
             ]);
-
         } else {
 
             $modelUserSocialMedia = !empty($modelUser->userSocialMedia) ? $modelUser->userSocialMedia : new UserSocialMedia();
@@ -387,14 +378,12 @@ class SiteController extends base\BaseController
                     $modelUserSocialMedia->user_id = $modelUser['id'];
                     $modelUserSocialMedia->facebook_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
-
                 } else {
 
                     if ($modelUserSocialMedia['facebook_id'] === $userAttributes['id']) {
                         $loginFlag = true;
                     }
                 }
-
             } else if ($socmed === 'Google') {
 
                 if (empty($modelUserSocialMedia['google_id'])) {
@@ -402,7 +391,6 @@ class SiteController extends base\BaseController
                     $modelUserSocialMedia->user_id = $modelUser['id'];
                     $modelUserSocialMedia->google_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
-
                 } else {
 
                     if ($modelUserSocialMedia['google_id'] === $userAttributes['id']) {
@@ -420,7 +408,6 @@ class SiteController extends base\BaseController
                 if ($model->login()) {
                     return $this->goBack(['page/default']);
                 }
-
             } else {
 
                 Yii::$app->session->setFlash('message', [
@@ -436,8 +423,8 @@ class SiteController extends base\BaseController
         }
     }
 
-    public function actionActivateAccount($token) {
-
+    public function actionActivateAccount($token) 
+    {
         $modelUser = User::find()
             ->andWhere(['account_activation_token' => $token])
             ->andWhere(['not_active' => true])

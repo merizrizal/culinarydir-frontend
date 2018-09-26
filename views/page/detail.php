@@ -3,21 +3,28 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
-use frontend\components\AppComponent;
 use frontend\components\AddressType;
 use sycomponent\Tools;
 
 /* @var $this yii\web\View */
+/* @var $modelBusiness core\models\Business */
+/* @var $modelRatingComponent core\models\RatingComponent */
+/* @var $modelUserReport core\models\UserReport */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = $modelBusiness['name'];
 
 $this->registerMetaTag([
     'name' => 'keywords',
     'content' => 'asik, makan, kuliner, bandung, jakarta'
 ]);
 
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]);
+
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
-$ogTitle = (!empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan');
+$ogTitle = $modelBusiness['name'];
 $ogDescription = (!empty($modelBusiness['about']) ? $modelBusiness['about'] : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com');
 $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
 
@@ -36,7 +43,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                     <?php
                     $flashKeyword = Yii::$app->session->getFlash('keyword'); ?>
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result') . '', [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), [
                         'page/result-list',
                         'special' => !empty($flashKeyword['special']) ? $flashKeyword['special'] : 0,
                         'city_id' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
@@ -77,25 +84,24 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $imagesAmbience = [];
+                                                        $images = [];
                                                         
                                                         if (!empty($modelBusiness['businessImages'])):
                                                         
-                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage)
-                                                            {
+                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                                $hrefAmbience = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
 
-                                                                $imagesAmbience[] = [
+                                                                $images[] = [
                                                                     'title' => '',
-                                                                    'href' => $hrefAmbience,
+                                                                    'href' => $href,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => $hrefAmbience,
+                                                                    'poster' => $href,
                                                                 ];
                                                             }
 
                                                             echo dosamigos\gallery\Carousel::widget([
-                                                                'items' => $imagesAmbience,
+                                                                'items' => $images,
                                                                 'json' => true,
                                                                 'templateOptions' => ['id' => 'gallery_business'],
                                                                 'clientOptions' => ['container' => '#gallery_business'],
@@ -121,25 +127,24 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $imagesMenu = [];
+                                                        $images = [];
                                                         
                                                         if (!empty($modelBusiness['businessProducts'])):
                                                         
-                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct)
-                                                            {
+                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
 
-                                                                $hrefMenu = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
 
-                                                                $imagesMenu[] = [
+                                                                $images[] = [
                                                                     'title' => '',
-                                                                    'href' => $hrefMenu,
+                                                                    'href' => $href,
                                                                     'type' => 'image/jpeg',
-                                                                    'poster' => $hrefMenu,
+                                                                    'poster' => $href,
                                                                 ];
                                                             }
 
                                                             echo dosamigos\gallery\Carousel::widget([
-                                                                'items' => $imagesMenu,
+                                                                'items' => $images,
                                                                 'json' => true,
                                                                 'templateOptions' => ['id' => 'gallery_menu'],
                                                                 'clientOptions' => ['container' => '#gallery_menu'],
@@ -182,11 +187,9 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <?php
                                                         $categories = '';
                                                         
-                                                        foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory)
-                                                        {
+                                                        foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
 
                                                             $categories .= $dataBusinessCategory['category']['name'] . ' / ';
-
                                                         } ?>
 
                                                         <strong class="pull-right visible-lg visible-md visible-sm visible-tab m-0"><?= trim($categories, ' / ') ?></strong>
@@ -250,11 +253,11 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         } 
                                                                         else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
                                                                         {
-                                                                            echo '0 - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
+                                                                            echo Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
                                                                         }
                                                                         else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min']))
                                                                         {
-                                                                            echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - 0';
+                                                                            echo Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
                                                                         }
                                                                         else
                                                                         {
@@ -269,18 +272,17 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         <?php
                                                                         if (!empty($modelBusiness['businessHours'])): ?>
 
-                                                                            Jam operasional:
+                                                                            Jam operasional
                                                                             <ul class="icon-list">
-
-                                                                            <?php
-                                                                            $days = ['Monday', 'Tuesday', 'Wednesday',
-                                                                                    'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                                                            
+																				<?php
+                                                                                $days = Yii::$app->params['days'];
 
                                                                                 foreach ($modelBusiness['businessHours'] as $dataBusinessHour):
 
-                                                                                    $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00')) ? true : false; ?>
+                                                                                    $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00')); ?>
 
-                                                                                    <li><?= Yii::t('app', $days[(intval($dataBusinessHour['day']) - 1)]) . ': ' . ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) ?></li>
+                                                                                    <li><?= Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . ': ' . ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) ?></li>
 
                                                                                 <?php
                                                                                 endforeach; ?>
@@ -414,16 +416,11 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                 <div class="col-sm-12 col-xs-12">
 
                                                     <?php
-                                                    $selectedVisit = '';
-                                                    $selectedLove = '';
-
-                                                    if (!empty($modelBusiness['userVisits'][0])) {
-                                                        $selectedVisit = 'selected';
-                                                    }
-
-                                                    if (!empty($modelBusiness['userLoves'][0])) {
-                                                        $selectedLove = 'selected';
-                                                    } ?>
+                                                    $selectedVisit = !empty($modelBusiness['userVisits'][0]) ? 'selected' : '';
+                                                    $selectedLove = !empty($modelBusiness['userLoves'][0]) ? 'selected' : '';
+                                                    
+                                                    $visitValue = !empty($modelBusiness['businessDetail']['visit_value']) ? $modelBusiness['businessDetail']['visit_value'] : 0;
+                                                    $loveValue = !empty($modelBusiness['businessDetail']['love_value']) ? $modelBusiness['businessDetail']['love_value'] : 0; ?>
 
                                                     <ul class="list-inline mt-0 mb-0 visible-lg visible-md visible-sm visible-tab">
                                                         <li>
@@ -433,7 +430,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . '',
                                                                 ]) ?>
 
-                                                                <?= Html::a(!empty($modelBusiness['businessDetail']['visit_value']) ? $modelBusiness['businessDetail']['visit_value'] : '0', '', [
+                                                                <?= Html::a($visitValue, '', [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' count',
                                                                 ]) ?>
 
@@ -446,7 +443,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . '',
                                                                 ]) ?>
 
-                                                                <?= Html::a(!empty($modelBusiness['businessDetail']['love_value']) ? $modelBusiness['businessDetail']['love_value'] : '0', '', [
+                                                                <?= Html::a($loveValue, '', [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' count',
                                                                 ]) ?>
 
@@ -455,7 +452,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <li>
                                                             <div class="btn-group" role="group">
 
-                                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'btn btn-default btn-standard btn-round-4 share-feature']) ?>
+                                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-round-4 share-feature']) ?>
 
                                                             </div>
                                                         </li>
@@ -464,17 +461,17 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <ul class="list-inline list-default mt-0 mb-0 visible-xs">
                                                         <li>
 
-                                                            <?= Html::a(!empty($modelBusiness['businessDetail']['visit_value']) ? '<i class="aicon aicon-icon-been-there"></i> <span class="been-here count">' . $modelBusiness['businessDetail']['visit_value'] . '</span> Been Here' : '<i class="aicon aicon-icon-been-there"></i> 0 Been Here', null, ['class' => 'been-here ' . $selectedVisit . '']); ?>
+                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here count">' . $visitValue . '</span> Been Here', '', ['class' => 'been-here ' . $selectedVisit]); ?>
 
                                                         </li>
                                                         <li>
 
-                                                            <?= Html::a(!empty($modelBusiness['businessDetail']['love_value']) ? '<i class="fa fa-heart"></i> <span class="love-place count">' . $modelBusiness['businessDetail']['love_value'] . '</span> Loves' : '<i class="fa fa-heart"></i> 0 Loves', null, ['class' => 'love-place ' . $selectedLove . '']); ?>
+                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place count">' . $loveValue . '</span> Loves', '', ['class' => 'love-place ' . $selectedLove]); ?>
 
                                                         </li>
                                                         <li>
 
-                                                            <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-feature']); ?>
+                                                            <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-feature']); ?>
 
                                                         </li>
                                                     </ul>
@@ -518,8 +515,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
 
                                                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
-
+                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
                                                                         }
 
                                                                         echo Html::img($img); ?>
@@ -528,24 +524,16 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                 </div>
                                                                 <div class="col-sm-8 col-tab-12 col-xs-12">
                                                                     <h4 class="mt-0 mb-0">
-
                                                                         <?= Html::a($dataBusinessPromo['title'], ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
-
                                                                     </h4>
                                                                     <p class="description mb-10">
-
                                                                         <?= $dataBusinessPromo['short_description'] ?>
-
                                                                     </p>
                                                                     <p>
-
                                                                         <?= 'Berlaku ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium') ?>
-
                                                                     </p>
                                                                     <p>
-
                                                                         <?= Html::a('<span class="text-red">' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
-
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -722,9 +710,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
 </div>
 
 <?php
-$this->params['businessId'] = $modelBusiness['id'];
-$this->params['modelUserReport'] = $modelUserReport;
-$this->params['beforeEndBody'][] = function() {
+$this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
     Modal::begin([
         'header' => 'Coming Soon',
@@ -732,7 +718,7 @@ $this->params['beforeEndBody'][] = function() {
         'size' => Modal::SIZE_SMALL,
     ]);
 
-    echo 'Fitur ini akan segera hadir';
+        echo 'Fitur ini akan segera hadir';
 
     Modal::end();
 
@@ -741,49 +727,49 @@ $this->params['beforeEndBody'][] = function() {
         'id' => 'modal-report',
     ]);
 
-    echo '<div class="overlay" style="display: none;"></div>';
-    echo '<div class="loading-img" style="display: none"></div>';
-
-    $form = ActiveForm::begin([
-        'id' => 'report-form',
-        'action' => ['action/submit-report'],
-        'fieldConfig' => [
-            'template' => '{input}{error}'
-        ],
-    ]);
-
-    echo Html::hiddenInput('business_id', $this->params['businessId']);
-
-    echo '<label>Bisnis ini:</label>';
-    echo $form->field($this->params['modelUserReport'], 'report_status')
-            ->radioList([
-                'Closed' => 'Tutup',
-                'Moved'=> 'Pindah',
-                'Duplicate' => 'Duplikat / fiktif',
-                'Inaccurate' => 'Informasi tidak akurat',
+        echo '<div class="overlay" style="display: none;"></div>';
+        echo '<div class="loading-img" style="display: none"></div>';
+    
+        $form = ActiveForm::begin([
+            'id' => 'report-form',
+            'action' => ['action/submit-report'],
+            'fieldConfig' => [
+                'template' => '{input}{error}'
             ],
-            [
-                'separator' => '<br>',
-                'itemOptions' => [
-                    'class' => 'report-subject icheck',
-                ],
+        ]);
+        
+            echo Html::hiddenInput('business_id', $modelBusiness['id']);
+        
+            echo '<label>Bisnis ini:</label>';
+            echo $form->field($modelUserReport, 'report_status')
+                    ->radioList([
+                        'Closed' => 'Tutup',
+                        'Moved'=> 'Pindah',
+                        'Duplicate' => 'Duplikat / fiktif',
+                        'Inaccurate' => 'Informasi tidak akurat',
+                    ],
+                    [
+                        'separator' => '<br>',
+                        'itemOptions' => [
+                            'class' => 'report-subject icheck',
+                        ],
+                    ]);
+        
+            echo '<label>Keterangan:</label>';
+            echo $form->field($modelUserReport, 'text')->textArea([
+                'rows' => 3,
+                'placeholder' => 'Ceritakan mengenai situasi atau keluhan anda.'
             ]);
-
-    echo '<label>Keterangan:</label>';
-    echo $form->field($this->params['modelUserReport'], 'text')->textArea([
-        'rows' => 3,
-        'placeholder' => 'Ceritakan mengenai situasi atau keluhan anda.'
-    ]);
-
-    echo '
-        <div class="row">
-            <div class="col-sm-12 col-md-12 text-center">
-                ' . Html::submitButton('Submit', ['class' => 'btn btn-round btn-d']) . '
-                ' . Html::a('Close', null, ['class' => 'btn btn-round btn-default btn-close-modal']) . '
-            </div>
-        </div>';
-
-    ActiveForm::end();
+        
+            echo '
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 text-center">
+                        ' . Html::submitButton('Submit', ['class' => 'btn btn-round btn-d']) . '
+                        ' . Html::a('Close', null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
+                    </div>
+                </div>';
+    
+        ActiveForm::end();
 
     Modal::end();
 
@@ -791,11 +777,13 @@ $this->params['beforeEndBody'][] = function() {
         'header' => 'Konfirmasi',
         'id' => 'modal-confirmation',
         'size' => Modal::SIZE_SMALL,
-        'footer' => '<button class="btn btn-default" data-dismiss="modal" type="button">Batal</button>
-                    <button id="btn-delete" class="btn btn-danger" type="button">Hapus</button>',
+        'footer' => '
+            <button class="btn btn-default" data-dismiss="modal" type="button">Batal</button>
+            <button id="btn-delete" class="btn btn-danger" type="button">Hapus</button>
+        ',
     ]);
 
-    echo 'Anda yakin akan menghapus foto ini?';
+        echo 'Anda yakin akan menghapus foto ini?';
 
     Modal::end();
 };
@@ -857,7 +845,7 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.status == "sukses") {
+                if(response.success) {
 
                     var count = parseInt($(".love-place.count").html());
 
@@ -894,7 +882,8 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.status == "sukses") {
+                if(response.success) {
+
                     var count = parseInt($(".been-here.count").html());
 
                     if(response.is_active) {
@@ -961,7 +950,7 @@ $jscript = '
         return false;
     });
 
-    $(".btn-close-modal").on("click", function() {
+    $(".btn-close-modal-report").on("click", function() {
 
         $("#modal-report").modal("hide");
 
@@ -993,7 +982,7 @@ $jscript = '
             },
             success: function(response) {
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     $("#modal-report").modal("hide");
 

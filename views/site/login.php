@@ -42,91 +42,91 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                         ]
                                     ]); ?>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <?= $form->field($model, 'login_id')->textInput([
-                                                'id' => 'login_id',
-                                                'class' => 'form-control',
-                                                'placeholder' => $model->getAttributeLabel('login_id')
-                                            ]) ?>
-
+                                        <div class="row">
+                                            <div class="col-md-12">
+    
+                                                <?= $form->field($model, 'login_id')->textInput([
+                                                    'id' => 'login_id',
+                                                    'class' => 'form-control',
+                                                    'placeholder' => $model->getAttributeLabel('login_id')
+                                                ]) ?>
+    
+                                            </div>
+                                            <div class="col-md-12">
+    
+                                                <?= $form->field($model, 'password')->passwordInput([
+                                                    'id' => 'password',
+                                                    'class' => 'form-control',
+                                                    'placeholder' => $model->getAttributeLabel('password')
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                        <div class="col-md-12">
-
-                                            <?= $form->field($model, 'password')->passwordInput([
-                                                'id' => 'password',
-                                                'class' => 'form-control',
-                                                'placeholder' => $model->getAttributeLabel('password')
-                                            ]) ?>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-7">
-
-                                                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                                                </div>
-                                                <div class="col-md-5">
-
-                                                    <?= Html::a(Yii::t('app', 'Forgot Password') . ' ?', ['site/request-reset-password'], ['class' => 'form-group']) ?>
-
+    
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-7">
+    
+                                                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+    
+                                                    </div>
+                                                    <div class="col-md-5">
+    
+                                                        <?= Html::a(Yii::t('app', 'Forgot Password') . ' ?', ['site/request-reset-password'], ['class' => 'form-group']) ?>
+    
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-
-                                                <?= Html::submitButton('Masuk', ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
-
-                                                <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
-
-                                                <div class="mt-10">
-
-                                                    <?php
-                                                    $authAuthChoice = AuthChoice::begin([
-                                                        'baseAuthUrl' => ['site/auth'],
-                                                        'popupMode' => false,
-                                                    ]);
-
-                                                    foreach ($authAuthChoice->getClients() as $client):
-
-                                                        $btnType = '';
-
-                                                        if ($client->getName() === 'facebook') {
-                                                            $btnType = 'btn-primary';
-                                                        } else if ($client->getName() === 'google') {
-                                                            $btnType = 'btn-border-d';
-                                                        }
-
-                                                        echo $authAuthChoice->clientLink($client,
-                                                            '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
-                                                            'class' => 'btn ' . $btnType . ' btn-block btn-round',
+    
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+    
+                                                    <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-block btn-round btn-d', 'name' => 'loginButton', 'value' => 'loginButton']) ?>
+    
+                                                    <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
+    
+                                                    <div class="mt-10">
+    
+                                                        <?php
+                                                        $authAuthChoice = AuthChoice::begin([
+                                                            'baseAuthUrl' => ['site/auth'],
+                                                            'popupMode' => false,
                                                         ]);
-
-                                                    endforeach;
-
-                                                    AuthChoice::end(); ?>
-
-                                                </div>
-
-                                                <hr class="divider-w mt-20 mb-10">
-
-                                                <div class="text-center">
-                                                    <h4>
-                                                        <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
-                                                    </h4>
+    
+                                                            foreach ($authAuthChoice->getClients() as $client):
+        
+                                                                $btnType = '';
+        
+                                                                if ($client->getName() === 'facebook') {
+                                                                    $btnType = 'btn-primary';
+                                                                } else if ($client->getName() === 'google') {
+                                                                    $btnType = 'btn-border-d';
+                                                                }
+        
+                                                                echo $authAuthChoice->clientLink($client,
+                                                                    '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
+                                                                    'class' => 'btn ' . $btnType . ' btn-block btn-round',
+                                                                ]);
+        
+                                                            endforeach;
+    
+                                                        AuthChoice::end(); ?>
+    
+                                                    </div>
+    
+                                                    <hr class="divider-w mt-20 mb-10">
+    
+                                                    <div class="text-center">
+                                                        <h4>
+                                                            <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
+                                                        </h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                     <?php ActiveForm::end(); ?>
 

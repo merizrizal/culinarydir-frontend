@@ -68,7 +68,6 @@ $linkPager = LinkPager::widget([
                                     if (!empty($dataUserLove['business']['businessImages'][0]['image'])) {
 
                                         $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 347.333, 210.283);
-
                                     }
 
                                     echo Html::img($img); ?>
@@ -170,9 +169,11 @@ frontend\components\GrowlCustom::widget();
 
 $jscript = '
     $(".business-id").each(function() {
+
         var thisObj = $(this);
 
         thisObj.parent().parent().parent().parent().parent().find(".unlove-place").on("click", function() {
+
             $.ajax({
                 url: "' . Yii::$app->urlManager->createUrl('action/submit-user-love') . '",
                 type: "POST",
@@ -180,21 +181,27 @@ $jscript = '
                     "business_id": thisObj.val()
                 },
                 success: function(response) {
-                    if (response.status == "sukses") {
+
+                    if (response.success) {
+
                         var count = parseInt($(".total-user-love").html());
 
                         if (response.is_active) {
+
                             thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
                             $(".total-user-love").html(count + 1);
                         } else {
+
                             thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
                             $(".total-user-love").html(count - 1);
                         }
                     } else {
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
+
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });
@@ -204,16 +211,19 @@ $jscript = '
     });
 
     $("#pjax-user-love-container").on("pjax:send", function() {
+
         $(".user-love-container").parent().siblings(".overlay").show();
         $(".user-love-container").parent().siblings(".loading-img").show();
     });
 
     $("#pjax-user-love-container").on("pjax:complete", function() {
+
         $(".user-love-container").parent().siblings(".overlay").hide();
         $(".user-love-container").parent().siblings(".loading-img").hide();
     });
 
     $("#pjax-user-love-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 

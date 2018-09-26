@@ -137,16 +137,19 @@ $jscript = '
     $(".total-new-promo").html("' . $totalCount . '");
 
     $("#pjax-new-promo-container").on("pjax:send", function() {
+
         $(".new-promo-container").parent().siblings(".overlay").show();
         $(".new-promo-container").parent().siblings(".loading-img").show();
     });
 
     $("#pjax-new-promo-container").on("pjax:complete", function() {
+
         $(".new-promo-container").parent().siblings(".overlay").hide();
         $(".new-promo-container").parent().siblings(".loading-img").hide();
     });
 
     $("#pjax-new-promo-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 ';

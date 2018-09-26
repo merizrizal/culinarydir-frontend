@@ -54,12 +54,12 @@ class UserController extends base\BaseHistoryUrlController
     public function actionUpdateProfile()
     {
         $modelUserPerson = UserPerson::find()
-                ->joinWith([
-                    'user',
-                    'person',
-                ])
-                ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
-                ->one();
+            ->joinWith([
+                'user',
+                'person',
+            ])
+            ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
+            ->one();
 
         if (Yii::$app->request->isAjax && $modelUserPerson->user->load(Yii::$app->request->post())) {
 
@@ -159,15 +159,15 @@ class UserController extends base\BaseHistoryUrlController
         if (!empty($username)) {
 
             $modelUser = User::find()
-                    ->andWhere(['username' => $username])
-                    ->asArray()->one();
+                ->andWhere(['username' => $username])
+                ->asArray()->one();
 
             $fileRender = 'user_profile';
         } else {
 
             $modelUser = User::find()
-                    ->andWhere(['id' => Yii::$app->user->getIdentity()->id])
-                    ->asArray()->one();
+                ->andWhere(['id' => Yii::$app->user->getIdentity()->id])
+                ->asArray()->one();
 
             $fileRender = 'index';
         }

@@ -9,7 +9,7 @@ use core\models\Facility;
 /* @var $this yii\web\View */
 /* @var $keyword array */
 /* @var $id string */
-/* @var $showFacilityFilter boolean */
+/* @var $showFacilityFilter bool */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);

@@ -41,24 +41,24 @@ $this->registerMetaTag([
                                         ]
                                     ]); ?>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <?= $form->field($model, 'email')->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Email',
-                                            ]) ?>
-
+                                        <div class="row">
+                                            <div class="col-md-12">
+    
+                                                <?= $form->field($model, 'email')->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Email',
+                                                ]) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-
-                                            <?= Html::submitButton(Yii::t('app', 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
-
+    
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+    
+                                                <?= Html::submitButton(Yii::t('app', 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
 
                                     <?php ActiveForm::end(); ?>
 
