@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 
 /* @var $productCategory core\models\ProductCategory */ ?>
@@ -27,9 +28,8 @@ if (!empty($productCategory['parent'])) {
         
     echo '</div>';
 
-} ?>
+}
 
-<?php
 if (!empty($productCategory['child'])) {
     
     echo '<div class="col-md-12 col-sm-12 col-xs-12">';

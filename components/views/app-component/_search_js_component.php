@@ -13,7 +13,7 @@ $this->params['beforeEndBody'][] = function() {
         'size' => Modal::SIZE_SMALL,
     ]);
 
-    echo 'Fitur ini akan segera hadir';
+        echo 'Fitur ini akan segera hadir';
 
     Modal::end();
 
@@ -22,16 +22,18 @@ $this->params['beforeEndBody'][] = function() {
         'id'     => 'modal-product-category',
     ]);
 
-    echo '
-        <div class="overlay" style="display: none"></div>
-        <div class="loading-img" style="display: none"></div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="form-group">
-                ' . Html::textInput('product_category_search', null, ['class' => 'form-control input-product-category', 'placeholder' => 'Cari kategori menu disini...']) . '
+        echo '
+            <div class="overlay" style="display: none"></div>
+            <div class="loading-img" style="display: none"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+
+                    ' . Html::textInput('product_category_search', null, ['class' => 'form-control input-product-category', 'placeholder' => 'Cari kategori menu disini...']) . '
+
+                </div>
             </div>
-        </div>
-        <div id="modal-content"></div>
-    ';
+            <div id="modal-content"></div>
+        ';
 
     Modal::end();
 
@@ -44,52 +46,44 @@ $this->params['beforeEndBody'][] = function() {
                     <button class="btn btn-block btn-round btn-d btn-price-confirm">Ok</button>
                 </div>
             </div>
-            ',
+        ',
     ]);
 
-    $priceItems = [
-        '0' => 'Any', '20000' => '20.000', '40000' => '40.000', '60000' => '60.000', '80000' => '80.000',
-        '100000' => '100.000', '120000' => '120.000', '140000' => '140.000', '160000' => '160.000',
-        '180000' => '180.000', '200000' => '200.000', '220000' => '220.000', '240000' => '240.000',
-        '260000' => '260.000', '280000' => '280.000', '300000' => '300.000'
-    ];
+        $priceItems = [
+            '0' => 'Any', '20000' => '20.000', '40000' => '40.000', '60000' => '60.000', '80000' => '80.000',
+            '100000' => '100.000', '120000' => '120.000', '140000' => '140.000', '160000' => '160.000',
+            '180000' => '180.000', '200000' => '200.000', '220000' => '220.000', '240000' => '240.000',
+            '260000' => '260.000', '280000' => '280.000', '300000' => '300.000'
+        ];
 
-    echo '
-        <div class="row">
-            <div class="col-sm-5 col-tab-5 col-xs-12">
-        ';
+        echo '
+            <div class="row">
+                <div class="col-sm-5 col-tab-5 col-xs-12">'
+                
+                    . Yii::t('app', Yii::t('app', 'Price Min')) 
+                    
+                    . Html::dropDownList('price_min', null, $priceItems, [
+                        'prompt' => '',
+                        'class' => 'form-control price-min-select',
+                        'style' => 'width: 100%',
+                    ]) . '
 
-    echo Yii::t('app', Yii::t('app', 'Price Min'));
+                </div>
+                
+                <div class="col-sm-2 col-tab-2 col-xs-12 mt-30 visible-lg visible-md visible-sm visible-tab hidden-xs text-center"> - </div>
+                
+                <div class="col-sm-5 col-tab-5 col-xs-12">'
+                        
+                    . Yii::t('app', Yii::t('app', 'Price Max')) 
+                    
+                    . Html::dropDownList('price_max', null, $priceItems, [
+                        'prompt' => '',
+                        'class' => 'form-control price-max-select',
+                        'style' => 'width: 100%',
+                    ]) . '
 
-    echo Html::dropDownList('price_min', null, $priceItems, [
-        'prompt' => '',
-        'class' => 'form-control price-min-select',
-        'style' => 'width: 100%',
-    ]);
-
-    echo '
-            </div>
-        ';
-
-    echo '<div class="col-sm-2 col-tab-2 col-xs-12 mt-30 visible-lg visible-md visible-sm visible-tab hidden-xs text-center"> - </div>';
-
-    echo '
-            <div class="col-sm-5 col-tab-5 col-xs-12">
-                <div class="form-group">
-        ';
-
-    echo Yii::t('app', Yii::t('app', 'Price Max'));
-
-    echo Html::dropDownList('price_max', null, $priceItems, [
-        'prompt' => '',
-        'class' => 'form-control price-max-select',
-        'style' => 'width: 100%',
-    ]);
-
-    echo '
                 </div>
             </div>
-        </div>
         ';
 
     Modal::end();
@@ -116,10 +110,10 @@ $this->params['beforeEndBody'][] = function() {
                     <button class="btn btn-block btn-round btn-d btn-coordinate-confirm">Ok</button>
                 </div>
             </div>
-            ',
+        ',
     ]);
 
-    echo '<div id="map"></div>';
+        echo '<div id="map"></div>';
 
     Modal::end();
 };
@@ -244,7 +238,7 @@ $jscript = '
 
         $(".radius-500").on("ifChecked", function() {
 
-            radius = parseInt($(this).attr("data-radius"));
+            radius = parseInt($(this).data("radius"));
 
             map.setZoom(15);
             circleRadius.setRadius(radius);
@@ -252,7 +246,7 @@ $jscript = '
 
         $(".radius-1000").on("ifChecked", function() {
 
-            radius = parseInt($(this).attr("data-radius"));
+            radius = parseInt($(this).data("radius"));
 
             map.setZoom(14);
             circleRadius.setRadius(radius);
@@ -260,7 +254,7 @@ $jscript = '
 
         $(".radius-2000").on("ifChecked", function() {
 
-            radius = parseInt($(this).attr("data-radius"));
+            radius = parseInt($(this).data("radius"));
 
             map.setZoom(13);
             circleRadius.setRadius(radius);
@@ -304,6 +298,7 @@ $jscript = '
                 btnRegion.html($(".btn-radius-" + radiusMap.val()).text() + " <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
 
                 if (btnRegion.parent().find(".search-field-box-clear").length == 0) {
+
                     btnRegion.parent().append("<span class=\"search-field-box-clear\">×</span>");
                 }
 
@@ -366,7 +361,7 @@ $jscript = '
 
     $("#modal-product-category").on("click", ".product-category-name", function() {
 
-        var id = $(this).attr("data-id");
+        var id = $(this).data("id");
         var name = $(this).html();
 
         btnProductCategory.html("<span class=\"search-field-box-placeholder\">" + name + " </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
@@ -487,6 +482,7 @@ $jscript = '
             btnPrice.html("<span class=\"search-field-box-placeholder\">" + priceMinLabel + " - " + priceMaxLabel + " </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
 
             if (btnPrice.parent().find(".search-field-box-clear").length == 0) {
+
                 btnPrice.parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
