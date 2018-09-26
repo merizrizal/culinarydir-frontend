@@ -337,7 +337,7 @@ if (!empty($modelUserPostMain)):
                                 </div>
 
                                 <div class="overlay" style="display: none;"></div>
-                                <div class="loading-img" style="display: none"></div>
+                                <div class="loading-img" style="display: none;"></div>
                                 <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
                                     <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
 

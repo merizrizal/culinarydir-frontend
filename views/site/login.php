@@ -28,7 +28,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4 class="font-alt">Masuk</h4>
+                                    <h4 class="font-alt"><?= Yii::t('app', 'Login')?></h4>
                                     <hr class="divider-w mb-20">
 
                                     <?php
@@ -121,7 +121,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
     
                                                     <div class="text-center">
                                                         <h4>
-                                                            <small>Belum memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>">Daftar</a></small>
+                                                            <small><?= Yii::t('app', 'don\'t have Account?') ?> <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>"><?= Yii::t('app', 'Register') ?></a></small>
                                                         </h4>
                                                     </div>
                                                 </div>

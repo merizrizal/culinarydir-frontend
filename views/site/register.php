@@ -53,7 +53,7 @@ if (!empty($getFlashMessage)) {
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4 class="font-alt">Daftar</h4>
+                                    <h4 class="font-alt"><?= Yii::t('app', 'Register') ?></h4>
                                     <hr class="divider-w mb-20">
 
                                     <?php
@@ -173,7 +173,7 @@ if (!empty($getFlashMessage)) {
                                         <div class="row">
                                             <div class="form-group col-md-12">
     
-                                                <?= Html::submitButton('Daftar', ['class' => 'btn btn-block btn-round btn-d']) ?>
+                                                <?= Html::submitButton(Yii::t('app', 'Register'), ['class' => 'btn btn-block btn-round btn-d']) ?>
     
                                                 <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
     
@@ -210,7 +210,7 @@ if (!empty($getFlashMessage)) {
     
                                                 <div class="text-center">
                                                     <h4>
-                                                        <small>Sudah memiliki Akun? <a href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">Masuk</a></small>
+                                                        <small><?= Yii::t('app', 'Already have Account?') ?> <a href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>"><?= Yii::t('app', 'Login') ?></a></small>
                                                     </h4>
                                                 </div>
                                             </div>

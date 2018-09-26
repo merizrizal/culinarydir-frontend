@@ -31,9 +31,14 @@ $this->registerMetaTag([
                                 <div class="widget">
                                     <div class="widget-posts-image">
 
-                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUser['image']) ? Tools::thumb('/img/user/', $modelUser['image'], 200, 200) : '/img/user/default-avatar.png'), [
-                                            'class' => 'img-responsive img-circle img-profile-thumb img-component'
-                                        ]) ?>
+                                        <?php
+                                        $img = '/img/user/default-avatar.png';
+                                        
+                                        if (!empty($modelUser['image'])) {
+                                            $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
+                                        }
+                                        
+                                        echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
 
                                     </div>
                                     <div class="widget-posts-body">
@@ -50,10 +55,15 @@ $this->registerMetaTag([
                         <div class="col-xs-12">
                             <div class="row ">
                                 <div class="col-xs-12 text-center">
-
-                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUser['image']) ? Tools::thumb('/img/user/', $modelUser['image'], 200, 200) : '/img/user/default-avatar.png'), [
-                                        'class' => 'img-responsive img-circle img-profile-thumb img-component center-block'
-                                    ]) ?>
+                                
+                                	<?php
+                                    $img = '/img/user/default-avatar.png';
+                                    
+                                    if (!empty($modelUser['image'])) {
+                                        $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
+                                    }
+                                    
+                                    echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']); ?>
 
                                 </div>
                                 <div class="col-xs-12 text-center">
