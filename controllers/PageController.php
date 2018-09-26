@@ -189,6 +189,7 @@ class PageController extends base\BaseHistoryUrlController
         $dataUserVoteReview = [];
 
         if (!empty($modelUserPostMain['userVotes'])) {
+            
             $ratingComponentValue = [];
             $totalVoteValue = 0;
 

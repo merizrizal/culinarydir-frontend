@@ -1,7 +1,6 @@
 <?php
 
-use yii\helpers\Html;
-use sycomponent\Tools; ?>
+use yii\helpers\Html; ?>
 
 <div class="main">
 
