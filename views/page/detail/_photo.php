@@ -223,7 +223,7 @@ $jscript = '
 
                 $("#add-photo-input").fileinput("clear");
 
-                if (response.status == "sukses") {
+                if (response.success) {
 
                     $("#cancel-post-photo").trigger("click");
 

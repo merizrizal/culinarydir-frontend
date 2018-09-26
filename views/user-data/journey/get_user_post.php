@@ -492,7 +492,7 @@ $jscript = '
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
                 success: function(response) {
 
-                    if (response.status == "sukses") {
+                    if (response.success) {
 
                         var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
 
@@ -548,7 +548,7 @@ $jscript = '
                     },
                     success: function(response) {
 
-                        if (response.status == "sukses") {
+                        if (response.success) {
 
                             $("#input-" + response.user_post_main_id + "-comments-review").val("");
 
@@ -627,7 +627,7 @@ $jscript = '
                 url: $(this).attr("href"),
                 success: function(response) {
 
-                    if (response.status == "sukses") {
+                    if (response.success) {
 
                         var totalUserPost = parseInt($(".total-user-post").html());
 

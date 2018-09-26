@@ -21,7 +21,9 @@ use yii\web\Response;
  */
 class ActionController extends base\BaseController
 {
+
     /**
+     *
      * @inheritdoc
      */
     public function behaviors()
@@ -38,9 +40,9 @@ class ActionController extends base\BaseController
                         'submit-photo' => ['POST'],
                         'submit-user-love' => ['POST'],
                         'submit-user-visit' => ['POST'],
-                        'submit-report' => ['POST'],
-                    ],
-                ],
+                        'submit-report' => ['POST']
+                    ]
+                ]
             ]);
     }
 
@@ -49,8 +51,8 @@ class ActionController extends base\BaseController
         if (!empty(($post = Yii::$app->request->post()))) {
 
             $modelUserPostMain = UserPostMain::find()
-                    ->andWhere(['user_post_main.unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
-                    ->one();
+                ->andWhere(['user_post_main.unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                ->one();
 
             if (!empty($modelUserPostMain)) {
 
@@ -68,33 +70,24 @@ class ActionController extends base\BaseController
     {
         if (!empty(($post = Yii::$app->request->post()))) {
 
-            $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-
             $modelUserPostComment = new UserPostComment();
 
             $modelUserPostComment->user_post_main_id = $post['user_post_main_id'];
             $modelUserPostComment->user_id = Yii::$app->user->getIdentity()->id;
             $modelUserPostComment->text = $post['text'];
 
-            $flag = $modelUserPostComment->save();
-            
             $result = [];
 
-            if ($flag) {
+            if ($modelUserPostComment->save()) {
 
-                $transaction->commit();
-
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['user_post_main_id'] = $modelUserPostComment->user_post_main_id;
             } else {
 
-                $transaction->rollBack();
-
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
-                $result['title'] = 'Comment.';
-                $result['message'] = 'Komentar Anda gagal di simpan.';
+                $result['title'] = 'Gagal';
+                $result['message'] = 'Komentar Anda gagal disimpan';
                 $result['type'] = 'danger';
             }
 
@@ -111,12 +104,14 @@ class ActionController extends base\BaseController
             $flag = false;
 
             $modelUserPostLove = UserPostLove::find()
-                    ->joinWith(['userPostMain'])
-                    ->andWhere([
-                        'user_post_love.user_post_main_id' => $post['user_post_main_id'],
-                        'user_post_love.user_id' => Yii::$app->user->getIdentity()->id,
-                    ])
-                    ->one();
+                ->joinWith([
+                    'userPostMain'
+                ])
+                ->andWhere([
+                    'user_post_love.user_post_main_id' => $post['user_post_main_id'],
+                    'user_post_love.user_id' => Yii::$app->user->getIdentity()->id
+                ])
+                ->one();
 
             if (!empty($modelUserPostLove)) {
 
@@ -137,15 +132,12 @@ class ActionController extends base\BaseController
             if ($flag) {
 
                 $modelUserPostMain = UserPostMain::find()
-                        ->andWhere([
-                            'user_post_main.id' => $post['user_post_main_id'],
-                        ])
-                        ->one();
+                    ->andWhere(['user_post_main.id' => $post['user_post_main_id']])
+                    ->one();
 
                 if ($modelUserPostLove->is_active) {
 
                     $modelUserPostMain->love_value = $modelUserPostMain->love_value + 1;
-
                 } else {
 
                     $modelUserPostMain->love_value = $modelUserPostMain->love_value - 1;
@@ -160,16 +152,16 @@ class ActionController extends base\BaseController
 
                 $transaction->commit();
 
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['is_active'] = $modelUserPostLove->is_active;
             } else {
 
                 $transaction->rollBack();
 
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Gagal';
-                $result['message'] = 'Gagal menyukai komentar.';
+                $result['message'] = 'Proses like gagal disimpan';
                 $result['type'] = 'danger';
             }
 
@@ -218,20 +210,20 @@ class ActionController extends base\BaseController
 
                 $result['userPostMainPhoto'] = $modelUserPostMainPhoto->toArray();
                 $result['socialShare'] = $dataSocialShare;
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
-                $result['title'] = 'Sukses.';
-                $result['message'] = 'Foto anda berhasil di simpan.';
+                $result['title'] = 'Upload Foto Sukses';
+                $result['message'] = 'Foto Anda berhasil disimpan';
                 $result['type'] = 'success';
             } else {
 
                 $transaction->rollBack();
 
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
-                $result['title'] = 'Gagal.';
+                $result['title'] = 'Upload Foto Gagal';
                 $result['message'] = '
-                    Foto Anda gagal di simpan.<br>
+                    Foto Anda gagal disimpan<br>
                     <ol>
                         <li>Pastikan panjang caption Anda lebih dari 20 karakter.</li>
                         <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>
@@ -251,21 +243,21 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
-            
+
             $userId = Yii::$app->user->getIdentity()->id;
 
             $modelUserLove = UserLove::find()
                 ->where([
                     'business_id' => $post['business_id'],
-                    'user_id' => $userId])
+                    'user_id' => $userId
+                ])
                 ->one();
 
-            if(!empty($modelUserLove)) {
+            if (!empty($modelUserLove)) {
 
                 $modelUserLove->is_active = !$modelUserLove->is_active;
 
                 $flag = $modelUserLove->save();
-
             } else {
 
                 $modelUserLove = new UserLove();
@@ -276,18 +268,17 @@ class ActionController extends base\BaseController
                 $flag = $modelUserLove->save();
             }
 
-            if($flag) {
+            if ($flag) {
 
                 $modelBusinessDetail = BusinessDetail::find()
-                        ->where(['business_id' => $post['business_id']])
-                        ->one();
+                    ->where(['business_id' => $post['business_id']])
+                    ->one();
 
                 if (!empty($modelBusinessDetail)) {
 
-                    if($modelUserLove->is_active == true) {
+                    if ($modelUserLove->is_active) {
 
                         $modelBusinessDetail->love_value = $modelBusinessDetail->love_value + 1;
-
                     } else {
                         $modelBusinessDetail->love_value = $modelBusinessDetail->love_value - 1;
                     }
@@ -295,7 +286,6 @@ class ActionController extends base\BaseController
                     $modelBusinessDetail->business_id = $post['business_id'];
 
                     $flag = $modelBusinessDetail->save();
-
                 } else {
                     $modelBusinessDetail = new BusinessDetail();
 
@@ -308,7 +298,7 @@ class ActionController extends base\BaseController
 
             $result = [];
 
-            if($flag) {
+            if ($flag) {
 
                 $transaction->commit();
 
@@ -336,21 +326,21 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
-            
+
             $userId = Yii::$app->user->getIdentity()->id;
 
             $modelUserVisit = UserVisit::find()
                 ->where([
                     'business_id' => $post['business_id'],
-                    'user_id' => $userId])
+                    'user_id' => $userId
+                ])
                 ->one();
 
-            if(!empty($modelUserVisit)) {
+            if (!empty($modelUserVisit)) {
 
                 $modelUserVisit->is_active = !$modelUserVisit->is_active;
 
                 $flag = $modelUserVisit->save();
-
             } else {
 
                 $modelUserVisit = new UserVisit();
@@ -361,26 +351,24 @@ class ActionController extends base\BaseController
                 $flag = $modelUserVisit->save();
             }
 
-            if($flag) {
+            if ($flag) {
 
                 $modelBusinessDetail = BusinessDetail::find()
-                        ->where(['business_id' => $post['business_id']])
-                        ->one();
+                    ->where(['business_id' => $post['business_id']])
+                    ->one();
 
                 if (!empty($modelBusinessDetail)) {
 
-                    if($modelUserVisit->is_active) {
+                    if ($modelUserVisit->is_active) {
 
                         $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value + 1;
-
                     } else {
                         $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value - 1;
                     }
 
                     $flag = $modelBusinessDetail->save();
-
                 } else {
-                    
+
                     $modelBusinessDetail = new BusinessDetail();
 
                     $modelBusinessDetail->business_id = $post['business_id'];
@@ -392,7 +380,7 @@ class ActionController extends base\BaseController
 
             $result = [];
 
-            if($flag) {
+            if ($flag) {
 
                 $transaction->commit();
 
@@ -436,7 +424,7 @@ class ActionController extends base\BaseController
                 $result['type'] = 'success';
             } else {
 
-                $result['success'] = true;
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Report Gagal';
                 $result['message'] = 'Report Anda gagal di simpan.';
@@ -543,8 +531,8 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $modelBusinessDetail = BusinessDetail::find()
-                    ->andWhere(['business_id' => $post['business_id']])
-                    ->one();
+                ->andWhere(['business_id' => $post['business_id']])
+                ->one();
 
             if (empty($modelBusinessDetail)) {
 
@@ -569,9 +557,9 @@ class ActionController extends base\BaseController
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
-                        ->andWhere(['business_id' => $post['business_id']])
-                        ->andWhere(['rating_component_id' => $ratingComponentId])
-                        ->one();
+                    ->andWhere(['business_id' => $post['business_id']])
+                    ->andWhere(['rating_component_id' => $ratingComponentId])
+                    ->one();
 
                 if (!empty($modelBusinessDetailVote)) {
 
@@ -614,10 +602,10 @@ class ActionController extends base\BaseController
 
             $transaction->commit();
 
-            $result['status'] = 'sukses';
+            $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
-            $result['title'] = 'Review Tersimpan.';
-            $result['message'] = 'Review anda berhasil di simpan.';
+            $result['title'] = 'Review Tersimpan';
+            $result['message'] = 'Review anda berhasil di simpan';
             $result['type'] = 'success';
             $result['updated'] = 0;
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
@@ -631,16 +619,16 @@ class ActionController extends base\BaseController
 
             $transaction->rollBack();
 
-            $result['status'] = 'gagal';
+            $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Review Gagal.';
+            $result['title'] = 'Review Gagal';
             $result['message'] = '
-                Review Anda gagal di simpan.<br>
+                Review Anda gagal di simpan<br>
                 <ol>
-                    <li>Pastikan Anda mengisi rating dan review.</li>
-                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>
-                    <li>Pastikan Anda tidak mengupload lebih dari 10 foto.</li>
-                    <li>Pastikan panjang review anda lebih dari 20 karakter.</li>
+                    <li>Pastikan Anda mengisi rating dan review</li>
+                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb</li>
+                    <li>Pastikan Anda tidak mengupload lebih dari 10 foto</li>
+                    <li>Pastikan panjang review anda lebih dari 20 karakter</li>
                 </ol>
             ';
             $result['type'] = 'danger';
@@ -728,9 +716,9 @@ class ActionController extends base\BaseController
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
                 $modelUserVote = UserVote::find()
-                        ->andWhere(['user_vote.user_post_main_id' => $modelUserPostMain->id])
-                        ->andWhere(['user_vote.rating_component_id' => $ratingComponentId])
-                        ->one();
+                    ->andWhere(['user_vote.user_post_main_id' => $modelUserPostMain->id])
+                    ->andWhere(['user_vote.rating_component_id' => $ratingComponentId])
+                    ->one();
 
                 $oldUserVote[$ratingComponentId] = $modelUserVote->vote_value;
                 $oldTotalUserVote += $modelUserVote->vote_value;
@@ -746,8 +734,8 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $modelBusinessDetail = BusinessDetail::find()
-                    ->andWhere(['business_id' => $post['business_id']])
-                    ->one();
+                ->andWhere(['business_id' => $post['business_id']])
+                ->one();
 
             $modelBusinessDetail->vote_points = $modelBusinessDetail->vote_points - $oldTotalUserVote;
 
@@ -771,9 +759,9 @@ class ActionController extends base\BaseController
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
-                        ->andWhere(['business_id' => $post['business_id']])
-                        ->andWhere(['rating_component_id' => $ratingComponentId])
-                        ->one();
+                    ->andWhere(['business_id' => $post['business_id']])
+                    ->andWhere(['rating_component_id' => $ratingComponentId])
+                    ->one();
 
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->vote_value - $oldUserVote[$ratingComponentId];
 
@@ -807,7 +795,7 @@ class ActionController extends base\BaseController
 
             $transaction->commit();
 
-            $result['status'] = 'sukses';
+            $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan.';
             $result['message'] = 'Review baru anda berhasil di simpan.';
@@ -824,7 +812,7 @@ class ActionController extends base\BaseController
 
             $transaction->rollBack();
 
-            $result['status'] = 'gagal';
+            $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal.';
             $result['message'] = '

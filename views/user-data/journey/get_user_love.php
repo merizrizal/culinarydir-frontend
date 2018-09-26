@@ -182,7 +182,7 @@ $jscript = '
                 },
                 success: function(response) {
 
-                    if (response.status == "sukses") {
+                    if (response.success) {
 
                         var count = parseInt($(".total-user-love").html());
 
