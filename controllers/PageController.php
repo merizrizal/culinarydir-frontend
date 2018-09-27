@@ -152,7 +152,7 @@ class PageController extends base\BaseHistoryUrlController
 
                     $query->orderBy(['rating_component_id' => SORT_ASC]);
                 },
-                'userVotes.ratingComponent rating_component' => function ($query) {
+                'userVotes.ratingComponent' => function ($query) {
 
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
@@ -171,12 +171,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
-            ->asArray()->one();
-
-        $modelPost = new Post();
-
-        $modelPostPhoto = new Post();
-        $modelPostPhoto->setScenario('postPhoto');
+            ->asArray()->one();       
 
         $modelRatingComponent = RatingComponent::find()
             ->where(['is_active' => true])
@@ -209,6 +204,11 @@ class PageController extends base\BaseHistoryUrlController
                 'ratingComponentValue' => $ratingComponentValue
             ];
         }
+        
+        $modelPost = new Post();
+        
+        $modelPostPhoto = new Post();
+        $modelPostPhoto->setScenario('postPhoto');
 
         if (!empty($modelUserPostMain)) {
 

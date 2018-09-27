@@ -1,7 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use sycomponent\Tools; ?>
+
+/* @var $this yii\web\View */
+/* @var $modelBusinessPromo core\models\BusinessPromo */
+
+$this->title = $modelBusinessPromo['title'];
+
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => 'asik, makan, kuliner, bandung, jakarta'
+]);
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $modelBusinessPromo['short_description']
+]); ?>
 
 <div class="main">
 
@@ -42,11 +56,10 @@ use sycomponent\Tools; ?>
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        if (!empty($modelBusinessPromo['image'])): ?>
+                                                        if (!empty($modelBusinessPromo['image'])):
 
-                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image']); ?>
+                                                            echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image']);
 
-                                                        <?php
                                                         else: ?>
 
                                                             <div class="titan-caption">
