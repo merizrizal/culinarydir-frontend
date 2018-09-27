@@ -210,12 +210,18 @@ class DataController extends base\BaseController
             ->asArray()->one();
 
         $modelBusinessDetailVote = BusinessDetailVote::find()
-            ->joinWith(['ratingComponent'])
+            ->joinWith([
+                'ratingComponent' => function($query) {
+                    
+                    $query->andOnCondition(['is_active' => true]);
+                }
+            ])
             ->andWhere(['business_detail_vote.business_id' => Yii::$app->request->post('business_id')])
             ->asArray()->all();
 
         $modelRatingComponent = RatingComponent::find()
-            ->andWhere(['rating_component.is_active' => true])
+            ->where(['is_active' => true])
+            ->orderBy(['order' => SORT_ASC])
             ->asArray()->all();
 
         return $this->render('business_rating', [
