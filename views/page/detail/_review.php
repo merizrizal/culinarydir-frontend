@@ -7,32 +7,35 @@ use kartik\rating\StarRating;
 use sycomponent\Tools;
 use common\components\Helper;
 
-kartik\popover\PopoverXAsset::register($this);
+/* @var $this yii\web\View */
+/* @var $modelBusiness core\models\Business */
+/* @var $modelRatingComponent core\models\RatingComponent */
+/* @var $modelUserPostMain core\models\UserPostMain */
+/* @var $modelPost frontend\models\Post */
+/* @var $dataUserVoteReview array */
 
-$reviewTotal = !empty($modelUserPostMain) ? 1 : 0;
+kartik\popover\PopoverXAsset::register($this);
 
 Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
 $imgUserProfile = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-if (!empty(Yii::$app->user->getIdentity()->image)) {
+if (!empty($modelUserPostMain['user']['image'])) {
 
-    $imgUserProfile = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', Yii::$app->user->getIdentity()->image, 200, 200);
+    $imgUserProfile = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
 }
 
 $layoutUser = '
     <div class="widget-posts-image">
         <a href="' . Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '">
-
             ' . Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
-
         </a>
     </div>
 
     <div class="widget-posts-body">
-        ' . Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
+        ' . Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']], ['class' => 'my-review-user-name']) . '
         <br>
-        <small>' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
+        <small class="my-review-created">' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
     </div>
 '; ?>
 
@@ -72,15 +75,11 @@ $layoutUser = '
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-3">
-
-                                    <h3 class="mt-0 mb-0">
-                                        <div class="my-rating">
-
-                                            <?= Html::a(number_format((float) !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1, '.', ''), null, ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
-
-                                        </div>
-                                    </h3>
-
+									<div class="my-rating">
+                                    	<h3 class="mt-0 mb-0">
+                                            <?= Html::a(number_format((float) !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1, '.', ''), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                    	</h3>
+                 					</div>
                                     <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
                                         <div class="arrow"></div>
                                         <div class="popover-body popover-content">
@@ -143,6 +142,7 @@ $layoutUser = '
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <p class="my-review-description">
@@ -150,215 +150,204 @@ $layoutUser = '
                                         <?= !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : null ?>
 
                                     </p>
+                                </div>
+                            </div>
 
-                                    <div class="row" id="my-photos-review-container">
-                                        <div class="col-sm-12 col-xs-12">
-                                            <ul class="works-grid works-grid-gut works-grid-5" id="review-uploaded-photo">
+                            <div class="row" id="my-photos-review-container">
+                                <div class="col-sm-12 col-xs-12">
+                                    <ul class="works-grid works-grid-gut works-grid-5" id="review-uploaded-photo">
+
+                                        <?php
+                                        if (!empty($modelUserPostMain['userPostMains'])):
+
+                                            foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild): ?>
+
+                                                <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
+                                                    <div class="gallery-item review-post-gallery">
+                                                        <div class="gallery-image">
+                                                            <div class="work-image">
+
+                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+
+                                                            </div>
+                                                            <div class="work-caption">
+                                                                <div class="work-descr">
+                                                                    <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                            <?php
+                                            endforeach;
+                                        endif; ?>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <?php                   
+                        	$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
+                    	    $commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
+                    	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0; ?>
+
+                            <div class="row visible-xs">
+                                <div class="col-xs-3">
+                                    <ul class="list-inline mt-0 mb-0">
+                                        <li>
+                                            <small><?= '<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $loveCount . '</span>' ?></small>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <ul class="list-inline mt-0 mb-0">
+                                        <li>
+                                        
+                                    		<?php
+                                    		$spanCount = '<span class="total-' . (!empty($modelUserPostMain['id']) ? $modelUserPostMain['id'] : 'empty') . '-comments-review">#</span>'; ?>
+											
+                                            <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                        </li>
+                                        <li>
+                                            <small><?= '<span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]) ?></small>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-7 col-tab-7 col-xs-12">
+                                    <ul class="list-inline list-review mt-0 mb-0">
+                                        <li>                                            
+                                            
+                                            <?php
+                                            $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
+                                            
+                                            $spanCount = '<span class="my-total-likes-review">#</span>'; ?>
+
+                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', '', ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+
+                                        </li>
+                                        <li>
+
+											<?php
+											$spanCount = '<span class="total-' . (!empty($modelUserPostMain['id']) ? $modelUserPostMain['id'] : 'empty') . '-comments-review">#</span>'; ?>
+											
+                                            <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), '', ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'my-comments-review-trigger visible-xs']); ?>
+
+                                        </li>
+                                        <li>
+
+                                            <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
+
+                                        </li>
+                                        <li class="review-option-toggle visible-xs-inline-block">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
+                                    <ul class="list-inline list-review mt-0 mb-0">
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="review-option col-xs-12">
+                                    <ul class="list-inline list-review mt-0 mb-0">
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <hr class="divider-w mt-10">
+
+                            <div class="row">
+                                <div class="user-comment-review" id="my-comments-review-container">
+                                    <div class="col-sm-12">
+                                        <div class="input-group mt-10 mb-10">
+                                            <span class="input-group-addon"><i class="fa fa-comment"></i></span>
+
+                                            <?= Html::textInput('comment_input', null, ['id' => 'input-my-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
+
+                                        </div>
+
+                                        <div class="overlay" style="display: none;"></div>
+                                        <div class="loading-img" style="display: none"></div>
+                                        
+                                        <div class="my-comment-section">
+                                            <div class="my-comment-container">
 
                                                 <?php
-                                                if (!empty($modelUserPostMain['userPostMains'])):
+                                                $userReviewComment = [];
 
-                                                    foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild): ?>
+                                                if (!empty($modelUserPostMain['userPostComments'])):
 
-                                                        <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
-                                                            <div class="gallery-item review-post-gallery">
-                                                                <div class="gallery-image">
-                                                                    <div class="work-image">
+                                                    foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment) {
 
-                                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                        $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
+                                                    }
 
-                                                                    </div>
-                                                                    <div class="work-caption">
-                                                                        <div class="work-descr">
-                                                                            <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                    ksort($userReviewComment);
+
+                                                    foreach ($userReviewComment as $dataUserPostComment): ?>
+
+                                                        <div class="comment-post">
+                                                            <div class="row mb-10">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <div class="widget">
+                                                                        <div class="widget-comments-image">
+                                                                            <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
+
+                                                                                <?php
+                                                                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                }
+
+                                                                                echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="widget-comments-body">
+                                                                            <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
+                                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                            <br>
+                                                                            <p class="comment-description">
+
+                                                                                <?= $dataUserPostComment['text']; ?>
+
+                                                                            </p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </li>
+                                                        </div>
 
                                                     <?php
                                                     endforeach;
                                                 endif; ?>
 
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="row visible-xs">
-                                        <div class="col-xs-3">
-                                            <ul class="list-inline mt-0 mb-0">
-                                                <li>
-
-                                                    <small><?= !empty($modelUserPostMain['love_value']) ? '<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $modelUserPostMain['love_value'] . '</span>' : '<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">0</span>' ?></small>
-
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-xs-9 text-right">
-                                            <ul class="list-inline mt-0 mb-0">
-                                                <li>
-
-                                                    <small><?= !empty($modelUserPostMain['userPostComments']) ? '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span> Comment' : '<span class="my-total-comments-review">0</span> Comment' ?></small>
-
-                                                </li>
-                                                <li>
-
-                                                    <small><?= !empty($modelUserPostMain['userPostMains']) ? '<span class="my-total-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span> Photo' : '<span class="my-total-photos-review">0</span> Photo' ?></small>
-
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-7 col-tab-7 col-xs-12">
-                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                <li>
-
-                                                    <?php
-                                                    $selected = '';
-
-                                                    if (!empty($modelUserPostMain['userPostLoves'][0])) {
-                                                        $selected = 'selected';
-                                                    }
-                                                    
-                                                    $commentCount = 0;
-                                                    $photoCount = 0;
-                                                    
-                                                    if (!empty($modelUserPostMain)) {
-                                                        $commentCount = count($modelUserPostMain['userPostComments']);
-                                                        $photoCount = count($modelUserPostMain['userPostMains']);
-                                                    } ?>
-                                                
-                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="my-total-likes-review">' . $modelUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0]), null , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-            
-                                                </li>
-                                                <li>
-            
-                                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . $commentCount . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => $commentCount]), null, ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'my-comments-review-trigger visible-xs']); ?>
-            
-                                                </li>
-                                                <li>
-            
-                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]), null, ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'my-photos-review-trigger visible-xs']); ?>
-            
-                                                </li>
-                                                <li class="review-option-toggle visible-xs-inline-block">
-                                                    <i class="fa fa-ellipsis-h"></i>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
-                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                <li>
-
-                                                    <?= Html::a('<i class="fa fa-edit"></i> Edit', null, ['class' => 'edit-my-review-trigger']); ?>
-
-                                                </li>
-                                                <li>
-
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
-
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="review-option col-xs-12">
-                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                <li>
-
-                                                    <?= Html::a('<i class="fa fa-edit"></i> Edit', null, ['class' => 'edit-my-review-trigger']); ?>
-
-                                                </li>
-                                                <li>
-
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
-
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <hr class="divider-w mt-10">
-
-                                    <div class="row">
-                                        <div class="user-comment-review" id="my-comments-review-container">
-                                            <div class="col-sm-12">
-                                                <div class="input-group mt-10 mb-10">
-                                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-comment"></i></span>
-
-                                                    <?= Html::textInput('comment_input', null, ['id' => 'input-my-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
-
-                                                </div>
-
-                                                <div class="overlay" style="display: none;"></div>
-                                                <div class="loading-img" style="display: none"></div>
-                                                <div class="my-comment-section">
-                                                    <div class="my-comment-container">
-
-                                                        <?php
-                                                        $userReviewComment = [];
-
-                                                        if (!empty($modelUserPostMain['userPostComments'])):
-
-                                                            foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment) {
-
-                                                                $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
-                                                            }
-
-                                                            krsort($userReviewComment);
-
-                                                            foreach ($userReviewComment as $dataUserPostComment): ?>
-
-                                                                <div class="comment-post">
-                                                                    <div class="row mb-10">
-                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                            <div class="widget">
-                                                                                <div class="widget-comments-image">
-                                                                                    <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
-
-                                                                                        <?php
-                                                                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-    
-                                                                                        if (!empty($dataUserPostComment['user']['image'])) {
-    
-                                                                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                        }
-    
-                                                                                        echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-
-                                                                                    </a>
-                                                                                </div>
-
-                                                                                <div class="widget-comments-body">
-                                                                                    <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                                                                    <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                                    <br>
-                                                                                    <p class="comment-description">
-
-                                                                                        <?= $dataUserPostComment['text']; ?>
-
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                            <?php
-                                                            endforeach;
-                                                        endif; ?>
-
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                                
                         </div>
                     </div>
                 </div>
@@ -495,8 +484,6 @@ $layoutUser = '
 
                             <div class="form-group hidden">
 
-                                <?= Html::label('Uploaded Photos') ?>
-
                                 <div class="row" id="form-photos-review-container">
                                     <div class="col-sm-12 col-xs-12">
                                         <ul class="works-grid works-grid-gut works-grid-5" id="form-review-uploaded-photo">
@@ -546,7 +533,7 @@ $layoutUser = '
                                         'showRemove' => false,
                                         'showUpload' => false,
                                         'layoutTemplates' => [
-                                            'footer' => '<h4><small class="file-caption-name" style="width:{width}">{caption}</small></h4>',
+                                            'footer' => '',
                                         ],
                                     ]
                                 ]); ?>
@@ -579,7 +566,7 @@ $layoutUser = '
 
                                 <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['class' => 'btn btn-default btn-standard btn-round']) ?>
 
-                                <?= Html::a('<i class="fa fa-times"></i> Cancel', null, ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
+                                <?= Html::a('<i class="fa fa-times"></i> Cancel', '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
                             </div>
                         </div>
@@ -634,93 +621,6 @@ $jscript = '
 
     $("#write-review-container").hide();
     $("#close-review-container").hide();
-
-    $("#write-review-trigger").on("focusin", function(event) {
-
-        var thisObj = $(this);
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: "' . Yii::$app->urlManager->createUrl(['redirect/write-review']) . '",
-            success: function(response) {
-
-                thisObj.fadeOut(100, function() {
-
-                    $("#write-review-container").fadeIn();
-                    $("#close-review-container").fadeIn();
-                });
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    });
-
-    $(".review-option").hide();
-
-    $(".review-option-toggle").on("click", function() {
-
-        $(".review-option").slideToggle();
-    });
-
-    $(".edit-my-review-trigger").on("click", function(event) {
-
-        $("#edit-review-container").fadeOut(100, function() {
-
-            prevReview = $("#post-review-text").val();
-
-            if ($("#form-review-uploaded-photo").find("li").length == 0) {
-
-                $("#form-photos-review-container").parent().addClass("hidden");
-            } else {
-
-                $("#form-photos-review-container").parent().removeClass("hidden");
-            }
-
-            $("#write-review-container").fadeIn();
-            $("#close-review-container").fadeIn();
-        });
-    });
-
-    $(".delete-my-review-trigger").on("click", function(event) {
-
-        var form = $("form#review-form").serialize();
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            data: form,
-            url: $(this).attr("href"),
-            success: function(response) {
-
-                if (response.success) {
-
-                    var totalUserPost = parseInt($(".total-review").html());
-
-                    if (response.publish) {
-
-                        $(".delete-my-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
-                        $(".total-review").html(totalUserPost + 1);
-                    } else {
-
-                        $(".delete-my-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
-                        $(".total-review").html(totalUserPost - 1);
-                    }
-                } else {
-
-                    messageResponse(response.icon, response.title, response.message, response.type);
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-
-        return false;
-    });
 
     $("#write-review-shortcut").on("click", function(event) {
 
@@ -802,6 +702,98 @@ $jscript = '
         return false;
     });
 
+    $("#write-review-trigger").on("focusin", function(event) {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "' . Yii::$app->urlManager->createUrl(['redirect/write-review']) . '",
+            success: function(response) {
+
+                thisObj.fadeOut(100, function() {
+
+                    $("#write-review-container").fadeIn();
+                    $("#close-review-container").fadeIn();
+                    $("#post-review-text").trigger("focus");
+                });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+    });
+
+    $(".review-option").hide();
+
+    $(".review-option-toggle").on("click", function() {
+
+        $(".review-option").slideToggle();
+    });
+
+    $(".edit-my-review-trigger").on("click", function(event) {
+
+        $("#edit-review-container").fadeOut(100, function() {
+
+            prevReview = $("#post-review-text").val();
+
+            if ($("#form-review-uploaded-photo").find("li").length == 0) {
+
+                $("#form-photos-review-container").parent().addClass("hidden");
+            } else {
+
+                $("#form-photos-review-container").parent().removeClass("hidden");
+            }
+
+            $("#write-review-container").fadeIn();
+            $("#close-review-container").fadeIn();
+
+            $("#post-review-text").trigger("focus");
+        });
+
+        return false;
+    });
+
+    $(".delete-my-review-trigger").on("click", function(event) {
+
+        var form = $("form#review-form").serialize();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: form,
+            url: $(this).attr("href"),
+            success: function(response) {
+
+                if (response.success) {
+
+                    var totalUserPost = parseInt($(".total-review").html());
+
+                    if (response.publish) {
+
+                        $(".delete-my-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
+                        $(".total-review").html(totalUserPost + 1);
+                    } else {
+
+                        $(".delete-my-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
+                        $(".total-review").html(totalUserPost - 1);
+                    }
+                } else {
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+
+        return false;
+    });
+
     $("#overall-rating").on("change", function() {
 
         var thisObj = $(this);
@@ -849,8 +841,6 @@ $jscript = '
         });
     });
 
-    var myUserPostMainId = $("#edit-review-container").find(".my-user-post-main-id").val();
-
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -881,15 +871,16 @@ $jscript = '
                     }
 
                     prevReview = response.userPostMain.text;
-                    var newOverall = $("#write-review-container").find(".rating-overall").text();
-                    var reviewUploadedPhoto = $("#edit-review-container").find("#review-uploaded-photo");
-                    var formReviewUploadedPhoto = $("#write-review-container").find("#form-review-uploaded-photo");
 
-                    $("#edit-review-container").find(".my-rating").children().html(parseFloat(newOverall).toFixed(1));
+                    var newOverall = $(".rating-overall").text();
+                    var reviewUploadedPhoto = $("#review-uploaded-photo");
+                    var formReviewUploadedPhoto = $("#form-review-uploaded-photo");
 
-                    $("#edit-review-container").find(".my-review-user-name").html(response.user);
-                    $("#edit-review-container").find(".my-review-created").html(response.userCreated);
-                    $("#edit-review-container").find(".my-review-description").html(response.userPostMain.text);
+                    $(".my-rating").find("a").html(parseFloat(newOverall).toFixed(1));
+
+                    $(".my-review-user-name").html(response.user);
+                    $(".my-review-created").html(response.userCreated);
+                    $(".my-review-description").html(response.userPostMain.text);
 
                     readmoreText({
                         element: $(".my-review-description"),
@@ -930,7 +921,7 @@ $jscript = '
 
                     $(".temp-overall-rating").val(tempOverall / parseInt($(".rating-component-id").length));
 
-                    getPlaceVote($("#business_id").val());
+                    getBusinessRating($("#business_id").val());
                     getUserPhoto($("#business_id").val());
 
                     ratingColor($(".my-rating"), "a");
@@ -939,7 +930,9 @@ $jscript = '
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
 
-                    $("#edit-review-container").find(".my-total-comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("my-total-comments-review");
+                    $("#edit-review-container").find(".total-empty-comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total-empty-comments-review");
+
+                    $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
 
                     $("#form-review-uploaded-photo .review-post-gallery").magnificPopup({
 
@@ -991,7 +984,7 @@ $jscript = '
                             if (socialName === "facebook" && response.socialShare[socialName]) {
 
                                 var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
-                                var title = "Rating " + $("#edit-review-container").find(".my-rating").text().trim() + " untuk " + $(".business-name").text().trim();
+                                var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMain.text;
                                 var image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
 
@@ -1049,7 +1042,7 @@ $jscript = '
 
     getUserPost($("#business_id").val());
 
-    function getPlaceVote(business_id) {
+    function getBusinessRating(business_id) {
 
         $.ajax({
             cache: false,
@@ -1069,29 +1062,29 @@ $jscript = '
         });
     }
 
-    $("#edit-review-container").find(".my-likes-review-trigger").on("click", function() {
+    $(".my-likes-review-trigger").on("click", function() {
 
         $.ajax({
             cache: false,
             type: "POST",
             data: {
-                "user_post_main_id": myUserPostMainId
+                "user_post_main_id": $(".my-user-post-main-id").val()
             },
-            url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
+            url: $(this).attr("href"),
             success: function(response) {
 
                 if (response.success) {
 
-                    var loveValue = parseInt($("#edit-review-container").find(".my-likes-review-trigger").find("span.my-total-likes-review").html());
+                    var loveValue = parseInt($(".my-total-likes-review").html());
 
                     if(response.is_active) {
 
-                        $("#edit-review-container").find(".my-likes-review-trigger").addClass("selected");
-                        $("#edit-review-container").find("span.my-total-likes-review").html((loveValue + 1).toString());
+                        $(".my-likes-review-trigger").addClass("selected");
+                        $("span.my-total-likes-review").html(loveValue + 1);
                     } else {
 
-                        $("#edit-review-container").find(".my-likes-review-trigger").removeClass("selected");
-                        $("#edit-review-container").find("span.my-total-likes-review").html((loveValue - 1).toString());
+                        $(".my-likes-review-trigger").removeClass("selected");
+                        $("span.my-total-likes-review").html(loveValue - 1);
                     }
                 } else {
 
@@ -1107,29 +1100,28 @@ $jscript = '
         return false;
     });
 
-    $("#edit-review-container").find("#my-comments-review-container").hide();
-    $("#edit-review-container").find("#my-photos-review-container").hide();
+    $("#my-comments-review-container").hide();
+    $("#my-photos-review-container").hide();
 
-    $("#edit-review-container").find(".my-comments-review-trigger").on("click", function() {
+    $(".my-comments-review-trigger").on("click", function() {
 
-        $("#edit-review-container").find("#my-comments-review-container").slideToggle();
+        $("#my-comments-review-container").slideToggle();
+        $("#input-my-comments-review").trigger("focus");
 
         return false;
     });
 
-    $("#edit-review-container").find("#input-my-comments-review").on("keypress", function(event) {
+    $("#input-my-comments-review").on("keypress", function(event) {
 
         if (event.which == 13 && $(this).val().trim()) {
 
-            var data = {
-
-                "user_post_main_id": myUserPostMainId,
-                "text": $(this).val(),
-            };
-
             $.ajax({
+                cache: false,
                 type: "POST",
-                data: data,
+                data: {
+                    "user_post_main_id": $(".my-user-post-main-id").val(),
+                    "text": $(this).val(),
+                },
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                 beforeSend: function(xhr) {
 
@@ -1174,33 +1166,17 @@ $jscript = '
         }
     });
 
-    $("#edit-review-container").find(".my-photos-review-trigger").on("click", function() {
+    $(".my-photos-review-trigger").on("click", function() {
 
-        if ($("#edit-review-container").find("#my-photos-review-container").find(".gallery-photo-review").length) {
+        if ($("#my-photos-review-container").find(".gallery-photo-review").length) {
 
-            $("#edit-review-container").find("#my-photos-review-container").toggle(500);
+            $("#my-photos-review-container").toggle(500);
         }
 
         return false;
     });
 
     $("#review-uploaded-photo .review-post-gallery").magnificPopup({
-
-        delegate: "a.show-image",
-        type: "image",
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0,1]
-        },
-        image: {
-            titleSrc: "title",
-            tError: "The image could not be loaded."
-        }
-    });
-
-    $("#form-review-uploaded-photo .review-post-gallery").magnificPopup({
-
         delegate: "a.show-image",
         type: "image",
         gallery: {
@@ -1240,12 +1216,12 @@ $jscript = '
                     $("#review-uploaded-photo").find("li#image-" + response.id).remove();
                     $("#form-review-uploaded-photo").find("li#image-" + response.id).remove();
 
-                    if ($("#form-review-uploaded-photo").find("li").length == 0) {
+                    if ($("#form-review-uploaded-photo").find("li").length < 1) {
 
                         $("#form-photos-review-container").parent().addClass("hidden");
                     }
 
-                    $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) - 1);
+                    $(".my-total-photos-review").html(parseInt($(".my-total-photos-review").html()) - 1);
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
@@ -1270,7 +1246,7 @@ $jscript = '
         lessText: "See less",
     });
 
-    $(".total-review").html(' . $reviewTotal . ');
+    $(".total-review").html("' . (!empty($modelUserPostMain) ? 1 : 0) . '");
 
     $("#my-rating-popover").popoverButton({
 

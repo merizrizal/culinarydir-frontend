@@ -105,7 +105,7 @@ if (!empty($modelUserPostMain)):
         krsort($userReviewComment);
 
         $layoutUser = '
-            <div class="widget-posts-image">
+            <div class="widget-posts-image business-image">
                 <a href="' . Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '">
 
                     ' . Html::img($imgBusinessProfile, ['class' => 'img-responsive img-rounded img-place-thumb img-component']) . '
@@ -113,7 +113,7 @@ if (!empty($modelUserPostMain)):
                 </a>
             </div>
 
-            <div class="widget-posts-body">
+            <div class="widget-posts-body business-review">
                 ' . Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
                 <br>
                 <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>

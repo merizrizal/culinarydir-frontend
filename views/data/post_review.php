@@ -337,7 +337,7 @@ if (!empty($modelUserPostMain)):
                                 </div>
 
                                 <div class="overlay" style="display: none;"></div>
-                                <div class="loading-img" style="display: none"></div>
+                                <div class="loading-img" style="display: none;"></div>
                                 <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
                                     <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
 
@@ -495,6 +495,7 @@ $jscript = '
         thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
 
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
+            thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");
 
             return false;
         });

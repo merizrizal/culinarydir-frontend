@@ -183,7 +183,6 @@ class DataController extends base\BaseController
                 'userPostMain',
             ])
             ->andWhere(['user_post_comment.user_post_main_id' => Yii::$app->request->post('user_post_main_id')])
-            ->orderBy(['id' => SORT_DESC])
             ->distinct()
             ->asArray()->all();
 
