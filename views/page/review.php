@@ -72,7 +72,7 @@ $jspopover = ''; ?>
 															<?php
 															$img = '/img/user/default-avatar.png';
 															
-															if (!empty($modelUserPostMain['user']['Image'])) {
+															if (!empty($modelUserPostMain['user']['image'])) {
 															    
 															    $img = Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
 															}
@@ -95,7 +95,7 @@ $jspopover = ''; ?>
                                                             <?php
 															$img = '/img/user/default-avatar.png';
 															
-															if (!empty($modelUserPostMain['user']['Image'])) {
+															if (!empty($modelUserPostMain['user']['image'])) {
 															    
 															    $img = Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
 															}
@@ -285,7 +285,7 @@ $jspopover = ''; ?>
 
                                                                 </li>
                                                             </ul>
-                                                    </div>
+                                                    	</div>
                                                         <div class="review-<?= $modelUserPostMain['id'] ?>-option col-xs-12">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
@@ -332,7 +332,14 @@ $jspopover = ''; ?>
                                                                                         <div class="widget">
                                                                                             <div class="widget-comments-image">
 
-                                                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                                                <?php
+                                                                                                $img = '/img/user/default-avatar.png';
+                                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+                                                                                                    
+                                                                                                    $img = Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                                }
+                                                                                                
+                                                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
 
                                                                                             </div>
 
@@ -394,6 +401,7 @@ $jscript = '
     var reviewId = $(".user-post-main-id");
 
     $(".review-container").find(".user-" + reviewId.val() + "-likes-review-trigger").on("click", function() {
+
         $.ajax({
             cache: false,
             type: "POST",
@@ -442,7 +450,6 @@ $jscript = '
         if (event.which == 13 && $(this).val().trim()) {
 
             var data = {
-
                 "user_post_main_id": reviewId.val(),
                 "text": $(this).val(),
             };

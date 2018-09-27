@@ -25,7 +25,7 @@ $this->registerMetaTag([
                                     <h4 class="font-alt"><?= $title ?></h4>
                                     <hr class="divider-w mb-20">
 
-                                    <h5>Halo, <?= $fullname ?> !</h5>
+                                    <h5><?= Yii::t('app', 'Hello') . ', ' . $fullname ?> !</h5>
 
                                     <div class="mb-10"><small><?= $messages ?></small></div>
 

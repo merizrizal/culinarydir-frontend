@@ -12,12 +12,14 @@ use core\models\RatingComponent;
 use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * Data Controller
  */
 class DataController extends base\BaseController
 {
+    
     /**
      * @inheritdoc
      */
@@ -32,8 +34,8 @@ class DataController extends base\BaseController
                         'product-category' => ['POST'],
                         'post-comment' => ['POST'],
                         'business-rating' => ['POST'],
-                    ],
-                ],
+                    ]
+                ]
             ]);
     }
 
@@ -42,14 +44,13 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelProductCategory = ProductCategory::find()
-                ->orderBy(['name' => SORT_ASC])
-                ->andFilterWhere(['ilike', 'product_category.name', Yii::$app->request->post('keyword')])
-                ->asArray()->all();
+            ->orderBy(['name' => SORT_ASC])
+            ->andFilterWhere(['ilike', 'name', Yii::$app->request->post('keyword')])
+            ->asArray()->all();
 
         $productCategory = [];
 
-        foreach ($modelProductCategory as $dataProductCategory)
-        {
+        foreach ($modelProductCategory as $dataProductCategory) {
 
             if ($dataProductCategory['is_parent']) {
 
@@ -67,12 +68,12 @@ class DataController extends base\BaseController
 
     public function actionResultList()
     {
-        return $this->getResult('list');
+        return $this->getResult('result_list');
     }
 
     public function actionResultMap()
     {
-        return $this->getResult('map');
+        return $this->getResult('result_map');
     }
 
     public function actionPostReview()
@@ -80,29 +81,35 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
-                ->joinWith([
-                    'user',
-                    'userPostMains child' => function($query) {
-                        $query->andOnCondition(['child.is_publish' => true]);
-                    },
-                    'userVotes',
-                    'userVotes.ratingComponent rating_component' => function($query) {
-                        $query->andOnCondition(['rating_component.is_active' => true]);
-                    },
-                    'userPostLoves' => function($query) {
-                        $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null, 'user_post_love.is_active' => true]);
-                    },
-                    'userPostComments',
-                    'userPostComments.user user_comment',
-                ])
-                ->andWhere(['user_post_main.parent_id' => null])
-                ->andWhere(['user_post_main.type' => 'Review'])
-                ->andWhere(['user_post_main.business_id' => Yii::$app->request->get('business_id')])
-                ->andWhere(['user_post_main.is_publish' => true])
-                ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
-                ->orderBy(['user_post_main.id' => SORT_DESC])
-                ->distinct()
-                ->asArray();
+            ->joinWith([
+                'user',
+                'userPostMains child' => function($query) {
+                    
+                    $query->andOnCondition(['child.is_publish' => true]);
+                },
+                'userVotes',
+                'userVotes.ratingComponent rating_component' => function($query) {
+                    
+                    $query->andOnCondition(['rating_component.is_active' => true]);
+                },
+                'userPostLoves' => function($query) {
+                    
+                    $query->andOnCondition([
+                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                        'user_post_love.is_active' => true
+                    ]);
+                },
+                'userPostComments',
+                'userPostComments.user user_comment',
+            ])
+            ->andWhere(['user_post_main.parent_id' => null])
+            ->andWhere(['user_post_main.type' => 'Review'])
+            ->andWhere(['user_post_main.business_id' => Yii::$app->request->get('business_id')])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->orderBy(['user_post_main.id' => SORT_DESC])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
             'query' => $modelUserPostMain,
@@ -134,12 +141,12 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
-                ->andWhere(['type' => 'Photo'])
-                ->andWhere(['business_id' => Yii::$app->request->get('business_id')])
-                ->andWhere(['is_publish' => true])
-                ->orderBy(['id' => SORT_DESC])
-                ->distinct()
-                ->asArray();
+            ->andWhere(['type' => 'Photo'])
+            ->andWhere(['business_id' => Yii::$app->request->get('business_id')])
+            ->andWhere(['is_publish' => true])
+            ->orderBy(['id' => SORT_DESC])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
             'query' => $modelUserPostMain,
@@ -171,14 +178,14 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelUserPostComment = UserPostComment::find()
-                ->joinWith([
-                    'user',
-                    'userPostMain',
-                ])
-                ->andWhere(['user_post_comment.user_post_main_id' => Yii::$app->request->post('user_post_main_id')])
-                ->orderBy(['id' => SORT_DESC])
-                ->distinct()
-                ->asArray()->all();
+            ->joinWith([
+                'user',
+                'userPostMain',
+            ])
+            ->andWhere(['user_post_comment.user_post_main_id' => Yii::$app->request->post('user_post_main_id')])
+            ->orderBy(['id' => SORT_DESC])
+            ->distinct()
+            ->asArray()->all();
 
         $userPostComment = [];
 
@@ -199,17 +206,17 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelBusinessDetail = BusinessDetail::find()
-                ->andWhere(['business_detail.business_id' => Yii::$app->request->post('business_id')])
-                ->asArray()->one();
+            ->andWhere(['business_detail.business_id' => Yii::$app->request->post('business_id')])
+            ->asArray()->one();
 
         $modelBusinessDetailVote = BusinessDetailVote::find()
-                ->joinWith(['ratingComponent'])
-                ->andWhere(['business_detail_vote.business_id' => Yii::$app->request->post('business_id')])
-                ->asArray()->all();
+            ->joinWith(['ratingComponent'])
+            ->andWhere(['business_detail_vote.business_id' => Yii::$app->request->post('business_id')])
+            ->asArray()->all();
 
         $modelRatingComponent = RatingComponent::find()
-                ->andWhere(['rating_component.is_active' => true])
-                ->asArray()->all();
+            ->andWhere(['rating_component.is_active' => true])
+            ->asArray()->all();
 
         return $this->render('business_rating', [
             'modelBusinessDetail' => $modelBusinessDetail,
@@ -218,11 +225,12 @@ class DataController extends base\BaseController
         ]);
     }
 
-    private function getResult($typePage)
+    private function getResult($fileRender)
     {
         $this->layout = 'ajax';
 
         $get = Yii::$app->request->get();
+        $paramsView = [];
 
         if (!$get['special']) {
 
@@ -230,19 +238,23 @@ class DataController extends base\BaseController
                 ->joinWith([
                     'membershipType',
                     'businessCategories' => function($query) {
+                        
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'businessCategories.category',
                     'businessImages' => function($query) {
+                        
                         $query->andOnCondition(['type' => 'Profile']);
                     },
                     'businessLocation',
                     'businessProductCategories' => function($query) {
+                        
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
                     'businessProductCategories.productCategory',
                     'businessDetail',
                     'userLoves' => function($query) {
+                        
                         $query->andOnCondition([
                             'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
                             'user_love.is_active' => true
@@ -274,6 +286,7 @@ class DataController extends base\BaseController
             }
 
             if (!empty($get['facility_id'])) {
+                
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
             }
 
@@ -304,14 +317,9 @@ class DataController extends base\BaseController
 
             $startItem = !empty($modelBusiness) ? $offset + 1 : 0;
             $endItem = min(($offset + $pageSize), $totalCount);
-
-            if ($typePage == 'list') {
-
-                $fileRender = 'result_list';
-            } else if ($typePage == 'map') {
-
-                $fileRender = 'result_map';
-            }
+            
+            $paramsView['modelBusiness'] = $modelBusiness;
+            
         } else {
 
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
@@ -320,11 +328,13 @@ class DataController extends base\BaseController
                 ->joinWith([
                     'business',
                     'business.businessCategories' => function($query) {
+                        
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'business.businessCategories.category',
                     'business.businessLocation',
                     'business.businessProductCategories' => function($query) {
+                        
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
                     'business.businessProductCategories.productCategory',
@@ -365,24 +375,18 @@ class DataController extends base\BaseController
 
             $startItem = !empty($modelBusinessPromo) ? $offset + 1 : 0;
             $endItem = min(($offset + $pageSize), $totalCount);
-
-            if ($typePage == 'list') {
-
-                $fileRender = 'result_list_special';
-            } else if ($typePage == 'map') {
-
-                $fileRender = 'result_map_special';
-            }
+            
+            $paramsView['modelBusinessPromo'] = $modelBusinessPromo;
         }
-
-        return $this->render($fileRender, [
-            'modelBusiness' => !empty($modelBusiness) ? $modelBusiness : [],
-            'modelBusinessPromo' => !empty($modelBusinessPromo) ? $modelBusinessPromo : [],
+        
+        $paramsView = ArrayHelper::merge($paramsView, [
             'pagination' => $pagination,
             'startItem' => $startItem,
             'endItem' => $endItem,
-            'totalCount' => $totalCount,
+            'totalCount' => $totalCount
         ]);
+
+        return $this->render($fileRender, $paramsView);
     }
 
     public function actionRecentPost() {
@@ -394,6 +398,7 @@ class DataController extends base\BaseController
                 'business',
                 'user',
                 'userPostMains child' => function($query) {
+                    
                     $query->andOnCondition(['child.is_publish' => true]);
                 },
                 'userVotes',

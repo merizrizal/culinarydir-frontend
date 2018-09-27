@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use frontend\components\AddressType;
 use sycomponent\Tools;
+use yii\authclient\clients\Yandex;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -251,20 +252,19 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         <i class="aicon aicon-rupiah"></i>
 
                                                                         <?php
-                                                                        if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
-                                                                        {
+                                                                        if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
+                                                                            
                                                                             echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
                                                                         }
                                                                         else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
                                                                         {
+
                                                                             echo Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        }
-                                                                        else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min']))
-                                                                        {
+                                                                        } else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
+                                                                            
                                                                             echo Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
-                                                                        }
-                                                                        else
-                                                                        {
+                                                                        } else {
+                                                                            
                                                                             echo '-';
                                                                         } ?>
 
@@ -778,12 +778,12 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
-        'header' => 'Konfirmasi',
+        'header' => Yii::t('app', 'Confirmation'),
         'id' => 'modal-confirmation',
         'size' => Modal::SIZE_SMALL,
         'footer' => '
-            <button class="btn btn-default" data-dismiss="modal" type="button">Batal</button>
-            <button id="btn-delete" class="btn btn-danger" type="button">Hapus</button>
+            <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
+            <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>
         ',
     ]);
 
@@ -815,6 +815,7 @@ $jscript = '
                 $(this).off("shown.bs.tab");
             });
         } else {
+
             $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
         }
 
@@ -833,6 +834,7 @@ $jscript = '
                 $(this).off("shown.bs.tab");
             });
         } else {
+
             $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
         }
 
@@ -849,11 +851,11 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.success) {
+                if (response.success) {
 
                     var count = parseInt($(".love-place.count").html());
 
-                    if(response.is_active) {
+                    if (response.is_active) {
 
                         $(".love-place").addClass("selected");
                         $(".love-place.count").html(count + 1);
@@ -886,11 +888,11 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.success) {
+                if (response.success) {
 
                     var count = parseInt($(".been-here.count").html());
 
-                    if(response.is_active) {
+                    if (response.is_active) {
 
                         $(".been-here").addClass("selected");
                         $(".been-here.count").html(count + 1);
@@ -965,7 +967,7 @@ $jscript = '
 
         var thisObj = $(this);
 
-        if(thisObj.find(".has-error").length)  {
+        if (thisObj.find(".has-error").length)  {
             return false;
         }
 

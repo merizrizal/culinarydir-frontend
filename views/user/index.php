@@ -32,9 +32,14 @@ $this->registerMetaTag([
                                 <div class="widget">
                                     <div class="widget-posts-image">
 
-                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUser['image']) ? Tools::thumb('/img/user/', $modelUser['image'], 200, 200) : '/img/user/default-avatar.png'), [
-                                            'class' => 'img-responsive img-circle img-profile-thumb img-component'
-                                        ]) ?>
+                                        <?php
+                                        $img = '/img/user/default-avatar.png';
+                                        
+                                        if (!empty($modelUser['image'])) {
+                                            $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
+                                        }
+                                        
+                                        echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
 
                                     </div>
                                     <div class="widget-posts-body">
@@ -54,10 +59,15 @@ $this->registerMetaTag([
                         <div class="col-xs-12">
                             <div class="row ">
                                 <div class="col-xs-12">
-
-                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUser['image']) ? Tools::thumb('/img/user/', $modelUser['image'], 200, 200) : '/img/user/default-avatar.png'), [
-                                        'class' => 'img-responsive img-circle img-profile-thumb img-component center-block'
-                                    ]) ?>
+                                
+                                	<?php
+                                    $img = '/img/user/default-avatar.png';
+                                    
+                                    if (!empty($modelUser['image'])) {
+                                        $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
+                                    }
+                                    
+                                    echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']); ?>
 
                                 </div>
                                 <div class="col-xs-12 text-center">
@@ -194,13 +204,16 @@ frontend\components\GrowlCustom::widget();
 $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
-        'header' => 'Konfirmasi',
+        'header' => Yii::t('app', 'Confirmation'),
         'id' => 'modal-confirmation',
-        'footer' => '<button class="btn btn-default" data-dismiss="modal" type="button">Batal</button>
-                    <button id="btn-delete" class="btn btn-danger" type="button">Hapus</button>',
+        'size' => Modal::SIZE_SMALL,
+        'footer' => '
+            <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
+            <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>
+        ',
     ]);
 
-    echo 'Anda yakin akan menghapus foto ini?';
+        echo 'Anda yakin akan menghapus foto ini?';
 
     Modal::end();
 }; ?>

@@ -7,8 +7,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Maintenance';
-?>
+$this->title = 'Maintenance'; ?>
 
 <section class="home-section home-parallax home-fade home-full-height bg-dark bg-dark-60" id="home" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg' ?>">
     <div class="titan-caption">
