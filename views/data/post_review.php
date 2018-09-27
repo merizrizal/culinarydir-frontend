@@ -495,6 +495,7 @@ $jscript = '
         thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
 
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
+            thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");
 
             return false;
         });

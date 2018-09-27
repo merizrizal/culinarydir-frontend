@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use frontend\components\AddressType;
 use sycomponent\Tools;
-use yii\authclient\clients\Yandex;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -652,7 +651,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                         <div class="tab-content">
 
                                             <div role="tabpanel" class="tab-pane fade in active p-0" id="view-review">
-
+                                            
                                                 <?= $this->render('detail/_review.php', [
                                                     'modelBusiness' => $modelBusiness,
                                                     'modelUserPostMain' => $modelUserPostMain,
