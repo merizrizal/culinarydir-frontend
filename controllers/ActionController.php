@@ -437,7 +437,7 @@ class ActionController extends base\BaseController
     }
 
     private function createReview($post)
-    {
+    {              
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
 
@@ -533,52 +533,41 @@ class ActionController extends base\BaseController
             $modelBusinessDetail = BusinessDetail::find()
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
+                
+            foreach ($post['Post']['review']['rating'] as $votePoint) {
 
-            if (empty($modelBusinessDetail)) {
-
-                $modelBusinessDetail = new BusinessDetail();
-
-                $modelBusinessDetail->business_id = $post['business_id'];
+                $modelBusinessDetail->total_vote_points += $votePoint;
             }
-
-            foreach ($post['Post']['review']['rating'] as $voteValue) {
-
-                $modelBusinessDetail->vote_points += $voteValue;
-            }
-
+            
             $modelBusinessDetail->voters = $modelBusinessDetail->voters + 1;
-            $modelBusinessDetail->vote_value = ($modelBusinessDetail->vote_points / $modelBusinessDetail->voters) / count($post['Post']['review']['rating']);
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
+            $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
 
             $flag = $modelBusinessDetail->save();
         }
 
         if ($flag) {
 
-            foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
+            foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
                     ->andWhere(['business_id' => $post['business_id']])
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
-                if (!empty($modelBusinessDetailVote)) {
-
-                    $modelBusinessDetailVote->vote_value += $voteValue;
-
-                    if (!($flag = $modelBusinessDetailVote->save())) {
-                        break;
-                    }
-                } else {
+                if (empty($modelBusinessDetailVote)) {
 
                     $modelBusinessDetailVote = new BusinessDetailVote();
 
                     $modelBusinessDetailVote->business_id = $post['business_id'];
                     $modelBusinessDetailVote->rating_component_id = $ratingComponentId;
-                    $modelBusinessDetailVote->vote_value = $voteValue;
+                }
 
-                    if (!($flag = $modelBusinessDetailVote->save())) {
-                        break;
-                    }
+                $modelBusinessDetailVote->total_vote_points += $votePoint;
+                $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
+                
+                if (!($flag = $modelBusinessDetailVote->save())) {
+                    break;
                 }
             }
         }
@@ -601,13 +590,13 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $transaction->commit();
-
+            
             $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan';
             $result['message'] = 'Review anda berhasil di simpan';
             $result['type'] = 'success';
-            $result['updated'] = 0;
+            $result['updated'] = false;
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
@@ -641,8 +630,8 @@ class ActionController extends base\BaseController
     {
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
-
-        $isUpdate = $modelUserPostMain->getOldAttribute('is_publish');
+        
+        $isUpdate = $modelUserPostMain->is_publish;
 
         $modelUserPostMain->text = $post['Post']['review']['text'];
         $modelUserPostMain->is_publish = true;
@@ -711,7 +700,7 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $oldUserVote = [];
-            $oldTotalUserVote = null;
+            $oldUserVoteTotal = 0;
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
@@ -721,7 +710,7 @@ class ActionController extends base\BaseController
                     ->one();
 
                 $oldUserVote[$ratingComponentId] = $modelUserVote->vote_value;
-                $oldTotalUserVote += $modelUserVote->vote_value;
+                $oldUserVoteTotal += $modelUserVote->vote_value;
 
                 $modelUserVote->vote_value = $voteValue;
 
@@ -732,46 +721,40 @@ class ActionController extends base\BaseController
         }
 
         if ($flag) {
-
+            
             $modelBusinessDetail = BusinessDetail::find()
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
-
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->vote_points - $oldTotalUserVote;
-
-            foreach ($post['Post']['review']['rating'] as $voteValue) {
-
-                $modelBusinessDetail->vote_points += $voteValue;
+            
+            $modelBusinessDetail->total_vote_points = $modelBusinessDetail->total_vote_points - $oldUserVoteTotal;
+            
+            foreach ($post['Post']['review']['rating'] as $votePoint) {
+                
+                $modelBusinessDetail->total_vote_points += $votePoint;
             }
-
-            if (empty($modelBusinessDetail->voters)) {
-
-                $modelBusinessDetail->voters = $modelBusinessDetail->voters + 1;
-            }
-
-            $modelBusinessDetail->vote_value = ($modelBusinessDetail->vote_points / $modelBusinessDetail->voters) / count($post['Post']['review']['rating']);
-
+            
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
+            $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
+            
             $flag = $modelBusinessDetail->save();
         }
 
         if ($flag) {
 
-            foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
+            foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
                     ->andWhere(['business_id' => $post['business_id']])
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
-                $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->vote_value - $oldUserVote[$ratingComponentId];
+                $modelBusinessDetailVote->total_vote_points = $modelBusinessDetailVote->total_vote_points - $oldUserVote[$ratingComponentId];
 
-                if (!empty($modelBusinessDetailVote)) {
-
-                    $modelBusinessDetailVote->vote_value += $voteValue;
-
-                    if (!($flag = $modelBusinessDetailVote->save())) {
-                        break;
-                    }
+                $modelBusinessDetailVote->total_vote_points += $votePoint;
+                $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
+                
+                if (!($flag = $modelBusinessDetailVote->save())) {
+                    break;
                 }
             }
         }
