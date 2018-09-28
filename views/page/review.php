@@ -550,7 +550,7 @@ $jscript = '
 
     $(".review-container").find(".share-review-" + reviewId.val() + "-trigger").on("click", function() {
 
-        var url = window.location.href;
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $modelUserPostMain['id']]) . '";
         var title = "Rating " + $(".review-container").find(".rating").text().trim() + " untuk " + $(".business-name").val();
         var description = $(".review-container").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + $(".review-container").find("#user-" + reviewId.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");

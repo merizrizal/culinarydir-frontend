@@ -328,7 +328,9 @@ class DataController extends base\BaseController
         } else {
 
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
-
+            
+            $fileRender .= '_special';
+            
             $modelBusinessPromo = BusinessPromo::find()
                 ->joinWith([
                     'business',

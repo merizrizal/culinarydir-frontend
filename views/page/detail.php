@@ -527,7 +527,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-sm-8 col-tab-12 col-xs-12">
-                                                                    <h4 class="mt-0 mb-0">
+                                                                    <h4 class="promo-title">
                                                                         <?= Html::a($dataBusinessPromo['title'], ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
                                                                     </h4>
                                                                     <p class="description mb-10">

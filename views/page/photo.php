@@ -356,7 +356,7 @@ $jscript = '
 
     $(".photo-container").find(".share-review-" + photoId.val() + "-trigger").on("click", function() {
 
-        var url = window.location.href;
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo', 'id' => $modelUserPostMain['id']]) . '";
         var title = "Foto untuk " + $(".business-name").val();
         var description = $(".photo-container").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + $(".photo-container").find(".photo-review").find("img").attr("src");
