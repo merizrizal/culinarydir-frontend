@@ -50,7 +50,7 @@ $layoutUser = '
 
             <div class="box-title" id="title-write-review">
                 <h4 class="mt-0 mb-0 inline-block"><?= !empty($modelUserPostMain) ? Yii::t('app', 'Your Review') : Yii::t('app', 'Write a Review') ?></h4>
-                <span class="pull-right inline-block" id="close-review-container"><a class="text-main" href=""><i class="fa fa-close"></i> Cancel</a></span>
+                <span class="pull-right inline-block" id="close-review-container"><a class="text-main" href=""><i class="fa fa-close"></i> <?= Yii::t('app', 'Cancel')?></a></span>
             </div>
 
             <div class="box-content">
@@ -242,8 +242,11 @@ $layoutUser = '
 
                                         </li>
                                         <li>
+                                        
+                                        	<?php 
+                                        	$spanCount = '<span class="my-total-photos-review">' . $photoCount . '</span>'; ?>
 
-                                            <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Photo} =1{' . $spanCount .' Photo} other{' . $spanCount .' Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                             <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
 
                                         </li>
@@ -258,7 +261,7 @@ $layoutUser = '
                                             <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
                                         </li>
                                         <li>
-                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                            <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
                                         </li>
                                     </ul>
                                 </div>
@@ -268,7 +271,7 @@ $layoutUser = '
                                             <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
                                         </li>
                                         <li>
-                                            <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                            <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
                                         </li>
                                     </ul>
                                 </div>
@@ -287,7 +290,7 @@ $layoutUser = '
                                         </div>
 
                                         <div class="overlay" style="display: none;"></div>
-                                        <div class="loading-img" style="display: none"></div>
+                                        <div class="loading-img" style="display: none;"></div>
                                         
                                         <div class="my-comment-section">
                                             <div class="my-comment-container">
@@ -545,7 +548,7 @@ $layoutUser = '
 
                                 <?php
                                 $socialMediaItems = [
-                                    'facebook' => 'Berbagi ke Facebook',
+                                    'facebook' => Yii::t('app', 'Post to Facebook'),
                                 ];
 
                                 $options = [
@@ -962,7 +965,7 @@ $jscript = '
                         }
                     });
 
-                    $("#title-write-review").find("h4").html("Your Review");
+                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");
                     $("#edit-review-container").removeClass("hidden");
                     $("#write-review-trigger").addClass("hidden");
 

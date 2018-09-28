@@ -244,13 +244,18 @@ if (!empty($modelUserPostMain)):
                             </ul>
                         </div>
                     </div>
-
+					
+					<?php                   
+					$loveCount = !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0;
+					$commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
+					$photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0; ?>
+					
                     <div class="row visible-xs">
                         <div class="col-xs-3">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
 
-                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' ?></small>
+                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $loveCount . '</span>' ?></small>
 
                                 </li>
                             </ul>
@@ -258,13 +263,19 @@ if (!empty($modelUserPostMain)):
                         <div class="col-xs-9 text-right">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
+                                
+                                	<?php 
+                                	$spanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>'; ?>
 
-                                    <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review"></span>' . Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]) ?></small>
+                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
 
                                 </li>
                                 <li>
-
-                                    <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review"></span>' . Yii::t('app', '{value, plural, =0{# Photo} =1{# Photo} other{# Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]) ?></small>
+									
+									<?php 
+									$spanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>'; ?>
+									
+                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $photoCount]) ?></small>
 
                                 </li>
                             </ul>
@@ -277,25 +288,29 @@ if (!empty($modelUserPostMain)):
                                 <li>
 
                                     <?php
-                                    $selected = '';
+                                    $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; 
+                                    
+                                    $spanCount = '<span class="total-' . $dataUserPostMain['id'] . '-likes-review">#</span>'; ?>
 
-                                    if (!empty($dataUserPostMain['userPostLoves'][0])) {
-                                        $selected = 'selected';
-                                    } ?>
-
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0]), null , ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
 
                                 </li>
                                 <li>
+                                	
+                                	<?php 
+                                	$spanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>'; ?>
 
-                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
 
                                 </li>
                                 <li>
-
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+									
+									<?php 
+                                	$spanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>'; ?>
+									
+                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Photo} =1{' . $spanCount .' Photo} other{' . $spanCount .' Photos}}', ['value' => $photoCount]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
 
                                 </li>

@@ -268,6 +268,8 @@ class PageController extends base\BaseHistoryUrlController
                 'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.id' => $id])
+            ->andWhere(['user_post_main.type' => 'Review'])
+            ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
 
         return $this->render('review', [
@@ -292,6 +294,8 @@ class PageController extends base\BaseHistoryUrlController
                 'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.id' => $id])
+            ->andWhere(['user_post_main.type' => 'Photo'])
+            ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
 
         return $this->render('photo', [

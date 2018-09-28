@@ -2,11 +2,11 @@
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">
             <div class="box-title" id="title-map">
-                <h4 class="mt-0 mb-0 inline-block">Map</h4>
+                <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Map') ?></h4>
             </div>
 
             <div class="box-content">
-                <div id="see-map-content" style="height: 400px; width: 100%"></div>
+                <div id="see-map-content" style="height: 400px; width: 100%;"></div>
             </div>
         </div>
     </div>

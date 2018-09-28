@@ -8,7 +8,7 @@ use kartik\file\FileInput; ?>
         <div class="box bg-white">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <?php
             $form = ActiveForm::begin([
@@ -19,77 +19,77 @@ use kartik\file\FileInput; ?>
                 ]
             ]); ?>
 
-            <?= Html::hiddenInput('business_id', $modelBusiness['id'], ['id' => 'business_id']); ?>
-
-            <div class="box-title" id="title-post-photo">
-                <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Add Photo') ?></h4>
-                <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i> Cancel</a></span>
-            </div>
-
-            <div class="box-content">
-
-                <div class="form-group">
-                    <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i> <?= Yii::t('app', 'Add Photo') ?></button>
+                <?= Html::hiddenInput('business_id', $modelBusiness['id'], ['id' => 'business_id']); ?>
+    
+                <div class="box-title" id="title-post-photo">
+                    <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Add Photo') ?></h4>
+                    <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i> <?= Yii::t('app', 'Cancel') ?></a></span>
                 </div>
-
-                <div class="row" id="post-photo-container">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                        <?= $form->field($modelPostPhoto, 'text')->textInput([
-                            'class' => 'form-control',
-                            'placeholder' => 'Judul Foto',
-                        ]); ?>
-
-                        <?= $form->field($modelPostPhoto, 'image')->widget(FileInput::classname(), [
-                            'options' => [
-                                'id' => 'add-photo-input',
-                                'accept' => 'image/*',
-                                'multiple' => false,
-                            ],
-                            'pluginOptions' => [
-                                'browseClass' => 'btn btn-d',
-                                'showRemove' => false,
-                                'showUpload' => false,
-                                'layoutTemplates' => [
-                                    'footer' => '<h4><small class="file-caption-name" style="width:{width}">{caption}</small></h4>',
+    
+                <div class="box-content">
+    
+                    <div class="form-group">
+                        <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i> <?= Yii::t('app', 'Add Photo') ?></button>
+                    </div>
+    
+                    <div class="row" id="post-photo-container">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    
+                            <?= $form->field($modelPostPhoto, 'text')->textInput([
+                                'class' => 'form-control',
+                                'placeholder' => Yii::t('app', 'Photo Caption'),
+                            ]); ?>
+    
+                            <?= $form->field($modelPostPhoto, 'image')->widget(FileInput::classname(), [
+                                'options' => [
+                                    'id' => 'add-photo-input',
+                                    'accept' => 'image/*',
+                                    'multiple' => false,
                                 ],
-                            ]
-                        ]); ?>
-
-                        <div class="form-group">
-
-                            <?php
-                            $socialMediaItems = [
-                                'facebook' => 'Berbagi ke Facebook',
-                            ];
-
-                            $options = [
-                                'class' => 'social-media-share-list',
-                                'separator' => '&nbsp;&nbsp;&nbsp;',
-                                'item' => function ($index, $label, $name, $checked, $value) {
-                                    return '<label style="font-weight: normal;">' .
-                                            Html::checkbox($name, $checked, [
-                                                'value' => $value,
-                                                'class' => $value . '-photo-share-trigger icheck',
-                                            ]) . ' ' . $label .
-                                            '</label>';
-                                },
-                            ];
-
-                            echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload photo', ['class' => 'btn btn-default btn-standard btn-round']) ?>
-
-                            <?= Html::a('<i class="fa fa-times"></i> Cancel', null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
-
+                                'pluginOptions' => [
+                                    'browseClass' => 'btn btn-d',
+                                    'showRemove' => false,
+                                    'showUpload' => false,
+                                    'layoutTemplates' => [
+                                        'footer' => '<h4><small class="file-caption-name" style="width:{width}">{caption}</small></h4>',
+                                    ],
+                                ]
+                            ]); ?>
+    
+                            <div class="form-group">
+    
+                                <?php
+                                $socialMediaItems = [
+                                    'facebook' => Yii::t('app', 'Post to Facebook'),
+                                ];
+    
+                                $options = [
+                                    'class' => 'social-media-share-list',
+                                    'separator' => '&nbsp;&nbsp;&nbsp;',
+                                    'item' => function ($index, $label, $name, $checked, $value) {
+                                        return '<label style="font-weight: normal;">' .
+                                                Html::checkbox($name, $checked, [
+                                                    'value' => $value,
+                                                    'class' => $value . '-photo-share-trigger icheck',
+                                                ]) . ' ' . $label .
+                                                '</label>';
+                                    },
+                                ];
+    
+                                echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
+    
+                            </div>
+    
+                            <div class="form-group">
+    
+                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload ' . Yii::t('app', 'Photo'), ['class' => 'btn btn-default btn-standard btn-round']) ?>
+    
+                                <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
+    
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <?php ActiveForm::end(); ?>
 

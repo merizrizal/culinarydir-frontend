@@ -46,7 +46,7 @@
             else: ?>
 
                 <div class="box-content mt-10">
-                    <p>Saat ini menu belum tersedia.</p>
+                    <p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
                 </div>
 
             <?php

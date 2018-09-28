@@ -23,7 +23,7 @@ $linkPager = LinkPager::widget([
 ]); ?>
 
 <div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none"></div>
+<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -113,20 +113,24 @@ frontend\components\FacebookShare::widget();
 
 $jscript = '
     $("#pjax-photo-container").on("pjax:send", function() {
+
         $("#photo-gallery").parent().parent().siblings(".overlay").show();
         $("#photo-gallery").parent().parent().siblings(".loading-img").show();
     });
 
     $("#pjax-photo-container").on("pjax:complete", function() {
+
         $("#photo-gallery").parent().parent().siblings(".overlay").hide();
         $("#photo-gallery").parent().parent().siblings(".loading-img").hide();
     });
 
     $("#pjax-photo-container").on("pjax:error", function (event) {
+
         event.preventDefault();
     });
 
     $("#photo-gallery .place-gallery").magnificPopup({
+
         delegate: "a.show-image",
         type: "image",
         gallery: {

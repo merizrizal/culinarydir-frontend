@@ -276,7 +276,8 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         <?php
                                                                         if (!empty($modelBusiness['businessHours'])): ?>
 
-                                                                            Jam operasional
+                                                                            <?= Yii::t('app', 'Operational Hours') ?>
+                                                                            
                                                                             <ul class="icon-list">
 
 																				<?php
@@ -618,7 +619,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-icon-thin-location-line aicon-1-5x"></i></li>
-                                                                <li>Map</li>
+                                                                <li><?= Yii::t('app', 'Map')?></li>
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -643,7 +644,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <h6><a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab"><i class="aicon aicon-icon-budicon"></i> Menu</a></h6>
                                                     </li>
                                                     <li role="presentation">
-                                                        <h6><a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab"><i class="aicon aicon-icon-thin-location-line"></i> Map</a></h6>
+                                                        <h6><a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab"><i class="aicon aicon-icon-thin-location-line"></i> <?= Yii::t('app', 'Map')?></a></h6>
                                                     </li>
                                                 </ul>
                                             </li>

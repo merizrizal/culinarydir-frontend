@@ -14,7 +14,7 @@
             <div class="box-content mt-10">
                 <p>
 
-                    <?= !empty($businessAbout) ? $businessAbout : 'Data belum tersedia.' ?>
+                    <?= !empty($businessAbout) ? $businessAbout : Yii::t('app', 'Data Not Available') . '.' ?>
 
                 </p>
             </div>

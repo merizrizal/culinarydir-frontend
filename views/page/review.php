@@ -17,7 +17,7 @@ $jspopover = ''; ?>
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> Back to Place Detail', Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
 
                 </div>
             </div>
@@ -188,21 +188,21 @@ $jspopover = ''; ?>
                                                                 <?php
                                                                 if (!empty($modelUserPostMain['userPostMains'])):
 
-                                                                    foreach ($modelUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
+                                                                    foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild): ?>
 
                                                                         <li class="work-item gallery-photo-review">
                                                                             <div class="gallery-item post-gallery">
                                                                                 <div class="gallery-image">
-                                                                                    <a class="gallery" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>" title="">
+                                                                                    <a class="gallery" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>" title="">
                                                                                         <div class="work-image">
 
-                                                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
 
                                                                                         </div>
                                                                                         <div class="work-caption">
-                                                                                            <div class="work-descr"><?= !empty($dataUserPostMainChild['text']) ? $dataUserPostMainChild['text'] : '' ?></div>
+                                                                                            <div class="work-descr"><?= !empty($modelUserPostMainChild['text']) ? $modelUserPostMainChild['text'] : '' ?></div>
                                                                                             <div class="work-descr">
-                                                                                                <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                                                <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
                                                                                             </div>
                                                                                         </div>
                                                                                     </a>
@@ -218,59 +218,74 @@ $jspopover = ''; ?>
                                                         </div>
                                                     </div>
 
+                                                    <?php                   
+                                					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
+                                					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
+                                					$photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0; ?>
+                                					
                                                     <div class="row visible-xs">
                                                         <div class="col-xs-3">
                                                             <ul class="list-inline mt-0 mb-0">
                                                                 <li>
-
-                                                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $modelUserPostMain['id'] . '-likes-review">' . $modelUserPostMain['love_value'] . '</span>' ?></small>
-
+                                
+                                                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $modelUserPostMain['id'] . '-likes-review">' . $loveCount . '</span>' ?></small>
+                                
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-xs-9 text-right">
                                                             <ul class="list-inline mt-0 mb-0">
                                                                 <li>
-
-                                                                    <small><?= '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span> Comment' ?></small>
-
+                                                                
+                                                                	<?php 
+                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
+                                
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                
                                                                 </li>
                                                                 <li>
-
-                                                                    <small><?= '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span> Photo' ?></small>
-
+                                									
+                                									<?php 
+                                									$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">#</span>'; ?>
+                                									
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $photoCount]) ?></small>
+                                
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
-
+                                
                                                     <div class="row">
                                                         <div class="col-sm-7 col-tab-7 col-xs-12">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-
+                                
                                                                     <?php
-                                                                    $selected = '';
-
-                                                                    if (!empty($modelUserPostMain['userPostLoves'][0])) {
-                                                                        $selected = 'selected';
-                                                                    } ?>
-
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $modelUserPostMain['id'] . '-likes-review">' . $modelUserPostMain['love_value'] . '</span> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; 
+                                                                    
+                                                                    $spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-likes-review">#</span>'; ?>
+                                
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-
+                                
                                                                 </li>
                                                                 <li>
-
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $modelUserPostMain['id'] . '-comments-review">' . count($modelUserPostMain['userPostComments']) . '</span> Comment', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                	
+                                                                	<?php 
+                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
+                                
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
-
+                                
                                                                 </li>
                                                                 <li>
-
-                                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $modelUserPostMain['id'] . '-photos-review">' . count($modelUserPostMain['userPostMains']) . '</span> Photo', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                									
+                                									<?php 
+                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">#</span>'; ?>
+                                									
+                                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Photo} =1{' . $spanCount .' Photo} other{' . $spanCount .' Photos}}', ['value' => $photoCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
-
+                                
                                                                 </li>
                                                                 <li class="review-<?= $modelUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
                                                                     <i class="fa fa-ellipsis-h"></i>
@@ -394,6 +409,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnifi
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
+frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
@@ -534,32 +550,17 @@ $jscript = '
 
     $(".review-container").find(".share-review-" + reviewId.val() + "-trigger").on("click", function() {
 
-        var businessName = $(".business-name").val();
-        var rating = $(".review-container").find(".rating").text().trim();
-
         var url = window.location.href;
-        var title = "Rating " + rating + " untuk " + businessName;
+        var title = "Rating " + $(".review-container").find(".rating").text().trim() + " untuk " + $(".business-name").val();
         var description = $(".review-container").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + $(".review-container").find("#user-" + reviewId.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
 
-        FB.ui({
-            method: "share_open_graph",
-            action_type: "og.likes",
-            action_properties: JSON.stringify({
-                object: {
-                    "og:url": url,
-                    "og:title": title,
-                    "og:description": description,
-                    "og:image": image
-                }
-            })
-        },
-        function (response) {
-
-            if (response && !response.error_message) {
-
-                messageResponse("aicon aicon-icon-tick-in-circle", "Sukses.", "Review berhasil di posting ke Facebook Anda.", "success");
-            }
+        facebookShare({
+            ogUrl: url,
+            ogTitle: title,
+            ogDescription: description,
+            ogImage: image,
+            type: "Review"
         });
 
         return false;
