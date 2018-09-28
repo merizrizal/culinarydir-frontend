@@ -9,12 +9,12 @@ use kartik\rating\StarRating;
 <div class="row">
     <div class="col-sm-6 col-xs-6 text-center">
         <div class="rating">
-            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format((float) $modelBusinessDetail['vote_value'], 1, '.', '') ?></span></h2>
+            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format(!empty($modelBusinessDetail['vote_value']) ? $modelBusinessDetail['vote_value'] : 0, 1) ?></span></h2>
             <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($modelBusinessDetail['voters']) ? $modelBusinessDetail['voters'] : 0]) ?>
         </div>
     </div>
     <div class="col-sm-6 col-xs-6">
-        <h4 class="points-label"><?= number_format((float) !empty($modelBusinessDetail['vote_points']) && !empty($modelRatingComponent) ? ($modelBusinessDetail['vote_points'] / count($modelRatingComponent)) : 0, 1, '.', '') ?></h4> Points
+        <h4 class="points-label"><?= number_format(!empty($modelBusinessDetail['vote_points']) ? $modelBusinessDetail['vote_points'] : 0, 1) ?></h4> Points
     </div>
 </div>
 
@@ -40,7 +40,7 @@ use kartik\rating\StarRating;
 
                     foreach($ratingComponent as $dataBusinessDetailVote):
 
-                        $ratingValue = !empty($dataBusinessDetailVote['vote_value']) && !empty($modelBusinessDetail['voters']) ? ($dataBusinessDetailVote['vote_value'] / $modelBusinessDetail['voters']) : 0; ?>
+                        $ratingValue = !empty($dataBusinessDetailVote['vote_value']) ? $dataBusinessDetailVote['vote_value'] : 0; ?>
 
                         <li>
                             <div class="row">
