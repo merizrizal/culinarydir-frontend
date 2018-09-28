@@ -49,7 +49,7 @@ use kartik\rating\StarRating;
                                     <?= StarRating::widget([
                                         'id' => 'business-' . strtolower($dataBusinessDetailVote['ratingComponent']['name']) . '-rating',
                                         'name' => 'business-' . strtolower($dataBusinessDetailVote['ratingComponent']['name']) . '-rating',
-                                        'value' => !empty($ratingValue) ? $ratingValue : 0,
+                                        'value' => $ratingValue,
                                         'pluginOptions' => [
                                             'displayOnly' => true,
                                             'filledStar' => '<span class="aicon aicon-star-full"></span>',
@@ -61,7 +61,7 @@ use kartik\rating\StarRating;
 
                                 <div class="col-sm-6 col-xs-6 business-rating-components">
 
-                                    <?= number_format((float)$ratingValue, 1, '.', '') . ' &nbsp; ' . $dataBusinessDetailVote['ratingComponent']['name'] ?>
+                                    <?= number_format($ratingValue, 1) . ' &nbsp; ' . $dataBusinessDetailVote['ratingComponent']['name'] ?>
 
                                 </div>
                             </div>

@@ -533,6 +533,13 @@ class ActionController extends base\BaseController
             $modelBusinessDetail = BusinessDetail::find()
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
+            
+            if (empty($modelBusinessDetail)) {
+                
+                $modelBusinessDetail = new BusinessDetail();
+                
+                $modelBusinessDetail->business_id = $post['business_id'];
+            }
                 
             foreach ($post['Post']['review']['rating'] as $votePoint) {
 
@@ -699,8 +706,8 @@ class ActionController extends base\BaseController
 
         if ($flag) {
 
-            $oldUserVote = [];
-            $oldUserVoteTotal = 0;
+            $prevUserVote = [];
+            $prevUserVoteTotal = 0;
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
@@ -709,8 +716,8 @@ class ActionController extends base\BaseController
                     ->andWhere(['user_vote.rating_component_id' => $ratingComponentId])
                     ->one();
 
-                $oldUserVote[$ratingComponentId] = $modelUserVote->vote_value;
-                $oldUserVoteTotal += $modelUserVote->vote_value;
+                $prevUserVote[$ratingComponentId] = $modelUserVote->vote_value;
+                $prevUserVoteTotal += $modelUserVote->vote_value;
 
                 $modelUserVote->vote_value = $voteValue;
 
@@ -726,14 +733,14 @@ class ActionController extends base\BaseController
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
             
-            $modelBusinessDetail->total_vote_points = $modelBusinessDetail->total_vote_points - $oldUserVoteTotal;
+            $modelBusinessDetail->total_vote_points = $modelBusinessDetail->total_vote_points - $prevUserVoteTotal;
             
             foreach ($post['Post']['review']['rating'] as $votePoint) {
                 
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
             
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
             
             $flag = $modelBusinessDetail->save();
@@ -748,7 +755,7 @@ class ActionController extends base\BaseController
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
-                $modelBusinessDetailVote->total_vote_points = $modelBusinessDetailVote->total_vote_points - $oldUserVote[$ratingComponentId];
+                $modelBusinessDetailVote->total_vote_points = $modelBusinessDetailVote->total_vote_points - $votePoint;
 
                 $modelBusinessDetailVote->total_vote_points += $votePoint;
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
