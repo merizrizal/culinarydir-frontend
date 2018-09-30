@@ -77,7 +77,9 @@ $layoutUser = '
                                 <div class="col-md-3 col-sm-3 col-xs-3">
 									<div class="my-rating">
                                     	<h3 class="mt-0 mb-0">
-                                            <?= Html::a(number_format((float) !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1, '.', ''), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                    	
+                                            <?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                    	
                                     	</h3>
                  					</div>
                                     <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
@@ -111,14 +113,12 @@ $layoutUser = '
                                                                                     <?= StarRating::widget([
                                                                                         'id' => 'my-rating-' . $dataRatingComponent['id'],
                                                                                         'name' => 'my_rating_' . $dataRatingComponent['id'],
-                                                                                        'value' => !empty($valueRatingComponent) ? $valueRatingComponent : null,
+                                                                                        'value' => !empty($valueRatingComponent) ? $valueRatingComponent : 0,
                                                                                         'pluginOptions' => [
                                                                                             'displayOnly' => true,
                                                                                             'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                                                                             'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
                                                                                             'captionElement' => '.rating-' . $dataRatingComponent['id'],
-                                                                                            'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '" : val + " &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '";}'),
-                                                                                            'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
                                                                                         ]
                                                                                     ]); ?>
 
@@ -190,7 +190,13 @@ $layoutUser = '
                             <?php                   
                         	$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
                     	    $commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
-                    	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0; ?>
+                    	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
+                    	    
+                    	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
+                    	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
+                    	    $photoSpanCount = '<span class="my-total-photos-review">#</span>'; 
+                    	    
+                    	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
 
                             <div class="row visible-xs">
                                 <div class="col-xs-3">
@@ -203,14 +209,10 @@ $layoutUser = '
                                 <div class="col-xs-9 text-right">
                                     <ul class="list-inline mt-0 mb-0">
                                         <li>
-                                        
-                                    		<?php
-                                    		$spanCount = '<span class="total-' . (!empty($modelUserPostMain['id']) ? $modelUserPostMain['id'] : 'empty') . '-comments-review">#</span>'; ?>
-											
-                                            <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                            <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]) ?></small>
                                         </li>
                                         <li>
-                                            <small><?= '<span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]) ?></small>
+                                            <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]) ?></small>
                                         </li>
                                     </ul>
                                 </div>
@@ -219,29 +221,21 @@ $layoutUser = '
                             <div class="row">
                                 <div class="col-sm-7 col-tab-7 col-xs-12">
                                     <ul class="list-inline list-review mt-0 mb-0">
-                                        <li>                                            
-                                            
-                                            <?php
-                                            $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
-                                            
-                                            $spanCount = '<span class="my-total-likes-review">#</span>'; ?>
+                                        <li>
 
-                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                             <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', '', ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
 
                                         </li>
                                         <li>
-
-											<?php
-											$spanCount = '<span class="total-' . (!empty($modelUserPostMain['id']) ? $modelUserPostMain['id'] : 'empty') . '-comments-review">#</span>'; ?>
-											
-                                            <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), '', ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                        											
+                                            <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                             <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'my-comments-review-trigger visible-xs']); ?>
 
                                         </li>
                                         <li>
 
-                                            <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="my-total-photos-review">' . $photoCount . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                             <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
 
                                         </li>
@@ -288,7 +282,7 @@ $layoutUser = '
                                         <div class="loading-img" style="display: none"></div>
                                         
                                         <div class="my-comment-section">
-                                            <div class="my-comment-container">
+                                            <div class="comment-container">
 
                                                 <?php
                                                 $userReviewComment = [];
@@ -758,12 +752,9 @@ $jscript = '
 
     $(".delete-my-review-trigger").on("click", function(event) {
 
-        var form = $("form#review-form").serialize();
-
         $.ajax({
             cache: false,
             type: "POST",
-            data: form,
             url: $(this).attr("href"),
             success: function(response) {
 
@@ -964,7 +955,7 @@ $jscript = '
                         }
                     });
 
-                    $("#title-write-review").find("h4").html("Your Review");
+                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') .'");
                     $("#edit-review-container").removeClass("hidden");
                     $("#write-review-trigger").addClass("hidden");
 
@@ -1080,11 +1071,11 @@ $jscript = '
                     if(response.is_active) {
 
                         $(".my-likes-review-trigger").addClass("selected");
-                        $("span.my-total-likes-review").html(loveValue + 1);
+                        $(".my-total-likes-review").html(loveValue + 1);
                     } else {
 
                         $(".my-likes-review-trigger").removeClass("selected");
-                        $("span.my-total-likes-review").html(loveValue - 1);
+                        $(".my-total-likes-review").html(loveValue - 1);
                     }
                 } else {
 

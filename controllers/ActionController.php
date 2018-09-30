@@ -420,14 +420,14 @@ class ActionController extends base\BaseController
                 $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Report Berhasil';
-                $result['message'] = 'Report Anda berhasil di simpan.';
+                $result['message'] = 'Report Anda berhasil disimpan.';
                 $result['type'] = 'success';
             } else {
 
                 $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Report Gagal';
-                $result['message'] = 'Report Anda gagal di simpan.';
+                $result['message'] = 'Report Anda gagal disimpan.';
                 $result['type'] = 'danger';
             }
 
@@ -601,7 +601,7 @@ class ActionController extends base\BaseController
             $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan';
-            $result['message'] = 'Review anda berhasil di simpan';
+            $result['message'] = 'Review anda berhasil disimpan';
             $result['type'] = 'success';
             $result['updated'] = false;
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
@@ -619,7 +619,7 @@ class ActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal';
             $result['message'] = '
-                Review Anda gagal di simpan<br>
+                Review Anda gagal disimpan<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review</li>
                     <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb</li>
@@ -788,7 +788,7 @@ class ActionController extends base\BaseController
             $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan.';
-            $result['message'] = 'Review baru anda berhasil di simpan.';
+            $result['message'] = 'Review baru anda berhasil disimpan.';
             $result['type'] = 'success';
             $result['updated'] = $isUpdate;
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
@@ -806,7 +806,7 @@ class ActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal.';
             $result['message'] = '
-                Review baru Anda gagal di simpan.<br>
+                Review baru Anda gagal disimpan.<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review.</li>
                     <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>

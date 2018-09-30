@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use sycomponent\Tools; ?>
+use sycomponent\Tools;
+
+/* @var $this yii\web\View */ ?>
 
 <?php
 $jscript = '';
@@ -10,7 +12,7 @@ if (!empty($userPostComment)):
 
     foreach ($userPostComment as $userPostId => $modelUserPostComment): ?>
 
-        <div class="post-<?= $userPostId ?>-comment-container">
+        <div class="comment-container">
 
             <?php
             foreach ($modelUserPostComment as $dataUserPostComment): ?>
