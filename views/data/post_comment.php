@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use sycomponent\Tools;
+use common\components\Helper;
 
 /* @var $this yii\web\View */ ?>
 
@@ -39,7 +40,7 @@ if (!empty($userPostComment)):
 
                                 <div class="widget-comments-body">
                                     <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                    <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                    <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                     <br>
                                     <p class="review-description">
 

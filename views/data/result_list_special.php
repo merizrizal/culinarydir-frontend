@@ -69,7 +69,7 @@ $jspopover = ''; ?>
         <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <?php
             if (!empty($modelBusinessPromo)):
@@ -164,7 +164,7 @@ $jspopover = ''; ?>
                                                                 } else {
 
                                                                     echo $businessProductCategoryList;
-                                                                }?>
+                                                                } ?>
 
                                                                 <div id="business-product-category-container-popover<?= $dataBusinessPromo['id']; ?>" class="popover popover-x popover-default">
                                                                     <div class="arrow mt-0"></div>

@@ -151,10 +151,8 @@ $jscript = '
 
     $(".share-feature-' . $model['id'] . '-trigger").on("click", function() {
 
-        var businessName = "' . $model['business']['name'] . '";
-        var rating = $(".rating-' . $model['id'] . '").text().trim();
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $model['id']]) . '";
-        var title = "Rating " + rating + " untuk " + businessName;
+        var title = "Rating " + $(".rating-' . $model['id'] . '").text().trim() + " untuk " + "' . $model['business']['name'] . '";
         var description = "' . $model['text'] . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";
 
@@ -162,7 +160,8 @@ $jscript = '
             ogUrl: url,
             ogTitle: title,
             ogDescription: description,
-            ogImage: image
+            ogImage: image,
+            type: "Review"
         });
 
         return false;

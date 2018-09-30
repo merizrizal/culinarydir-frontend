@@ -66,7 +66,7 @@ $jspopover = ''; ?>
         <div class="col-md-12 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <?php
             if (!empty($modelBusinessPromo)):
