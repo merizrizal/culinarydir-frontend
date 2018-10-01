@@ -5,6 +5,13 @@ use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelUserPostMain core\models\UserPostMain */
+
 Pjax::begin([
     'enablePushState' => false,
     'linkSelector' => '#pagination-photo a',
