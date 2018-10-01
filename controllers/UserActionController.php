@@ -3,12 +3,12 @@ namespace frontend\controllers;
 
 use Yii;
 use core\models\UserPostMain;
-use core\models\UserPost;
 use core\models\UserVote;
 use core\models\BusinessDetail;
 use core\models\BusinessDetailVote;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use core\models\UserPostLove;
 
 /**
  * User Action Controller
@@ -79,28 +79,18 @@ class UserActionController extends base\BaseController
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
+        $prevData = [];
+        
         $modelUserPostMain = UserPostMain::find()
             ->andWhere(['id' => $id])
             ->one();
+        
+        $prevData['prevLoveValue'] = $modelUserPostMain->love_value;
 
         $modelUserPostMain->is_publish = false;
+        $modelUserPostMain->love_value = 0;
         
         $flag = $modelUserPostMain->save();
-        
-        if ($flag) {
-
-            $modelUserPost = new UserPost();
-
-            $modelUserPost->business_id = $modelUserPostMain->business_id;
-            $modelUserPost->type = $modelUserPostMain->type;
-            $modelUserPost->user_id = $modelUserPostMain->user_id;
-            $modelUserPost->text = $modelUserPostMain->text;
-            $modelUserPost->is_publish = $modelUserPostMain->is_publish;
-            $modelUserPost->love_value = $modelUserPostMain->love_value;
-            $modelUserPost->user_post_main_id = $modelUserPostMain->id;
-
-            $flag = $modelUserPost->save();
-        }
         
         if ($flag) {
             
@@ -115,18 +105,20 @@ class UserActionController extends base\BaseController
                 if (!($flag = $modelUserPostMainPhoto->save())) {
                     break;
                 }
+            }
+        }
+        
+        if ($flag) {
+            
+            $modelUserPostLoves = UserPostLove::find()
+                ->andWhere(['user_post_main_id' => $id])
+                ->all();
+            
+            foreach ($modelUserPostLoves as $modelUserPostLove) {
                 
-                $modelUserPostPhoto = new UserPost();
-
-                $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
-                $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
-                $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
-                $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
-                $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
-                $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
-
-                if (!($flag = $modelUserPostPhoto->save())) {
+                $modelUserPostLove->is_active = false;
+                
+                if (!($flag = $modelUserPostLove->save())) {
                     break;
                 }
             }
@@ -134,7 +126,7 @@ class UserActionController extends base\BaseController
         
         if ($flag) {
             
-            $prevUserVote = [];
+            $prevData['prevUserVote'] = [];
             $prevUserVoteTotal = 0;
             
             $modelUserVotes = UserVote::find()
@@ -143,17 +135,15 @@ class UserActionController extends base\BaseController
             
             foreach ($modelUserVotes as $modelUserVote) {
                 
-                $prevUserVote[$modelUserVote->rating_component_id] = $modelUserVote->vote_value;
+                $prevData['prevUserVote'][$modelUserVote->rating_component_id] = $modelUserVote->vote_value;
                 $prevUserVoteTotal += $modelUserVote->vote_value;
-                    
-                $modelUserVote->vote_value -= $modelUserVote->vote_value;
+                
+                $modelUserVote->vote_value = 0;
                 
                 if (!($flag = $modelUserVote->save())) {
                     break;
                 }
             }
-            
-            Yii::$app->session->set('prevUserVote' . $id, $prevUserVote);
         }
         
         if ($flag) {
@@ -164,20 +154,15 @@ class UserActionController extends base\BaseController
 
             $modelBusinessDetail->total_vote_points -= $prevUserVoteTotal;
             $modelBusinessDetail->voters -= 1;
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
-            $modelBusinessDetail->vote_value = 0;
-            
-            if (!empty($modelBusinessDetail->voters)) {
-                
-                $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
-            }
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevData['prevUserVote']);
+            $modelBusinessDetail->vote_value = !empty($modelBusinessDetail->voters) ? $modelBusinessDetail->vote_points / $modelBusinessDetail->voters : 0;
             
             $flag = $modelBusinessDetail->save();
         }
         
         if ($flag) {
             
-            foreach ($prevUserVote as $ratingComponentId => $votePoint) {
+            foreach ($prevData['prevUserVote'] as $ratingComponentId => $votePoint) {
                 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
                     ->andWhere(['business_id' => $modelUserPostMain->business_id])
@@ -185,18 +170,15 @@ class UserActionController extends base\BaseController
                     ->one();
                 
                 $modelBusinessDetailVote->total_vote_points -= $votePoint;
-                $modelBusinessDetailVote->vote_value = 0;
-                
-                if (!empty($modelBusinessDetail->voters)) {
-                    
-                    $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
-                }
+                $modelBusinessDetailVote->vote_value = !empty($modelBusinessDetail->voters) ? $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters : 0;
                 
                 if (!($flag = $modelBusinessDetailVote->save())) {
                     break;
                 }
             }
         }
+        
+        Yii::$app->session->setFlash('prevData' . $id, $prevData);
         
         $result = [];
         
@@ -227,28 +209,16 @@ class UserActionController extends base\BaseController
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
+        $prevData = Yii::$app->session->getFlash('prevData' . $id);
+        
         $modelUserPostMain = UserPostMain::find()
             ->andWhere(['id' => $id])
             ->one();
         
         $modelUserPostMain->is_publish = true;
+        $modelUserPostMain->love_value = !empty($prevData['prevLoveValue']) ? $prevData['prevLoveValue'] : 0;
         
         $flag = $modelUserPostMain->save();
-        
-        if ($flag) {
-            
-            $modelUserPost = new UserPost();
-            
-            $modelUserPost->business_id = $modelUserPostMain->business_id;
-            $modelUserPost->type = $modelUserPostMain->type;
-            $modelUserPost->user_id = $modelUserPostMain->user_id;
-            $modelUserPost->text = $modelUserPostMain->text;
-            $modelUserPost->is_publish = $modelUserPostMain->is_publish;
-            $modelUserPost->love_value = $modelUserPostMain->love_value;
-            $modelUserPost->user_post_main_id = $modelUserPostMain->id;
-            
-            $flag = $modelUserPost->save();
-        }
         
         if ($flag) {
             
@@ -263,18 +233,20 @@ class UserActionController extends base\BaseController
                 if (!($flag = $modelUserPostMainPhoto->save())) {
                     break;
                 }
+            }
+        }
+        
+        if ($flag) {
+            
+            $modelUserPostLoves = UserPostLove::find()
+                ->andWhere(['user_post_main_id' => $id])
+                ->all();
+            
+            foreach ($modelUserPostLoves as $modelUserPostLove) {
                 
-                $modelUserPostPhoto = new UserPost();
+                $modelUserPostLove->is_active = true;
                 
-                $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
-                $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
-                $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
-                $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
-                $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
-                $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
-
-                if (!($flag = $modelUserPostPhoto->save())) {
+                if (!($flag = $modelUserPostLove->save())) {
                     break;
                 }
             }
@@ -282,14 +254,12 @@ class UserActionController extends base\BaseController
         
         if ($flag) {
             
-            $prevUserVote = [];
+            $flag = false;
             $prevUserVoteTotal = 0;
             
-            if (!empty(($prevUserVote = Yii::$app->session->get('prevUserVote' . $id)))) {
+            if (!empty($prevData['prevUserVote'])) {
                 
-                Yii::$app->session->remove('prevUserVote' . $id);
-                
-                foreach ($prevUserVote as $ratingComponentId => $voteValue) {
+                foreach ($prevData['prevUserVote'] as $ratingComponentId => $voteValue) {
                     
                     $modelUserVote = UserVote::find()
                         ->andWhere(['user_post_main_id' => $id])
@@ -304,9 +274,6 @@ class UserActionController extends base\BaseController
                         break;
                     }
                 }
-            } else {
-                
-                $flag = false;
             }
         }
         
@@ -318,7 +285,7 @@ class UserActionController extends base\BaseController
             
             $modelBusinessDetail->total_vote_points += $prevUserVoteTotal;
             $modelBusinessDetail->voters += 1;
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevData['prevUserVote']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
 
             $flag = $modelBusinessDetail->save();
@@ -326,7 +293,7 @@ class UserActionController extends base\BaseController
         
         if ($flag) {
 
-            foreach ($prevUserVote as $ratingComponentId => $votePoint) {
+            foreach ($prevData['prevUserVote'] as $ratingComponentId => $votePoint) {
                 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
                     ->andWhere(['business_id' => $modelUserPostMain->business_id])
