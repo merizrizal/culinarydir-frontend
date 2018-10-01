@@ -18,17 +18,17 @@ kartik\popover\PopoverXAsset::register($this);
 
 Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
-$imgUserProfile = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
 if (!empty($modelUserPostMain['user']['image'])) {
 
-    $imgUserProfile = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
+    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
 }
 
 $layoutUser = '
     <div class="widget-posts-image">
         <a href="' . Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '">
-            ' . Html::img($imgUserProfile, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
+            ' . Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
         </a>
     </div>
 
@@ -193,7 +193,7 @@ $layoutUser = '
                     	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                     	    
                     	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
-                    	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
+                    	    $commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
                     	    $photoSpanCount = '<span class="my-total-photos-review">#</span>'; 
                     	    
                     	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
@@ -306,14 +306,14 @@ $layoutUser = '
                                                                             <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
 
                                                                                 <?php
-                                                                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
                                                                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
                                                                                 }
 
-                                                                                echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                                echo Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
 
                                                                             </a>
                                                                         </div>
