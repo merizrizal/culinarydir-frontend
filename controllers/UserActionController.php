@@ -3,13 +3,11 @@ namespace frontend\controllers;
 
 use Yii;
 use core\models\UserPostMain;
-use core\models\UserPost;
 use core\models\UserVote;
 use core\models\BusinessDetail;
 use core\models\BusinessDetailVote;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use yii\helpers\ArrayHelper;
 use core\models\UserPostLove;
 
 /**
