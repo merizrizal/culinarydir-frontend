@@ -247,6 +247,10 @@ class DataController extends base\BaseController
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'businessCategories.category',
+                    'businessFacilities' => function($query) {
+                        $query->andOnCondition(['business_facility.is_active' => true]);
+                    },
+                    'businessFacilities.facility',
                     'businessImages' => function($query) {
                         
                         $query->andOnCondition(['type' => 'Profile']);

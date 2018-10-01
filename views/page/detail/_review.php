@@ -764,7 +764,7 @@ $jscript = '
 
                     if (response.publish) {
 
-                        $(".delete-my-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
+                        $(".delete-my-review-trigger").html("<i class=\"fa fa-trash\"></i> ' . Yii::t('app', 'Delete') . '").attr("href", response.deleteUrlReview);
                         $(".total-review").html(totalUserPost + 1);
                     } else {
 
