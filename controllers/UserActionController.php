@@ -163,7 +163,7 @@ class UserActionController extends base\BaseController
                 ->one();
 
             $modelBusinessDetail->total_vote_points -= $prevUserVoteTotal;
-            $modelBusinessDetail->voters = $modelBusinessDetail->voters - 1;
+            $modelBusinessDetail->voters -= 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
             $modelBusinessDetail->vote_value = 0;
             
@@ -317,7 +317,7 @@ class UserActionController extends base\BaseController
                 ->one();
             
             $modelBusinessDetail->total_vote_points += $prevUserVoteTotal;
-            $modelBusinessDetail->voters = $modelBusinessDetail->voters + 1;
+            $modelBusinessDetail->voters += 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
 

@@ -533,20 +533,13 @@ class ActionController extends base\BaseController
             $modelBusinessDetail = BusinessDetail::find()
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
-            
-            if (empty($modelBusinessDetail)) {
-                
-                $modelBusinessDetail = new BusinessDetail();
-                
-                $modelBusinessDetail->business_id = $post['business_id'];
-            }
                 
             foreach ($post['Post']['review']['rating'] as $votePoint) {
 
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
             
-            $modelBusinessDetail->voters = $modelBusinessDetail->voters + 1;
+            $modelBusinessDetail->voters += 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
 
@@ -740,6 +733,11 @@ class ActionController extends base\BaseController
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
             
+            if (!$isUpdate) {
+                
+                $modelBusinessDetail->voters += 1;
+            }
+            
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
             
@@ -755,7 +753,7 @@ class ActionController extends base\BaseController
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
-                $modelBusinessDetailVote->total_vote_points = $modelBusinessDetailVote->total_vote_points - $votePoint;
+                $modelBusinessDetailVote->total_vote_points -= $votePoint;
 
                 $modelBusinessDetailVote->total_vote_points += $votePoint;
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
