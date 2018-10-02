@@ -32,8 +32,8 @@ class PageController extends base\BaseHistoryUrlController
                     'actions' => [
 
                     ]
-            ]
-        ]);
+                ]
+            ]);
     }
 
     public function actionIndex()

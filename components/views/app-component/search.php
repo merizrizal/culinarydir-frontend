@@ -32,10 +32,10 @@ $styleRadiusLabel = null; ?>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="<?= empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#favorite<?= !empty($id) ? '-' . $id : ''?>" aria-controls="favorite" role="tab" data-toggle="tab">Cari Makanan Favorit</a>
+            <a href="#favorite<?= !empty($id) ? '-' . $id : ''?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods') ?></a>
         </li>
         <li role="presentation" class="<?= !empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#special<?= !empty($id) ? '-' . $id : ''?>" aria-controls="special" role="tab" data-toggle="tab">Cari Spesial &amp; Diskon</a>
+            <a href="#special<?= !empty($id) ? '-' . $id : ''?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts') ?></a>
         </li>
     </ul>
 
@@ -204,7 +204,7 @@ $styleRadiusLabel = null; ?>
                                                     [
                                                         'item' => function ($index, $label, $name, $checked, $value) use($colDivider, $column, $modelFacility) {
 
-                                                            $checkboxes =  '
+                                                            $checkboxes = '
                                                                 <div class="row">
                                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-tab-12 col">
                                                                         <label>' .
@@ -222,19 +222,15 @@ $styleRadiusLabel = null; ?>
                                                             if ($index === 1) {
 
                                                                 return $column . $checkboxes;
-
                                                             } else if ($index === count($modelFacility)) {
 
                                                                 return $checkboxes . '</div>';
-
                                                             } else if ($index % $colDivider === 0) {
 
                                                                 return $checkboxes . '</div>' . $column;
-
                                                             } else {
 
                                                                 return $checkboxes;
-
                                                             }
                                                         }
                                                     ]) ?>

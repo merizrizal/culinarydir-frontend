@@ -423,7 +423,7 @@ class SiteController extends base\BaseController
         }
     }
 
-    public function actionActivateAccount($token) 
+    public function actionActivateAccount($token)
     {
         $modelUser = User::find()
             ->andWhere(['account_activation_token' => $token])
@@ -447,13 +447,16 @@ class SiteController extends base\BaseController
 
                 return $this->redirect(['register']);
             }
+            
+            return $this->render('message', [
+                'fullname' => $modelUser['full_name'],
+                'title' => Yii::t('app', 'Your Account Has Been Activated'),
+                'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
+                'links' => ['name' => Yii::t('app', 'Login To') . Yii::$app->name, 'url' => ['site/login']],
+            ]);
+        } else {
+            
+            return $this->redirect(['login']);
         }
-
-        return $this->render('message', [
-            'fullname' => $modelUser['full_name'],
-            'title' => Yii::t('app', 'Your Account Has Been Activated'),
-            'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
-            'links' => ['name' => Yii::t('app', 'Login To') . Yii::$app->name, 'url' => ['site/login']],
-        ]);
     }
 }

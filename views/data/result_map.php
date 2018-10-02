@@ -64,7 +64,7 @@ $linkPager = LinkPager::widget([
         <div class="col-md-12 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <?php
             if (!empty($modelBusiness)):
@@ -81,8 +81,6 @@ $linkPager = LinkPager::widget([
                                     <div class="col-md-5 col-sm-6 col-xs-6 col" role="button">
 
                                         <?php
-                                        $businessImage = null;
-
                                         if (count($dataBusiness['businessImages']) > 1) {
 
                                             $images = [];
@@ -104,7 +102,7 @@ $linkPager = LinkPager::widget([
                                                     'poster' => $href,
                                                 ];
 
-                                                $businessImage = $href;
+                                                $image = $href;
                                             }
 
                                             echo dosamigos\gallery\Carousel::widget([
@@ -124,23 +122,25 @@ $linkPager = LinkPager::widget([
                                             }
 
                                             echo Html::img($image, ['class' => 'img-responsive img-component']);
-
-                                            $businessImage = $image;
                                         } ?>
 
                                     </div>
-
+									
+									<?php 
+									$vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0';
+									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0; ?>
+									
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
                                         <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
+                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= ($vote_value); ?></span></h2>
+                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                         </div>
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
                                         <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h2>
-                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
+                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= ($vote_value); ?></span></h2>
+                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                         </div>
                                     </div>
 
@@ -206,8 +206,8 @@ $linkPager = LinkPager::widget([
 
                                                 <div class="visible-lg visible-md col-md-3 col text-center">
                                                     <div class="rating pull-right">
-                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= (!empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0'); ?></span></h3>
-                                                        <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
+                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= ($vote_value); ?></span></h3>
+                                                        <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -227,7 +227,7 @@ $linkPager = LinkPager::widget([
 
                     $businessDetail[$key][] = [
                         'businessId' => $dataBusiness['id'],
-                        'businessImage' => $businessImage,
+                        'businessImage' => $image,
                         'businessName' => $dataBusiness['name'],
                         'businessCategory' => $businessCategory,
                         'businessAddress' => AddressType::widget([

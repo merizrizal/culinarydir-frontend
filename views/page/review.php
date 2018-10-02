@@ -5,6 +5,8 @@ use sycomponent\Tools;
 use kartik\rating\StarRating;
 use common\components\Helper;
 
+/* @var $modelUserPostMain core\models\UserPostMain */
+
 kartik\popover\PopoverXAsset::register($this);
 
 $jspopover = ''; ?>
@@ -221,7 +223,13 @@ $jspopover = ''; ?>
                                                     <?php                   
                                 					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
                                 					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
-                                					$photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0; ?>
+                                					$photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
+                                					
+                                					$loveSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-likes-review">#</span>'; 
+                                					$commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
+                                					$photoSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">#</span>';
+                                					
+                                					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
                                 					
                                                     <div class="row visible-xs">
                                                         <div class="col-xs-3">
@@ -236,19 +244,13 @@ $jspopover = ''; ?>
                                                         <div class="col-xs-9 text-right">
                                                             <ul class="list-inline mt-0 mb-0">
                                                                 <li>
-                                                                
-                                                                	<?php 
-                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
                                 
-                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]) ?></small>
                                 
                                                                 </li>
                                                                 <li>
                                 									
-                                									<?php 
-                                									$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">#</span>'; ?>
-                                									
-                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $photoCount]) ?></small>
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Comment} =1{' . $photoSpanCount .' Comment} other{' . $photoSpanCount .' Comments}}', ['value' => $photoCount]) ?></small>
                                 
                                                                 </li>
                                                             </ul>
@@ -260,30 +262,19 @@ $jspopover = ''; ?>
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
                                 
-                                                                    <?php
-                                                                    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; 
-                                                                    
-                                                                    $spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-likes-review">#</span>'; ?>
-                                
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 
                                                                 </li>
                                                                 <li>
-                                                                	
-                                                                	<?php 
-                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
                                 
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
                                 
                                                                 </li>
                                                                 <li>
                                 									
-                                									<?php 
-                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-photos-review">#</span>'; ?>
-                                									
-                                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Photo} =1{' . $spanCount .' Photo} other{' . $spanCount .' Photos}}', ['value' => $photoCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Photo} =1{' . $photoSpanCount .' Photo} other{' . $photoSpanCount .' Photos}}', ['value' => $photoCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
                                 
                                                                 </li>
@@ -325,7 +316,7 @@ $jspopover = ''; ?>
                                                                 </div>
 
                                                                 <div class="overlay" style="display: none;"></div>
-                                                                <div class="loading-img" style="display: none"></div>
+                                                                <div class="loading-img" style="display: none;"></div>
                                                                 <div class="comment-<?= $modelUserPostMain['id']; ?>-section">
                                                                     <div class="post-<?= $modelUserPostMain['id']; ?>-comment-container">
 

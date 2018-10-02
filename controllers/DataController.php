@@ -415,7 +415,6 @@ class DataController extends base\BaseController
                 },
                 'userVotes',
                 'userPostComments',
-                'userPostComments.user user_comment',
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.is_publish' => true])
