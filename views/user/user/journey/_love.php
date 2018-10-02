@@ -1,3 +1,7 @@
+<?php 
+/* @var $this yii\web\View */
+/* @var $username string */ ?>
+
 <div class="row love-place">
     <div class="col-sm-12 col-xs-12">
         <div class="user-love-section"></div>
@@ -12,7 +16,7 @@ $jscript = '
         data: {
             "username": "' . $username . '"
         },
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/get-user-love']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['user-data/user-love']) . '",
         success: function(response) {
 
             $(".user-love-section").html(response);

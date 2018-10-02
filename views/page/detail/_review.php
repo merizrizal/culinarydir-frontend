@@ -193,7 +193,7 @@ $layoutUser = '
                     	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                     	    
                     	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
-                    	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
+                    	    $commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
                     	    $photoSpanCount = '<span class="my-total-photos-review">#</span>'; 
                     	    
                     	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>

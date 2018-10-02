@@ -1,3 +1,7 @@
+<?php 
+/* @var $this yii\web\View */
+/* @var $username string */ ?>
+
 <div class="row been-there">
     <div class="col-sm-12 col-xs-12">
         <div class="user-visit-section"></div>
@@ -12,7 +16,7 @@ $jscript = '
         data: {
             "username": "' . $username . '"
         },
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/get-user-visit']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['user-data/user-visit']) . '",
         success: function(response) {
 
             $(".user-visit-section").html(response);

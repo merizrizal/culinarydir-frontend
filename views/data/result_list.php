@@ -40,7 +40,7 @@ $jspopover = ''; ?>
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -290,7 +290,7 @@ $jspopover = ''; ?>
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
