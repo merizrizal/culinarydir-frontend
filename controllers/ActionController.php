@@ -51,7 +51,7 @@ class ActionController extends base\BaseController
         if (!empty(($post = Yii::$app->request->post()))) {
 
             $modelUserPostMain = UserPostMain::find()
-                ->andWhere(['user_post_main.unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
                 ->one();
 
             if (!empty($modelUserPostMain)) {
@@ -104,13 +104,8 @@ class ActionController extends base\BaseController
             $flag = false;
 
             $modelUserPostLove = UserPostLove::find()
-                ->joinWith([
-                    'userPostMain'
-                ])
-                ->andWhere([
-                    'user_post_love.user_post_main_id' => $post['user_post_main_id'],
-                    'user_post_love.user_id' => Yii::$app->user->getIdentity()->id
-                ])
+                ->joinWith(['userPostMain'])
+                ->andWhere(['user_post_love.unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
                 ->one();
 
             if (!empty($modelUserPostLove)) {
@@ -125,6 +120,7 @@ class ActionController extends base\BaseController
                 $modelUserPostLove->user_post_main_id = $post['user_post_main_id'];
                 $modelUserPostLove->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserPostLove->is_active = true;
+                $modelUserPostLove->unique_id = $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id;
 
                 $flag = $modelUserPostLove->save();
             }
@@ -132,7 +128,7 @@ class ActionController extends base\BaseController
             if ($flag) {
 
                 $modelUserPostMain = UserPostMain::find()
-                    ->andWhere(['user_post_main.id' => $post['user_post_main_id']])
+                    ->andWhere(['id' => $post['user_post_main_id']])
                     ->one();
 
                 if ($modelUserPostLove->is_active) {
