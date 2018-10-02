@@ -844,6 +844,7 @@ $jscript = '
     $(".love-place").on("click", function() {
 
         $.ajax({
+            cache: false,
             url: "' . Yii::$app->urlManager->createUrl('action/submit-user-love') . '",
             type: "POST",
             data: {
@@ -881,6 +882,7 @@ $jscript = '
     $(".been-here").on("click", function() {
 
         $.ajax({
+            cache: false,
             url: "' . Yii::$app->urlManager->createUrl('action/submit-user-visit') . '",
             type: "POST",
             data: {
