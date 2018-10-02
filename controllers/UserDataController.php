@@ -14,13 +14,15 @@ use yii\data\ActiveDataProvider;
  */
 class UserDataController extends base\BaseController
 {
+
     /**
+     *
      * @inheritdoc
      */
     public function behaviors()
     {
         return array_merge(
-            $this->getAccess(),
+            $this->getAccess(), 
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -30,35 +32,28 @@ class UserDataController extends base\BaseController
             ]);
     }
 
-    public function actionGetUserVisit()
+    public function actionUserVisit()
     {
         $this->layout = 'ajax';
 
         $modelUserVisit = UserVisit::find()
-                ->joinWith([
-                    'business',
-                    'business.businessImages' => function($query) {
-                        $query->andOnCondition([
-                            'business_image.type' => 'Profile',
-                            'business_image.is_primary' => true
-                        ]);
-                    },
-                    'business.businessLocation.village',
-                    'business.businessLocation.city',
-                    'user',
-                ])
-                ->where(['user_visit.is_active' => true]);
-
-        if (!empty(Yii::$app->request->get('username'))) {
-
-            $modelUserVisit->andFilterWhere(['user.username' => Yii::$app->request->get('username')]);
-        } else if (!empty(Yii::$app->user->getIdentity()->id)) {
-
-            $modelUserVisit->andFilterWhere(['user_visit.user_id' => Yii::$app->user->getIdentity()->id]);
-        }
-
-        $modelUserVisit->distinct()
-                ->asArray();
+            ->joinWith([
+                'business',
+                'business.businessImages' => function($query) {
+                    
+                    $query->andOnCondition([
+                        'business_image.type' => 'Profile',
+                        'business_image.is_primary' => true
+                    ]);
+                },
+                'business.businessLocation.village',
+                'business.businessLocation.city',
+                'user',
+            ])
+            ->where(['user_visit.is_active' => true])
+            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
             'query' => $modelUserVisit,
@@ -74,7 +69,7 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelUserVisit) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
 
-        return $this->render('journey/get_user_visit', [
+        return $this->render('journey/user_visit', [
             'modelUserVisit' => $modelUserVisit,
             'pagination' => $pagination,
             'startItem' => $startItem,
@@ -83,38 +78,31 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionGetUserLove()
+    public function actionUserLove()
     {
         $this->layout = 'ajax';
 
         $modelUserLove = UserLove::find()
-                ->joinWith([
-                    'business',
-                    'business.businessCategories.category',
-                    'business.businessFacilities.facility',
-                    'business.businessImages' => function($query) {
-                        $query->andOnCondition([
-                            'business_image.type' => 'Profile',
-                            'business_image.is_primary' => true
-                        ]);
-                    },
-                    'business.businessLocation.village',
-                    'business.businessLocation.city',
-                    'business.businessProductCategories.productCategory',
-                    'user',
-                ])
-                ->where(['user_love.is_active' => true]);
-
-        if (!empty(Yii::$app->request->get('username'))) {
-
-            $modelUserLove->andFilterWhere(['user.username' => Yii::$app->request->get('username')]);
-        } else if (!empty(Yii::$app->user->getIdentity()->id)) {
-
-            $modelUserLove->andFilterWhere(['user_love.user_id' => Yii::$app->user->getIdentity()->id]);
-        }
-
-        $modelUserLove->distinct()
-                ->asArray();
+            ->joinWith([
+                'business',
+                'business.businessCategories.category',
+                'business.businessFacilities.facility',
+                'business.businessImages' => function($query) {
+                    
+                    $query->andOnCondition([
+                        'business_image.type' => 'Profile',
+                        'business_image.is_primary' => true
+                    ]);
+                },
+                'business.businessLocation.village',
+                'business.businessLocation.city',
+                'business.businessProductCategories.productCategory',
+                'user',
+            ])
+            ->where(['user_love.is_active' => true])
+            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
             'query' => $modelUserLove,
@@ -132,7 +120,7 @@ class UserDataController extends base\BaseController
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
-        return $this->render('journey/get_user_love', [
+        return $this->render('journey/user_love', [
             'modelUserLove' => $modelUserLove,
             'pagination' => $pagination,
             'startItem' => $startItem,
@@ -141,50 +129,46 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionGetUserPost()
+    public function actionUserPost()
     {
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
-                ->joinWith([
-                    'business',
-                    'business.businessImages' => function($query) {
-                        $query->andOnCondition([
-                            'business_image.type' => 'Profile',
-                            'business_image.is_primary' => true]);
-                    },
-                    'user',
-                    'userPostMains child' => function($query) {
-                        $query->andOnCondition(['child.is_publish' => true]);
-                    },
-                    'userVotes',
-                    'userVotes.ratingComponent rating_component' => function($query) {
-                        $query->andOnCondition(['rating_component.is_active' => true]);
-                    },
-                    'userPostLoves' => function($query) {
-                        $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
-                    },
-                    'userPostComments',
-                    'userPostComments.user user_comment',
-                ])
-                ->andWhere(['user_post_main.parent_id' => null])
-                ->andWhere(['user_post_main.type' => 'Review'])
-                ->andWhere(['user_post_main.is_publish' => true]);
-
-        if (!empty(Yii::$app->request->get('username'))) {
-
-            $modelUserPostMain->andFilterWhere(['user.username' => Yii::$app->request->get('username')]);
-        } else if (!empty(Yii::$app->user->getIdentity()->id)) {
-
-            $modelUserPostMain->andFilterWhere(['user_post_main.user_id' => Yii::$app->user->getIdentity()->id]);
-        }
-
-        $modelUserPostMain->orderBy(['id' => SORT_DESC])
-                ->distinct()
-                ->asArray();
+            ->joinWith([
+                'business',
+                'business.businessImages' => function($query) {
+                    
+                    $query->andOnCondition([
+                        'business_image.type' => 'Profile',
+                        'business_image.is_primary' => true]);
+                },
+                'user',
+                'userPostMains child' => function($query) {
+                    
+                    $query->andOnCondition(['child.is_publish' => true]);
+                },
+                'userVotes',
+                'userVotes.ratingComponent rating_component' => function($query) {
+                    
+                    $query->andOnCondition(['rating_component.is_active' => true]);
+                },
+                'userPostLoves' => function($query) {
+                    
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+                },
+                'userPostComments',
+                'userPostComments.user user_comment',
+            ])
+            ->andWhere(['user_post_main.parent_id' => null])
+            ->andWhere(['user_post_main.type' => 'Review'])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->orderBy(['id' => SORT_DESC])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
-            'query' => $modelUserPostMain,
+            'query' => $modelUserPostMain,            
         ]);
 
         $modelUserPostMain = $provider->getModels();
@@ -199,7 +183,7 @@ class UserDataController extends base\BaseController
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
-        return $this->render('journey/get_user_post', [
+        return $this->render('journey/user_post', [
             'modelUserPostMain' => $modelUserPostMain,
             'pagination' => $pagination,
             'startItem' => $startItem,
@@ -208,29 +192,21 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionGetUserPostPhoto()
+    public function actionUserPostPhoto()
     {
         $this->layout = 'ajax';
 
         $modelUserPostMainPhoto = UserPostMain::find()
-                ->joinWith([
-                    'user',
-                    'business',
-                ])
-                ->andWhere(['type' => 'Photo'])
-                ->andWhere(['is_publish' => true]);
-
-        if (!empty(Yii::$app->request->get('username'))) {
-
-            $modelUserPostMainPhoto->andFilterWhere(['user.username' => Yii::$app->request->get('username')]);
-        } else if (!empty(Yii::$app->user->getIdentity()->id)) {
-
-            $modelUserPostMainPhoto->andFilterWhere(['user_id' => Yii::$app->user->getIdentity()->id]);
-        }
-
-        $modelUserPostMainPhoto->orderBy(['id' => SORT_DESC])
-                ->distinct()
-                ->asArray();
+            ->joinWith([
+                'user',
+                'business',
+            ])
+            ->andWhere(['type' => 'Photo'])
+            ->andWhere(['is_publish' => true])
+            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->orderBy(['id' => SORT_DESC])
+            ->distinct()
+            ->asArray();
 
         $provider = new ActiveDataProvider([
             'query' => $modelUserPostMainPhoto,
@@ -248,7 +224,7 @@ class UserDataController extends base\BaseController
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
-        return $this->render('get_user_post_photo', [
+        return $this->render('user_post_photo', [
             'modelUserPostMainPhoto' => $modelUserPostMainPhoto,
             'pagination' => $pagination,
             'startItem' => $startItem,
@@ -257,25 +233,25 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionGetNewPromo()
+    public function actionNewPromo()
     {
         $this->layout = 'ajax';
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $modelBusinessPromo = BusinessPromo::find()
-                ->joinWith([
-                    'business.userLoves'
-                ])
-                ->andWhere([
-                    'user_love.is_active' => true,
-                    'user_love.user_id' => Yii::$app->user->getIdentity()->id,
-                    'not_active' => false
-                ])
-                ->andWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
-                ->orderBy('business_id')
-                ->distinct()
-                ->asArray();
+            ->joinWith([
+                'business.userLoves'
+            ])
+            ->andWhere([
+                'user_love.is_active' => true,
+                'user_love.user_id' => Yii::$app->user->getIdentity()->id,
+                'not_active' => false
+            ])
+            ->andWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+            ->orderBy('business_id')
+            ->distinct()
+            ->asArray();
 
         Yii::$app->formatter->timeZone = 'UTC';
 
@@ -293,7 +269,7 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelBusinessPromo) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
 
-        return $this->render('get_new_promo', [
+        return $this->render('new_promo', [
             'modelBusinessPromo' => $modelBusinessPromo,
             'pagination' => $pagination,
             'startItem' => $startItem,

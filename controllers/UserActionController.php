@@ -15,13 +15,15 @@ use core\models\UserPostLove;
  */
 class UserActionController extends base\BaseController
 {
+
     /**
+     *
      * @inheritdoc
      */
     public function behaviors()
     {
         return array_merge(
-            $this->getAccess(),
+            $this->getAccess(), 
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -47,7 +49,7 @@ class UserActionController extends base\BaseController
 
             if ($modelUserPostMain->save()) {
 
-                $result['status'] = 'sukses';
+                $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Sukses.';
                 $result['message'] = 'Foto berhasil di hapus.';
@@ -55,7 +57,7 @@ class UserActionController extends base\BaseController
                 $result['id'] = $modelUserPostMain->id;
             } else {
 
-                $result['status'] = 'gagal';
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Gagal';
                 $result['message'] = 'Foto gagal di hapus.';
@@ -63,7 +65,7 @@ class UserActionController extends base\BaseController
             }
         } else {
 
-            $result['status'] = 'gagal';
+            $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Gagal.';
             $result['message'] = 'Foto tidak ditemukan.';
@@ -101,7 +103,7 @@ class UserActionController extends base\BaseController
             foreach ($modelUserPostMainPhotos as $modelUserPostMainPhoto) {
                 
                 $modelUserPostMainPhoto->is_publish = false;
-                
+
                 if (!($flag = $modelUserPostMainPhoto->save())) {
                     break;
                 }

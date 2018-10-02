@@ -1,11 +1,11 @@
 <?php
-
 use yii\helpers\Html;
 use sycomponent\Tools;
 
 /* @var $this yii\web\View */
+/* @var $modelUser core\models\User */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = $modelUser['full_name'];
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -14,7 +14,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]); ?>
 
 <div class="main">
@@ -24,28 +24,33 @@ $this->registerMetaTag([
 
             <div class="row mb-50">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+                
+                	<?php
+                	$img = '/img/user/default-avatar.png';
+                	
+                	if (!empty($modelUser['image'])) {
+                	    $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);
+                	}
+                	
+                	$userNameMail = '
+                        <h3>' .
+                            $modelUser['full_name'] . '<br>
+                            <small>' . $modelUser['email'] . '</small>
+                        <h3>
+                    ';
+                	
+                    $btnUpdateProfile = Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-round btn-d']); ?>
 
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
                         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-tab-8 col-xs-offset-2">
                             <div class="row ">
                                 <div class="widget">
                                     <div class="widget-posts-image">
-
-                                        <?php
-                                        $img = '/img/user/default-avatar.png';
-                                        
-                                        if (!empty($modelUser['image'])) {
-                                            $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
-                                        }
-                                        
-                                        echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
-
+                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body">
-                                        <h3 class="mt-40">
-                                            <?= $modelUser['full_name'] ?><br>
-                                            <small><?= $modelUser['email'] ?></small>
-                                        </h3>
+                                        <?= $userNameMail ?>
+                                        <?= $btnUpdateProfile ?>
                                     </div>
                                 </div>
                             </div>
@@ -53,29 +58,20 @@ $this->registerMetaTag([
                     </div>
                     <div class="row visible-xs">
                         <div class="col-xs-12">
-                            <div class="row ">
+                            <div class="row">
                                 <div class="col-xs-12 text-center">
-                                
-                                	<?php
-                                    $img = '/img/user/default-avatar.png';
-                                    
-                                    if (!empty($modelUser['image'])) {
-                                        $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);                                            
-                                    }
-                                    
-                                    echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']); ?>
-
+                                	<?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-xs-12 text-center">
-                                    <h3>
-                                        <?= $modelUser['full_name'] ?><br>
-                                        <small><?= $modelUser['email'] ?></small>
-                                    </h3>
+                                    <?= $userNameMail ?>
+                                    <?= $btnUpdateProfile ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    
                 </div>
             </div>
 
@@ -91,7 +87,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-icon-been-there-fill-1 aicon-1-5x"></i>
-                                                <li>Journey</li>
+                                                <li><?= Yii::t('app', 'Journey') ?></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -115,13 +111,13 @@ $this->registerMetaTag([
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active p-0" id="view-journey">
                                 <?= $this->render('user/_journey', [
-                                    'username' => Yii::$app->request->get('user')
+                                    'username' => $modelUser['username']
                                 ]) ?>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-photo">
                                 <?= $this->render('user/_photo', [
-                                    'username' => Yii::$app->request->get('user')
+                                    'username' => $modelUser['username']
                                 ]) ?>
                             </div>
                         </div>
