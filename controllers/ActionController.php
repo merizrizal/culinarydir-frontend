@@ -437,7 +437,7 @@ class ActionController extends base\BaseController
     }
 
     private function createReview($post)
-    {              
+    {
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
 
@@ -457,12 +457,12 @@ class ActionController extends base\BaseController
 
             $modelUserPost = new UserPost();
 
-            $modelUserPost->business_id = $post['business_id'];
-            $modelUserPost->type = 'Review';
-            $modelUserPost->user_id = Yii::$app->user->getIdentity()->id;
-            $modelUserPost->text = $post['Post']['review']['text'];
-            $modelUserPost->is_publish = true;
-            $modelUserPost->love_value = 0;
+            $modelUserPost->business_id = $modelUserPostMain->business_id;
+            $modelUserPost->type = $modelUserPostMain->type;
+            $modelUserPost->user_id = $modelUserPostMain->user_id;
+            $modelUserPost->text = $modelUserPostMain->text;
+            $modelUserPost->is_publish = $modelUserPostMain->is_publish;
+            $modelUserPost->love_value = $modelUserPostMain->love_value;
             $modelUserPost->user_post_main_id = $modelUserPostMain->id;
 
             $flag = $modelUserPost->save();
@@ -487,26 +487,28 @@ class ActionController extends base\BaseController
                 $modelUserPostMainPhoto->is_publish = true;
                 $modelUserPostMainPhoto->love_value = 0;
 
-                if (!($flag = $modelUserPostMainPhoto->save())) {
-                    break;
-                } else {
-
+                if (($flag = $modelUserPostMainPhoto->save())) {
+                    
                     $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainPhoto->image, 200, 200);
-
+                    
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
-                }
-
-                $modelUserPostPhoto = new UserPost();
-
-                $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                $modelUserPostPhoto->business_id = $post['business_id'];
-                $modelUserPostPhoto->type = 'Photo';
-                $modelUserPostPhoto->user_id = Yii::$app->user->getIdentity()->id;
-                $modelUserPostPhoto->image = $image;
-                $modelUserPostPhoto->is_publish = true;
-                $modelUserPostPhoto->love_value = 0;
-
-                if (!($flag = $modelUserPostPhoto->save())) {
+                    
+                    $modelUserPostPhoto = new UserPost();
+                    
+                    $modelUserPostPhoto->parent_id = $modelUserPost->id;
+                    $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
+                    $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
+                    $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
+                    $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
+                    $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
+                    $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
+                    
+                    if (!($flag = $modelUserPostPhoto->save())) {
+                        
+                        break;
+                    }
+                } else {
+                    
                     break;
                 }
             }
@@ -523,6 +525,7 @@ class ActionController extends base\BaseController
                 $modelUserVote->user_post_main_id = $modelUserPostMain->id;
 
                 if (!($flag = $modelUserVote->save())) {
+                    
                     break;
                 }
             }
@@ -531,9 +534,9 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $modelBusinessDetail = BusinessDetail::find()
-                ->andWhere(['business_id' => $post['business_id']])
+                ->andWhere(['business_id' => $modelUserPostMain->business_id])
                 ->one();
-                
+            
             foreach ($post['Post']['review']['rating'] as $votePoint) {
 
                 $modelBusinessDetail->total_vote_points += $votePoint;
@@ -551,7 +554,7 @@ class ActionController extends base\BaseController
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
-                    ->andWhere(['business_id' => $post['business_id']])
+                    ->andWhere(['business_id' => $modelUserPostMain->business_id])
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
@@ -567,6 +570,7 @@ class ActionController extends base\BaseController
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
                 
                 if (!($flag = $modelBusinessDetailVote->save())) {
+                    
                     break;
                 }
             }
@@ -642,12 +646,12 @@ class ActionController extends base\BaseController
 
             $modelUserPost = new UserPost();
 
-            $modelUserPost->business_id = $post['business_id'];
-            $modelUserPost->type = 'Review';
-            $modelUserPost->user_id = Yii::$app->user->getIdentity()->id;
-            $modelUserPost->text = $post['Post']['review']['text'];
-            $modelUserPost->is_publish = true;
-            $modelUserPost->love_value = 0;
+            $modelUserPost->business_id = $modelUserPostMain->business_id;
+            $modelUserPost->type = $modelUserPostMain->type;
+            $modelUserPost->user_id = $modelUserPostMain->user_id;
+            $modelUserPost->text = $modelUserPostMain->text;
+            $modelUserPost->is_publish = $modelUserPostMain->is_publish;
+            $modelUserPost->love_value = $modelUserPostMain->love_value;
             $modelUserPost->user_post_main_id = $modelUserPostMain->id;
 
             $flag = $modelUserPost->save();
@@ -672,26 +676,28 @@ class ActionController extends base\BaseController
                 $modelUserPostMainPhoto->is_publish = true;
                 $modelUserPostMainPhoto->love_value = 0;
 
-                if (!($flag = $modelUserPostMainPhoto->save())) {
-                    break;
+                if (($flag = $modelUserPostMainPhoto->save())) {
+                    
+                    $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainPhoto->image, 200, 200);
+                    
+                    array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
+                    
+                    $modelUserPostPhoto = new UserPost();
+                    
+                    $modelUserPostPhoto->parent_id = $modelUserPost->id;
+                    $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
+                    $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
+                    $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
+                    $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
+                    $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
+                    $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
+                    
+                    if (!($flag = $modelUserPostPhoto->save())) {
+                        
+                        break;
+                    }
                 } else {
 
-                    $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainPhoto->image, 200, 200);
-
-                    array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
-                }
-
-                $modelUserPostPhoto = new UserPost();
-
-                $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                $modelUserPostPhoto->business_id = $post['business_id'];
-                $modelUserPostPhoto->type = 'Photo';
-                $modelUserPostPhoto->user_id = Yii::$app->user->getIdentity()->id;
-                $modelUserPostPhoto->image = $image;
-                $modelUserPostPhoto->is_publish = true;
-                $modelUserPostPhoto->love_value = 0;
-
-                if (!($flag = $modelUserPostPhoto->save())) {
                     break;
                 }
             }
@@ -705,8 +711,8 @@ class ActionController extends base\BaseController
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $voteValue) {
 
                 $modelUserVote = UserVote::find()
-                    ->andWhere(['user_vote.user_post_main_id' => $modelUserPostMain->id])
-                    ->andWhere(['user_vote.rating_component_id' => $ratingComponentId])
+                    ->andWhere(['user_post_main_id' => $modelUserPostMain->id])
+                    ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
                 $prevUserVote[$ratingComponentId] = $modelUserVote->vote_value;
@@ -715,6 +721,7 @@ class ActionController extends base\BaseController
                 $modelUserVote->vote_value = $voteValue;
 
                 if (!($flag = $modelUserVote->save())) {
+                    
                     break;
                 }
             }
@@ -726,19 +733,15 @@ class ActionController extends base\BaseController
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
             
-            $modelBusinessDetail->total_vote_points = $modelBusinessDetail->total_vote_points - $prevUserVoteTotal;
+            $modelBusinessDetail->total_vote_points -= $prevUserVoteTotal;
             
             foreach ($post['Post']['review']['rating'] as $votePoint) {
                 
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
             
-            if (!$isUpdate) {
-                
-                $modelBusinessDetail->voters += 1;
-            }
-            
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevUserVote);
+            $modelBusinessDetail->voters = (!$isUpdate) ? $modelBusinessDetail->voters + 1 : $modelBusinessDetail->voters;
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
             
             $flag = $modelBusinessDetail->save();
@@ -753,12 +756,13 @@ class ActionController extends base\BaseController
                     ->andWhere(['rating_component_id' => $ratingComponentId])
                     ->one();
 
-                $modelBusinessDetailVote->total_vote_points -= $votePoint;
+                $modelBusinessDetailVote->total_vote_points -= $prevUserVote[$ratingComponentId];
 
                 $modelBusinessDetailVote->total_vote_points += $votePoint;
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
                 
                 if (!($flag = $modelBusinessDetailVote->save())) {
+                    
                     break;
                 }
             }
