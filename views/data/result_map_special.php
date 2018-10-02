@@ -143,7 +143,7 @@ $jspopover = ''; ?>
                                                                 } else {
 
                                                                     echo $businessProductCategoryList;
-                                                                }?>
+                                                                } ?>
 
                                                                 <div id="business-product-category-container-popover<?= $dataBusinessPromo['id']; ?>" class="popover popover-x popover-default">
                                                                     <div class="arrow mt-0"></div>

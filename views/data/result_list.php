@@ -138,26 +138,28 @@ $jspopover = ''; ?>
                                         <?php
                                         $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart';
                                         $vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
-                                        $voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0; ?>
-
-                                        <div class="col-tab-5 col visible-tab text-center">
-                                            <div class="love love-<?= $dataBusiness['id'] ?>">
-                                                <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
+                                        $voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
+                                        
+                                        $layoutRatings = '
+                                            <div class="love love-' . $dataBusiness['id'] . '">
+                                                <h2 class="mt-0 mb-20 text-red"><span class="' . $classLove . ' love-button" data-id="' . $dataBusiness['id'] . '"></span></h2>
                                             </div>
                                             <div class="rating rating-top">
-                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1) ?></span></h2>
-                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
+                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10">' . number_format($vote_value, 1) . '</span></h2>' .
+                                                Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                             </div>
+                                        '; ?>
+
+                                        <div class="col-tab-5 col visible-tab text-center">
+                                            
+                                            <?= $layoutRatings ?>
+                                            
                                         </div>
 
                                         <div class="col-xs-5 col visible-xs text-center">
-                                            <div class="love love-<?= $dataBusiness['id'] ?>">
-                                                <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
-                                            </div>
-                                            <div class="rating rating-top">
-                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1) ?></span></h2>
-                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
-                                            </div>
+                                            
+                                            <?= $layoutRatings?>
+                                            
                                         </div>
 
                                         <div class="col-md-7 col-sm-7 col-xs-12 col">

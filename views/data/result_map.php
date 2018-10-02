@@ -92,7 +92,6 @@ $linkPager = LinkPager::widget([
                                                 if (!empty($dataBusinessImage['image'])) {
 
                                                     $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
                                                 }
 
                                                 $images[] = [
@@ -128,20 +127,25 @@ $linkPager = LinkPager::widget([
 									
 									<?php 
 									$vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0';
-									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0; ?>
+									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
+									
+									$layoutRatings = '
+                                        <div class="rating rating-top">
+                                            <h2 class="mt-10 mb-0"><span class="label label-success">' . $vote_value . '</span></h2>' .
+                                            Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
+                                        </div>
+                                    '; ?>
 									
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
-                                        <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= ($vote_value); ?></span></h2>
-                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
-                                        </div>
+                                        
+                                        <?= $layoutRatings ?>
+                                        
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
-                                        <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success"><?= ($vote_value); ?></span></h2>
-                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
-                                        </div>
+                                        
+                                        <?= $layoutRatings ?> 
+                                     	
                                     </div>
 
                                     <div class="col-md-7 col-sm-12 col-xs-12 col">
