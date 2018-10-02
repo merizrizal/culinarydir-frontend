@@ -103,7 +103,6 @@ $jspopover = ''; ?>
                                                     if (!empty($dataBusinessImage['image'])) {
 
                                                         $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
-
                                                     }
 
                                                     $images[] = [
@@ -368,9 +367,10 @@ $jscript = '
                 if (response.success) {
 
                     if (response.is_active) {
-                        $(".love-" + business_id).find("span.love-button").removeClass("far fa-heart").addClass("fas fa-heart");
 
+                        $(".love-" + business_id).find("span.love-button").removeClass("far fa-heart").addClass("fas fa-heart");
                     } else {
+
                         $(".love-" + business_id).find("span.love-button").removeClass("fas fa-heart").addClass("far fa-heart");
                     }
                 } else {

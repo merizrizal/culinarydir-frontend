@@ -44,7 +44,7 @@ $layoutUser = '
         <div class="box bg-white">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <div class="box-title" id="title-write-review">
                 <h4 class="mt-0 mb-0 inline-block"><?= !empty($modelUserPostMain) ? Yii::t('app', 'Your Review') : Yii::t('app', 'Write a Review') ?></h4>
@@ -223,8 +223,8 @@ $layoutUser = '
                                     <ul class="list-inline list-review mt-0 mb-0">
                                         <li>
 
-                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', '', ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
 
                                         </li>
                                         <li>

@@ -138,7 +138,6 @@ $jspopover = ''; ?>
 
                                                     <div id="user-container-popover-<?= $modelUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
                                                         <div class="arrow"></div>
-                                                        <div class="popover-header popover-title"><button type="button" class="close" data-dismiss="popover-x">&times;</button></div>
                                                         <div class="popover-body popover-content">
                                                             <div class="row">
                                                                 <div class="col-sm-12 col-xs-12">
@@ -275,8 +274,8 @@ $jspopover = ''; ?>
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
                                 
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 
                                                                 </li>
                                                                 <li>
@@ -421,7 +420,7 @@ $jscript = '
             data: {
                 "user_post_main_id": reviewId.val()
             },
-            url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
+            url: $(this).attr("href"),
             success: function(response) {
 
                 if (response.success) {

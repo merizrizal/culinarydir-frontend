@@ -45,7 +45,7 @@ $this->registerMetaTag([
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active">
-                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> Foto</a>
+                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?></a>
                                             </li>
                                         </ul>
 
@@ -63,7 +63,7 @@ $this->registerMetaTag([
 
                                                             <div class="titan-caption">
                                                                 <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2">Foto tidak tersedia</div>
+                                                                    <div class="font-alt titan-title-size-2"><?= Yii::t('app', 'Currently there is no photo available') ?></div>
                                                                 </div>
                                                             </div>
 
@@ -92,16 +92,22 @@ $this->registerMetaTag([
                                         </div>
 
                                         <hr class="divider-w">
-
+										
+										<?php
+										$dateStart = Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'); 
+										$dateEnd = Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium');
+										
+										$promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', ['dateStart' => $dateStart, 'dateEnd' => $dateEnd]); ?>
+										
                                         <div class="box-content">
                                             <div class="row mt-0">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12 col">
-                                                    <h4 class="visible-lg visible-md visible-sm m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?> </small></h4>
-                                                    <h4 class="visible-tab m-0"><small><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small></h4>
-                                                    <small class="visible-xs mt-10"><?= 'Berlaku ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium'); ?></small>
+                                                    <h4 class="visible-lg visible-md visible-sm m-0"><small><?= $promoRange ?></small></h4>
+                                                    <h4 class="visible-tab m-0"><small><?= $promoRange ?></small></h4>
+                                                    <small class="visible-xs mt-10"><?= $promoRange ?></small>
                                                 </div>
 
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col">
                                                     <div class="row">
                                                         <div class="col-xs-12">
 

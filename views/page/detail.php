@@ -88,35 +88,46 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $images = [];
-
                                                         if (!empty($modelBusiness['businessImages'])):
-
-                                                            foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
-
-                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
-
-                                                                $images[] = [
-                                                                    'title' => '',
-                                                                    'href' => $href,
-                                                                    'type' => 'image/jpeg',
-                                                                    'poster' => $href,
-                                                                ];
+                                                            
+                                                            if (count($modelBusiness['businessImages']) > 1) {
+                                                                
+                                                                $images = [];
+                                                                
+                                                                foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+                                                                    
+                                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available.jpg';
+                                                                    
+                                                                    if (!empty($dataBusinessImage['image'])) {
+                                                                        
+                                                                        $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+                                                                    }
+                                                                    
+                                                                    $images[] = [
+                                                                        'title' => '',
+                                                                        'href' => $href,
+                                                                        'type' => 'image/jpeg',
+                                                                        'poster' => $href,
+                                                                    ];
+                                                                }
+                                                                
+                                                                echo dosamigos\gallery\Carousel::widget([
+                                                                    'items' => $images,
+                                                                    'json' => true,
+                                                                    'templateOptions' => ['id' => 'gallery_business'],
+                                                                    'clientOptions' => ['container' => '#gallery_business'],
+                                                                    'options' => ['id' => 'gallery_business'],
+                                                                ]);
+                                                            } else {
+                                                                
+                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image']);
                                                             }
-
-                                                            echo dosamigos\gallery\Carousel::widget([
-                                                                'items' => $images,
-                                                                'json' => true,
-                                                                'templateOptions' => ['id' => 'gallery_business'],
-                                                                'clientOptions' => ['container' => '#gallery_business'],
-                                                                'options' => ['id' => 'gallery_business'],
-                                                            ]);
 
                                                         else: ?>
 
                                                             <div class="titan-caption">
                                                                 <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2">Saat ini foto belum tersedia </div>
+                                                                    <div class="font-alt titan-title-size-2"><?= Yii::t('app', 'Currently there is no photo available') ?></div>
                                                                 </div>
                                                             </div>
 
@@ -131,35 +142,46 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $images = [];
-
                                                         if (!empty($modelBusiness['businessProducts'])):
+                                                        
+                                                            if (count($modelBusiness['businessProducts']) > 1) {
+                                                                
+                                                                $images = [];
 
-                                                            foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
-
-                                                                $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
-
-                                                                $images[] = [
-                                                                    'title' => '',
-                                                                    'href' => $href,
-                                                                    'type' => 'image/jpeg',
-                                                                    'poster' => $href,
-                                                                ];
+                                                                foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
+                                                                    
+                                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available.jpg';
+                                                                    
+                                                                    if (!empty($dataBusinessProduct['image'])) {
+                                                                        
+                                                                        $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+                                                                    }
+                                                                    
+                                                                    $images[] = [
+                                                                        'title' => '',
+                                                                        'href' => $href,
+                                                                        'type' => 'image/jpeg',
+                                                                        'poster' => $href,
+                                                                    ];
+                                                                }
+    
+                                                                echo dosamigos\gallery\Carousel::widget([
+                                                                    'items' => $images,
+                                                                    'json' => true,
+                                                                    'templateOptions' => ['id' => 'gallery_menu'],
+                                                                    'clientOptions' => ['container' => '#gallery_menu'],
+                                                                    'options' => ['id' => 'gallery_menu'],
+                                                                ]);
+                                                            } else {
+                                                                
+                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image']);
                                                             }
-
-                                                            echo dosamigos\gallery\Carousel::widget([
-                                                                'items' => $images,
-                                                                'json' => true,
-                                                                'templateOptions' => ['id' => 'gallery_menu'],
-                                                                'clientOptions' => ['container' => '#gallery_menu'],
-                                                                'options' => ['id' => 'gallery_menu'],
-                                                            ]);
 
                                                         else: ?>
 
                                                             <div class="titan-caption">
                                                                 <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2">Saat ini menu belum tersedia </div>
+                                                                    <div class="font-alt titan-title-size-2"><?= Yii::t('app', 'Currently there is no menu available') ?></div>
                                                                 </div>
                                                             </div>
 
@@ -254,9 +276,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
                                                                             
                                                                             echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        }
-                                                                        else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max']))
-                                                                        {
+                                                                        } else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
 
                                                                             echo Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
                                                                         } else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
@@ -430,11 +450,11 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <li>
                                                             <div class="btn-group" role="group">
 
-                                                                <?= Html::a('<i class="aicon aicon-icon-been-there"></i> Been Here', '', [
+                                                                <?= Html::a('<i class="aicon aicon-icon-been-there"></i> Been Here', ['action/submit-user-visit'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . '',
                                                                 ]) ?>
 
-                                                                <?= Html::a($visitValue, '', [
+                                                                <?= Html::a($visitValue, ['action/submit-user-visit'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' count',
                                                                 ]) ?>
 
@@ -443,11 +463,11 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <li>
                                                             <div class="btn-group" role="group">
 
-                                                                <?= Html::a('<i class="fa fa-heart"></i> Loves', '', [
+                                                                <?= Html::a('<i class="fa fa-heart"></i> Loves', ['action/submit-user-love'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . '',
                                                                 ]) ?>
 
-                                                                <?= Html::a($loveValue, '', [
+                                                                <?= Html::a($loveValue, ['action/submit-user-love'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' count',
                                                                 ]) ?>
 
@@ -465,12 +485,12 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <ul class="list-inline list-default mt-0 mb-0 visible-xs">
                                                         <li>
 
-                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here count">' . $visitValue . '</span> Been Here', '', ['class' => 'been-here ' . $selectedVisit]); ?>
+                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here count">' . $visitValue . '</span> Been Here', ['action/submit-user-visit'], ['class' => 'been-here ' . $selectedVisit]); ?>
 
                                                         </li>
                                                         <li>
 
-                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place count">' . $loveValue . '</span> Loves', '', ['class' => 'love-place ' . $selectedLove]); ?>
+                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place count">' . $loveValue . '</span> Loves', ['action/submit-user-love'], ['class' => 'love-place ' . $selectedLove]); ?>
 
                                                         </li>
                                                         <li>
@@ -526,6 +546,11 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
 
                                                                     </a>
                                                                 </div>
+                                                                
+                                                                <?php
+                                                                $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
+                                                                $dateEnd = Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium'); ?>
+                                                                
                                                                 <div class="col-sm-8 col-tab-12 col-xs-12">
                                                                     <h4 class="promo-title">
                                                                         <?= Html::a($dataBusinessPromo['title'], ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
@@ -534,7 +559,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                         <?= $dataBusinessPromo['short_description'] ?>
                                                                     </p>
                                                                     <p>
-                                                                        <?= 'Berlaku ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium') . ' s/d ' . Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium') ?>
+                                                                        <?= Yii::t('app', 'Valid from {dateStart} until {dateEnd}', ['dateStart' => $dateStart, 'dateEnd' => $dateEnd]); ?>
                                                                     </p>
                                                                     <p>
                                                                         <?= Html::a('<span class="text-red">' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
@@ -787,7 +812,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
         ',
     ]);
 
-        echo 'Anda yakin akan menghapus foto ini?';
+        echo Yii::t('app', 'Are you sure want to delete this photo?');
 
     Modal::end();
 };
@@ -844,7 +869,7 @@ $jscript = '
     $(".love-place").on("click", function() {
 
         $.ajax({
-            url: "' . Yii::$app->urlManager->createUrl('action/submit-user-love') . '",
+            url: $(this).attr("href"),
             type: "POST",
             data: {
                 "business_id": $(".business-id").val()
@@ -881,7 +906,7 @@ $jscript = '
     $(".been-here").on("click", function() {
 
         $.ajax({
-            url: "' . Yii::$app->urlManager->createUrl('action/submit-user-visit') . '",
+            url: $(this).attr("href"),
             type: "POST",
             data: {
                 "business_id": $(".business-id").val()
