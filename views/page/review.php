@@ -5,7 +5,20 @@ use sycomponent\Tools;
 use kartik\rating\StarRating;
 use common\components\Helper;
 
+/* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
+
+$this->title = 'Review ' . $modelUserPostMain['business']['name'];
+
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => 'asik, makan, kuliner, bandung, jakarta'
+]);
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]);
 
 kartik\popover\PopoverXAsset::register($this);
 
@@ -125,7 +138,6 @@ $jspopover = ''; ?>
 
                                                     <div id="user-container-popover-<?= $modelUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
                                                         <div class="arrow"></div>
-                                                        <div class="popover-header popover-title"><button type="button" class="close" data-dismiss="popover-x">&times;</button></div>
                                                         <div class="popover-body popover-content">
                                                             <div class="row">
                                                                 <div class="col-sm-12 col-xs-12">
@@ -250,7 +262,7 @@ $jspopover = ''; ?>
                                                                 </li>
                                                                 <li>
                                 									
-                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Comment} =1{' . $photoSpanCount .' Comment} other{' . $photoSpanCount .' Comments}}', ['value' => $photoCount]) ?></small>
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Photo} =1{' . $photoSpanCount .' Photo} other{' . $photoSpanCount .' Photos}}', ['value' => $photoCount]) ?></small>
                                 
                                                                 </li>
                                                             </ul>
@@ -262,8 +274,8 @@ $jspopover = ''; ?>
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
                                 
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 
                                                                 </li>
                                                                 <li>
@@ -278,8 +290,10 @@ $jspopover = ''; ?>
                                                                     <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
                                 
                                                                 </li>
-                                                                <li class="review-<?= $modelUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                                                    <i class="fa fa-ellipsis-h"></i>
+                                                                <li class="visible-xs-inline-block">
+                                                                
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
+                                                                    
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -292,15 +306,6 @@ $jspopover = ''; ?>
                                                                 </li>
                                                             </ul>
                                                     	</div>
-                                                        <div class="review-<?= $modelUserPostMain['id'] ?>-option col-xs-12">
-                                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                                <li>
-
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
-
-                                                                </li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
 
                                                     <hr class="divider-w mt-10">
@@ -415,7 +420,7 @@ $jscript = '
             data: {
                 "user_post_main_id": reviewId.val()
             },
-            url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
+            url: $(this).attr("href"),
             success: function(response) {
 
                 if (response.success) {
@@ -531,13 +536,6 @@ $jscript = '
             titleSrc: "title",
             tError: "The image could not be loaded."
         }
-    });
-
-    $(".review-" + reviewId.val() + "-option").hide();
-
-    $(".review-" + reviewId.val() + "-option-toggle").on("click", function() {
-
-        $(".review-" + reviewId.val() + "-option").slideToggle();
     });
 
     $(".review-container").find(".share-review-" + reviewId.val() + "-trigger").on("click", function() {

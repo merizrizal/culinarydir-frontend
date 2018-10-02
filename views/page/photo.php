@@ -4,7 +4,20 @@ use yii\helpers\Html;
 use sycomponent\Tools;
 use common\components\Helper;
 
-/* @var $modelUserPostMain core\models\UserPostMain */ ?>
+/* @var $this yii\web\View */
+/* @var $modelUserPostMain core\models\UserPostMain */ 
+
+$this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
+
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => 'asik, makan, kuliner, bandung, jakarta'
+]);
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]); ?>
 
 <div class="main">
 
@@ -14,7 +27,7 @@ use common\components\Helper;
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> Back to Place Detail', Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
 
                 </div>
             </div>
@@ -138,8 +151,8 @@ use common\components\Helper;
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
                                 
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
     
                                                                 </li>
                                                                 <li>
@@ -148,8 +161,10 @@ use common\components\Helper;
                                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
     
                                                                 </li>
-                                                                <li class="review-<?= $modelUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                                                    <i class="fa fa-ellipsis-h"></i>
+                                                                <li class="visible-xs-inline-block">
+                                                                
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
+                                                                    
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -162,15 +177,6 @@ use common\components\Helper;
                                                                 </li>
                                                             </ul>
                                                     	</div>
-                                                        <div class="review-<?= $modelUserPostMain['id'] ?>-option col-xs-12">
-                                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                                <li>
-    
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
-    
-                                                                </li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
     
                                                     <hr class="divider-w mt-10">
@@ -278,7 +284,7 @@ $jscript = '
             data: {
                 "user_post_main_id": photoId.val()
             },
-            url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
+            url: $(this).attr("href"),
             success: function(response) {
 
                 if (response.success) {
@@ -366,13 +372,6 @@ $jscript = '
                 }
             });
         }
-    });
-
-    $(".review-" + photoId.val() + "-option").hide();
-
-    $(".review-" + photoId.val() + "-option-toggle").on("click", function() {
-
-        $(".review-" + photoId.val() + "-option").slideToggle();
     });
 
     $(".photo-container").find(".share-review-" + photoId.val() + "-trigger").on("click", function() {
