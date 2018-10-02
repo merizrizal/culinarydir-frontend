@@ -1,3 +1,7 @@
+<?php 
+/* @var $this yii\web\View */
+/* @var $username string */ ?>
+
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white p-0">
@@ -19,19 +23,19 @@
                 <div class="tab-content p-15">
                     <div role="tabpanel" class="tab-pane fade in active p-0" id="view-review">
                         <?= $this->render('journey/_review', [
-                            'username' => !empty($username) ? $username : null
+                            'username' => $username
                         ]) ?>
                     </div>
 
                     <div role="tabpanel" class="tab-pane fade p-0" id="view-love">
                         <?= $this->render('journey/_love', [
-                            'username' => !empty($username) ? $username : null
+                            'username' => $username
                         ]) ?>
                     </div>
 
                     <div role="tabpanel" class="tab-pane fade p-0" id="view-been-there">
                         <?= $this->render('journey/_been_there', [
-                            'username' => !empty($username) ? $username : null
+                            'username' => $username
                         ]) ?>
                     </div>
                 </div>

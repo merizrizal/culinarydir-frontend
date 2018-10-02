@@ -38,7 +38,7 @@ $jspopover = ''; ?>
         <div class="row mt-10">
             <div class="col-lg-6 col-md-12 col-tab-6 col-xs-12 mb-10">
 
-                <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+                <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
             </div>
             <div class="col-lg-6 visible-lg text-right">
@@ -91,18 +91,14 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-12 col-tab-6 col-xs-12 col">
 
                                         <?php
-                                        $businessPromoImage = '';
-
-                                        $src = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                        $image = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                            $src = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
+                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
                                         }
 
-                                        echo Html::img($src, ['class' => 'img-responsive img-component']);
-
-                                        $businessPromoImage = $src; ?>
+                                        echo Html::img($image, ['class' => 'img-responsive img-component']); ?>
 
                                     </div>
                                     <div class="col-md-7 col-sm-12 col-tab-6 col-xs-12 col">
@@ -147,7 +143,7 @@ $jspopover = ''; ?>
                                                                 } else {
 
                                                                     echo $businessProductCategoryList;
-                                                                }?>
+                                                                } ?>
 
                                                                 <div id="business-product-category-container-popover<?= $dataBusinessPromo['id']; ?>" class="popover popover-x popover-default">
                                                                     <div class="arrow mt-0"></div>
@@ -182,7 +178,7 @@ $jspopover = ''; ?>
 
                     $businessPromoDetail[$key][] = [
                         'businessId' => $dataBusinessPromo['business']['id'],
-                        'businessPromoImage' => $businessPromoImage,
+                        'businessPromoImage' => $image,
                         'businessPromoTitle' => $dataBusinessPromo['title'],
                         'businessName' => $dataBusinessPromo['business']['name'],
                         'businessLatitude' => $businessLatitude,
@@ -194,7 +190,7 @@ $jspopover = ''; ?>
 
                 $mapObject = json_encode($businessPromoDetail); ?>
 
-                <textarea id="map-object" style="display: none"><?= $mapObject ?></textarea>
+                <textarea id="map-object" style="display: none;"><?= $mapObject ?></textarea>
 
             <?php
             endif; ?>

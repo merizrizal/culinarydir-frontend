@@ -35,7 +35,13 @@ class UserController extends base\BaseHistoryUrlController
 
     public function actionIndex()
     {
-        return $this->getUser();
+        $modelUser = User::find()
+            ->andWhere(['id' => Yii::$app->user->getIdentity()->id])
+            ->asArray()->one();
+    
+        return $this->render('index', [
+            'modelUser' => $modelUser
+        ]);
     }
 
     public function actionUserProfile()
@@ -45,8 +51,14 @@ class UserController extends base\BaseHistoryUrlController
             return $this->redirect(['user/index']);
 
         } else {
+            
+            $modelUser = User::find()
+                ->andWhere(['username' => Yii::$app->request->get('user')])
+                ->asArray()->one();            
 
-            return $this->getUser(Yii::$app->request->get('user'));
+            return $this->render('user_profile', [
+                'modelUser' => $modelUser
+            ]);
 
         }
     }
@@ -153,28 +165,4 @@ class UserController extends base\BaseHistoryUrlController
             'modelChangePassword' => $modelChangePassword,
         ]);
     }
-
-    private function getUser($username = null)
-    {
-        if (!empty($username)) {
-
-            $modelUser = User::find()
-                ->andWhere(['username' => $username])
-                ->asArray()->one();
-
-            $fileRender = 'user_profile';
-        } else {
-
-            $modelUser = User::find()
-                ->andWhere(['id' => Yii::$app->user->getIdentity()->id])
-                ->asArray()->one();
-
-            $fileRender = 'index';
-        }
-
-        return $this->render($fileRender, [
-            'modelUser' => $modelUser
-        ]);
-    }
-
 }

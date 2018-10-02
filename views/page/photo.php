@@ -1,7 +1,23 @@
 <?php
 
 use yii\helpers\Html;
-use sycomponent\Tools; ?>
+use sycomponent\Tools;
+use common\components\Helper;
+
+/* @var $this yii\web\View */
+/* @var $modelUserPostMain core\models\UserPostMain */ 
+
+$this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
+
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => 'asik, makan, kuliner, bandung, jakarta'
+]);
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]); ?>
 
 <div class="main">
 
@@ -11,7 +27,7 @@ use sycomponent\Tools; ?>
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> Back to Place Detail', Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), Yii::$app->urlManager->createUrl(['page/detail', 'id' => $modelUserPostMain['business']['id']])) ?>
 
                 </div>
             </div>
@@ -38,14 +54,22 @@ use sycomponent\Tools; ?>
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
     
-                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
+                                                           <?php
+															$img = '/img/user/default-avatar.png';
+															
+															if (!empty($modelUserPostMain['user']['image'])) {
+															    
+															    $img = Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
+															}
+															
+															echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
     
                                                         </div>
     
                                                         <div class="widget-posts-body">
                                                             <?= Html::a($modelUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $modelUserPostMain['user']['username']])); ?>
                                                             <br>
-                                                            <small><?= Yii::$app->formatter->asRelativeTime($modelUserPostMain['created_at']); ?></small>
+                                                            <small><?= Helper::asRelativeTime($modelUserPostMain['created_at']); ?></small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -53,14 +77,22 @@ use sycomponent\Tools; ?>
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
     
-                                                            <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($modelUserPostMain['user']['image']) ? Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
+                                                            <?php
+															$img = '/img/user/default-avatar.png';
+															
+															if (!empty($modelUserPostMain['user']['image'])) {
+															    
+															    $img = Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
+															}
+															
+															echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']); ?>
     
                                                         </div>
     
                                                         <div class="widget-posts-body">
                                                             <?= Html::a($modelUserPostMain['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $modelUserPostMain['user']['username']])); ?>
                                                             <br>
-                                                            <small><?= Yii::$app->formatter->asRelativeTime($modelUserPostMain['created_at']); ?></small>
+                                                            <small><?= Helper::asRelativeTime($modelUserPostMain['created_at']); ?></small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -86,7 +118,12 @@ use sycomponent\Tools; ?>
     												
     												<?php                   
                                 					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
-                                					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0; ?>
+                                					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0; 
+                                					
+                                					$loveSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-likes-review">#</span>';
+                                					$commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
+                                					
+                                					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
     												
                                                     <div class="row visible-xs">
                                                         <div class="col-xs-3">
@@ -101,11 +138,8 @@ use sycomponent\Tools; ?>
                                                         <div class="col-xs-9 text-right">
                                                             <ul class="list-inline mt-0 mb-0">
                                                                 <li>
-    
-                                                                    <?php 
-                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
                                 
-                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]) ?></small>
     
                                                                 </li>
                                                             </ul>
@@ -116,27 +150,21 @@ use sycomponent\Tools; ?>
                                                         <div class="col-sm-7 col-tab-7 col-xs-12">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-    
-                                                                    <?php
-                                                                    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
-    						
-                            										$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-likes-review">#</span>'; ?>
                                 
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Like} =1{' . $spanCount .' Like} other{' . $spanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), null , ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
     
                                                                 </li>
                                                                 <li>
-    
-                                                                    <?php 
-                                                                	$spanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>'; ?>
                                 
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $spanCount .' Comment} =1{' . $spanCount .' Comment} other{' . $spanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]), null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $modelUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
     
                                                                 </li>
-                                                                <li class="review-<?= $modelUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                                                    <i class="fa fa-ellipsis-h"></i>
+                                                                <li class="visible-xs-inline-block">
+                                                                
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
+                                                                    
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -149,15 +177,6 @@ use sycomponent\Tools; ?>
                                                                 </li>
                                                             </ul>
                                                     	</div>
-                                                        <div class="review-<?= $modelUserPostMain['id'] ?>-option col-xs-12">
-                                                            <ul class="list-inline list-review mt-0 mb-0">
-                                                                <li>
-    
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $modelUserPostMain['id'] . '-trigger']); ?>
-    
-                                                                </li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
     
                                                     <hr class="divider-w mt-10">
@@ -173,7 +192,7 @@ use sycomponent\Tools; ?>
                                                                 </div>
     
                                                                 <div class="overlay" style="display: none;"></div>
-                                                                <div class="loading-img" style="display: none"></div>
+                                                                <div class="loading-img" style="display: none;"></div>
                                                                 <div class="comment-<?= $modelUserPostMain['id']; ?>-section">
                                                                     <div class="post-<?= $modelUserPostMain['id']; ?>-comment-container">
     
@@ -195,13 +214,20 @@ use sycomponent\Tools; ?>
                                                                                         <div class="widget">
                                                                                             <div class="widget-comments-image">
     
-                                                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($dataUserPostComment['user']['image']) ? Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                                                                                                <?php
+                                                                                                $img = '/img/user/default-avatar.png';
+                                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+                                                                                                    
+                                                                                                    $img = Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                                }
+                                                                                                
+                                                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
     
                                                                                             </div>
     
                                                                                             <div class="widget-comments-body">
                                                                                                 <strong><?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;</strong>
-                                                                                                <small><?= Yii::$app->formatter->asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                                 <br>
                                                                                                 <p class="review-description">
     
@@ -265,7 +291,7 @@ $jscript = '
 
                     var loveValue = parseInt($(".photo-container").find(".user-" + photoId.val() + "-likes-review-trigger").find("span.total-" + photoId.val() + "-likes-review").html());
 
-                    if(response.is_active) {
+                    if (response.is_active) {
 
                         $(".photo-container").find(".user-" + photoId.val() + "-likes-review-trigger").addClass("selected");
                         $(".photo-container").find("span.total-" + photoId.val() + "-likes-review").html((loveValue + 1).toString());
@@ -345,13 +371,6 @@ $jscript = '
                 }
             });
         }
-    });
-
-    $(".review-" + photoId.val() + "-option").hide();
-
-    $(".review-" + photoId.val() + "-option-toggle").on("click", function() {
-
-        $(".review-" + photoId.val() + "-option").slideToggle();
     });
 
     $(".photo-container").find(".share-review-" + photoId.val() + "-trigger").on("click", function() {

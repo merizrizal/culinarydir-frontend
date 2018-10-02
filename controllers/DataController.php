@@ -295,6 +295,7 @@ class DataController extends base\BaseController
             }
 
             if (!empty($get['facility_id'])) {
+                //print_r($get['facility_id']);exit;
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
             }
@@ -414,7 +415,6 @@ class DataController extends base\BaseController
                 },
                 'userVotes',
                 'userPostComments',
-                'userPostComments.user user_comment',
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.is_publish' => true])

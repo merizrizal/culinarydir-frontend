@@ -22,13 +22,10 @@ $linkPager = LinkPager::widget([
     'options' => ['id' => 'pagination-user-love', 'class' => 'pagination'],
 ]); ?>
 
-<div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none;"></div>
-
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -48,8 +45,11 @@ $linkPager = LinkPager::widget([
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="position: relative;">
     <div class="user-love-container">
+    
+    	<div class="overlay" style="display: none;"></div>
+		<div class="loading-img" style="display: none;"></div>
 
         <?php
         if (!empty($modelUserLove)):
@@ -136,7 +136,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -212,14 +212,14 @@ $jscript = '
 
     $("#pjax-user-love-container").on("pjax:send", function() {
 
-        $(".user-love-container").parent().siblings(".overlay").show();
-        $(".user-love-container").parent().siblings(".loading-img").show();
+        $(".user-love-container").children(".overlay").show();
+        $(".user-love-container").children(".loading-img").show();
     });
 
     $("#pjax-user-love-container").on("pjax:complete", function() {
 
-        $(".user-love-container").parent().siblings(".overlay").hide();
-        $(".user-love-container").parent().siblings(".loading-img").hide();
+        $(".user-love-container").children(".overlay").hide();
+        $(".user-love-container").children(".loading-img").hide();
     });
 
     $("#pjax-user-love-container").on("pjax:error", function (event) {

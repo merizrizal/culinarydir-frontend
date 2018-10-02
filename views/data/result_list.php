@@ -40,7 +40,7 @@ $jspopover = ''; ?>
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -69,7 +69,7 @@ $jspopover = ''; ?>
         <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
-            <div class="loading-img" style="display: none"></div>
+            <div class="loading-img" style="display: none;"></div>
 
             <?php
             if (!empty($modelBusiness)):
@@ -136,26 +136,30 @@ $jspopover = ''; ?>
                                         </div>
 
                                         <?php
-                                        $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart'; ?>
-
-                                        <div class="col-tab-5 col visible-tab text-center">
-                                            <div class="love love-<?= $dataBusiness['id'] ?>">
-                                                <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
+                                        $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart';
+                                        $vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
+                                        $voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
+                                        
+                                        $layoutRatings = '
+                                            <div class="love love-' . $dataBusiness['id'] . '">
+                                                <h2 class="mt-0 mb-20 text-red"><span class="' . $classLove . ' love-button" data-id="' . $dataBusiness['id'] . '"></span></h2>
                                             </div>
                                             <div class="rating rating-top">
-                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format(!empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0, 1) ?></span></h2>
-                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
+                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10">' . number_format($vote_value, 1) . '</span></h2>' .
+                                                Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                             </div>
+                                        '; ?>
+
+                                        <div class="col-tab-5 col visible-tab text-center">
+                                            
+                                            <?= $layoutRatings ?>
+                                            
                                         </div>
 
                                         <div class="col-xs-5 col visible-xs text-center">
-                                            <div class="love love-<?= $dataBusiness['id'] ?>">
-                                                <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
-                                            </div>
-                                            <div class="rating rating-top">
-                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format(!empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0, 1) ?></span></h2>
-                                                <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
-                                            </div>
+                                            
+                                            <?= $layoutRatings?>
+                                            
                                         </div>
 
                                         <div class="col-md-7 col-sm-7 col-xs-12 col">
@@ -223,7 +227,7 @@ $jspopover = ''; ?>
 
                                                                     foreach($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory){
 
-                                                                        if($key < $businessProductCategoryLimit) {
+                                                                        if ($key < $businessProductCategoryLimit) {
 
                                                                             $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                         } else {
@@ -263,8 +267,8 @@ $jspopover = ''; ?>
                                                             <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
                                                         </div>
                                                         <div class="rating pull-right">
-                                                            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format(!empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0, 1) ?></span></h2>
-                                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0]) ?>
+                                                            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1) ?></span></h2>
+                                                            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -274,7 +278,6 @@ $jspopover = ''; ?>
                                 </div>
                             </div>
                         </div>
-                        <!--Member Basic Container-->
 
                 <?php
                 endforeach;
@@ -290,7 +293,7 @@ $jspopover = ''; ?>
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -362,9 +365,9 @@ $jscript = '
             },
             success: function(response) {
 
-                if(response.success) {
+                if (response.success) {
 
-                    if(response.is_active) {
+                    if (response.is_active) {
                         $(".love-" + business_id).find("span.love-button").removeClass("far fa-heart").addClass("fas fa-heart");
 
                     } else {

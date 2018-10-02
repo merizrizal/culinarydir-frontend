@@ -1,3 +1,7 @@
+<?php 
+/* @var $this yii\web\View */
+/* @var $username string */ ?>
+
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">
@@ -53,7 +57,7 @@ $jscript = '
             data: {
                 "username": "' . $username . '"
             },
-            url: "' . Yii::$app->urlManager->createUrl(['user-data/get-user-post-photo']) . '",
+            url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post-photo']) . '",
             success: function(response) {
 
                $(".user-post-photo").html(response);

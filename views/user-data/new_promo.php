@@ -7,8 +7,8 @@ use yii\widgets\Pjax;
 
 Pjax::begin([
     'enablePushState' => false,
-    'linkSelector' => '#pagination-user-visit a',
-    'options' => ['id' => 'pjax-user-visit-container'],
+    'linkSelector' => '#pagination-new-promo a',
+    'options' => ['id' => 'pjax-new-promo-container'],
     'timeout' => 7000,
 ]);
 
@@ -19,7 +19,7 @@ $linkPager = LinkPager::widget([
     'nextPageLabel' => false,
     'firstPageLabel' => '<i class="fa fa-angle-double-left"></i>',
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
-    'options' => ['id' => 'pagination-user-visit', 'class' => 'pagination'],
+    'options' => ['id' => 'pagination-new-promo', 'class' => 'pagination'],
 ]); ?>
 
 <div class="overlay" style="display: none;"></div>
@@ -28,7 +28,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -49,25 +49,26 @@ $linkPager = LinkPager::widget([
 </div>
 
 <div class="row">
-    <div class="user-visit-container">
+    <div class="new-promo-container">
 
         <?php
-        if (!empty($modelUserVisit)):
+        if (!empty($modelBusinessPromo)):
 
-            foreach ($modelUserVisit as $dataUserVisit): ?>
+            foreach ($modelBusinessPromo as $dataBusinessPromo): ?>
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
-                    <div class="box user">
+                    <div class="box">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserVisit['business']['id']]) ?>">
+                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']) ?>">
 
                                     <?php
                                     $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                    if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
+                                    if (!empty($dataBusinessPromo['image'])) {
 
-                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 347.333, 210.283);
+                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
+
                                     }
 
                                     echo Html::img($img); ?>
@@ -82,15 +83,15 @@ $linkPager = LinkPager::widget([
                                         <div class="col-sm-12 col-xs-12">
                                             <h4 class="font-alt m-0">
 
-                                                <?= Html::a($dataUserVisit['business']['name'], ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>
+                                                <?= Html::a($dataBusinessPromo['business']['name'], ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']); ?>
 
                                             </h4>
 
-                                            <small class="m-0">
+                                            <h5 class="m-0">
 
-                                                <?= $dataUserVisit['business']['businessLocation']['village']['name'] . ', ' . $dataUserVisit['business']['businessLocation']['city']['name'] ?>
+                                                <?= $dataBusinessPromo['title']; ?>
 
-                                            </small>
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +110,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing ') . $startItem . ' - ' . $endItem . Yii::t('app', ' OF ') . $totalCount . ' ' . Yii::t('app', 'Results'); ?>
+        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -130,25 +131,27 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+
 $jscript = '
-    $("#pjax-user-visit-container").on("pjax:send", function() {
+    $(".total-new-promo").html("' . $totalCount . '");
 
-        $(".user-visit-container").parent().siblings(".overlay").show();
-        $(".user-visit-container").parent().siblings(".loading-img").show();
+    $("#pjax-new-promo-container").on("pjax:send", function() {
+
+        $(".new-promo-container").parent().siblings(".overlay").show();
+        $(".new-promo-container").parent().siblings(".loading-img").show();
     });
 
-    $("#pjax-user-visit-container").on("pjax:complete", function() {
+    $("#pjax-new-promo-container").on("pjax:complete", function() {
 
-        $(".user-visit-container").parent().siblings(".overlay").hide();
-        $(".user-visit-container").parent().siblings(".loading-img").hide();
+        $(".new-promo-container").parent().siblings(".overlay").hide();
+        $(".new-promo-container").parent().siblings(".loading-img").hide();
     });
 
-    $("#pjax-user-visit-container").on("pjax:error", function (event) {
+    $("#pjax-new-promo-container").on("pjax:error", function (event) {
 
         event.preventDefault();
     });
-
-    $(".total-user-visit").html("' . $totalCount . '");
 ';
 
 $this->registerJs($jscript);

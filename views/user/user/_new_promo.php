@@ -13,7 +13,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/get-new-promo']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['user-data/new-promo']) . '",
         success: function(response) {
 
             $(".new-promo").html(response);
