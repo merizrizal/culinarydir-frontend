@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\authclient\widgets\AuthChoice;
 
+/* @var $this yii\web\View */
+/* @var $model common\models\LoginForm */
+
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
 $this->registerMetaTag([
@@ -107,7 +110,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                                                 }
         
                                                                 echo $authAuthChoice->clientLink($client,
-                                                                    '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
+                                                                    '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With {client}', ['client' => $client->getTitle()]), [
                                                                     'class' => 'btn ' . $btnType . ' btn-block btn-round',
                                                                 ]);
         

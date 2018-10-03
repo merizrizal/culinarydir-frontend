@@ -1,6 +1,12 @@
 <?php
 use yii\helpers\Html;
 
+/* @var $this yii\web\view */
+/* @var $title frontend\controllers\SiteController */
+/* @var $fullname frontend\controllers\SiteController */
+/* @var $messages frontend\controllers\SiteController */
+/* @var $links frontend\controllers\SiteController */
+
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
 $this->registerMetaTag([

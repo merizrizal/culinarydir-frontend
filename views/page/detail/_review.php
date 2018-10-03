@@ -560,7 +560,7 @@ $layoutUser = '
 
                                 <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['class' => 'btn btn-default btn-standard btn-round']) ?>
 
-                                <?= Html::a('<i class="fa fa-times"></i> Cancel', '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
+                                <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
                             </div>
                         </div>

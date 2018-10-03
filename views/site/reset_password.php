@@ -28,7 +28,7 @@ $this->registerMetaTag([
                                     <hr class="divider-w mb-20">
 
                                     <h4>
-                                        <small>Silakan masukkan password baru Anda.</small>
+                                        <small><?= Yii::t('app', 'Please enter your new password.') ?></small>
                                     </h4>
 
                                     <?php
@@ -46,7 +46,7 @@ $this->registerMetaTag([
     
                                                 <?= $form->field($model, 'password')->passwordInput([
                                                     'class' => 'form-control',
-                                                    'placeholder' => 'New Password',
+                                                    'placeholder' => Yii::t('app', 'New Password'),
                                                 ]) ?>
     
                                             </div>
@@ -55,7 +55,7 @@ $this->registerMetaTag([
                                         <div class="row">
                                             <div class="form-group col-md-12">
     
-                                                <?= Html::submitButton('Save', ['class' => 'btn btn-round btn-d']) ?>
+                                                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-round btn-d']) ?>
     
                                             </div>
                                         </div>

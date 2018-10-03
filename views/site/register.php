@@ -8,6 +8,12 @@ use core\models\City;
 use kartik\growl\Growl;
 use yii\authclient\widgets\AuthChoice;
 
+/* @var $this yii\web\View */
+/* @var $socmed frontend\controllers\SiteController */
+/* @var $modelPerson core\models\Person */
+/* @var $modelUserRegister frontend\models\UserRegister */
+/* @var $modelUserSocialMedia core\models\UserSocialMedia */
+
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
 $this->registerMetaTag([
@@ -196,7 +202,7 @@ if (!empty($getFlashMessage)) {
                                                             }
         
                                                             echo $authAuthChoice->clientLink($client,
-                                                                '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With') . $client->getTitle(), [
+                                                                '<i class="fab fa-' . $client->getName() . '"></i> ' . Yii::t('app', 'Sign In With {client}', ['client' => $client->getTitle()]), [
                                                                 'class' => 'btn ' . $btnType . ' btn-block btn-round',
                                                             ]);
         

@@ -136,7 +136,7 @@ class SiteController extends base\BaseController
                                     'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
                                 ]
                             )
-                            ->setFrom(Yii::$app->params['supportEmail'])
+                            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
                             ->setTo($post['UserRegister']['email'])
                             ->setSubject('Welcome to ' . Yii::$app->name)
                             ->send();
@@ -157,7 +157,7 @@ class SiteController extends base\BaseController
                                     'user' => $modelUserRegister
                                 ]
                             )
-                            ->setFrom(Yii::$app->params['supportEmail'])
+                            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
                             ->setTo($post['UserRegister']['email'])
                             ->setSubject(Yii::$app->name . ' Account Activation')
                             ->send();
@@ -174,7 +174,7 @@ class SiteController extends base\BaseController
                         return $this->render('message', [
                             'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
                             'title' => Yii::t('app', 'You Have Registered To') . Yii::$app->name,
-                            'messages' => 'Silakan aktivasi akun Anda dengan mengklik link yang sudah kami kirimkan ke email Anda di ' . $post['UserRegister']['email'] . '.',
+                            'messages' => Yii::t('app', 'Please activate your account by clicking the link that we sent to your email at {email}.', ['email' => $post['UserRegister']['email']]),
                             'links' => '',
                         ]);
                     }
@@ -320,7 +320,7 @@ class SiteController extends base\BaseController
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
 
-            Yii::$app->session->setFlash('resetSuccess', 'Password baru Anda tersimpan.');
+            Yii::$app->session->setFlash('resetSuccess', Yii::t('app', 'Your new password has been saved'));
 
             return $this->redirect(['login']);
         }
@@ -451,7 +451,7 @@ class SiteController extends base\BaseController
             return $this->render('message', [
                 'fullname' => $modelUser['full_name'],
                 'title' => Yii::t('app', 'Your Account Has Been Activated'),
-                'messages' => 'Silakan masuk dengan Email / Username Anda dengan mengklik link di bawah.',
+                'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the link below.'),
                 'links' => ['name' => Yii::t('app', 'Login To') . Yii::$app->name, 'url' => ['site/login']],
             ]);
         } else {
