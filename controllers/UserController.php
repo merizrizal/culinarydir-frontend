@@ -135,10 +135,8 @@ class UserController extends base\BaseHistoryUrlController
 
     public function actionChangePassword()
     {
-        $id = Yii::$app->user->id;
-
         try {
-            $modelChangePassword = new ChangePassword($id);
+            $modelChangePassword = new ChangePassword(Yii::$app->user->id);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }

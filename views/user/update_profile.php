@@ -60,7 +60,7 @@ if (!empty($getFlashMessage)) {
                         <div class="box-content">
                             <div class="row mt-10">
                                 <div class="col-md-12 text-center">
-                                    <h3 class="font-alt">Update Profile</h3>
+                                    <h4 class="font-alt">Update Profile</h4>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <div class="widget">
@@ -180,7 +180,7 @@ if (!empty($getFlashMessage)) {
                                                 ]) ?>
     
                                                 <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d mb-30']) ?>
-                                                <?= Html::a('Back', Yii::$app->urlManager->createUrl('user'), ['class' => 'btn btn-round btn-default mb-30']) ?>
+                                                <?= Html::a('Back', ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
     
                                             </div>
 
