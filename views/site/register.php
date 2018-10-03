@@ -14,7 +14,7 @@ use yii\authclient\widgets\AuthChoice;
 /* @var $modelUserRegister frontend\models\UserRegister */
 /* @var $modelUserSocialMedia core\models\UserSocialMedia */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = 'Register';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -23,7 +23,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
 kartik\select2\Select2Asset::register($this);
@@ -216,7 +216,7 @@ if (!empty($getFlashMessage)) {
     
                                                 <div class="text-center">
                                                     <h4>
-                                                        <small><?= Yii::t('app', 'Already have Account?') ?> <a href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>"><?= Yii::t('app', 'Login') ?></a></small>
+                                                        <small><?= Yii::t('app', 'Already have Account?') . ' ' . Html::a(Yii::t('app', 'Login'), ['site/login']) ?></small>
                                                     </h4>
                                                 </div>
                                             </div>

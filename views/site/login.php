@@ -7,7 +7,7 @@ use yii\authclient\widgets\AuthChoice;
 /* @var $this yii\web\View */
 /* @var $model common\models\LoginForm */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = 'Login';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -16,7 +16,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
 kartik\select2\Select2Asset::register($this);
@@ -124,7 +124,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
     
                                                     <div class="text-center">
                                                         <h4>
-                                                            <small><?= Yii::t('app', 'don\'t have Account?') ?> <a href="<?= Yii::$app->urlManager->createUrl(['site/register']) ?>"><?= Yii::t('app', 'Register') ?></a></small>
+                                                            <small><?= Yii::t('app', 'don\'t have Account?') . ' ' . Html::a(Yii::t('app', 'Register'), ['site/register']) ?></small>
                                                         </h4>
                                                     </div>
                                                 </div>

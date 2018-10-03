@@ -3,7 +3,10 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+/* @var $this yii\web\View */
+/* @var $model frontend\models\ResetPassword */
+
+$this->title = 'Reset Password';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -12,7 +15,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]); ?>
 
 <div class="main">
