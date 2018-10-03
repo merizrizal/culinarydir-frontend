@@ -5,6 +5,13 @@ use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelBusinessPromo core\models\BusinessPromo */
+
 Pjax::begin([
     'enablePushState' => false,
     'linkSelector' => '#pagination-new-promo a',
@@ -21,9 +28,6 @@ $linkPager = LinkPager::widget([
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     'options' => ['id' => 'pagination-new-promo', 'class' => 'pagination'],
 ]); ?>
-
-<div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -48,8 +52,11 @@ $linkPager = LinkPager::widget([
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="position: relative;">
     <div class="new-promo-container">
+    
+    	<div class="overlay" style="display: none;"></div>
+		<div class="loading-img" style="display: none;"></div>
 
         <?php
         if (!empty($modelBusinessPromo)):
@@ -82,15 +89,11 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-12">
                                             <h4 class="font-alt m-0">
-
                                                 <?= Html::a($dataBusinessPromo['business']['name'], ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']); ?>
-
                                             </h4>
 
                                             <h5 class="m-0">
-
                                                 <?= $dataBusinessPromo['title']; ?>
-
                                             </h5>
                                         </div>
                                     </div>
@@ -138,14 +141,14 @@ $jscript = '
 
     $("#pjax-new-promo-container").on("pjax:send", function() {
 
-        $(".new-promo-container").parent().siblings(".overlay").show();
-        $(".new-promo-container").parent().siblings(".loading-img").show();
+        $(".new-promo-container").children(".overlay").show();
+        $(".new-promo-container").children(".loading-img").show();
     });
 
     $("#pjax-new-promo-container").on("pjax:complete", function() {
 
-        $(".new-promo-container").parent().siblings(".overlay").hide();
-        $(".new-promo-container").parent().siblings(".loading-img").hide();
+        $(".new-promo-container").children(".overlay").hide();
+        $(".new-promo-container").children(".loading-img").hide();
     });
 
     $("#pjax-new-promo-container").on("pjax:error", function (event) {

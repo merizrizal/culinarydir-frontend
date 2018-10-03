@@ -869,6 +869,7 @@ $jscript = '
     $(".love-place").on("click", function() {
 
         $.ajax({
+            cache: false,
             url: $(this).attr("href"),
             type: "POST",
             data: {
@@ -906,6 +907,7 @@ $jscript = '
     $(".been-here").on("click", function() {
 
         $.ajax({
+            cache: false,
             url: $(this).attr("href"),
             type: "POST",
             data: {

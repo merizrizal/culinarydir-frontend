@@ -9,7 +9,6 @@ use core\models\User;
  */
 class ChangePassword extends \sybase\SybaseModel
 {
-    public $id;
     public $current_pass;
     public $new_pass;
     public $confirm_pass;
@@ -20,9 +19,9 @@ class ChangePassword extends \sybase\SybaseModel
     private $_user;
     
     /**
-     * Creates a form model given a token.
+     * Creates a form model given a id.
      *
-     * @param  string                          $token
+     * @param  string                          $id
      * @param  array                           $config name-value pairs that will be used to initialize the object properties
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
@@ -34,7 +33,6 @@ class ChangePassword extends \sybase\SybaseModel
             throw new \yii\web\NotFoundHttpException();
         }
         
-        $this->id = $this->_user->id;
         parent::__construct($config);
     }
     
@@ -55,7 +53,6 @@ class ChangePassword extends \sybase\SybaseModel
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
             'current_pass' => 'Password',
             'new_pass' => 'Password Baru',
             'confirm_pass' => 'Konfirmasi Password Baru',

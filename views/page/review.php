@@ -467,6 +467,7 @@ $jscript = '
             };
 
             $.ajax({
+                cache: false,
                 type: "POST",
                 data: data,
                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",

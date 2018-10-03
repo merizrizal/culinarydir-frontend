@@ -112,7 +112,7 @@ $linkPager = LinkPager::widget([
                 $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
         
                 ksort($ratingComponent);
-                krsort($userReviewComment);
+                ksort($userReviewComment);
         
                 $layoutUser = '
                     <div class="widget-posts-image business-image">
@@ -139,16 +139,12 @@ $linkPager = LinkPager::widget([
                         <div class="row mb-10">
                             <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                                 <div class="widget img-place">
-        
                                     <?= $layoutUser ?>
-        
                                 </div>
                             </div>
                             <div class="col-xs-9 visible-xs">
-                                <div class="widget">
-        
+                                <div class="widget">        
                                     <?= $layoutUser ?>
-        
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-3">
@@ -156,7 +152,7 @@ $linkPager = LinkPager::widget([
                                 <h3 class="mt-0 mb-0">
                                     <div class="rating">
         
-                                        <?= Html::a(number_format((float) !empty($overallValue) ? $overallValue : 0, 1, '.', ''), null, ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
         
                                     </div>
                                 </h3>
@@ -193,7 +189,7 @@ $linkPager = LinkPager::widget([
         
                                                                         <div class="col-sm-7 col-xs-7">
         
-                                                                            <?= $dataUserVote['vote_value'] . ' ' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                            <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
         
                                                                         </div>
                                                                     </div>
@@ -256,28 +252,33 @@ $linkPager = LinkPager::widget([
                                         </ul>
                                     </div>
                                 </div>
+                                
+                                <?php 
+                                $loveCount = !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0;
+                                $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
+                                $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
+                                
+                                $loveSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-likes-review">#</span>';
+                                $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
+                                $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
+                                
+                                $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : 0; ?>
         
                                 <div class="row visible-xs">
                                     <div class="col-xs-3">
                                         <ul class="list-inline mt-0 mb-0">
                                             <li>
-        
-                                                <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' ?></small>
-        
+                                                <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $loveCount . '</span>' ?></small>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <ul class="list-inline mt-0 mb-0">
                                             <li>
-        
-                                                <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-comments-review"></span>' . Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]) ?></small>
-        
+                                                <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]) ?></small>
                                             </li>
                                             <li>
-        
-                                                <small><?= '<span class="total-' . $dataUserPostMain['id'] . '-photos-review"></span>' . Yii::t('app', '{value, plural, =0{# Photo} =1{# Photo} other{# Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]) ?></small>
-        
+                                                <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]) ?></small>
                                             </li>
                                         </ul>
                                     </div>
@@ -287,72 +288,44 @@ $linkPager = LinkPager::widget([
                                     <div class="col-sm-7 col-tab-7 col-xs-12">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-        
-                                                <?php
-                                                $selected = '';
-        
-                                                if (!empty($dataUserPostMain['userPostLoves'][0])) {
-                                                    $selected = 'selected';
-                                                } ?>
-        
-                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $dataUserPostMain['love_value'] . '</span>' . Yii::t('app', '{value, plural, =0{ Like} =1{ Like} other{ Likes}}', ['value' => !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0]), null , ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-        
+                                            	<?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                            					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
                                             </li>
                                             <li>
-        
-                                                <?= Html::a('<i class="fa fa-comments"></i> <span class="total-' . $dataUserPostMain['id'] . '-comments-review">' . count($dataUserPostMain['userPostComments']) . '</span>' . Yii::t('app', '{value, plural, =0{ Comment} =1{ Comment} other{ Comments}}', ['value' => !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-comments"></i> Comment', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
-        
+                                            	<?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                            					<?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
                                             </li>
                                             <li>
-        
-                                                <?= Html::a('<i class="fa fa-camera-retro"></i> <span class="total-' . $dataUserPostMain['id'] . '-photos-review">' . count($dataUserPostMain['userPostMains']) . '</span>' . Yii::t('app', '{value, plural, =0{ Photo} =1{ Photo} other{ Photos}}', ['value' => !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0]), null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', null, ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
-        
+                                            	<?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                            					<?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
                                             </li>
-                                            <li class="review-<?= $dataUserPostMain['id'] ?>-option-toggle visible-xs-inline-block">
-                                                <i class="fa fa-ellipsis-h"></i>
+                                            <li class="visible-xs-inline-block">
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
                                             </li>
+                                            
+                                            <?php
+                                            if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
+        
+                                                <li class="visible-xs-inline-block">
+                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                </li>
+        
+                                            <?php
+                                            endif; ?>
+                                            
                                         </ul>
                                     </div>
                                     <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-        
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
-        
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
                                             </li>
         
                                             <?php
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li>
-        
                                                     <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
-        
-                                                </li>
-        
-                                            <?php
-                                            endif; ?>
-        
-                                        </ul>
-                                    </div>
-                                    <div class="review-<?= $dataUserPostMain['id'] ?>-option col-xs-12">
-                                        <ul class="list-inline list-review mt-0 mb-0">
-                                            <li>
-        
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
-        
-                                            </li>
-        
-                                            <?php
-                                            if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
-        
-                                                <li>
-        
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
-        
                                                 </li>
         
                                             <?php
@@ -368,10 +341,8 @@ $linkPager = LinkPager::widget([
                                     <div class="user-comment-review" id="user-<?= $dataUserPostMain['id']; ?>-comments-review">
                                         <div class="col-sm-12">
                                             <div class="input-group mt-10 mb-10">
-                                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-comment"></i></span>
-        
+                                                <span class="input-group-addon"><i class="fa fa-comment"></i></span>
                                                 <?= Html::textInput('comment_input', null, ['id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
-        
                                             </div>
         
                                             <div class="overlay" style="display: none;"></div>
@@ -405,13 +376,11 @@ $linkPager = LinkPager::widget([
                                                                             </div>
         
                                                                             <div class="widget-comments-body">
-                                                                                <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
+                                                                                <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
                                                                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                 <br>
                                                                                 <p class="comment-description">
-        
                                                                                     <?= $dataUserPostComment['text']; ?>
-        
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -476,7 +445,7 @@ $jscript = '
 
         var thisObj = $(this);
 
-        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function(){
+        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function() {
 
             $.ajax({
                 cache: false,
@@ -484,7 +453,7 @@ $jscript = '
                 data: {
                     "user_post_main_id": thisObj.val()
                 },
-                url: "' . Yii::$app->urlManager->createUrl(['action/submit-likes']) . '",
+                url: $(this).attr("href"),
                 success: function(response) {
 
                     if (response.success) {
@@ -520,6 +489,7 @@ $jscript = '
         thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
 
             thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
+            thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");            
 
             return false;
         });
@@ -528,14 +498,13 @@ $jscript = '
 
             if (event.which == 13 && $(this).val().trim()) {
 
-                var data = {
-                    "user_post_main_id": thisObj.val(),
-                    "text": $(this).val(),
-                };
-
                 $.ajax({
+                    cache: false,
                     type: "POST",
-                    data: data,
+                    data: {
+                        "user_post_main_id": thisObj.val(),
+                        "text": $(this).val(),
+                    },
                     url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                     beforeSend: function(xhr) {
                         $(".comment-" + thisObj.val() + "-section").siblings(".overlay").show();
@@ -628,11 +597,11 @@ $jscript = '
 
                         if (response.publish) {
 
-                            $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
+                            $(".user-" + thisObj.val() + "-delete-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
                             $(".total-user-post").html(totalUserPost + 1);
                         } else {
 
-                            $(".user-" + response.userPostId + "-delete-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
+                            $(".user-" + thisObj.val() + "-delete-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
                             $(".total-user-post").html(totalUserPost - 1);
                         }
                     } else {

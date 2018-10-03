@@ -270,26 +270,17 @@ class ActionController extends base\BaseController
                     ->where(['business_id' => $post['business_id']])
                     ->one();
 
-                if (!empty($modelBusinessDetail)) {
+                if ($modelUserLove->is_active) {
 
-                    if ($modelUserLove->is_active) {
-
-                        $modelBusinessDetail->love_value = $modelBusinessDetail->love_value + 1;
-                    } else {
-                        $modelBusinessDetail->love_value = $modelBusinessDetail->love_value - 1;
-                    }
-
-                    $modelBusinessDetail->business_id = $post['business_id'];
-
-                    $flag = $modelBusinessDetail->save();
-                } else {
-                    $modelBusinessDetail = new BusinessDetail();
-
-                    $modelBusinessDetail->business_id = $post['business_id'];
                     $modelBusinessDetail->love_value = $modelBusinessDetail->love_value + 1;
-
-                    $flag = $modelBusinessDetail->save();
+                } else {
+                    
+                    $modelBusinessDetail->love_value = $modelBusinessDetail->love_value - 1;
                 }
+
+                $modelBusinessDetail->business_id = $post['business_id'];
+
+                $flag = $modelBusinessDetail->save();
             }
 
             $result = [];
@@ -353,25 +344,15 @@ class ActionController extends base\BaseController
                     ->where(['business_id' => $post['business_id']])
                     ->one();
 
-                if (!empty($modelBusinessDetail)) {
+                if ($modelUserVisit->is_active) {
 
-                    if ($modelUserVisit->is_active) {
-
-                        $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value + 1;
-                    } else {
-                        $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value - 1;
-                    }
-
-                    $flag = $modelBusinessDetail->save();
-                } else {
-
-                    $modelBusinessDetail = new BusinessDetail();
-
-                    $modelBusinessDetail->business_id = $post['business_id'];
                     $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value + 1;
-
-                    $flag = $modelBusinessDetail->save();
+                } else {
+                    
+                    $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value - 1;
                 }
+
+                $flag = $modelBusinessDetail->save();
             }
 
             $result = [];

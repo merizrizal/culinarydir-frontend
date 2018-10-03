@@ -5,6 +5,13 @@ use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelUserLove core\models\UserLove */
+
 Pjax::begin([
     'enablePushState' => false,
     'linkSelector' => '#pagination-user-love a',
@@ -81,18 +88,14 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12">
                                             <h4 class="font-alt m-0">
-
                                                 <?= Html::a($dataUserLove['business']['name'], ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
-
                                             </h4>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-9 col-md-10 col-sm-10 col-tab-9 col-xs-9">
                                             <small class="m-0 mb-10">
-
                                                 <?= $dataUserLove['business']['businessLocation']['village']['name'] . ', ' . $dataUserLove['business']['businessLocation']['city']['name'] ?>
-
                                             </small>
                                         </div>
 
@@ -106,11 +109,7 @@ $linkPager = LinkPager::widget([
                                                 <div class="widget">
                                                     <ul class="heart-rating">
                                                         <li>
-
-                                                            <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', '', [
-                                                                'class' => 'unlove-place',
-                                                            ]) ?>
-
+                                                            <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place']) ?>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -175,7 +174,8 @@ $jscript = '
         thisObj.parent().parent().parent().parent().parent().find(".unlove-place").on("click", function() {
 
             $.ajax({
-                url: "' . Yii::$app->urlManager->createUrl('action/submit-user-love') . '",
+                cache: false,
+                url: $(this).attr("href"),
                 type: "POST",
                 data: {
                     "business_id": thisObj.val()

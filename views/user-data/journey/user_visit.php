@@ -5,6 +5,13 @@ use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
+/* @var $this yii\web\View */
+/* @var $pagination yii\data\Pagination */
+/* @var $startItem int */
+/* @var $endItem int */
+/* @var $totalCount int */
+/* @var $modelUserVisit core\models\UserVisit */
+
 Pjax::begin([
     'enablePushState' => false,
     'linkSelector' => '#pagination-user-visit a',
@@ -21,9 +28,6 @@ $linkPager = LinkPager::widget([
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     'options' => ['id' => 'pagination-user-visit', 'class' => 'pagination'],
 ]); ?>
-
-<div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none;"></div>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -48,8 +52,11 @@ $linkPager = LinkPager::widget([
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="position: relative;">
     <div class="user-visit-container">
+    
+    	<div class="overlay" style="display: none;"></div>
+		<div class="loading-img" style="display: none;"></div>
 
         <?php
         if (!empty($modelUserVisit)):
@@ -81,15 +88,11 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-12">
                                             <h4 class="font-alt m-0">
-
                                                 <?= Html::a($dataUserVisit['business']['name'], ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>
-
                                             </h4>
 
                                             <small class="m-0">
-
                                                 <?= $dataUserVisit['business']['businessLocation']['village']['name'] . ', ' . $dataUserVisit['business']['businessLocation']['city']['name'] ?>
-
                                             </small>
                                         </div>
                                     </div>
@@ -133,14 +136,14 @@ $linkPager = LinkPager::widget([
 $jscript = '
     $("#pjax-user-visit-container").on("pjax:send", function() {
 
-        $(".user-visit-container").parent().siblings(".overlay").show();
-        $(".user-visit-container").parent().siblings(".loading-img").show();
+        $(".user-visit-container").children(".overlay").show();
+        $(".user-visit-container").children(".loading-img").show();
     });
 
     $("#pjax-user-visit-container").on("pjax:complete", function() {
 
-        $(".user-visit-container").parent().siblings(".overlay").hide();
-        $(".user-visit-container").parent().siblings(".loading-img").hide();
+        $(".user-visit-container").children(".overlay").hide();
+        $(".user-visit-container").children(".loading-img").hide();
     });
 
     $("#pjax-user-visit-container").on("pjax:error", function (event) {
