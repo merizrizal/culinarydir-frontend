@@ -4,13 +4,19 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
-use core\models\City;
 use kartik\file\FileInput;
 use kartik\growl\Growl;
+use core\models\City;
 
 /* @var $this yii\web\View */
+/* @var $modelUserPerson core\models\UserPerson */
+/* @var $modelUser core\models\User */
+/* @var $modelPerson core\models\Person */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+kartik\select2\Select2Asset::register($this);
+kartik\select2\ThemeKrajeeAsset::register($this);
+
+$this->title = 'Update Profile ' . $modelUser->full_name;
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -19,11 +25,8 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
-
-kartik\select2\Select2Asset::register($this);
-kartik\select2\ThemeKrajeeAsset::register($this);
 
 $getFlashMessage = Yii::$app->session->getFlash('message');
 
@@ -57,7 +60,7 @@ if (!empty($getFlashMessage)) {
                         <div class="box-content">
                             <div class="row mt-10">
                                 <div class="col-md-12 text-center">
-                                    <h2>Update Profile</h2>
+                                    <h4 class="font-alt"><?= Yii::t('app', 'Update Profile') ?></h4>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <div class="widget">
@@ -72,121 +75,118 @@ if (!empty($getFlashMessage)) {
                                             ]
                                         ]); ?>
 
-                                        <div class="profile-img-container img-circle mb-20">
-
-                                            <?= $form->field($modelUserPerson->user, 'image')->widget(FileInput::classname(), [
-                                                'options' => [
-                                                    'id' => 'input-img-profile',
-                                                    'accept' => 'image/jpeg',
-                                                ],
-                                                'pluginOptions' => [
-                                                    'initialPreview' => [
-                                                        Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-component img-profile']),
+                                            <div class="profile-img-container img-circle mb-20">
+    
+                                                <?= $form->field($modelUser, 'image')->widget(FileInput::classname(), [
+                                                    'options' => [
+                                                        'id' => 'input-img-profile',
+                                                        'accept' => 'image/jpeg',
                                                     ],
-                                                    'showRemove' => false,
-                                                    'showUpload' => false,
-                                                    'showCaption' => false,
-                                                    'browseIcon' => '<i class="fa fa-upload"></i>',
-                                                    'browseLabel' =>  '',
-                                                    'browseClass' =>  'btn btn-d',
-                                                    'layoutTemplates' => [
-                                                        'preview' => '<div class="file-preview-thumbnails"></div>',
-                                                    ],
-                                                    'previewSettings' => [
-                                                        'image' => [
-                                                            'position' => 'relative',
-                                                            'top' => '35px',
-                                                            'width' => 'auto',
-                                                            'height' => '160px',
+                                                    'pluginOptions' => [
+                                                        'initialPreview' => [
+                                                            Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-component img-profile']),
+                                                        ],
+                                                        'showRemove' => false,
+                                                        'showUpload' => false,
+                                                        'showCaption' => false,
+                                                        'browseIcon' => '<i class="fa fa-upload"></i>',
+                                                        'browseLabel' =>  '',
+                                                        'browseClass' =>  'btn btn-d',
+                                                        'layoutTemplates' => [
+                                                            'preview' => '<div class="file-preview-thumbnails"></div>',
+                                                        ],
+                                                        'previewSettings' => [
+                                                            'image' => [
+                                                                'position' => 'relative',
+                                                                'top' => '35px',
+                                                                'width' => 'auto',
+                                                                'height' => '160px',
+                                                            ]
+                                                        ],
+                                                        'previewTemplates' => [
+                                                            'generic' => '
+                                                                <div class="file-preview-frame file-preview-initial file-sortable kv-preview-thumb" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">
+                                                                    <div class="kv-file-content">{content}</div>
+                                                                </div>',
+                                                            'image' => '
+                                                                <div class="file-preview-frame file-preview-initial file-sortable kv-preview-thumb" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">
+                                                                    <div class="kv-file-content">
+                                                                        <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" {style}>
+                                                                    </div>
+                                                                </div>'
                                                         ]
-                                                    ],
-                                                    'previewTemplates' => [
-                                                        'generic' => '
-                                                            <div class="file-preview-frame file-preview-initial file-sortable kv-preview-thumb" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">
-                                                                <div class="kv-file-content">{content}</div>
-                                                            </div>',
-                                                        'image' => '
-                                                            <div class="file-preview-frame file-preview-initial file-sortable kv-preview-thumb" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">
-                                                                <div class="kv-file-content">
-                                                                    <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" {style}>
-                                                                </div>
-                                                            </div>'
                                                     ]
-                                                ]
-                                            ]); ?>
-
-                                        </div>
-
-                                        <div class="widget-posts-body">
-
-                                            <?= $form->field($modelUserPerson->person, 'first_name')->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => Yii::t('app', 'First Name'),
-                                            ]) ?>
-
-
-                                            <?= $form->field($modelUserPerson->person, 'last_name')->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => Yii::t('app', 'Last Name'),
-                                            ]) ?>
-
-                                            <?= $form->field($modelUserPerson->person, 'about_me')->textarea([
-                                                'rows' => 3,
-                                                'placeholder' => Yii::t('app', 'About Me')
-                                            ]) ?>
-
-                                            <?= $form->field($modelUserPerson->person, 'city_id')->dropDownList(
-                                                ArrayHelper::map(
-                                                    City::find()->orderBy('name')->asArray()->all(),
-                                                    'id',
-                                                    function($data) {
-                                                        return $data['name'];
-                                                    }
-                                                ),
-                                                [
-                                                    'prompt' => '',
-                                                    'style' => 'width: 100%'
-                                                ]) ?>
-
-                                            <?= $form->field($modelUserPerson->person, 'address')->textarea([
-                                                'rows' => 3,
-                                                'placeholder' => Yii::t('app', 'Address')
-                                            ]) ?>
-
-                                            <?= $form->field($modelUserPerson->person, 'phone')->widget(MaskedInput::className(), [
-                                                'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
-                                                'options' => [
+                                                ]); ?>
+    
+                                            </div>
+    
+                                            <div class="widget-posts-body">
+    
+                                                <?= $form->field($modelPerson, 'first_name')->textInput([
                                                     'class' => 'form-control',
-                                                    'placeholder' => Yii::t('app', 'Phone'),
-                                                ],
-                                            ]) ?>
-
-                                            <?= $form->field($modelUserPerson->user, 'email', [
-                                                'enableAjaxValidation' => true
-                                            ])->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Email',
-                                            ]) ?>
-
-                                            <?= $form->field($modelUserPerson->user, 'username', [
-                                                'enableAjaxValidation' => true
-                                            ])->textInput([
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Username',
-                                                'readonly' => 'readonly',
-                                            ]) ?>
-
-                                            <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d mb-30']) ?>
-                                            <?= Html::a('Back', Yii::$app->urlManager->createUrl('user'), ['class' => 'btn btn-round btn-default mb-30']) ?>
-
-                                        </div>
+                                                    'placeholder' => Yii::t('app', 'First Name'),
+                                                ]) ?>
+    
+    
+                                                <?= $form->field($modelPerson, 'last_name')->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => Yii::t('app', 'Last Name'),
+                                                ]) ?>
+    
+                                                <?= $form->field($modelPerson, 'about_me')->textarea([
+                                                    'rows' => 3,
+                                                    'placeholder' => Yii::t('app', 'About Me')
+                                                ]) ?>
+    
+                                                <?= $form->field($modelPerson, 'city_id')->dropDownList(
+                                                    ArrayHelper::map(
+                                                        City::find()->orderBy('name')->asArray()->all(),
+                                                        'id',
+                                                        function($data) {
+                                                            return $data['name'];
+                                                        }
+                                                    ),
+                                                    [
+                                                        'prompt' => '',
+                                                        'style' => 'width: 100%'
+                                                    ]) ?>
+    
+                                                <?= $form->field($modelPerson, 'address')->textarea([
+                                                    'rows' => 3,
+                                                    'placeholder' => Yii::t('app', 'Address')
+                                                ]) ?>
+    
+                                                <?= $form->field($modelPerson, 'phone')->widget(MaskedInput::className(), [
+                                                    'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
+                                                    'options' => [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => Yii::t('app', 'Phone'),
+                                                    ],
+                                                ]) ?>
+    
+                                                <?= $form->field($modelUser, 'email', [
+                                                    'enableAjaxValidation' => true
+                                                ])->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Email',
+                                                ]) ?>
+    
+                                                <?= $form->field($modelUser, 'username', [
+                                                    'enableAjaxValidation' => true
+                                                ])->textInput([
+                                                    'class' => 'form-control',
+                                                    'placeholder' => 'Username',
+                                                    'readonly' => 'readonly',
+                                                ]) ?>
+    
+                                                <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d mb-30']) ?>
+                                                <?= Html::a('Back', ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
+    
+                                            </div>
 
                                         <?php ActiveForm::end(); ?>
 
                                     </div>
-                                </div>
-                                <div class="col-xs-12 visible-xs">
-
                                 </div>
                             </div>
                         </div>

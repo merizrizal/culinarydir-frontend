@@ -1,6 +1,12 @@
 <?php
 use yii\helpers\Html;
 
+/* @var $this yii\web\view */
+/* @var $title frontend\controllers\SiteController */
+/* @var $fullname frontend\controllers\SiteController */
+/* @var $messages frontend\controllers\SiteController */
+/* @var $links frontend\controllers\SiteController */
+
 $this->title = 'Mau Makan Asik, Ya Asikmakan';
 
 $this->registerMetaTag([
@@ -10,7 +16,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]); ?>
 
 <div class="main">

@@ -53,9 +53,6 @@
             <div class="col-sm-6">
                 <p class="copyright font-alt">&copy; <?= Yii::$app->formatter->asDate(time(), 'yyyy') ?> <a href="<?= Yii::$app->urlManager->baseUrl ?>">Asikmakan.com</a>, All Rights Reserved</p>
             </div>
-            <div class="col-sm-6">
-
-            </div>
         </div>
     </div>
 </footer>

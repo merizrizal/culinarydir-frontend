@@ -5,8 +5,9 @@ use yii\widgets\ActiveForm;
 use kartik\growl\Growl;
 
 /* @var $this yii\web\View */
+/* @var $modelChangePassword frontend\models\ChangePassword */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = 'Update Password';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -15,7 +16,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
 $getFlashMessage = Yii::$app->session->getFlash('message');
@@ -47,8 +48,8 @@ if (!empty($getFlashMessage)) {
                     <div class="box bg-white">
                         <div class="box-content">
                             <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <h4 class="font-alt">Change Password</h4>
+                                <div class="col-md-12">
+                                    <h4 class="font-alt"><?= Yii::t('app', 'Change Password') ?></h4>
                                     <hr class="divider-w mb-20">
 
                                     <?php
@@ -60,32 +61,31 @@ if (!empty($getFlashMessage)) {
                                         ]
                                     ]); ?>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+    
+                                                <?= $form->field($modelChangePassword, 'current_pass')->passwordInput([
+                                                    'placeholder' => 'Current Password'
+                                                ]) ?>
+    
+                                                <?= $form->field($modelChangePassword, 'new_pass')->passwordInput([
+                                                    'placeholder' => 'New Password'
+                                                ]) ?>
+    
+                                                <?= $form->field($modelChangePassword, 'confirm_pass')->passwordInput([
+                                                    'placeholder' => 'Confirm Password'
+                                                ]) ?>
 
-                                            <?= $form->field($modelChangePassword, 'current_pass')->passwordInput([
-                                                'placeholder' => 'Current Password'
-                                            ]) ?>
-
-                                            <?= $form->field($modelChangePassword, 'new_pass')->passwordInput([
-                                                'placeholder' => 'New Password'
-                                            ]) ?>
-
-                                            <?= $form->field($modelChangePassword, 'confirm_pass')->passwordInput([
-                                                'placeholder' => 'Confirm Password'
-                                            ]) ?>
-
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row mb-30">
-                                        <div class="col-md-12">
-
-                                            <?= Html::submitButton('Save', ['class' => 'btn btn-round btn-d']) ?>
-                                            <?= Html::a('Back', Yii::$app->urlManager->createUrl('user'), ['class' => 'btn btn-round btn-default']) ?>
-
+                                        <div class="row mb-30">
+                                            <div class="col-md-12">
+    
+                                                <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d']) ?>
+                                            	<?= Html::a(Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default']) ?>
+    
+                                            </div>
                                         </div>
-                                    </div>
 
                                     <?php ActiveForm::end(); ?>
 

@@ -15,6 +15,13 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'defaultRoute' => 'page/index',
     //'catchAll' => ['site/maintenance'], //dont delete, just comment to deactive
+    'container' => [
+        'definitions' => [
+            'yii\data\Pagination' => [
+                'pageSize' => 21
+            ]
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-front-asikmakan-synctech',

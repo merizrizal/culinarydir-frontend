@@ -70,42 +70,33 @@ class UserController extends base\BaseHistoryUrlController
                 'user',
                 'person',
             ])
-            ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['user_person.user_id' => Yii::$app->user->getIdentity()->id])
             ->one();
 
-        if (Yii::$app->request->isAjax && $modelUserPerson->user->load(Yii::$app->request->post())) {
+        $modelUser = $modelUserPerson->user;
+        $modelPerson = $modelUserPerson->person;        
+        
+        if (Yii::$app->request->isAjax && $modelUser->load(Yii::$app->request->post())) {
 
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($modelUserPerson->user);
+            return ActiveForm::validate($modelUser);
         }
 
-        if (!empty(Yii::$app->request->post())) {
+        if (!empty(($post = Yii::$app->request->post())) && $modelPerson->load($post) && $modelUser->load($post)) {
 
             $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
+            $flag = false;            
 
-            $modelPerson = $modelUserPerson->person;
+            if (($flag = $modelPerson->save())) { 
 
-            if ($modelPerson->load(Yii::$app->request->post())) {
+                if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
 
-                $flag = $modelPerson->save();
-            }
-
-            if ($flag) {
-
-                $modelUser = $modelUserPerson->user;
-
-                if ($modelUser->load(Yii::$app->request->post())) {
-
-                    if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
-
-                        $modelUser->image = $modelUser->oldAttributes['image'];
-                    }
-
-                    $modelUser->full_name = $modelPerson->first_name . ' ' . $modelPerson->last_name;
-
-                    $flag = $modelUser->save();
+                    $modelUser->image = $modelUser->oldAttributes['image'];
                 }
+
+                $modelUser->full_name = $modelPerson->first_name . ' ' . $modelPerson->last_name;
+
+                $flag = $modelUser->save();
             }
 
             if ($flag) {
@@ -136,16 +127,16 @@ class UserController extends base\BaseHistoryUrlController
         }
 
         return $this->render('update_profile', [
-            'modelUserPerson' => $modelUserPerson
+            'modelUserPerson' => $modelUserPerson,
+            'modelUser' => $modelUser,
+            'modelPerson' => $modelPerson,            
         ]);
     }
 
     public function actionChangePassword()
     {
-        $id = Yii::$app->user->id;
-
         try {
-            $modelChangePassword = new ChangePassword($id);
+            $modelChangePassword = new ChangePassword(Yii::$app->user->id);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
