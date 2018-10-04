@@ -120,7 +120,7 @@ $jspopover = ''; ?>
                                             </div>
 
                                             <div class="row mt-10">
-                                                <div class="col-md-12 col">
+                                                <div class="col-sm-12 col-xs-12 col">
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li><i class="aicon aicon-home"></i>
@@ -137,7 +137,7 @@ $jspopover = ''; ?>
                                             </div>
 
                                             <div class="row mt-10">
-                                                <div class="col-md-12 col">
+                                                <div class="col-sm-12 col-xs-12 col">
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li class="tag">

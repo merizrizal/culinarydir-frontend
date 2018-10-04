@@ -179,6 +179,7 @@ $jspopover = ''; ?>
 
                                                             <?php
                                                             $categories = '';
+                                                            
                                                             foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
 
                                                                 $categories .= $dataBusinessCategories['category']['name'] . ' / ';

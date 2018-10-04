@@ -1,10 +1,13 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 use frontend\components\AppComponent;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
+/* @var $filter array */
 
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
@@ -44,25 +47,26 @@ $appComponent = new AppComponent(); ?>
         <div class="row">
 
             <?php
-            $urlResultList = ['result-list'];
-            $urlResultList = array_merge($urlResultList, Yii::$app->request->get()); ?>
+            $urlResultList = ArrayHelper::merge(['result-list'], $filter); 
+            $btnResultList = Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default btn-list']);
+            $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d btn-map']); ?>
 
             <div class="col-md-7 col-sm-7 col-xs-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
-                <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
+                <?= $btnResultList ?>
+                <?= $btnResultMap ?>
 
             </div>
             <div class="col-tab-7 mt-10 mb-10 visible-tab text-center">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
-                <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
+                <?= $btnResultList ?>
+                <?= $btnResultMap ?>
 
             </div>
             <div class="col-xs-7 mt-10 mb-10 visible-xs text-center">
 
-                <?= Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default']); ?>
-                <?= Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d']); ?>
+                <?= $btnResultList ?>
+                <?= $btnResultMap ?>
 
             </div>
             <div class="col-md-5 col-sm-5 col-tab-5 col-xs-5 mt-10 mb-10">
@@ -98,6 +102,7 @@ $appComponent = new AppComponent(); ?>
 
 <?php
 frontend\components\GrowlCustom::widget();
+frontend\components\RatingColor::widget();
 
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
 
@@ -107,6 +112,14 @@ $jscript = '
     $(".btn-search-map-toggle").on("click", function() {
 
         $(".result-map-search").toggle();
+    });
+
+    $(".btn-list").off("click");
+    $(".btn-map").off("click");
+
+    $(".btn-map").on("click", function() {
+
+        return false;
     });
 
     $.ajax({

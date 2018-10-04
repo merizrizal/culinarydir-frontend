@@ -67,8 +67,8 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
                     <?php
                     $urlResultMap = ArrayHelper::merge(['result-map'], $filter); ?>
 
-                    <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d']) ?>
-                    <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $urlResultMap, ['class' => 'btn btn-round btn-default']) ?>
+                    <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) ?>
+                    <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
                 <div class="col-xs-5">
@@ -96,6 +96,11 @@ $jscript = '
     $(".btn-search-toggle").on("click", function() {
 
         $(".result-list-search").toggle();
+    });
+
+    $(".btn-list").on("click", function() {
+
+        return false;
     });
 
     $.ajax({

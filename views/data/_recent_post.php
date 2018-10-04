@@ -4,6 +4,7 @@ use yii\helpers\StringHelper;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
 
+/* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */ ?>
 
 <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
