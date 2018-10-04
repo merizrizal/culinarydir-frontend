@@ -3,7 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+/* @var $this yii\web\View */
+/* @var $model frontend\models\RequestResetPassword */
+
+$this->title = 'Reset Password';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -12,7 +15,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Bisnis Kuliner Di Bandung - Temukan Tempat Kuliner Terbaik Favorit Anda Di Asikmakan'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]); ?>
 
 <div class="main">
@@ -28,7 +31,7 @@ $this->registerMetaTag([
                                     <hr class="divider-w mb-20">
 
                                     <h4>
-                                        <small>Silakan masukkan email Anda. Link untuk mereset password akan dikirim ke email Anda.</small>
+                                        <small><?= Yii::t('app', 'Please enter your email. Link for reset your password will be sent to your email.') ?></small>
                                     </h4>
 
                                     <?php

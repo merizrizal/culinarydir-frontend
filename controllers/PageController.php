@@ -305,69 +305,70 @@ class PageController extends base\BaseHistoryUrlController
 
     private function getResult($fileRender)
     {
-        $get = Yii::$app->request->get();
+        $filter = Yii::$app->request->get();
 
         $keyword = [];
 
-        if (!empty($get['special'])) {
+        if (!empty($filter['special'])) {
 
-            $keyword['special'] = $get['special'];
+            $keyword['special'] = $filter['special'];
         }
 
-        if (!empty($get['city_id'])) {
+        if (!empty($filter['city_id'])) {
 
-            $keyword['city'] = $get['city_id'];
+            $keyword['city'] = $filter['city_id'];
         }
 
-        if (!empty($get['name'])) {
+        if (!empty($filter['name'])) {
 
-            $keyword['name'] = $get['name'];
+            $keyword['name'] = $filter['name'];
         }
 
-        if (!empty($get['product_category'])) {
+        if (!empty($filter['product_category'])) {
 
             $modelProductCategory = ProductCategory::find()
-                ->where(['id' => $get['product_category']])
+                ->where(['id' => $filter['product_category']])
                 ->asArray()->one();
 
-            $keyword['product']['id'] = $get['product_category'];
+            $keyword['product']['id'] = $filter['product_category'];
             $keyword['product']['name'] = $modelProductCategory['name'];
         }
 
-        if (!empty($get['category_id'])) {
+        if (!empty($filter['category_id'])) {
 
-            $keyword['category'] = $get['category_id'];
+            $keyword['category'] = $filter['category_id'];
         }
 
-        if (!empty($get['price_min'])) {
+        if (!empty($filter['price_min'])) {
 
-            $keyword['price_min'] = $get['price_min'];
+            $keyword['price_min'] = $filter['price_min'];
         }
 
-        if (!empty($get['price_max'])) {
+        if (!empty($filter['price_max'])) {
 
-            $keyword['price_max'] = $get['price_max'];
+            $keyword['price_max'] = $filter['price_max'];
         }
 
-        if (!empty($get['coordinate_map'])) {
+        if (!empty($filter['coordinate_map'])) {
 
-            $keyword['coordinate'] = $get['coordinate_map'];
+            $keyword['coordinate'] = $filter['coordinate_map'];
         }
 
-        if (!empty($get['radius_map'])) {
+        if (!empty($filter['radius_map'])) {
 
-            $keyword['radius'] = $get['radius_map'];
+            $keyword['radius'] = $filter['radius_map'];
         }
 
-        if (!empty($get['facility_id'])) {
+        if (!empty($filter['facility_id'])) {
 
-            $keyword['facility'] = $get['facility_id'];
+            $keyword['facility'] = $filter['facility_id'];
         }
 
         Yii::$app->session->setFlash('keyword', $keyword);
 
         return $this->render($fileRender, [
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'filter' => $filter
         ]);
     }
 }

@@ -26,22 +26,30 @@ $stylePriceLabel = null;
 $coordinate = null;
 $radius = null;
 $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-$styleRadiusLabel = null; ?>
+$styleRadiusLabel = null;
+
+$btnSubmitLgXs = Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']);
+$btnSubmitTab = Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']);
+$btnSubmitMdSm = Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']);
+
+$btnClearLgXs = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'search-label lbl-clear visible-lg visible-xs']); 
+$btnClearTab = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'search-label lbl-clear visible-tab']); 
+$btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-label lbl-clear visible-md visible-sm']); ?>
 
 <div class="search-box">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="<?= empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#favorite<?= !empty($id) ? '-' . $id : ''?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods') ?></a>
+            <a href="#favorite<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods') ?></a>
         </li>
         <li role="presentation" class="<?= !empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#special<?= !empty($id) ? '-' . $id : ''?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts') ?></a>
+            <a href="#special<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts') ?></a>
         </li>
     </ul>
 
     <!-- Tab Favorite -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade <?= empty($keyword['special']) ? 'in active' : '' ?>" id="favorite<?= !empty($id) ? '-' . $id : ''?>">
+        <div role="tabpanel" class="tab-pane fade <?= empty($keyword['special']) ? 'in active' : '' ?>" id="favorite<?= !empty($id) ? '-' . $id : '' ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-favorite'
@@ -60,6 +68,7 @@ $styleRadiusLabel = null; ?>
                                             City::find()->orderBy('name')->asArray()->all(),
                                             'id',
                                             function($data) {
+                                                
                                                 return $data['name'];
                                             }
                                         ),
@@ -101,7 +110,7 @@ $styleRadiusLabel = null; ?>
                                     endif; ?>
 
                                     <?= Html::hiddenInput('product_category', $productId, ['class' => 'product-category-id']) ?>
-                                    <?= Html::a($productLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+                                    <?= Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
 
                                 </div>
                             </div>
@@ -114,6 +123,7 @@ $styleRadiusLabel = null; ?>
                                             Category::find()->orderBy('name')->asArray()->all(),
                                             'id',
                                             function($data) {
+                                                
                                                 return $data['name'];
                                             }
                                         ),
@@ -144,7 +154,7 @@ $styleRadiusLabel = null; ?>
 
                                     <?= Html::hiddenInput('price_min', $priceMin, ['class' => 'price-min'])?>
                                     <?= Html::hiddenInput('price_max', $priceMax, ['class' => 'price-max'])?>
-                                    <?= Html::a($priceLabel, null, ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+                                    <?= Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
 
                                 </div>
                             </div>
@@ -167,7 +177,7 @@ $styleRadiusLabel = null; ?>
 
                                     <?= Html::hiddenInput('coordinate_map', $coordinate, ['class' => 'coordinate-map'])?>
                                     <?= Html::hiddenInput('radius_map', $radius, ['class' => 'radius-map'])?>
-                                    <?= Html::a($radiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+                                    <?= Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
 
                                 </div>
                             </div>
@@ -186,10 +196,10 @@ $styleRadiusLabel = null; ?>
 
                             <div class="row mb-10">
                                 <div class="col-lg-12 col-xs-12 col">
-                                    <a class="search-label" data-toggle="collapse" href=".facility-collapse">More Options
+                                    <a class="search-label more-option" data-toggle="collapse" href=".facility-collapse">More Options
                                         <span class="fa fa-chevron-circle-down"></span>
                                     </a>
-                                    <div class="<?= !empty($keyword['facility']) ? 'collapse in facility-collapse' : 'collapse facility-collapse' ?>">
+                                    <div class="facility-collapse collapse <?= !empty($keyword['facility']) ? 'in' : '' ?>">
                                     	<div class="form-group">
                                         	<div class="row mt-10">                                            
 
@@ -198,6 +208,7 @@ $styleRadiusLabel = null; ?>
                                                         $modelFacility,
                                                         'id',
                                                         function($data) {
+                                                            
                                                             return $data['name'];
                                                         }
                                                     ),
@@ -249,16 +260,16 @@ $styleRadiusLabel = null; ?>
                     <div class="col-sm-2 col-xs-12 col">
                         <div class="form-group">
 
-                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
-                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
-                            <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
+                            <?= $btnSubmitLgXs ?>
+                            <?= $btnSubmitTab ?>
+                            <?= $btnSubmitMdSm ?>
 
                         </div>
                         <div class="btn-clear-container">
 
-                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn search-label lbl-clear visible-lg visible-xs']) ?>
-                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn search-label lbl-clear visible-tab']) ?>
-                            <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn search-label lbl-clear visible-md visible-sm']) ?>
+                            <?= $btnClearLgXs ?>
+                            <?= $btnClearTab ?>
+                            <?= $btnClearMdSm ?>
 
                         </div>
                     </div>
@@ -268,7 +279,7 @@ $styleRadiusLabel = null; ?>
 
         </div>
 
-        <div role="tabpanel" class="tab-pane fade <?= !empty($keyword['special']) ? 'in active' : '' ?>" id="special<?= !empty($id) ? '-' . $id : ''?>">
+        <div role="tabpanel" class="tab-pane fade <?= !empty($keyword['special']) ? 'in active' : '' ?>" id="special<?= !empty($id) ? '-' . $id : '' ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-special'
@@ -287,6 +298,7 @@ $styleRadiusLabel = null; ?>
                                             City::find()->orderBy('name')->asArray()->all(),
                                             'id',
                                             function($data) {
+                                                
                                                 return $data['name'];
                                             }
                                         ),
@@ -328,7 +340,7 @@ $styleRadiusLabel = null; ?>
                                     endif; ?>
 
                                     <?= Html::hiddenInput('product_category', $productId, ['class' => 'product-category-id']) ?>
-                                    <?= Html::a($productLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+                                    <?= Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
 
                                 </div>
                             </div>
@@ -341,6 +353,7 @@ $styleRadiusLabel = null; ?>
                                             Category::find()->orderBy('name')->asArray()->all(),
                                             'id',
                                             function($data) {
+                                                
                                                 return $data['name'];
                                             }
                                         ),
@@ -371,7 +384,7 @@ $styleRadiusLabel = null; ?>
 
                                     <?= Html::hiddenInput('coordinate_map', $coordinate, ['class' => 'coordinate-map'])?>
                                     <?= Html::hiddenInput('radius_map', $radius, ['class' => 'radius-map'])?>
-                                    <?= Html::a($radiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+                                    <?= Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
 
                                 </div>
                             </div>
@@ -381,16 +394,16 @@ $styleRadiusLabel = null; ?>
                     <div class="col-sm-2 col-xs-12 col">
                         <div class="form-group">
 
-                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['id' => 'submit-special', 'class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
-                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['id' => 'submit-special', 'class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
-                            <?= Html::submitButton('<i class="fa fa-search"></i>', ['id' => 'submit-special', 'class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
+                            <?= $btnSubmitLgXs ?>
+                            <?= $btnSubmitTab ?>
+                            <?= $btnSubmitMdSm ?>
 
                         </div>
                         <div class="btn-clear-container">
 
-                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn search-label lbl-clear visible-lg visible-xs']) ?>
-                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn search-label lbl-clear visible-tab']) ?>
-                            <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn search-label lbl-clear visible-md visible-sm']) ?>
+                            <?= $btnClearLgXs ?>
+                            <?= $btnClearTab ?>
+                            <?= $btnClearMdSm ?>
 
                         </div>
                     </div>
@@ -405,27 +418,6 @@ $styleRadiusLabel = null; ?>
 <?php
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
-
-$csscript = '
-    .search-label {
-        color:#444 !important;
-    }
-
-    .search-label:hover {
-        color:#222 !important;
-    }
-
-    .select2-results__option {
-        padding: 2px 6px;
-    }
-
-    .select2-container--krajee .select2-results > .select2-results__options {
-        max-height: 210px;
-    }
-';
-
-$this->registerCss($csscript);
-
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
@@ -446,25 +438,15 @@ $jscript = '
 
     $(".lbl-clear").on("click", function() {
 
-        $(".input-name").val("");
-        $(".product-category-id").val("");
+        $(".input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
         $(".category-id").val(null).trigger("change");
-        $(".coordinate-map").val("");
-        $(".radius-map").val("");
-        $(".price-min, .price-max").val("");
         $(".facility").iCheck("uncheck");
-
-        $(".price-min-select").val(null).trigger("change");
-        $(".price-max-select").val(null).trigger("change");
 
         $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(".btn-radius-500").addClass("active");
-        $(".btn-radius-500").siblings().removeClass("active");
         $(".search-field-box-clear").remove();
 
-        initMap();
         return false;
     });
 
@@ -473,25 +455,27 @@ $jscript = '
         $(".product-category-id").val("");
         $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(this).remove();
+
+        return false;
     });
 
     $(".btn-price").parent().find(".search-field-box-clear").on("click", function() {
 
-        $(".price-min-select").val(null).trigger("change");
-        $(".price-max-select").val(null).trigger("change");
-
         $(".btn-price").siblings(".price-min, .price-max").val("");
         $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(this).remove();
+
+        return false;
     });
 
     $(".btn-region").parent().find(".search-field-box-clear").on("click", function() {
 
-        $(".coordinate-map").val("");
-        $(".radius-map").val("");
+        $(".coordinate-map, .radius-map").val("");
         $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-radius-500").trigger("click");
         $(this).remove();
+
+        return false;
     });
 ';
 

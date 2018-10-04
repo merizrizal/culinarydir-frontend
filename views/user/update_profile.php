@@ -60,7 +60,7 @@ if (!empty($getFlashMessage)) {
                         <div class="box-content">
                             <div class="row mt-10">
                                 <div class="col-md-12 text-center">
-                                    <h4 class="font-alt">Update Profile</h4>
+                                    <h4 class="font-alt"><?= Yii::t('app', 'Update Profile') ?></h4>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <div class="widget">

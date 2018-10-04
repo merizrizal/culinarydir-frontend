@@ -3,6 +3,7 @@
 namespace frontend\components;
 
 use yii\base\Widget;
+use yii\web\View;
 
 class GrowlCustom extends Widget {
 
@@ -52,6 +53,6 @@ class GrowlCustom extends Widget {
             }
         ';
 
-        $this->getView()->registerJs($jscript);
+        $this->getView()->registerJs($jscript, View::POS_HEAD);
     }
 }

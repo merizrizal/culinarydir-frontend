@@ -18,9 +18,11 @@ $this->registerMetaTag([
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
-$appComponent = new AppComponent(); ?>
+$appComponent = new AppComponent(); 
 
-<section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" id="home" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg' ?>">
+$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg'; ?>
+
+<section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" id="home" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">
@@ -57,15 +59,15 @@ $appComponent = new AppComponent(); ?>
     </div>
 </section>
 
-<section class="module-small visible-tab" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg' ?>">
+<section class="module-small visible-tab" data-background="<?= $background ?>">
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12 text-center">
+            <div class="col-tab-12 text-center">
                 <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">Masih dalam proses pendataan bisnis kuliner</div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="col-tab-12">
 
                 <?= $appComponent->search([
                     'id' => 'tab-search'
@@ -76,15 +78,15 @@ $appComponent = new AppComponent(); ?>
     </div>
 </section>
 
-<section class="module-small visible-xs" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg' ?>">
+<section class="module-small visible-xs" data-background="<?= $background ?>">
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12 text-center">
+            <div class="col-xs-12 text-center">
                 <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">Masih dalam proses pendataan bisnis kuliner</div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+            <div class="col-xs-12">
 
                 <?= $appComponent->search([
                     'id' => 'xs-search'
@@ -136,6 +138,9 @@ $appComponent = new AppComponent(); ?>
 </div>
 
 <?php
+frontend\components\RatingColor::widget();
+frontend\components\FacebookShare::widget();
+
 $jscript = '
     $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {
 
