@@ -301,10 +301,10 @@ $jscript = '
 
                         infoWindowContent[keyCoordinate] +=
                             "<div class=\"row\">" +
-                                "<div class=\"col-sm-6 hidden-xs\">" +
+                                "<div class=\"col-sm-5 hidden-xs\">" +
                                     "<img src=\"" + value.businessPromoImage + "\" width=\"100%\">" +
                                 "</div>" +
-                                "<div class=\"col-sm-6 col-xs-12\">" +
+                                "<div class=\"col-sm-7 col-xs-12\">" +
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
