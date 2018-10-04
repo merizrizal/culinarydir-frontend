@@ -184,7 +184,6 @@ class UserActionController extends base\BaseController
             
             $result['success'] = true;
             $result['publish'] = $modelUserPostMain->is_publish;
-            $result['undoUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/undo-user-post', 'id' => $modelUserPostMain->id]);
         } else {
             
             $transaction->rollBack();

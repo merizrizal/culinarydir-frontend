@@ -128,9 +128,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
-frontend\components\FacebookShare::widget();
-
 $jscript = '
     $("#photo-gallery .place-gallery").magnificPopup({
 
@@ -145,15 +142,6 @@ $jscript = '
             titleSrc: "title",
             tError: "The image could not be loaded."
         }
-    });
-
-    $(".delete-image").on("click", function() {
-
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
-
-        return false;
     });
 
     $("#photo-gallery").find(".work-item").each(function() {
