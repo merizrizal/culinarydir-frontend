@@ -7,7 +7,7 @@ use kartik\growl\Growl;
 /* @var $this yii\web\View */
 /* @var $modelChangePassword frontend\models\ChangePassword */
 
-$this->title = 'Update Password';
+$this->title = Yii::t('app', 'Change Password');
 
 $this->registerMetaTag([
     'name' => 'keywords',

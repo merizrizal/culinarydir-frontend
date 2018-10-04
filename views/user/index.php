@@ -139,7 +139,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <i class="fa fa-ellipsis-h aicon-1-5x"></i>
-                                                <li><?= Yii::t('app', 'More') ?> <span class="caret"></span></li>
+                                                <li>More <span class="caret"></span></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -210,7 +210,7 @@ $this->params['beforeEndBody'][] = function() {
         ',
     ]);
 
-        echo 'Anda yakin akan menghapus foto ini?';
+    echo Yii::t('app', 'Are you sure want to delete this photo?');
 
     Modal::end();
 }; ?>

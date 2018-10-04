@@ -60,7 +60,7 @@ $jscript = '
             url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post-photo']) . '",
             success: function(response) {
 
-               $(".user-post-photo").html(response);
+                $(".user-post-photo").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
 

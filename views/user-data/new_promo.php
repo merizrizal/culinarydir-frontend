@@ -64,23 +64,23 @@ $linkPager = LinkPager::widget([
             foreach ($modelBusinessPromo as $dataBusinessPromo): ?>
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
-                    <div class="box">
+                    <div class="box user">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']) ?>">
 
-                                    <?php
-                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                <?php
+                                $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                    if (!empty($dataBusinessPromo['image'])) {
+                                if (!empty($dataBusinessPromo['image'])) {
 
-                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347.333, 210.283);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
 
-                                    }
+                                }
 
-                                    echo Html::img($img); ?>
+                                $img = Html::img($img); 
+                                
+                                echo Html::a($img, ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special'])?>
 
-                                </a>
                             </div>
                         </div>
                         <div class="row">
@@ -92,9 +92,9 @@ $linkPager = LinkPager::widget([
                                                 <?= Html::a($dataBusinessPromo['business']['name'], ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']); ?>
                                             </h4>
 
-                                            <h5 class="m-0">
+                                            <small class="m-0">
                                                 <?= $dataBusinessPromo['title']; ?>
-                                            </h5>
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
