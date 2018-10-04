@@ -49,7 +49,6 @@ class UserController extends base\BaseHistoryUrlController
         if (!empty(Yii::$app->user->id) && Yii::$app->user->getIdentity()->username == Yii::$app->request->get('user')) {
 
             return $this->redirect(['user/index']);
-
         } else {
             
             $modelUser = User::find()
@@ -59,7 +58,6 @@ class UserController extends base\BaseHistoryUrlController
             return $this->render('user_profile', [
                 'modelUser' => $modelUser
             ]);
-
         }
     }
 

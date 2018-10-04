@@ -83,6 +83,8 @@ $linkPager = LinkPager::widget([
         
                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 60, 60);
                 }
+                
+                $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
@@ -116,17 +118,15 @@ $linkPager = LinkPager::widget([
         
                 $layoutUser = '
                     <div class="widget-posts-image business-image">
-                        <a href="' . Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '">
-        
-                            ' . Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']) . '
-        
-                        </a>
+
+                        ' . Html::a($img, ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
+
                     </div>
         
                     <div class="widget-posts-body business-review">
                         ' . Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
                         <br>
-                        <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
+                        <small>' . Helper::asRelativeTime($dataUserPostMain['updated_at']) . '</small>
                     </div>
                 ' ?>
         
@@ -152,7 +152,7 @@ $linkPager = LinkPager::widget([
                                 <h3 class="mt-0 mb-0">
                                     <div class="rating">
         
-                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success']); ?>
         
                                     </div>
                                 </h3>
@@ -223,7 +223,9 @@ $linkPager = LinkPager::widget([
                                             <?php
                                             if (!empty($dataUserPostMain['userPostMains'])):
         
-                                                foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
+                                                foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): 
+                                                    
+                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>
         
                                                     <li class="work-item gallery-photo-review">
                                                         <div class="gallery-item post-gallery">
@@ -235,9 +237,10 @@ $linkPager = LinkPager::widget([
         
                                                                     </div>
                                                                     <div class="work-caption">
-                                                                        <div class="work-descr"><?= !empty($dataUserPostMainChild['text']) ? $dataUserPostMainChild['text'] : '' ?></div>
                                                                         <div class="work-descr">
-                                                                            <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                        
+                                                                        	<?= Html::a('<i class="fa fa-search"></i>', $img, ['class' => "btn btn-d btn-small btn-xs btn-circle show-image"]) ?>
+                                                                        	
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -307,7 +310,7 @@ $linkPager = LinkPager::widget([
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li class="visible-xs-inline-block">
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
                                                 </li>
         
                                             <?php
@@ -325,7 +328,7 @@ $linkPager = LinkPager::widget([
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li>
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
                                                 </li>
         
                                             <?php
@@ -342,11 +345,17 @@ $linkPager = LinkPager::widget([
                                         <div class="col-sm-12">
                                             <div class="input-group mt-10 mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                                                <?= Html::textInput('comment_input', null, ['id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
+                                                
+                                                <?= Html::textInput('comment_input', null, [
+                                                    'id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 
+                                                    'class' => 'form-control', 
+                                                    'placeholder' => Yii::t('app', 'Write a Comment')                                                    
+                                                ]); ?>
+                                                
                                             </div>
         
                                             <div class="overlay" style="display: none;"></div>
-                                            <div class="loading-img" style="display: none"></div>
+                                            <div class="loading-img" style="display: none;"></div>
                                             <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
                                                 <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
         
@@ -360,19 +369,19 @@ $linkPager = LinkPager::widget([
                                                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                                                         <div class="widget">
                                                                             <div class="widget-comments-image">
-        																		<a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
         																		
-            																		<?php
-            																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-            
-                                                                                    if (!empty($dataUserPostComment['user']['image'])) {
-            
-                                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                    }
-            
-                                                                                    echo Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-                                                                                    
-                                                                                </a>
+        																		<?php
+        																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+        
+                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+        
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                }
+        
+                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                                
+                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                
                                                                             </div>
         
                                                                             <div class="widget-comments-body">
@@ -548,15 +557,17 @@ $jscript = '
             }
         });
 
-        if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
+        
+        thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function() {
 
-            thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function(){
+            if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {            
 
                 thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
-
-                return false;
-            });
-        }
+            }
+            
+            return false;
+        });
+        
 
         thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
 

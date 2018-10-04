@@ -67,19 +67,19 @@ $linkPager = LinkPager::widget([
                     <div class="box user">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
-                                <a href="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserVisit['business']['id']]) ?>">
 
-                                    <?php
-                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                <?php
+                                $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                    if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
+                                if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
 
-                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 347.333, 210.283);
-                                    }
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 347, 210);
+                                }
+                                
+                                $img = Html::img($img);
 
-                                    echo Html::img($img); ?>
+                                echo Html::a($img, ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>
 
-                                </a>
                             </div>
                         </div>
                         <div class="row">
