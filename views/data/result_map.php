@@ -75,10 +75,10 @@ $linkPager = LinkPager::widget([
 
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="box box-small place-<?= $dataBusiness['id']; ?>">
+                            <div class="box box-small place-<?= $dataBusiness['id']; ?>" role="button">
 
                                 <div class="row">
-                                    <div class="col-md-5 col-sm-6 col-xs-6 col" role="button">
+                                    <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
 
                                         <?php
                                         if (count($dataBusiness['businessImages']) > 1) {
@@ -120,18 +120,18 @@ $linkPager = LinkPager::widget([
                                                 $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
                                             }
 
-                                            echo Html::img($image, ['class' => 'img-responsive img-component']);
+                                            echo Html::img($image);
                                         } ?>
 
                                     </div>
 									
 									<?php 
-									$vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? number_format((float)$dataBusiness['businessDetail']['vote_value'], 1, '.', '') : '0.0';
+									$vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
 									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
 									
 									$layoutRatings = '
                                         <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success">' . $vote_value . '</span></h2>' .
+                                            <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($vote_value, 1) . '</span></h2>' .
                                             Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                         </div>
                                     '; ?>
@@ -151,13 +151,13 @@ $linkPager = LinkPager::widget([
                                     <div class="col-md-7 col-sm-12 col-xs-12 col">
                                         <div class="short-desc">
                                             <div class="row">
-                                                <div class="col-sm-12 col-xs-12 col" role="button">
+                                                <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="font-alt m-0"><?= $dataBusiness['name'] ?></h4>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-9 col-sm-6 col-xs-12 col">
+                                                <div class="col-md-9 col-sm-12 col-xs-12 col">
                                                     <h4 class="m-0">
 
                                                         <?php
@@ -208,9 +208,9 @@ $linkPager = LinkPager::widget([
                                                     </div>
                                                 </div>
 
-                                                <div class="visible-lg visible-md col-md-3 col text-center">
+                                                <div class="col-md-3 col visible-lg visible-md text-center">
                                                     <div class="rating pull-right">
-                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= ($vote_value); ?></span></h3>
+                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1); ?></span></h3>
                                                         <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                     </div>
                                                 </div>
@@ -258,28 +258,26 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-
-$csscript = '
-    .widget .icon-list li a::before {
-        content: none;
-    }
-
-    .detail .box {
-        padding: 0;
-    }
-
-    .in-result .box {
-        border-radius: 0px;
-    }
-';
-
-$this->registerCss($csscript);
-
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
 
-frontend\components\RatingColor::widget();
-
 $jscript = '
+    $("#pjax-result-map-container").on("pjax:send", function() {
+
+        $(".box-place").children(".overlay").show();
+        $(".box-place").children(".loading-img").show();
+    });
+
+    $("#pjax-result-map-container").on("pjax:complete", function() {
+
+        $(".box-place").children(".overlay").hide();
+        $(".box-place").children(".loading-img").hide();
+    });
+
+    $("#pjax-result-map-container").on("pjax:error", function (event) {
+
+        event.preventDefault();
+    });
+
     ratingColor($(".rating"), "span");
 
     var initMap = function() {
@@ -413,20 +411,6 @@ $jscript = '
     };
 
     initMap();
-
-    $("#pjax-result-map-container").on("pjax:send", function() {
-        $(".box-place").children(".overlay").show();
-        $(".box-place").children(".loading-img").show();
-    });
-
-    $("#pjax-result-map-container").on("pjax:complete", function() {
-        $(".box-place").children(".overlay").hide();
-        $(".box-place").children(".loading-img").hide();
-    });
-
-    $("#pjax-result-map-container").on("pjax:error", function (event) {
-        event.preventDefault();
-    });
 ';
 
 $this->registerJs($jscript);
