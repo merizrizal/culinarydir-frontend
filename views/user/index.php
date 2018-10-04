@@ -197,6 +197,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnifi
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
 frontend\components\GrowlCustom::widget();
+frontend\components\FacebookShare::widget();
 
 $this->params['beforeEndBody'][] = function() {
 
@@ -210,7 +211,7 @@ $this->params['beforeEndBody'][] = function() {
         ',
     ]);
 
-    echo Yii::t('app', 'Are you sure want to delete this photo?');
+    echo Yii::t('app', 'Are you sure want to delete this?');
 
     Modal::end();
 }; ?>

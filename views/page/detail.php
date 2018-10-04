@@ -355,7 +355,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <a href="" id="write-review-shortcut">
                                                         <ul class="text-center">
                                                             <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                            <li>Review</li>
+                                                            <li>' . Yii::t('app', 'Review') . '</li>
                                                         </ul>
                                                     </a>
                                                 </li>
@@ -533,19 +533,19 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
 
                                                             <div class="row mb-10">
                                                                 <div class="col-sm-4 col-tab-12 col-xs-12">
-                                                                    <a href="<?= Yii::$app->urlManager->createUrl(['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>">
 
-                                                                        <?php
-                                                                        $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                                                    <?php
+                                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
 
-                                                                        if (!empty($dataBusinessPromo['image'])) {
+                                                                    if (!empty($dataBusinessPromo['image'])) {
 
-                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
-                                                                        }
+                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
+                                                                    }
 
-                                                                        echo Html::img($img); ?>
+                                                                    $img = Html::img($img); 
+                                                                    
+                                                                    echo Html::a($img, ['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>
 
-                                                                    </a>
                                                                 </div>
                                                                 
                                                                 <?php
@@ -594,7 +594,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-document-edit aicon-1-5x"></i></li>
-                                                                <li>Review</li>
+                                                                <li><?= Yii::t('app', 'Review') ?></li>
                                                                 <span class="badge total-review"></span>
                                                             </ul>
                                                         </li>
