@@ -17,12 +17,14 @@ class AppComponent extends Widget {
     }
 
     public function navigation() {
+        
         return $this->render('app-component/app_navigation', array(
 
         ));
     }
 
     public function appFooter() {
+        
         return $this->render('app-component/app_footer', array(
 
         ));
@@ -36,10 +38,12 @@ class AppComponent extends Widget {
     }
 
     public function searchPopover($config = []) {
+        
         return $this->render('app-component/search_popover', ArrayHelper::merge($config, array()));
     }
 
     public function searchJsComponent() {
+        
         return $this->render('app-component/_search_js_component', array(
 
         ));
