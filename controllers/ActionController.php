@@ -123,8 +123,7 @@ class ActionController extends base\BaseController
             if (!empty($modelUserPostMain)) {
 
                 $modelUserPostLove = UserPostLove::find()
-                    ->joinWith(['userPostMain'])
-                    ->andWhere(['user_post_love.unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                    ->andWhere(['unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
                     ->one();
     
                 if (!empty($modelUserPostLove)) {
