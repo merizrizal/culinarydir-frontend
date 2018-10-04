@@ -2,10 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 use frontend\components\AppComponent;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
+/* @var $filter array */
 
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
@@ -22,11 +24,13 @@ $this->registerMetaTag([
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
-$appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
+$appComponent = new AppComponent(['showFacilityFilter' => true]);
+
+$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.jpeg'; ?>
 
 <div class="main">
 
-    <section class="module-small visible-lg visible-md visible-sm" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.jpeg' ?>">
+    <section class="module-small visible-lg visible-md visible-sm" data-background="<?= $background ?>">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
@@ -40,7 +44,7 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
         </div>
     </section>
 
-    <section class="module-small result-list-search" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.jpeg' ?>">
+    <section class="module-small result-list-search" data-background="<?= $background ?>">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -61,10 +65,9 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-7">
 
                     <?php
-                    $urlResultMap = ['result-map'];
-                    $urlResultMap = array_merge($urlResultMap, Yii::$app->request->get()); ?>
+                    $urlResultMap = ArrayHelper::merge(['result-map'], $filter); ?>
 
-                    <?= Html::a('<i class="fa fa-list"></i> List', null, ['class' => 'btn btn-round btn-d']) ?>
+                    <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d']) ?>
                     <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $urlResultMap, ['class' => 'btn btn-round btn-default']) ?>
 
                 </div>
@@ -84,15 +87,8 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
 <?= $appComponent->searchJsComponent(); ?>
 
 <?php
-$csscript = '
-    .result-list {
-        padding-top: 0;
-    }
-';
-
-$this->registerCss($csscript);
-
 frontend\components\GrowlCustom::widget();
+frontend\components\RatingColor::widget();
 
 $jscript = '
     $(".result-list-search").hide();

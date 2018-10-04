@@ -51,7 +51,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <p class="copyright font-alt">&copy; <?= Yii::$app->formatter->asDate(time(), 'yyyy') ?>?>&nbsp;<a href="<?= Yii::$app->urlManager->baseUrl ?>">Asikmakan.com</a>, All Rights Reserved</p>
+                <p class="copyright font-alt">&copy; <?= Yii::$app->formatter->asDate(time(), 'yyyy') ?> <a href="<?= Yii::$app->urlManager->baseUrl ?>">Asikmakan.com</a>, All Rights Reserved</p>
             </div>
         </div>
     </div>

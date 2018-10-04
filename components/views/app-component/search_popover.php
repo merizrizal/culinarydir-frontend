@@ -22,188 +22,189 @@ if ($popover):
         'options' => ['id' => 'popover-search', 'class' => 'popover-search'],
     ]); ?>
 
-    <div class="search-box popover-search-box">
-
-        <?= Html::beginForm(['page/result-map'], 'get', [
-            'id' => 'widget-search-map'
-        ]); ?>
-
-            <?php
-            if (empty($keyword['special'])) {
+        <div class="search-box popover-search-box">
     
-                echo Html::hiddenInput('special', 0);
-            } else if (!empty($keyword['special'])) {
+            <?= Html::beginForm(['page/result-map'], 'get', [
+                'id' => 'widget-search-map'
+            ]); ?>
     
-                echo Html::hiddenInput('special', 1);
-            } ?>
-
-            <div class="row">
-                <div class="col-sm-12 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
-                            'class' => 'form-control input-name',
-                            'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
-                        ]) ?>
-
+                <?php
+                if (empty($keyword['special'])) {
+        
+                    echo Html::hiddenInput('special', 0);
+                } else if (!empty($keyword['special'])) {
+        
+                    echo Html::hiddenInput('special', 1);
+                } ?>
+    
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
+                                    'class' => 'form-control input-name',
+                                    'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
+                                ]) ?>
+        
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::dropDownList('city_id', !empty($keyword['city']) ? $keyword['city'] : null,
-                            ArrayHelper::map(
-                                City::find()->orderBy('name')->asArray()->all(),
-                                'id',
-                                function($data) {
-                                    return $data['name'];
-                                }
-                            ),
-                            [
-                                'prompt' => '',
-                                'class' => 'form-control city-id',
-                                'style' => 'width: 100%',
-                            ]) ?>
-
+    
+                    <div class="row">
+                        <div class="col-sm-6 col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?= Html::dropDownList('city_id', !empty($keyword['city']) ? $keyword['city'] : null,
+                                    ArrayHelper::map(
+                                        City::find()->orderBy('name')->asArray()->all(),
+                                        'id',
+                                        function($data) {
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control city-id',
+                                        'style' => 'width: 100%',
+                                    ]) ?>
+        
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-6 col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?php
+                                $valueCoordinate = null;
+                                $valueRadius = null;
+                                $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                $styleRadiusLabel = null;
+        
+                                if (!empty($keyword['coordinate']) && !empty($keyword['radius'])):
+        
+                                    $valueCoordinate = $keyword['coordinate'];
+                                    $valueRadius = $keyword['radius'];
+                                    $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keyword['radius']) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                    $styleRadiusLabel = 'color: #555555;'; ?>
+        
+                                    <span class="search-field-box-clear">×</span>
+        
+                                <?php
+                                endif; ?>
+        
+                                <?= Html::hiddenInput('coordinate_map', $valueCoordinate, ['class' => 'coordinate-map']) ?>
+                                <?= Html::hiddenInput('radius_map', $valueRadius, ['class' => 'radius-map']) ?>
+                                <?= Html::a($valueRadiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+        
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?php
-                        $valueCoordinate = null;
-                        $valueRadius = null;
-                        $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                        $styleRadiusLabel = null;
-
-                        if (!empty($keyword['coordinate']) && !empty($keyword['radius'])):
-
-                            $valueCoordinate = $keyword['coordinate'];
-                            $valueRadius = $keyword['radius'];
-                            $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keyword['radius']) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                            $styleRadiusLabel = 'color: #555555;'; ?>
-
-                            <span class="search-field-box-clear">×</span>
-
-                        <?php
-                        endif; ?>
-
-                        <?= Html::hiddenInput('coordinate_map', $valueCoordinate, ['class' => 'coordinate-map']) ?>
-                        <?= Html::hiddenInput('radius_map', $valueRadius, ['class' => 'radius-map']) ?>
-                        <?= Html::a($valueRadiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
-
+    
+                    <div class="row">
+                        <div class="col-sm-6 col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?php
+                                $valueProductId = null;
+                                $valueProductLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                $styleProductLabel = null;
+        
+                                if (!empty($keyword['product'])):
+        
+                                    $valueProductId = $keyword['product']['id'];
+                                    $valueProductLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                    $styleProductLabel = 'color: #555555;'; ?>
+        
+                                    <span class="search-field-box-clear">×</span>
+        
+                                <?php
+                                endif; ?>
+        
+                                <?= Html::hiddenInput('product_category', $valueProductId, ['class' => 'product-category-id']) ?>
+                                <?= Html::a($valueProductLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+        
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-6 col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?= Html::dropDownList('category_id', !empty($keyword['category']) ? $keyword['category'] : null,
+                                    ArrayHelper::map(
+                                        Category::find()->orderBy('name')->asArray()->all(),
+                                        'id',
+                                        function($data) {
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control category-id',
+                                        'style' => 'width: 100%'
+                                    ]) ?>
+        
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?php
-                        $valueProductId = null;
-                        $valueProductLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                        $styleProductLabel = null;
-
-                        if (!empty($keyword['product'])):
-
-                            $valueProductId = $keyword['product']['id'];
-                            $valueProductLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                            $styleProductLabel = 'color: #555555;'; ?>
-
-                            <span class="search-field-box-clear">×</span>
-
-                        <?php
-                        endif; ?>
-
-                        <?= Html::hiddenInput('product_category', $valueProductId, ['class' => 'product-category-id']) ?>
-                        <?= Html::a($valueProductLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
-
+    
+                    <div class="row">
+                        <div class="col-sm-6 col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+        
+                                <?php
+                                if (empty($keyword['special'])):
+        
+                                    $valuePriceMin = !empty($keyword['price_min']) ? $keyword['price_min'] : 0;
+                                    $valuePriceMax = !empty($keyword['price_max']) ? $keyword['price_max'] : 0;
+                                    $valuePriceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                    $stylePriceLabel = null;
+        
+                                    if (!empty($keyword['price_min']) || !empty($keyword['price_max'])):
+        
+                                        $valuePriceMinLabel = ($valuePriceMin == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMin);
+                                        $valuePriceMaxLabel = ($valuePriceMax == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMax);
+                                        $valuePriceLabel = '<span class="search-field-box-placeholder">' . $valuePriceMinLabel . ' - ' . $valuePriceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                        $stylePriceLabel = 'color: #555555;'; ?>
+        
+                                        <span class="search-field-box-clear">×</span>
+        
+                                    <?php
+                                    endif; ?>
+        
+                                    <?= Html::hiddenInput('price_min', $valuePriceMin, ['class' => 'price-min'])?>
+                                    <?= Html::hiddenInput('price_max', $valuePriceMax, ['class' => 'price-max'])?>
+                                    <?= Html::a($valuePriceLabel, null, ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+        
+                                <?php
+                                endif; ?>
+        
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-3 col-tab-3 col-xs-12 col">
+        
+                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
+                            <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
+                            <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
+        
+                        </div>
+        
+                        <div class="col-sm-3 col-tab-3 col-xs-12 col">
+        
+                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-lg visible-xs']) ?>
+                            <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-tab']) ?>
+                            <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn lbl-clear visible-md visible-sm']) ?>
+        
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::dropDownList('category_id', !empty($keyword['category']) ? $keyword['category'] : null,
-                            ArrayHelper::map(
-                                Category::find()->orderBy('name')->asArray()->all(),
-                                'id',
-                                function($data) {
-                                    return $data['name'];
-                                }
-                            ),
-                            [
-                                'prompt' => '',
-                                'class' => 'form-control category-id',
-                                'style' => 'width: 100%'
-                            ]) ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?php
-                        if (empty($keyword['special'])):
-
-                            $valuePriceMin = !empty($keyword['price_min']) ? $keyword['price_min'] : 0;
-                            $valuePriceMax = !empty($keyword['price_max']) ? $keyword['price_max'] : 0;
-                            $valuePriceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                            $stylePriceLabel = null;
-
-                            if (!empty($keyword['price_min']) || !empty($keyword['price_max'])):
-
-                                $valuePriceMinLabel = ($valuePriceMin == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMin);
-                                $valuePriceMaxLabel = ($valuePriceMax == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMax);
-                                $valuePriceLabel = '<span class="search-field-box-placeholder">' . $valuePriceMinLabel . ' - ' . $valuePriceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                $stylePriceLabel = 'color: #555555;'; ?>
-
-                                <span class="search-field-box-clear">×</span>
-
-                            <?php
-                            endif; ?>
-
-                            <?= Html::hiddenInput('price_min', $valuePriceMin, ['class' => 'price-min'])?>
-                            <?= Html::hiddenInput('price_max', $valuePriceMax, ['class' => 'price-max'])?>
-                            <?= Html::a($valuePriceLabel, null, ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-
-                        <?php
-                        endif; ?>
-
-                    </div>
-                </div>
-
-                <div class="col-sm-3 col-tab-3 col-xs-12 col">
-
-                    <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
-                    <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
-                    <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
-
-                </div>
-
-                <div class="col-sm-3 col-tab-3 col-xs-12 col">
-
-                    <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-lg visible-xs']) ?>
-                    <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-tab']) ?>
-                    <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn lbl-clear visible-md visible-sm']) ?>
-
-                </div>
-            </div>
-
-        <?= Html::endForm(); ?>
-
-    </div>
+    
+            <?= Html::endForm(); ?>
+    
+        </div>
 
     <?php
     PopoverX::end();
+    
 else: ?>
 
     <div class="search-box">
@@ -221,168 +222,168 @@ else: ?>
                 echo Html::hiddenInput('special', 1);    
             } ?>
 
-            <div class="row">
-                <div class="col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::dropDownList('city_id', !empty($keyword['city']) ? $keyword['city'] : null,
-                            ArrayHelper::map(
-                                City::find()->orderBy('name')->asArray()->all(),
-                                'id',
-                                function($data) {
-                                    return $data['name'];
-                                }
-                            ),
-                            [
-                                'prompt' => '',
-                                'class' => 'form-control city-id',
-                                'style' => 'width: 100%',
-                            ]) ?>
-
-                    </div>
-                </div>
-
-                <div class="col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
-                            'class' => 'form-control input-name',
-                            'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
-                        ]) ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?php
-                        $valueProductId = null;
-                        $valueProductLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                        $styleProductLabel = null;
-
-                        if (!empty($keyword['product'])):
-
-                            $valueProductId = $keyword['product']['id'];
-                            $valueProductLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                            $styleProductLabel = 'color: #555555;'; ?>
-
-                            <span class="search-field-box-clear">×</span>
-
-                        <?php
-                        endif; ?>
-
-                        <?= Html::hiddenInput('product_category', $valueProductId, ['class' => 'product-category-id']) ?>
-                        <?= Html::a($valueProductLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
-
-                    </div>
-                </div>
-
-                <div class="col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?= Html::dropDownList('category_id', !empty($keyword['category']) ? $keyword['category'] : null,
-                            ArrayHelper::map(
-                                Category::find()->orderBy('name')->asArray()->all(),
-                                'id',
-                                function($data) {
-                                    return $data['name'];
-                                }
-                            ),
-                            [
-                                'prompt' => '',
-                                'class' => 'form-control category-id',
-                                'style' => 'width: 100%'
-                            ]) ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <?php
-                if (empty($keyword['special'])): ?>
-
+                <div class="row">
                     <div class="col-tab-6 col-xs-12 col">
                         <div class="form-group">
-
-                                <?php
-                                $valuePriceMin = !empty($keyword['price_min']) ? $keyword['price_min'] : 0;
-                                $valuePriceMax = !empty($keyword['price_max']) ? $keyword['price_max'] : 0;
-                                $valuePriceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                $stylePriceLabel = null;
-
-                                if (!empty($keyword['price_min']) || !empty($keyword['price_max'])):
-
-                                    $valuePriceMinLabel = ($valuePriceMin == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMin);
-                                    $valuePriceMaxLabel = ($valuePriceMax == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMax);
-                                    $valuePriceLabel = '<span class="search-field-box-placeholder">' . $valuePriceMinLabel . ' - ' . $valuePriceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                    $stylePriceLabel = 'color: #555555;'; ?>
-
-                                    <span class="search-field-box-clear">×</span>
-
-                                <?php
-                                endif; ?>
-
-                                <?= Html::hiddenInput('price_min', $valuePriceMin, ['class' => 'price-min'])?>
-                                <?= Html::hiddenInput('price_max', $valuePriceMax, ['class' => 'price-max'])?>
-                                <?= Html::a($valuePriceLabel, null, ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-
+    
+                            <?= Html::dropDownList('city_id', !empty($keyword['city']) ? $keyword['city'] : null,
+                                ArrayHelper::map(
+                                    City::find()->orderBy('name')->asArray()->all(),
+                                    'id',
+                                    function($data) {
+                                        return $data['name'];
+                                    }
+                                ),
+                                [
+                                    'prompt' => '',
+                                    'class' => 'form-control city-id',
+                                    'style' => 'width: 100%',
+                                ]) ?>
+    
                         </div>
                     </div>
-
-                <?php
-                endif; ?>
-
-                <div class="col-tab-6 col-xs-12 col">
-                    <div class="form-group">
-
-                        <?php
-                        $valueCoordinate = null;
-                        $valueRadius = null;
-                        $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                        $styleRadiusLabel = null;
-
-                        if (!empty($keyword['coordinate']) && !empty($keyword['radius'])):
-
-                            $valueCoordinate = $keyword['coordinate'];
-                            $valueRadius = $keyword['radius'];
-                            $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keyword['radius']) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                            $styleRadiusLabel = 'color: #555555;'; ?>
-
-                            <span class="search-field-box-clear">×</span>
-
-                        <?php
-                        endif; ?>
-
-                        <?= Html::hiddenInput('coordinate_map', $valueCoordinate, ['class' => 'coordinate-map']) ?>
-                        <?= Html::hiddenInput('radius_map', $valueRadius, ['class' => 'radius-map']) ?>
-                        <?= Html::a($valueRadiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
-
+    
+                    <div class="col-tab-6 col-xs-12 col">
+                        <div class="form-group">
+    
+                            <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
+                                'class' => 'form-control input-name',
+                                'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
+                            ]) ?>
+    
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12 col">
-
-                    <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
-                    <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
-                    <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
-
+                <div class="row">
+                    <div class="col-tab-6 col-xs-12 col">
+                        <div class="form-group">
+    
+                            <?php
+                            $valueProductId = null;
+                            $valueProductLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                            $styleProductLabel = null;
+    
+                            if (!empty($keyword['product'])):
+    
+                                $valueProductId = $keyword['product']['id'];
+                                $valueProductLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                $styleProductLabel = 'color: #555555;'; ?>
+    
+                                <span class="search-field-box-clear">×</span>
+    
+                            <?php
+                            endif; ?>
+    
+                            <?= Html::hiddenInput('product_category', $valueProductId, ['class' => 'product-category-id']) ?>
+                            <?= Html::a($valueProductLabel, null, ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+    
+                        </div>
+                    </div>
+    
+                    <div class="col-tab-6 col-xs-12 col">
+                        <div class="form-group">
+    
+                            <?= Html::dropDownList('category_id', !empty($keyword['category']) ? $keyword['category'] : null,
+                                ArrayHelper::map(
+                                    Category::find()->orderBy('name')->asArray()->all(),
+                                    'id',
+                                    function($data) {
+                                        return $data['name'];
+                                    }
+                                ),
+                                [
+                                    'prompt' => '',
+                                    'class' => 'form-control category-id',
+                                    'style' => 'width: 100%'
+                                ]) ?>
+    
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-xs-12 col">
-
-                    <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-lg visible-xs']) ?>
-                    <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-tab']) ?>
-                    <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn lbl-clear visible-md visible-sm']) ?>
-
+                <div class="row">
+    
+                    <?php
+                    if (empty($keyword['special'])): ?>
+    
+                        <div class="col-tab-6 col-xs-12 col">
+                            <div class="form-group">
+    
+                                    <?php
+                                    $valuePriceMin = !empty($keyword['price_min']) ? $keyword['price_min'] : 0;
+                                    $valuePriceMax = !empty($keyword['price_max']) ? $keyword['price_max'] : 0;
+                                    $valuePriceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                    $stylePriceLabel = null;
+    
+                                    if (!empty($keyword['price_min']) || !empty($keyword['price_max'])):
+    
+                                        $valuePriceMinLabel = ($valuePriceMin == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMin);
+                                        $valuePriceMaxLabel = ($valuePriceMax == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($valuePriceMax);
+                                        $valuePriceLabel = '<span class="search-field-box-placeholder">' . $valuePriceMinLabel . ' - ' . $valuePriceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                        $stylePriceLabel = 'color: #555555;'; ?>
+    
+                                        <span class="search-field-box-clear">×</span>
+    
+                                    <?php
+                                    endif; ?>
+    
+                                    <?= Html::hiddenInput('price_min', $valuePriceMin, ['class' => 'price-min'])?>
+                                    <?= Html::hiddenInput('price_max', $valuePriceMax, ['class' => 'price-max'])?>
+                                    <?= Html::a($valuePriceLabel, null, ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+    
+                            </div>
+                        </div>
+    
+                    <?php
+                    endif; ?>
+    
+                    <div class="col-tab-6 col-xs-12 col">
+                        <div class="form-group">
+    
+                            <?php
+                            $valueCoordinate = null;
+                            $valueRadius = null;
+                            $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                            $styleRadiusLabel = null;
+    
+                            if (!empty($keyword['coordinate']) && !empty($keyword['radius'])):
+    
+                                $valueCoordinate = $keyword['coordinate'];
+                                $valueRadius = $keyword['radius'];
+                                $valueRadiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keyword['radius']) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+                                $styleRadiusLabel = 'color: #555555;'; ?>
+    
+                                <span class="search-field-box-clear">×</span>
+    
+                            <?php
+                            endif; ?>
+    
+                            <?= Html::hiddenInput('coordinate_map', $valueCoordinate, ['class' => 'coordinate-map']) ?>
+                            <?= Html::hiddenInput('radius_map', $valueRadius, ['class' => 'radius-map']) ?>
+                            <?= Html::a($valueRadiusLabel, null, ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+    
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col">
+    
+                        <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-lg visible-xs']) ?>
+                        <?= Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search visible-tab']) ?>
+                        <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-block btn-round btn-d btn-search visible-md visible-sm']) ?>
+    
+                    </div>
+    
+                    <div class="col-xs-12 col">
+    
+                        <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-lg visible-xs']) ?>
+                        <?= Html::a('<i class="fa fa-times"></i> Clear', null, ['class' => 'btn lbl-clear visible-tab']) ?>
+                        <?= Html::a('<i class="fa fa-times"></i>', null, ['class' => 'btn lbl-clear visible-md visible-sm']) ?>
+    
+                    </div>
+                </div>
 
         <?= Html::endForm(); ?>
 

@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\web\JsExpression;
 use yii\helpers\StringHelper;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
@@ -14,25 +13,31 @@ use kartik\rating\StarRating;
                 <div class="head">
                     <div class="row">
                         <div class="user-photo col-lg-3 col-xs-3">
-                            <a href="<?= Yii::$app->urlManager->createUrl(['/user/user-profile', 'user' => $model['user']['username']]); ?>">
-
-                                <?= Html::img(Yii::getAlias('@uploadsUrl') . (!empty($model['user']['image']) ? Tools::thumb('/img/user/', $model['user']['image'], 100, 100) : '/img/user/default-avatar.png'), [
-                                    'class' => 'img-responsive img-circle img-profile-thumb img-component',
-                                    'height' => 50,
-                                    'width' => 50
-                                ]) ?>
-
-                            </a>
+                        
+                        	<?php 
+                        	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png'; 
+                        	
+                        	if (!empty($model['user']['image'])) {
+                        	    
+                        	    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $model['user']['image'], 100, 100);
+                        	}
+                        	
+                        	echo Html::a(Html::img($img, [
+                        	    'class' => 'img-responsive img-circle img-profile-thumb img-component',
+                        	    'height' => 50,
+                        	    'width' => 50
+                        	]), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
+                        	
                         </div>
                         <div class="user-name col-lg-9 col-xs-9">
                             <div class="full-name">
 
-                                <?= Html::a($model['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $model['user']['username']])); ?>
+                                <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
 
                             </div>
                             <div class="created-at">
 
-                                <small><?= Yii::$app->formatter->asDate($model['created_at'], 'medium'); ?></small>
+                                <small><?= Yii::$app->formatter->asDate($model['updated_at'], 'medium'); ?></small>
 
                             </div>
                         </div>
@@ -46,16 +51,17 @@ use kartik\rating\StarRating;
                             $img = Yii::$app->urlManager->baseUrl . '/media/img/360x135.283no-image-available.jpg';
 
                             if (!empty($model['userPostMains'][0]['image'])) {
+                                
                                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 360, 135);
-                            } ?>
+                            }
 
-                            <?= Html::a(Html::img($img, ['class' => 'img-responsive img-component']), Yii::$app->urlManager->createUrl(['page/review', 'id' => $model['id']])); ?>
+                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), ['page/review', 'id' => $model['id']]); ?>
 
                         </div>
                     </div>
                 </div>
                 <div class="post-header">
-                    <div class="row buttons">
+                    <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <ul class="list-inline mt-0 mb-10">
                                 <li>
@@ -70,7 +76,7 @@ use kartik\rating\StarRating;
                                 </li>
                                 <li>
 
-                                    <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', null, ['id' => 'share-feature', 'class' => 'share-feature-' . $model['id'] . '-trigger']); ?></small>
+                                    <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['id' => 'share-feature', 'class' => 'share-feature-' . $model['id'] . '-trigger']); ?></small>
 
                                 </li>
                             </ul>
@@ -80,7 +86,7 @@ use kartik\rating\StarRating;
                         <div class="col-sm-12 col-xs-12 col">
                             <h5 class="font-alt m-0 business-name">
 
-                                <?= Html::a($model['business']['name'], Yii::$app->urlManager->createUrl(['page/detail', 'id' => $model['business']['id']])); ?>
+                                <?= Html::a($model['business']['name'], ['page/detail', 'id' => $model['business']['id']]); ?>
 
                             </h5>
                         </div>
@@ -99,14 +105,11 @@ use kartik\rating\StarRating;
                                 echo StarRating::widget([
                                     'id' => 'rating-' . $model['id'],
                                     'name' => 'rating_' . $model['id'],
-                                    'value' => !empty($ratingValue) ? $ratingValue : 0,
+                                    'value' => $ratingValue,
                                     'pluginOptions' => [
                                         'displayOnly' => true,
                                         'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                         'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                        'captionElement' => '.rating-' . strtolower($model['id']),
-                                        'starCaptions' => new JsExpression('function(val){return val == 0 ? "0 &nbsp;&nbsp;&nbsp; vote" : val + " &nbsp;&nbsp;&nbsp; votes";}'),
-                                        'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
                                     ]
                                 ]); ?>
 
@@ -114,7 +117,7 @@ use kartik\rating\StarRating;
                         </div>
                         <div class="col-lg-8 col-tab-6 col-sm-7 col-xs-7 col pb-10">
                             <div class="rating rating-<?= $model['id']; ?>">
-                                <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format((float) $ratingValue, 1, '.', '') ?></span></h4>
+                                <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format($ratingValue, 1) ?></span></h4>
                             </div>
                         </div>
                     </div>
@@ -124,11 +127,7 @@ use kartik\rating\StarRating;
                         <div class="col-sm-12 col-xs-12">
 
                             <?php
-                            $textReview = '';
-                            if (!empty($model['text'])) {
-
-                                $textReview = StringHelper::truncate($model['text'], 85, '. . .') . '<br>';
-                            }
+                            $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 85, '. . .') . '<br>' : '';
 
                             $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
 
@@ -143,9 +142,6 @@ use kartik\rating\StarRating;
 </div>
 
 <?php
-frontend\components\RatingColor::widget();
-frontend\components\FacebookShare::widget();
-
 $jscript = '
     ratingColor($(".rating-' . $model['id'] . '"), "span");
 

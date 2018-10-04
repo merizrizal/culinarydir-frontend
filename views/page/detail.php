@@ -57,7 +57,8 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                         'price_min' => !empty($flashKeyword['price_min']) ? $flashKeyword['price_min'] : '',
                         'price_max' => !empty($flashKeyword['price_max']) ? $flashKeyword['price_max'] : '',
                         'coordinate_map' => !empty($flashKeyword['coordinate']) ? $flashKeyword['coordinate'] : '',
-                        'radius_map' => !empty($flashKeyword['radius']) ? $flashKeyword['radius'] : ''
+                        'radius_map' => !empty($flashKeyword['radius']) ? $flashKeyword['radius'] : '',
+                        'facility_id' => !empty($flashKeyword['facility']) ? $flashKeyword['facility'] : ''
                     ]) ?>
 
                 </div>
@@ -805,14 +806,14 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::begin([
         'header' => Yii::t('app', 'Confirmation'),
         'id' => 'modal-confirmation',
-        'size' => Modal::SIZE_SMALL,
+        'size' => Modal::SIZE_DEFAULT,
         'footer' => '
             <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
             <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>
         ',
     ]);
 
-        echo Yii::t('app', 'Are you sure want to delete this photo?');
+        echo Yii::t('app', 'Are you sure want to delete this?');
 
     Modal::end();
 };

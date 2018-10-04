@@ -81,13 +81,9 @@ class UserActionController extends base\BaseController
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
-        $prevData = [];
-        
         $modelUserPostMain = UserPostMain::find()
             ->andWhere(['id' => $id])
             ->one();
-        
-        $prevData['prevLoveValue'] = $modelUserPostMain->love_value;
 
         $modelUserPostMain->is_publish = false;
         $modelUserPostMain->love_value = 0;
@@ -126,10 +122,10 @@ class UserActionController extends base\BaseController
             }
         }
         
-        if ($flag) {
-            
-            $prevData['prevUserVote'] = [];
-            $prevUserVoteTotal = 0;
+        $userVoteTotal = 0;
+        $userVote = [];
+        
+        if ($flag) {                      
             
             $modelUserVotes = UserVote::find()
                 ->andWhere(['user_post_main_id' => $id])
@@ -137,8 +133,8 @@ class UserActionController extends base\BaseController
             
             foreach ($modelUserVotes as $modelUserVote) {
                 
-                $prevData['prevUserVote'][$modelUserVote->rating_component_id] = $modelUserVote->vote_value;
-                $prevUserVoteTotal += $modelUserVote->vote_value;
+                $userVoteTotal += $modelUserVote->vote_value;
+                $userVote[$modelUserVote->rating_component_id] = $modelUserVote->vote_value;
                 
                 $modelUserVote->vote_value = 0;
                 
@@ -154,9 +150,9 @@ class UserActionController extends base\BaseController
                 ->andWhere(['business_id' => $modelUserPostMain->business_id])
                 ->one();
 
-            $modelBusinessDetail->total_vote_points -= $prevUserVoteTotal;
+            $modelBusinessDetail->total_vote_points -= $userVoteTotal;
             $modelBusinessDetail->voters -= 1;
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevData['prevUserVote']);
+            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($modelUserVotes);
             $modelBusinessDetail->vote_value = !empty($modelBusinessDetail->voters) ? $modelBusinessDetail->vote_points / $modelBusinessDetail->voters : 0;
             
             $flag = $modelBusinessDetail->save();
@@ -164,7 +160,7 @@ class UserActionController extends base\BaseController
         
         if ($flag) {
             
-            foreach ($prevData['prevUserVote'] as $ratingComponentId => $votePoint) {
+            foreach ($userVote as $ratingComponentId => $votePoint) {
                 
                 $modelBusinessDetailVote = BusinessDetailVote::find()
                     ->andWhere(['business_id' => $modelUserPostMain->business_id])
@@ -179,8 +175,6 @@ class UserActionController extends base\BaseController
                 }
             }
         }
-        
-        Yii::$app->session->setFlash('prevData' . $id, $prevData);
         
         $result = [];
         
@@ -199,135 +193,6 @@ class UserActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Gagal';
             $result['message'] = 'Review gagal dihapus';
-            $result['type'] = 'danger';
-        }
-        
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        return $result;
-    }
-    
-    public function actionUndoUserPost($id)
-    {
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
-        
-        $prevData = Yii::$app->session->getFlash('prevData' . $id);
-        
-        $modelUserPostMain = UserPostMain::find()
-            ->andWhere(['id' => $id])
-            ->one();
-        
-        $modelUserPostMain->is_publish = true;
-        $modelUserPostMain->love_value = !empty($prevData['prevLoveValue']) ? $prevData['prevLoveValue'] : 0;
-        
-        $flag = $modelUserPostMain->save();
-        
-        if ($flag) {
-            
-            $modelUserPostMainPhotos = UserPostMain::find()
-                ->andWhere(['parent_id' => $id])
-                ->all();
-            
-            foreach ($modelUserPostMainPhotos as $modelUserPostMainPhoto) {
-                
-                $modelUserPostMainPhoto->is_publish = true;
-                
-                if (!($flag = $modelUserPostMainPhoto->save())) {
-                    break;
-                }
-            }
-        }
-        
-        if ($flag) {
-            
-            $modelUserPostLoves = UserPostLove::find()
-                ->andWhere(['user_post_main_id' => $id])
-                ->all();
-            
-            foreach ($modelUserPostLoves as $modelUserPostLove) {
-                
-                $modelUserPostLove->is_active = true;
-                
-                if (!($flag = $modelUserPostLove->save())) {
-                    break;
-                }
-            }
-        }
-        
-        if ($flag) {
-            
-            $flag = false;
-            $prevUserVoteTotal = 0;
-            
-            if (!empty($prevData['prevUserVote'])) {
-                
-                foreach ($prevData['prevUserVote'] as $ratingComponentId => $voteValue) {
-                    
-                    $modelUserVote = UserVote::find()
-                        ->andWhere(['user_post_main_id' => $id])
-                        ->andWhere(['rating_component_id' => $ratingComponentId])
-                        ->one();
-                    
-                    $prevUserVoteTotal += $voteValue;
-                    
-                    $modelUserVote->vote_value = $voteValue;
-                    
-                    if (!($flag = $modelUserVote->save())) {
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if ($flag) {
-
-            $modelBusinessDetail = BusinessDetail::find()
-                ->andWhere(['business_id' => $modelUserPostMain->business_id])
-                ->one();
-            
-            $modelBusinessDetail->total_vote_points += $prevUserVoteTotal;
-            $modelBusinessDetail->voters += 1;
-            $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($prevData['prevUserVote']);
-            $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
-
-            $flag = $modelBusinessDetail->save();
-        }
-        
-        if ($flag) {
-
-            foreach ($prevData['prevUserVote'] as $ratingComponentId => $votePoint) {
-                
-                $modelBusinessDetailVote = BusinessDetailVote::find()
-                    ->andWhere(['business_id' => $modelUserPostMain->business_id])
-                    ->andWhere(['rating_component_id' => $ratingComponentId])
-                    ->one();
-                
-                $modelBusinessDetailVote->total_vote_points += $votePoint;
-                $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
-                
-                if (!($flag = $modelBusinessDetailVote->save())) {
-                    break;
-                }
-            }
-        }
-        
-        $result = [];
-        
-        if ($flag) {
-            
-            $transaction->commit();
-            
-            $result['success'] = true;
-            $result['publish'] = $modelUserPostMain->is_publish;
-            $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
-        } else {
-            
-            $transaction->rollBack();
-            
-            $result['success'] = false;
-            $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Gagal';
-            $result['message'] = 'Review gagal dikembalikan';
             $result['type'] = 'danger';
         }
         
