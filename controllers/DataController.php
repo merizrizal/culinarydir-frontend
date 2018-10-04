@@ -295,7 +295,6 @@ class DataController extends base\BaseController
             }
 
             if (!empty($get['facility_id'])) {
-                //print_r($get['facility_id']);exit;
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
             }
