@@ -505,13 +505,13 @@ $jscript = '
 
                         if (response.success) {
 
-                            $("#input-" + response.user_post_main_id + "-comments-review").val("");
+                            $("#input-" + thisObj.val() + "-comments-review").val("");
 
                             $.ajax({
                                 cache: false,
                                 type: "POST",
                                 data: {
-                                    "user_post_main_id": response.user_post_main_id
+                                    "user_post_main_id": thisObj.val()
                                 },
                                 url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                                 success: function(response) {
@@ -528,8 +528,8 @@ $jscript = '
                             messageResponse(response.icon, response.title, response.message, response.type);
                         }
 
-                        $(".comment-" + response.user_post_main_id + "-section").siblings(".overlay").hide();
-                        $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
+                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").hide();
+                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").hide();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
 

@@ -69,16 +69,28 @@ class ActionController extends base\BaseController
     public function actionSubmitComment()
     {
         if (!empty(($post = Yii::$app->request->post()))) {
+            
+            $flag = false;
+            
+            $modelUserPostMain = UserPostMain::find()
+                ->andWhere(['id' => $post['user_post_main_id']])
+                ->andWhere(['is_publish' => true])
+                ->asArray()->one();
+            
+            if (!empty($modelUserPostMain)) {
 
-            $modelUserPostComment = new UserPostComment();
-
-            $modelUserPostComment->user_post_main_id = $post['user_post_main_id'];
-            $modelUserPostComment->user_id = Yii::$app->user->getIdentity()->id;
-            $modelUserPostComment->text = $post['text'];
+                $modelUserPostComment = new UserPostComment();
+    
+                $modelUserPostComment->user_post_main_id = $post['user_post_main_id'];
+                $modelUserPostComment->user_id = Yii::$app->user->getIdentity()->id;
+                $modelUserPostComment->text = $post['text'];
+                
+                $flag = $modelUserPostComment->save();
+            }
 
             $result = [];
 
-            if ($modelUserPostComment->save()) {
+            if ($flag) {
 
                 $result['success'] = true;
                 $result['user_post_main_id'] = $modelUserPostComment->user_post_main_id;
@@ -102,44 +114,48 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
-
-            $modelUserPostLove = UserPostLove::find()
-                ->joinWith(['userPostMain'])
-                ->andWhere(['user_post_love.unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
+            
+            $modelUserPostMain = UserPostMain::find()
+                ->andWhere(['id' => $post['user_post_main_id']])
+                ->andWhere(['is_publish' => true])
                 ->one();
+            
+            if (($flag = !empty($modelUserPostMain))) {
 
-            if (!empty($modelUserPostLove)) {
-
-                $modelUserPostLove->is_active = !$modelUserPostLove->is_active;
-
-                $flag = $modelUserPostLove->save();
-            } else {
-
-                $modelUserPostLove = new UserPostLove();
-
-                $modelUserPostLove->user_post_main_id = $post['user_post_main_id'];
-                $modelUserPostLove->user_id = Yii::$app->user->getIdentity()->id;
-                $modelUserPostLove->is_active = true;
-                $modelUserPostLove->unique_id = $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id;
-
-                $flag = $modelUserPostLove->save();
-            }
-
-            if ($flag) {
-
-                $modelUserPostMain = UserPostMain::find()
-                    ->andWhere(['id' => $post['user_post_main_id']])
+                $modelUserPostLove = UserPostLove::find()
+                    ->joinWith(['userPostMain'])
+                    ->andWhere(['user_post_love.unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
                     ->one();
-
-                if ($modelUserPostLove->is_active) {
-
-                    $modelUserPostMain->love_value = $modelUserPostMain->love_value + 1;
+    
+                if (!empty($modelUserPostLove)) {
+    
+                    $modelUserPostLove->is_active = !$modelUserPostLove->is_active;
+    
+                    $flag = $modelUserPostLove->save();
                 } else {
-
-                    $modelUserPostMain->love_value = $modelUserPostMain->love_value - 1;
+    
+                    $modelUserPostLove = new UserPostLove();
+    
+                    $modelUserPostLove->user_post_main_id = $post['user_post_main_id'];
+                    $modelUserPostLove->user_id = Yii::$app->user->getIdentity()->id;
+                    $modelUserPostLove->is_active = true;
+                    $modelUserPostLove->unique_id = $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id;
+    
+                    $flag = $modelUserPostLove->save();
                 }
-
-                $flag = $modelUserPostMain->save();
+                
+                if ($flag) {
+                    
+                    if ($modelUserPostLove->is_active) {
+                        
+                        $modelUserPostMain->love_value = $modelUserPostMain->love_value + 1;
+                    } else {
+                        
+                        $modelUserPostMain->love_value = $modelUserPostMain->love_value - 1;
+                    }
+                    
+                    $flag = $modelUserPostMain->save();
+                }
             }
 
             $result = [];
