@@ -110,20 +110,20 @@ if (!empty($modelUserPostMain)):
 
         ksort($ratingComponent);
         krsort($userReviewComment);
+        
+        $img = Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']);
 
         $layoutUser = '
             <div class="widget-posts-image">
-                <a href="' . Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '">
 
-                    ' . Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) . '
+                ' . Html::a($img, ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
 
-                </a>
             </div>
 
             <div class="widget-posts-body">
                 ' . Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
                 <br>
-                <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
+                <small>' . Helper::asRelativeTime($dataUserPostMain['updated_at']) . '</small>
             </div>
         '; ?>
 
@@ -337,19 +337,19 @@ if (!empty($modelUserPostMain)):
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <div class="widget">
                                                         <div class="widget-comments-image">
-                                                            <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
 
-                                                                <?php
-                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                                            <?php
+                                                            $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-                                                                if (!empty($dataUserPostComment['user']['image'])) {
+                                                            if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                }
+                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                            }
 
-                                                                echo Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-
-                                                            </a>
+                                                            $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); 
+                                                            
+                                                            echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                            
                                                         </div>
 
                                                         <div class="widget-comments-body">
