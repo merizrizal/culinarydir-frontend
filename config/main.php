@@ -18,7 +18,7 @@ return [
     'container' => [
         'definitions' => [
             'yii\data\Pagination' => [
-                'pageSize' => 21
+                'pageSize' => 1
             ]
         ],
     ],

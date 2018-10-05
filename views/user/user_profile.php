@@ -125,7 +125,6 @@ $this->registerMetaTag([
     </section>
 
 </div>
-<div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up fa-2x"></i></a></div>
 
 <?php
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);

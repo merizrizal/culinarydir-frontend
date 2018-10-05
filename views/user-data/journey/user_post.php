@@ -118,9 +118,7 @@ $linkPager = LinkPager::widget([
         
                 $layoutUser = '
                     <div class="widget-posts-image business-image">
-
                         ' . Html::a($img, ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
-
                     </div>
         
                     <div class="widget-posts-body business-review">
@@ -149,13 +147,11 @@ $linkPager = LinkPager::widget([
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-3">
         
-                                <h3 class="mt-0 mb-0">
-                                    <div class="rating">
-        
-                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success']); ?>
-        
-                                    </div>
-                                </h3>
+        						<div class="rating">
+                                	<h3 class="mt-0 mb-0">                                    
+                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success']); ?>                                    
+                                	</h3>
+                                </div>
         
                                 <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
                                     <div class="arrow"></div>
@@ -356,8 +352,9 @@ $linkPager = LinkPager::widget([
         
                                             <div class="overlay" style="display: none;"></div>
                                             <div class="loading-img" style="display: none;"></div>
+                                            
                                             <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
-                                                <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
+                                                <div class="comment-container">
         
                                                     <?php
                                                     if (!empty($userReviewComment)):

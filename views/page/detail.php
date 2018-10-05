@@ -823,6 +823,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/
 
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
+frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
