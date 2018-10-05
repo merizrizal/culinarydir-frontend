@@ -252,7 +252,7 @@ class ActionController extends base\BaseController
             $flag = false;
 
             $modelUserLove = UserLove::find()
-                ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                ->andWhere(['unique_id' => Yii::$app->user->getIdentity()->id . '-' . $post['business_id']])
                 ->one();
 
             if (!empty($modelUserLove)) {
@@ -265,7 +265,7 @@ class ActionController extends base\BaseController
                 $modelUserLove->business_id = $post['business_id'];
                 $modelUserLove->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserLove->is_active = true;
-                $modelUserLove->unique_id = $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id;
+                $modelUserLove->unique_id = Yii::$app->user->getIdentity()->id . '-' . $post['business_id'];
             }
 
             if (($flag = $modelUserLove->save())) {
@@ -317,7 +317,7 @@ class ActionController extends base\BaseController
             $flag = false;
 
             $modelUserVisit = UserVisit::find()
-                ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                ->andWhere(['unique_id' => Yii::$app->user->getIdentity()->id . '-' . $post['business_id']])
                 ->one();
 
             if (!empty($modelUserVisit)) {
@@ -330,7 +330,7 @@ class ActionController extends base\BaseController
                 $modelUserVisit->business_id = $post['business_id'];
                 $modelUserVisit->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserVisit->is_active = true;
-                $modelUserVisit->unique_id = $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id;
+                $modelUserVisit->unique_id = Yii::$app->user->getIdentity()->id . '-' . $post['business_id'];
             }
 
             if (($flag = $modelUserVisit->save())) {

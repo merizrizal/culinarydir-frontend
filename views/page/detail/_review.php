@@ -189,9 +189,12 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         	    
                         	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
                         	    $commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
-                        	    $photoSpanCount = '<span class="my-total-photos-review">#</span>'; 
+                        	    $photoSpanCount = '<span class="my-total-photos-review">#</span>';
                         	    
-                        	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
+                        	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
+                        	    
+                        	    $editBtn = Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); 
+                        	    $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
     
                                 <div class="row visible-xs">
                                     <div class="col-xs-3">
@@ -229,20 +232,20 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
                                             </li>
                                             <li class="visible-xs-inline-block">
-                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
+                                                <?= $editBtn ?>
                                             </li>
                                             <li class="visible-xs-inline-block">
-                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                                <?= $deleteBtn ?>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
+                                                <?= $editBtn ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                                                <?= $deleteBtn ?>
                                             </li>
                                         </ul>
                                     </div>
@@ -283,19 +286,19 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                                                         <div class="widget">
                                                                             <div class="widget-comments-image">
-                                                                                <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
     
-                                                                                    <?php
-                                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-    
-                                                                                    if (!empty($dataUserPostComment['user']['image'])) {
-    
-                                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                    }
-    
-                                                                                    echo Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-    
-                                                                                </a>
+                                                                                <?php
+                                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                }
+
+                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                                
+                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                    
                                                                             </div>
     
                                                                             <div class="widget-comments-body">

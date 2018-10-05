@@ -261,7 +261,10 @@ $linkPager = LinkPager::widget([
                                 $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
                                 $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
                                 
-                                $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : 0; ?>
+                                $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : 0; 
+                                
+                                $shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']);
+                                $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']); ?>
         
                                 <div class="row visible-xs">
                                     <div class="col-xs-3">
@@ -299,14 +302,14 @@ $linkPager = LinkPager::widget([
                             					<?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
                                             </li>
                                             <li class="visible-xs-inline-block">
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+                                                <?= $shareBtn ?>
                                             </li>
                                             
                                             <?php
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li class="visible-xs-inline-block">
-                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= $deleteBtn ?>
                                                 </li>
         
                                             <?php
@@ -317,14 +320,14 @@ $linkPager = LinkPager::widget([
                                     <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+                                                <?= $shareBtn ?>
                                             </li>
         
                                             <?php
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li>
-                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= $deleteBtn ?>
                                                 </li>
         
                                             <?php

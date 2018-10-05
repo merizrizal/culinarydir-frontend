@@ -83,7 +83,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-icon-been-there-fill-1 aicon-1-5x"></i>
-                                                <li><?= Yii::t('app', 'Journey') ?></li>
+                                                <li>Journey</li>
                                             </ul>
                                         </li>
                                     </ul>
