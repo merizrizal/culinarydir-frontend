@@ -33,7 +33,8 @@ $jscript = '
                     
                     $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this photo?') . '");
                     $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
-            
+                    
+                    $("#modal-confirmation").find("#btn-delete").off("click");
                     $("#modal-confirmation").find("#btn-delete").on("click", function() {
             
                         $.ajax({

@@ -191,6 +191,8 @@ $jscript = '
                     
                                         var totalUserPost = parseInt($(".total-user-post").html());
                                         $(".total-user-post").html(totalUserPost - 1);
+
+                                        messageResponse(response.icon, response.title, response.message, response.type);
                                     } else {
                     
                                         messageResponse(response.icon, response.title, response.message, response.type);
