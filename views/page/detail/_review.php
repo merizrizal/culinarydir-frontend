@@ -332,7 +332,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                 <div class="form-group has-feedback <?= !empty($modelUserPostMain) ? 'hidden' : '' ?>" id="write-review-trigger">
                     <i class="fa fa-pencil-alt form-control-feedback"></i>
-                    <input type="text" class="form-control" placeholder=<?= Yii::t('app', 'Share your experience here') ?>/>
+                    <input type="text" class="form-control" placeholder="<?= Yii::t('app', 'Share your experience here') ?>"/>
                 </div>
 
                 <?php
@@ -855,6 +855,8 @@ $jscript = '
 
                             $("#write-review-trigger").removeClass("hidden");
                         });
+
+                        messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
     
                         messageResponse(response.icon, response.title, response.message, response.type);
