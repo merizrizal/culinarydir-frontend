@@ -98,7 +98,7 @@ $jspopover = ''; ?>
                                             $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
                                         }
 
-                                        echo Html::img($image, ['class' => 'img-responsive img-component']); ?>
+                                        echo Html::img($image); ?>
 
                                     </div>
                                     <div class="col-md-7 col-sm-12 col-tab-6 col-xs-12 col">
@@ -116,7 +116,7 @@ $jspopover = ''; ?>
                                             </div>
 
                                             <div class="row mt-10">
-                                                <div class="col-md-9 col-sm-12 col-xs-12 col">
+                                                <div class="col-sm-12 col-xs-12 col">
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li class="tag">
@@ -200,31 +200,31 @@ $jspopover = ''; ?>
 </div>
 
 <?php
-
-$csscript = '
-    .widget .icon-list li a::before {
-        content: none;
-    }
-
-    .detail .box {
-        padding: 0;
-    }
-
-    .in-result .box {
-        border-radius: 0px;
-    }
-
-    a.popover-tag:hover,
-    a.popover-tag:focus {
-        color: #111;
-    }
-';
-
-$this->registerCss($csscript);
-
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
+    $("#pjax-result-map-container").on("pjax:send", function() {
+
+        $(".box-place").children(".overlay").show();
+        $(".box-place").children(".loading-img").show();
+    });
+
+    $("#pjax-result-map-container").on("pjax:complete", function() {
+
+        $(".box-place").children(".overlay").hide();
+        $(".box-place").children(".loading-img").hide();
+    });
+
+    $("#pjax-result-map-container").on("pjax:error", function (event) {
+
+        event.preventDefault();
+    });
+
+    $(".popover-tag").on("click", function() {
+
+        return false;
+    });
+
     var initMap = function() {
 
         var mapResult;
@@ -301,10 +301,10 @@ $jscript = '
 
                         infoWindowContent[keyCoordinate] +=
                             "<div class=\"row\">" +
-                                "<div class=\"col-sm-6 hidden-xs\">" +
+                                "<div class=\"col-sm-5 hidden-xs\">" +
                                     "<img src=\"" + value.businessPromoImage + "\" width=\"100%\">" +
                                 "</div>" +
-                                "<div class=\"col-sm-6 col-xs-12\">" +
+                                "<div class=\"col-sm-7 col-xs-12\">" +
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
@@ -347,24 +347,6 @@ $jscript = '
     };
 
     initMap();
-
-    $("#pjax-result-map-container").on("pjax:send", function() {
-        $(".box-place").children(".overlay").show();
-        $(".box-place").children(".loading-img").show();
-    });
-
-    $("#pjax-result-map-container").on("pjax:complete", function() {
-        $(".box-place").children(".overlay").hide();
-        $(".box-place").children(".loading-img").hide();
-    });
-
-    $("#pjax-result-map-container").on("pjax:error", function (event) {
-        event.preventDefault();
-    });
-
-    $(".popover-tag").on("click", function() {
-        return false;
-    });
 ';
 
 $this->registerJs($jscript . $jspopover);

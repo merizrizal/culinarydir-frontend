@@ -5,6 +5,7 @@ use kartik\rating\StarRating;
 use sycomponent\Tools;
 use common\components\Helper;
 
+/* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */ ?>
 
 <div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">

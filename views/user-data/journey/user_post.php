@@ -83,6 +83,8 @@ $linkPager = LinkPager::widget([
         
                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 60, 60);
                 }
+                
+                $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
@@ -116,17 +118,15 @@ $linkPager = LinkPager::widget([
         
                 $layoutUser = '
                     <div class="widget-posts-image business-image">
-                        <a href="' . Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '">
-        
-                            ' . Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']) . '
-        
-                        </a>
+
+                        ' . Html::a($img, ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
+
                     </div>
         
                     <div class="widget-posts-body business-review">
                         ' . Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
                         <br>
-                        <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
+                        <small>' . Helper::asRelativeTime($dataUserPostMain['updated_at']) . '</small>
                     </div>
                 ' ?>
         
@@ -152,7 +152,7 @@ $linkPager = LinkPager::widget([
                                 <h3 class="mt-0 mb-0">
                                     <div class="rating">
         
-                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                                        <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success']); ?>
         
                                     </div>
                                 </h3>
@@ -223,7 +223,9 @@ $linkPager = LinkPager::widget([
                                             <?php
                                             if (!empty($dataUserPostMain['userPostMains'])):
         
-                                                foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
+                                                foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): 
+                                                    
+                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>
         
                                                     <li class="work-item gallery-photo-review">
                                                         <div class="gallery-item post-gallery">
@@ -235,9 +237,10 @@ $linkPager = LinkPager::widget([
         
                                                                     </div>
                                                                     <div class="work-caption">
-                                                                        <div class="work-descr"><?= !empty($dataUserPostMainChild['text']) ? $dataUserPostMainChild['text'] : '' ?></div>
                                                                         <div class="work-descr">
-                                                                            <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                        
+                                                                        	<?= Html::a('<i class="fa fa-search"></i>', $img, ['class' => "btn btn-d btn-small btn-xs btn-circle show-image"]) ?>
+                                                                        	
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -307,7 +310,7 @@ $linkPager = LinkPager::widget([
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li class="visible-xs-inline-block">
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
                                                 </li>
         
                                             <?php
@@ -325,7 +328,7 @@ $linkPager = LinkPager::widget([
                                             if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
         
                                                 <li>
-                                                    <?= Html::a('<i class="fa fa-trash"></i> Delete', ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
+                                                    <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']) ?>
                                                 </li>
         
                                             <?php
@@ -342,11 +345,17 @@ $linkPager = LinkPager::widget([
                                         <div class="col-sm-12">
                                             <div class="input-group mt-10 mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                                                <?= Html::textInput('comment_input', null, ['id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
+                                                
+                                                <?= Html::textInput('comment_input', null, [
+                                                    'id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 
+                                                    'class' => 'form-control', 
+                                                    'placeholder' => Yii::t('app', 'Write a Comment')                                                    
+                                                ]); ?>
+                                                
                                             </div>
         
                                             <div class="overlay" style="display: none;"></div>
-                                            <div class="loading-img" style="display: none"></div>
+                                            <div class="loading-img" style="display: none;"></div>
                                             <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
                                                 <div class="post-<?= $dataUserPostMain['id']; ?>-comment-container">
         
@@ -360,19 +369,19 @@ $linkPager = LinkPager::widget([
                                                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                                                         <div class="widget">
                                                                             <div class="widget-comments-image">
-        																		<a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
         																		
-            																		<?php
-            																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-            
-                                                                                    if (!empty($dataUserPostComment['user']['image'])) {
-            
-                                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                    }
-            
-                                                                                    echo Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
-                                                                                    
-                                                                                </a>
+        																		<?php
+        																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+        
+                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+        
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                }
+        
+                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                                
+                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                
                                                                             </div>
         
                                                                             <div class="widget-comments-body">
@@ -435,208 +444,10 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
-frontend\components\FacebookShare::widget();
 
 $jscript = '
-    $(".user-post-main-id").each(function() {
-
-        var thisObj = $(this);
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function() {
-
-            $.ajax({
-                cache: false,
-                type: "POST",
-                data: {
-                    "user_post_main_id": thisObj.val()
-                },
-                url: $(this).attr("href"),
-                success: function(response) {
-
-                    if (response.success) {
-
-                        var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
-
-                        if (response.is_active) {
-
-                            thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
-                            thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue + 1).toString());
-                        } else {
-
-                            thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
-                            thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue - 1).toString());
-                        }
-                    } else {
-
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                }
-            });
-
-            return false;
-        });
-
-        thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
-
-            thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
-            thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");            
-
-            return false;
-        });
-
-        thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").on("keypress", function(event) {
-
-            if (event.which == 13 && $(this).val().trim()) {
-
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    data: {
-                        "user_post_main_id": thisObj.val(),
-                        "text": $(this).val(),
-                    },
-                    url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
-                    beforeSend: function(xhr) {
-                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").show();
-                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
-                    },
-                    success: function(response) {
-
-                        if (response.success) {
-
-                            $("#input-" + response.user_post_main_id + "-comments-review").val("");
-
-                            $.ajax({
-                                cache: false,
-                                type: "POST",
-                                data: {
-                                    "user_post_main_id": response.user_post_main_id
-                                },
-                                url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
-                                success: function(response) {
-
-                                    $(".comment-" + thisObj.val() + "-section").html(response);
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-
-                                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                                }
-                            });
-                        } else {
-
-                            messageResponse(response.icon, response.title, response.message, response.type);
-                        }
-
-                        $(".comment-" + response.user_post_main_id + "-section").siblings(".overlay").hide();
-                        $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-
-                        messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                    }
-                });
-            }
-        });
-
-        if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
-
-            thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function(){
-
-                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
-
-                return false;
-            });
-        }
-
-        thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
-
-            delegate: "a.show-image",
-            type: "image",
-            gallery: {
-                enabled: true,
-                navigateByImgClick: true,
-                preload: [0,1]
-            },
-            image: {
-                titleSrc: "title",
-                tError: "The image could not be loaded."
-            }
-        });
-
-        $(".review-" + thisObj.val() + "-option").hide();
-
-        $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
-
-            $(".review-" + thisObj.val() + "-option").slideToggle();
-        });
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-delete-review-trigger").on("click", function() {
-
-            var form = $("form#rating-popover-form-" + thisObj.val()).serialize();
-
-            $.ajax({
-                cache: false,
-                type: "POST",
-                data: form,
-                url: $(this).attr("href"),
-                success: function(response) {
-
-                    if (response.success) {
-
-                        var totalUserPost = parseInt($(".total-user-post").html());
-
-                        if (response.publish) {
-
-                            $(".user-" + thisObj.val() + "-delete-review-trigger").html("<i class=\"fa fa-trash-alt\"></i> Delete").attr("href", response.deleteUrlReview);
-                            $(".total-user-post").html(totalUserPost + 1);
-                        } else {
-
-                            $(".user-" + thisObj.val() + "-delete-review-trigger").html("<i class=\"fa fa-undo-alt\"></i> Undo").attr("href", response.undoUrlReview);
-                            $(".total-user-post").html(totalUserPost - 1);
-                        }
-                    } else {
-
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                }
-            });
-
-            return false;
-        });
-
-        thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
-
-            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
-            var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + thisObj.parent().find(".business-name").val();
-            var description = thisObj.parent().find(".review-description").text();
-            var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
-
-            facebookShare({
-                ogUrl: url,
-                ogTitle: title,
-                ogDescription: description,
-                ogImage: image,
-                type: "Review"
-            });
-
-            return false;
-        });
-    });
-
     ratingColor($(".rating"), "a");
 
     readmoreText({

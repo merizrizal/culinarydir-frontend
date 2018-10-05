@@ -63,7 +63,9 @@ $linkPager = LinkPager::widget([
             <?php
             if (!empty($modelUserPostMainPhoto)):
 
-                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): ?>
+                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): 
+            
+                    $img = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image']; ?>
 
                     <li class="work-item">
 
@@ -77,10 +79,12 @@ $linkPager = LinkPager::widget([
                                 <div class="work-caption">
                                     <div class="work-descr hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
                                     <div class="work-descr">
-                                        <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image'] ?>"><i class="fa fa-search"></i></a>
-                                        <a class="btn btn-d btn-small btn-xs btn-circle share-image-<?= $dataUserPostMainPhoto['id'] ?>-trigger"><i class="fa fa-share-alt"></i></a>
+                                    	
+                                    	<?php
+                                    	echo Html::a('<i class="fa fa-search"></i>', $img, ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+                                    	
+                                    	echo Html::a('<i class="fa fa-share-alt"></i>', $img, ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMainPhoto['id'] . '-trigger']) . '&nbsp';
 
-                                        <?php
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']) {
 
                                             echo Html::a('<i class="fa fa-trash"></i>', ['user-action/delete-photo', 'id' => $dataUserPostMainPhoto['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle delete-image']);
@@ -124,9 +128,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
-frontend\components\FacebookShare::widget();
-
 $jscript = '
     $("#photo-gallery .place-gallery").magnificPopup({
 
@@ -141,15 +142,6 @@ $jscript = '
             titleSrc: "title",
             tError: "The image could not be loaded."
         }
-    });
-
-    $(".delete-image").on("click", function() {
-
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
-
-        return false;
     });
 
     $("#photo-gallery").find(".work-item").each(function() {

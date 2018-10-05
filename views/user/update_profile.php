@@ -76,15 +76,23 @@ if (!empty($getFlashMessage)) {
                                         ]); ?>
 
                                             <div class="profile-img-container img-circle mb-20">
+                                            	
+                                            	<?php 
+                                            	$img = '/img/user/default-avatar.png';
+                                            	
+                                            	if (!empty(Yii::$app->user->getIdentity()->image)) {
+                                            	    
+                                            	    $img = Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200);
+                                            	}
     
-                                                <?= $form->field($modelUser, 'image')->widget(FileInput::classname(), [
+                                                echo $form->field($modelUser, 'image')->widget(FileInput::classname(), [
                                                     'options' => [
                                                         'id' => 'input-img-profile',
                                                         'accept' => 'image/jpeg',
                                                     ],
                                                     'pluginOptions' => [
                                                         'initialPreview' => [
-                                                            Html::img(Yii::getAlias('@uploadsUrl') . (!empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200) : '/img/user/default-avatar.png'), ['class' => 'img-responsive img-component img-profile']),
+                                                            Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-component img-profile']),
                                                         ],
                                                         'showRemove' => false,
                                                         'showUpload' => false,
@@ -180,7 +188,7 @@ if (!empty($getFlashMessage)) {
                                                 ]) ?>
     
                                                 <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d mb-30']) ?>
-                                                <?= Html::a('Back', ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
+                                                <?= Html::a(Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
     
                                             </div>
 

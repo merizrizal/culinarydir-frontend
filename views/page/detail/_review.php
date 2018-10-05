@@ -27,7 +27,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
             <div class="box-title" id="title-write-review">
                 <h4 class="mt-0 mb-0 inline-block"><?= !empty($modelUserPostMain) ? Yii::t('app', 'Your Review') : Yii::t('app', 'Write a Review') ?></h4>
-                <span class="pull-right inline-block" id="close-review-container"><a class="text-main" href=""><i class="fa fa-close"></i> <?= Yii::t('app', 'Cancel')?></a></span>
+                <span class="pull-right inline-block" id="close-review-container"><?= Html::a('<i class="fa fa-close"></i> ' . Yii::t('app', 'Cancel'), '', ['class' => 'text-main']) ?></span>
             </div>
 
             <div class="box-content">
@@ -45,8 +45,8 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                     	}
                     	
                     	$layoutUser = '
-                            <div class="widget-posts-image">' .
-                                Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) . '
+                            <div class="widget-posts-image">
+                                ' . Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) . '
                             </div>
                                 
                             <div class="widget-posts-body">
@@ -332,7 +332,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                 <div class="form-group has-feedback <?= !empty($modelUserPostMain) ? 'hidden' : '' ?>" id="write-review-trigger">
                     <i class="fa fa-pencil-alt form-control-feedback"></i>
-                    <input type="text" class="form-control" placeholder="Bagikan pengalamanmu disini" />
+                    <input type="text" class="form-control" placeholder=<?= Yii::t('app', 'Share your experience here') ?>/>
                 </div>
 
                 <?php
@@ -454,7 +454,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                                 <?= $form->field($modelPost, '[review]text')->textarea([
                                     'class' => 'form-control',
-                                    'placeholder' => 'Bagikan pengalamanmu disini',
+                                    'placeholder' => Yii::t('app', 'Share your experience here'),
                                     'rows' => 6,
                                 ]); ?>
 
@@ -480,9 +480,10 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                                                                 </div>
                                                                 <div class="work-caption">
-                                                                    <div class="work-descr"><?= !empty($modelUserPostMainChild['text']) ? $modelUserPostMainChild['text'] : '' ?></div>
                                                                     <div class="work-descr">
-                                                                        <a class="btn btn-d btn-small btn-xs btn-circle delete-image" href="<?= Yii::$app->urlManager->createUrl(['user-action/delete-photo', 'id' => $modelUserPostMainChild['id']]) ?>"><i class="fa fa-trash"></i></a>
+                                                                    
+                                                                        <?= Html::a('<i class="fa fa-trash"></i>', ['user-action/delete-photo', 'id' => $modelUserPostMainChild['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle delete-image']) ?>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -14,41 +14,6 @@
 
 <?php
 $jscript = '
-    $("#modal-confirmation").find("#btn-delete").on("click", function() {
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: $(this).data("href"),
-            beforeSend: function(xhr) {
-
-                $(".user-post-photo").siblings(".overlay").show();
-                $(".user-post-photo").siblings(".loading-img").show();
-            },
-            success: function(response) {
-
-                $("#modal-confirmation").modal("hide");
-
-                if (response.success) {
-
-                    getUserPostPhoto();
-
-                    messageResponse(response.icon, response.title, response.message, response.type);
-                } else {
-
-                    messageResponse(response.icon, response.title, response.message, response.type);
-                }
-
-                $(".user-post-photo").siblings(".overlay").hide();
-                $(".user-post-photo").siblings(".loading-img").hide();
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    });
-
     function getUserPostPhoto() {
 
         $.ajax({
@@ -60,7 +25,52 @@ $jscript = '
             url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post-photo']) . '",
             success: function(response) {
 
-               $(".user-post-photo").html(response);
+                $(".user-post-photo").html(response);
+                
+                $(".delete-image").on("click", function() {
+
+                    $("#modal-confirmation").modal("show");
+                    
+                    $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this photo?') . '");
+                    $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
+            
+                    $("#modal-confirmation").find("#btn-delete").on("click", function() {
+            
+                        $.ajax({
+                            cache: false,
+                            type: "POST",
+                            url: $(this).data("href"),
+                            beforeSend: function(xhr) {
+                
+                                $(".user-post-photo").siblings(".overlay").show();
+                                $(".user-post-photo").siblings(".loading-img").show();
+                            },
+                            success: function(response) {
+                
+                                $("#modal-confirmation").modal("hide");
+                
+                                if (response.success) {
+                
+                                    getUserPostPhoto();
+                
+                                    messageResponse(response.icon, response.title, response.message, response.type);
+                                } else {
+                
+                                    messageResponse(response.icon, response.title, response.message, response.type);
+                                }
+                
+                                $(".user-post-photo").siblings(".overlay").hide();
+                                $(".user-post-photo").siblings(".loading-img").hide();
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                
+                                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+                            }
+                        });
+                    });
+            
+                    return false;
+                });
             },
             error: function(xhr, ajaxOptions, thrownError) {
 

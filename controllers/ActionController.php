@@ -120,18 +120,15 @@ class ActionController extends base\BaseController
                 ->andWhere(['is_publish' => true])
                 ->one();
             
-            if (($flag = !empty($modelUserPostMain))) {
+            if (!empty($modelUserPostMain)) {
 
                 $modelUserPostLove = UserPostLove::find()
-                    ->joinWith(['userPostMain'])
-                    ->andWhere(['user_post_love.unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
+                    ->andWhere(['unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
                     ->one();
     
                 if (!empty($modelUserPostLove)) {
     
                     $modelUserPostLove->is_active = !$modelUserPostLove->is_active;
-    
-                    $flag = $modelUserPostLove->save();
                 } else {
     
                     $modelUserPostLove = new UserPostLove();
@@ -140,18 +137,16 @@ class ActionController extends base\BaseController
                     $modelUserPostLove->user_id = Yii::$app->user->getIdentity()->id;
                     $modelUserPostLove->is_active = true;
                     $modelUserPostLove->unique_id = $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id;
-    
-                    $flag = $modelUserPostLove->save();
                 }
                 
-                if ($flag) {
+                if (($flag = $modelUserPostLove->save())) {
                     
                     if ($modelUserPostLove->is_active) {
                         
-                        $modelUserPostMain->love_value = $modelUserPostMain->love_value + 1;
+                        $modelUserPostMain->love_value += 1;
                     } else {
                         
-                        $modelUserPostMain->love_value = $modelUserPostMain->love_value - 1;
+                        $modelUserPostMain->love_value -= 1;
                     }
                     
                     $flag = $modelUserPostMain->save();
@@ -256,31 +251,24 @@ class ActionController extends base\BaseController
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
 
-            $userId = Yii::$app->user->getIdentity()->id;
-
             $modelUserLove = UserLove::find()
-                ->where([
-                    'business_id' => $post['business_id'],
-                    'user_id' => $userId
-                ])
+                ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
                 ->one();
 
             if (!empty($modelUserLove)) {
 
                 $modelUserLove->is_active = !$modelUserLove->is_active;
-
-                $flag = $modelUserLove->save();
             } else {
 
                 $modelUserLove = new UserLove();
+                
                 $modelUserLove->business_id = $post['business_id'];
-                $modelUserLove->user_id = $userId;
+                $modelUserLove->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserLove->is_active = true;
-
-                $flag = $modelUserLove->save();
+                $modelUserLove->unique_id = $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id;
             }
 
-            if ($flag) {
+            if (($flag = $modelUserLove->save())) {
 
                 $modelBusinessDetail = BusinessDetail::find()
                     ->where(['business_id' => $post['business_id']])
@@ -288,13 +276,11 @@ class ActionController extends base\BaseController
 
                 if ($modelUserLove->is_active) {
 
-                    $modelBusinessDetail->love_value = $modelBusinessDetail->love_value + 1;
+                    $modelBusinessDetail->love_value += 1;
                 } else {
                     
-                    $modelBusinessDetail->love_value = $modelBusinessDetail->love_value - 1;
+                    $modelBusinessDetail->love_value -= 1;
                 }
-
-                $modelBusinessDetail->business_id = $post['business_id'];
 
                 $flag = $modelBusinessDetail->save();
             }
@@ -330,31 +316,24 @@ class ActionController extends base\BaseController
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
 
-            $userId = Yii::$app->user->getIdentity()->id;
-
             $modelUserVisit = UserVisit::find()
-                ->where([
-                    'business_id' => $post['business_id'],
-                    'user_id' => $userId
-                ])
+                ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
                 ->one();
 
             if (!empty($modelUserVisit)) {
 
                 $modelUserVisit->is_active = !$modelUserVisit->is_active;
-
-                $flag = $modelUserVisit->save();
             } else {
 
                 $modelUserVisit = new UserVisit();
+                
                 $modelUserVisit->business_id = $post['business_id'];
-                $modelUserVisit->user_id = $userId;
+                $modelUserVisit->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserVisit->is_active = true;
-
-                $flag = $modelUserVisit->save();
+                $modelUserVisit->unique_id = $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id;
             }
 
-            if ($flag) {
+            if (($flag = $modelUserVisit->save())) {
 
                 $modelBusinessDetail = BusinessDetail::find()
                     ->where(['business_id' => $post['business_id']])
@@ -362,10 +341,10 @@ class ActionController extends base\BaseController
 
                 if ($modelUserVisit->is_active) {
 
-                    $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value + 1;
+                    $modelBusinessDetail->visit_value += 1;
                 } else {
                     
-                    $modelBusinessDetail->visit_value = $modelBusinessDetail->visit_value - 1;
+                    $modelBusinessDetail->visit_value -= 1;
                 }
 
                 $flag = $modelBusinessDetail->save();

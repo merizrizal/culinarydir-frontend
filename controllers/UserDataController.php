@@ -85,8 +85,6 @@ class UserDataController extends base\BaseController
         $modelUserLove = UserLove::find()
             ->joinWith([
                 'business',
-                'business.businessCategories.category',
-                'business.businessFacilities.facility',
                 'business.businessImages' => function($query) {
                     
                     $query->andOnCondition([
@@ -96,7 +94,6 @@ class UserDataController extends base\BaseController
                 },
                 'business.businessLocation.village',
                 'business.businessLocation.city',
-                'business.businessProductCategories.productCategory',
                 'user',
             ])
             ->where(['user_love.is_active' => true])
