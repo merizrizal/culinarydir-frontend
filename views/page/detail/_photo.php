@@ -1,7 +1,11 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\file\FileInput; ?>
+use kartik\file\FileInput; 
+
+/* @var $this yii\web\View */ 
+/* @var $modelBusiness core\models\Business */
+/* @var $modelPostPhoto frontend\models\Post */ ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -58,25 +62,23 @@ use kartik\file\FileInput; ?>
     
                             <div class="form-group">
     
-                                <?php
-                                $socialMediaItems = [
-                                    'facebook' => Yii::t('app', 'Post to Facebook'),
-                                ];
-    
-                                $options = [
-                                    'class' => 'social-media-share-list',
-                                    'separator' => '&nbsp;&nbsp;&nbsp;',
-                                    'item' => function ($index, $label, $name, $checked, $value) {
-                                        return '<label style="font-weight: normal;">' .
+                                <?= Html::checkboxList('social_media_share', null,
+                                    [
+                                        'facebook' => Yii::t('app', 'Post to Facebook'),
+                                    ], 
+                                    [
+                                        'class' => 'social-media-share-list',
+                                        'separator' => '&nbsp;&nbsp;&nbsp;',
+                                        'item' => function ($index, $label, $name, $checked, $value) {
+                                            
+                                            return '<label style="font-weight: normal;">' .
                                                 Html::checkbox($name, $checked, [
                                                     'value' => $value,
                                                     'class' => $value . '-photo-share-trigger icheck',
                                                 ]) . ' ' . $label .
                                                 '</label>';
-                                    },
-                                ];
-    
-                                echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
+                                        },
+                                   ]) ?>
     
                             </div>
     
@@ -109,37 +111,30 @@ use kartik\file\FileInput; ?>
 
 <?php
 $jscript = '
-    $("#post-photo-container").hide();
-    $("#close-post-photo-container").hide();
-
-    $("#post-photo-trigger").on("click", function(event) {
-
-        var thisObj = $(this);
+    function getUserPhoto(business_id) {
 
         $.ajax({
             cache: false,
-            type: "POST",
-            url: "' . Yii::$app->urlManager->createUrl(['redirect/add-photo']) . '",
+            type: "GET",
+            data: {
+                "business_id": business_id
+            },
+            url: "' . Yii::$app->urlManager->createUrl(['data/post-photo']) . '",
             success: function(response) {
 
-                thisObj.fadeOut(100, function() {
-
-                    $("#post-photo-container").fadeIn();
-                    $("#close-post-photo-container").fadeIn();
-                });
-
-                if ($("#post-photo-container").find(".form-group").hasClass("has-error")) {
-
-                    $("#post-photo-container").find(".form-group").removeClass("has-error");
-                    $("#post-photo-container").find(".form-group").find(".help-block").html("");
-                }
+                $(".gallery-section").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
 
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
-    });
+    }
+
+    $("#post-photo-container").hide();
+    $("#close-post-photo-container").hide();
+
+    getUserPhoto($("#business_id").val());
 
     $("#post-photo-shortcut").on("click", function(event) {
 
@@ -196,6 +191,35 @@ $jscript = '
         return false;
     });
 
+    $("#post-photo-trigger").on("click", function(event) {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "' . Yii::$app->urlManager->createUrl(['redirect/add-photo']) . '",
+            success: function(response) {
+
+                thisObj.fadeOut(100, function() {
+
+                    $("#post-photo-container").fadeIn();
+                    $("#close-post-photo-container").fadeIn();
+                });
+
+                if ($("#post-photo-container").find(".form-group").hasClass("has-error")) {
+
+                    $("#post-photo-container").find(".form-group").removeClass("has-error");
+                    $("#post-photo-container").find(".form-group").find(".help-block").html("");
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+    });
+
     $("form#post-photo-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -216,6 +240,7 @@ $jscript = '
             data: formData,
             url: thisObj.attr("action"),
             beforeSend: function(xhr) {
+
                 thisObj.siblings(".overlay").show();
                 thisObj.siblings(".loading-img").show();
             },
@@ -276,29 +301,7 @@ $jscript = '
         });
 
         return false;
-    });
-
-    function getUserPhoto(business_id) {
-
-        $.ajax({
-            cache: false,
-            type: "GET",
-            data: {
-                "business_id": business_id
-            },
-            url: "' . Yii::$app->urlManager->createUrl(['data/post-photo']) . '",
-            success: function(response) {
-
-                $(".gallery-section").html(response);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    }
-
-    getUserPhoto($("#business_id").val());
+    });    
 ';
 
 $this->registerJs($jscript); ?>

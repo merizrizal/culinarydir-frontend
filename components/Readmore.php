@@ -3,6 +3,7 @@
 namespace frontend\components;
 
 use yii\base\Widget;
+use yii\web\View;
 
 class Readmore extends Widget {
 
@@ -53,7 +54,7 @@ class Readmore extends Widget {
             }
         ';
 
-        $this->getView()->registerJs($jscript);
+        $this->getView()->registerJs($jscript, View::POS_HEAD);
     }
 }
 

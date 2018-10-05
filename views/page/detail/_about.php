@@ -1,3 +1,7 @@
+<?php 
+/* @var $businessName string */
+/* @var $businessAbout string */ ?>
+
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">

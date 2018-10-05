@@ -1,3 +1,7 @@
+<?php
+/* @var $this yii\web\View */
+/* @var $coordinate array */ ?>
+
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">
