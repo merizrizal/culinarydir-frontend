@@ -663,13 +663,19 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <li role="presentation">
-                                                        <h6><a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</a></h6>
+                                                        <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab">
+                                                        	<h6><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6>
+                                                        </a>
                                                     </li>
                                                     <li role="presentation">
-                                                        <h6><a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab"><i class="aicon aicon-icon-budicon"></i> Menu</a></h6>
+                                                        <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab">
+                                                        	<h6><i class="aicon aicon-icon-budicon"></i> Menu</h6>
+                                                        </a>
                                                     </li>
                                                     <li role="presentation">
-                                                        <h6><a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab"><i class="aicon aicon-icon-thin-location-line"></i> <?= Yii::t('app', 'Map')?></a></h6>
+                                                       	<a href="#view-map" aria-controls="view-map-xs" role="tab" data-toggle="tab">
+                                                   			<h6><i class="aicon aicon-icon-thin-location-line"></i> <?= Yii::t('app', 'Map')?></h6>
+                                               			</a>
                                                     </li>
                                                 </ul>
                                             </li>

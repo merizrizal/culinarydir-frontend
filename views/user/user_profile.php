@@ -36,7 +36,7 @@ $this->registerMetaTag([
                         <h3>' .
                             $modelUser['full_name'] . '<br>
                             <small>' . $modelUser['email'] . '</small>
-                        <h3>
+                        </h3>
                     '; ?>
 
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
@@ -83,7 +83,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-icon-been-there-fill-1 aicon-1-5x"></i>
-                                                <li><?= Yii::t('app', 'Journey') ?></li>
+                                                <li>Journey</li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -130,4 +130,6 @@ $this->registerMetaTag([
 <?php
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
 
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']); ?>
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
+
+frontend\components\FacebookShare::widget(); ?>

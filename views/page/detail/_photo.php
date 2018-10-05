@@ -51,7 +51,7 @@ use kartik\file\FileInput; ?>
                                     'showRemove' => false,
                                     'showUpload' => false,
                                     'layoutTemplates' => [
-                                        'footer' => '<h4><small class="file-caption-name" style="width:{width}">{caption}</small></h4>',
+                                        'footer' => '',
                                     ],
                                 ]
                             ]); ?>

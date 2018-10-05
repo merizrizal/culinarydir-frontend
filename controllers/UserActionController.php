@@ -184,6 +184,10 @@ class UserActionController extends base\BaseController
             
             $result['success'] = true;
             $result['publish'] = $modelUserPostMain->is_publish;
+            $result['icon'] = 'aicon aicon-icon-tick-in-circle';
+            $result['title'] = 'Sukses.';
+            $result['message'] = 'Review berhasil dihapus.';
+            $result['type'] = 'success';
         } else {
             
             $transaction->rollBack();
@@ -191,7 +195,7 @@ class UserActionController extends base\BaseController
             $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Gagal';
-            $result['message'] = 'Review gagal dihapus';
+            $result['message'] = 'Review gagal dihapus.';
             $result['type'] = 'danger';
         }
         
