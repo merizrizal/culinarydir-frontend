@@ -14,6 +14,8 @@ use common\components\Helper;
 /* @var $totalCount int */
 /* @var $modelUserPostMain core\models\UserPostMain */
 
+kartik\popover\PopoverXAsset::register($this);
+
 Pjax::begin([
     'enablePushState' => false,
     'linkSelector' => '#pagination-review a',
@@ -30,8 +32,6 @@ $linkPager = LinkPager::widget([
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     'options' => ['id' => 'pagination-review', 'class' => 'pagination'],
 ]);
-
-kartik\popover\PopoverXAsset::register($this);
 
 $jspopover = ''; ?>
 
@@ -353,8 +353,8 @@ if (!empty($modelUserPostMain)):
                                                         </div>
 
                                                         <div class="widget-comments-body">
-                                                            <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                            <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
+                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['updated_at']) ?></small>
                                                             <br>
                                                             <p class="comment-description">
 
