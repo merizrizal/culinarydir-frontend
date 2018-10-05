@@ -1,8 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
-use sycomponent\Tools;
 use kartik\rating\StarRating;
+use sycomponent\Tools;
+use common\components\Helper;
 
 /* @var $model core\models\UserPostMain */ ?>
 
@@ -37,7 +38,7 @@ use kartik\rating\StarRating;
                             </div>
                             <div class="created-at">
 
-                                <small><?= Yii::$app->formatter->asDate($model['updated_at'], 'medium'); ?></small>
+                                <small><?= Helper::asRelativeTime($model['updated_at'], 'medium'); ?></small>
 
                             </div>
                         </div>

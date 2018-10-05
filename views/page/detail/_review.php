@@ -63,24 +63,18 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                 <div class="row mb-10">
                                     <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
                                         <div class="widget">
-    
                                             <?= $layoutUser ?>
-    
                                         </div>
                                     </div>
                                     <div class="col-xs-9 visible-xs">
                                         <div class="widget">
-    
                                             <?= $layoutUser ?>
-    
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-3">
     									<div class="my-rating">
                                         	<h3 class="mt-0 mb-0">
-                                        	
                                                 <?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
-                                        	
                                         	</h3>
                      					</div>
                                         <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
@@ -107,29 +101,29 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                             }
                                                                         } ?>
     
-                                                                            <li>
-                                                                                <div class="row">
-                                                                                    <div class="col-sm-5 col-xs-5">
-    
-                                                                                        <?= StarRating::widget([
-                                                                                            'id' => 'my-rating-' . $dataRatingComponent['id'],
-                                                                                            'name' => 'my_rating_' . $dataRatingComponent['id'],
-                                                                                            'value' => !empty($valueRatingComponent) ? $valueRatingComponent : 0,
-                                                                                            'pluginOptions' => [
-                                                                                                'displayOnly' => true,
-                                                                                                'filledStar' => '<span class="aicon aicon-star-full"></span>',
-                                                                                                'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                                                                                'captionElement' => '.rating-' . $dataRatingComponent['id'],
-                                                                                            ]
-                                                                                        ]); ?>
-    
-                                                                                    </div>
-    
-                                                                                    <div class="col-sm-7 col-xs-7">
-                                                                                        <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
-                                                                                    </div>
+                                                                        <li>
+                                                                            <div class="row">
+                                                                                <div class="col-sm-5 col-xs-5">
+
+                                                                                    <?= StarRating::widget([
+                                                                                        'id' => 'my-rating-' . $dataRatingComponent['id'],
+                                                                                        'name' => 'my_rating_' . $dataRatingComponent['id'],
+                                                                                        'value' => !empty($valueRatingComponent) ? $valueRatingComponent : 0,
+                                                                                        'pluginOptions' => [
+                                                                                            'displayOnly' => true,
+                                                                                            'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                                                            'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                                            'captionElement' => '.rating-' . $dataRatingComponent['id'],
+                                                                                        ]
+                                                                                    ]); ?>
+
                                                                                 </div>
-                                                                            </li>
+
+                                                                                <div class="col-sm-7 col-xs-7">
+                                                                                    <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
     
                                                                     <?php
                                                                     endforeach;
@@ -223,39 +217,26 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-sm-7 col-tab-7 col-xs-12">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-    
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
-    
                                             </li>
                                             <li>
-                                            											
                                                 <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                 <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'my-comments-review-trigger visible-xs']); ?>
-    
                                             </li>
                                             <li>
-    
                                                 <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                 <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
-    
                                             </li>
-                                            <li class="review-option-toggle visible-xs-inline-block">
-                                                <i class="fa fa-ellipsis-h"></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
-                                        <ul class="list-inline list-review mt-0 mb-0">
-                                            <li>
+                                            <li class="visible-xs-inline-block">
                                                 <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
                                             </li>
-                                            <li>
+                                            <li class="visible-xs-inline-block">
                                                 <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="review-option col-xs-12">
+                                    <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
                                                 <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); ?>
@@ -274,9 +255,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                         <div class="col-sm-12">
                                             <div class="input-group mt-10 mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-    
                                                 <?= Html::textInput('comment_input', null, ['id' => 'input-my-comments-review', 'class' => 'form-control', 'placeholder' => 'Tuliskan komentar']); ?>
-    
                                             </div>
     
                                             <div class="overlay" style="display: none;"></div>
@@ -481,7 +460,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                             </div>
 
-                            <div class="form-group hidden">
+                            <div class="form-group">
 
                                 <div class="row" id="form-photos-review-container">
                                     <div class="col-sm-12 col-xs-12">
@@ -616,10 +595,118 @@ frontend\components\Readmore::widget();
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    var prevReview;
+    var prevReview;    
+
+    function getBusinessRating(business_id) {
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "business_id": business_id
+            },
+            url: "' . Yii::$app->urlManager->createUrl(['data/business-rating']) . '",
+            success: function(response) {
+
+                $(".business-rating").html(response);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+    }
+
+    function setOverall() {
+
+        var overall = 0;
+
+        $(".rating-component-id").each(function() {
+
+            var rating = parseInt($(this).parent().find("#rating-" + $(this).val() + "").val());
+
+            overall += rating;
+        });
+
+        overall = overall / parseInt($(".rating-component-id").length);
+
+        if (!isNaN(overall)) {
+
+            $("#overall-rating").rating("update", overall);
+            $(".rating-overall").children("span").html(parseFloat(overall.toFixed(1)));
+        } else {
+
+            $(".rating-overall").children("span").html("0");
+        }
+    }
+
+    function initMagnificPopupMyReview() {
+        
+        $("#review-uploaded-photo .review-post-gallery").magnificPopup({
+
+            delegate: "a.show-image",
+            type: "image",
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0,1]
+            },
+            image: {
+                titleSrc: "title",
+                tError: "The image could not be loaded."
+            }
+        });
+    }
 
     $("#write-review-container").hide();
     $("#close-review-container").hide();
+
+    $("#my-comments-review-container").hide();
+    $("#my-photos-review-container").hide();
+
+    $.ajax({
+        cache: false,
+        type: "GET",
+        data: {
+            "business_id": $("#business_id").val()
+        },
+        url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . '",
+        success: function(response) {
+
+            $(".review-section").html(response);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+
+            messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+        }
+    });
+
+    initMagnificPopupMyReview();
+
+    ratingColor($(".my-rating"), "a");
+
+    readmoreText({
+        element: $(".my-review-description"),
+        minChars: 500,
+        ellipsesText: " . . . ",
+        moreText: "See more",
+        lessText: "See less",
+    });
+
+    $(".total-review").html("' . (!empty($modelUserPostMain) ? 1 : 0) . '");
+
+    $("#my-rating-popover").popoverButton({
+
+        trigger: "hover",
+        placement: "right right-top",
+        target: "#my-popover-container",
+        content: function () {
+
+            var content = $("#my-popover-container").find(".popover-content").html();
+
+            return content;
+        }
+    });
 
     $("#write-review-shortcut").on("click", function(event) {
 
@@ -725,26 +812,11 @@ $jscript = '
         });
     });
 
-    $(".review-option").hide();
-
-    $(".review-option-toggle").on("click", function() {
-
-        $(".review-option").slideToggle();
-    });
-
     $(".edit-my-review-trigger").on("click", function(event) {
 
         $("#edit-review-container").fadeOut(100, function() {
 
             prevReview = $("#post-review-text").val();
-
-            if ($("#form-review-uploaded-photo").find("li").length == 0) {
-
-                $("#form-photos-review-container").parent().addClass("hidden");
-            } else {
-
-                $("#form-photos-review-container").parent().removeClass("hidden");
-            }
 
             $("#write-review-container").fadeIn();
             $("#close-review-container").fadeIn();
@@ -809,41 +881,6 @@ $jscript = '
         });
     });
 
-    function setOverall() {
-
-        var overall = 0;
-
-        $(".rating-component-id").each(function() {
-
-            var rating = parseInt($(this).parent().find("#rating-" + $(this).val() + "").val());
-
-            overall += rating;
-        });
-
-        overall = overall / parseInt($(".rating-component-id").length);
-
-        if (!isNaN(overall)) {
-
-            $("#overall-rating").rating("update", overall);
-            $(".rating-overall").children("span").html(parseFloat(overall.toFixed(1)));
-        } else {
-
-            $(".rating-overall").children("span").html("0");
-        }
-    }
-
-    $(".rating-component-id").each(function() {
-
-        var thisObj = $(this);
-
-        thisObj.parent().find("#rating-" + thisObj.val() + "").on("change", function() {
-
-            $("#post-review-rating-" + thisObj.val() + "").val($(this).val());
-
-            setOverall();
-        });
-    });
-
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -875,15 +912,13 @@ $jscript = '
 
                     prevReview = response.userPostMain.text;
 
-                    var newOverall = $(".rating-overall").text();
-                    var reviewUploadedPhoto = $("#review-uploaded-photo");
-                    var formReviewUploadedPhoto = $("#form-review-uploaded-photo");
-
-                    $(".my-rating").find("a").html(parseFloat(newOverall).toFixed(1));
+                    $(".my-rating").find("a").html(parseFloat($(".rating-overall").text()).toFixed(1));
 
                     $(".my-review-user-name").html(response.user);
                     $(".my-review-created").html(response.userCreated);
                     $(".my-review-description").html(response.userPostMain.text);
+
+                    $(".delete-my-review-trigger").attr("href", response.deleteUrlReview);
 
                     readmoreText({
                         element: $(".my-review-description"),
@@ -893,31 +928,29 @@ $jscript = '
                         lessText: "See less",
                     });
 
-                    $.each(response.userPostMainPhoto, function(i, item) {
+                    $.each(response.userPostMainPhoto, function(i, userPostMainPhoto) {
 
                         var cloneImageReviewContainer = $("#container-temp-uploaded-photo").find("li").clone();
                         var cloneImageFormContainer = $("#container-temp-uploaded-photo").find("li").clone();
 
-                        cloneImageReviewContainer.attr("id", "image-" + response.userPostMainPhoto[i].id);
-                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + response.userPostMainPhoto[i].image + "\" title=\"\">");
-                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + response.userPostMainPhoto[i].image.replace("200x200", "") + "\"><i class=\"fa fa-search\"></i></a>");
-                        cloneImageReviewContainer.appendTo(reviewUploadedPhoto);
+                        cloneImageReviewContainer.attr("id", "image-" + userPostMainPhoto.id);
+                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
+                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("200x200", "") + "\"><i class=\"fa fa-search\"></i></a>");
+                        cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
 
-                        cloneImageFormContainer.attr("id", "image-" + response.userPostMainPhoto[i].id);
-                        cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + response.userPostMainPhoto[i].image + "\" title=\"\">");
-                        cloneImageFormContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle delete-image\" href=\"" + response.deleteUrlPhoto + "?id=" + response.userPostMainPhoto[i].id + "\"><i class=\"fa fa-trash\"></i></a>");
-                        cloneImageFormContainer.appendTo(formReviewUploadedPhoto);
-                    });
-
-                    $(".delete-my-review-trigger").attr("href", response.deleteUrlReview);
+                        cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
+                        cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
+                        cloneImageFormContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle delete-image\" href=\"" + response.deleteUrlPhoto + "?id=" + userPostMainPhoto.id + "\"><i class=\"fa fa-trash\"></i></a>");
+                        cloneImageFormContainer.appendTo($("#form-review-uploaded-photo"));
+                    });                    
 
                     var tempOverall = 0;
 
                     $(".rating-component-id").each(function() {
 
-                        var tempRating = parseInt($("#post-review-rating-" + $(this).val() + "").val());
+                        var tempRating = $("#post-review-rating-" + $(this).val() + "").val();
 
-                        tempOverall += tempRating;
+                        tempOverall += parseInt(tempRating);
 
                         $(".temp-rating-" + $(this).val() + "").val(tempRating);
                     });
@@ -926,46 +959,15 @@ $jscript = '
 
                     getBusinessRating($("#business_id").val());
                     getUserPhoto($("#business_id").val());
+                    initMagnificPopupMyReview();
 
                     ratingColor($(".my-rating"), "a");
-
-                    $("#form-photos-review-container").parent().removeClass("hidden");
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
 
                     $("#edit-review-container").find(".total-empty-comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total-empty-comments-review");
 
                     $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
-
-                    $("#form-review-uploaded-photo .review-post-gallery").magnificPopup({
-
-                        delegate: "a.show-image",
-                        type: "image",
-                        gallery: {
-                            enabled: true,
-                            navigateByImgClick: true,
-                            preload: [0,1]
-                        },
-                        image: {
-                            titleSrc: "title",
-                            tError: "The image could not be loaded."
-                        }
-                    });
-
-                    $("#review-uploaded-photo .review-post-gallery").magnificPopup({
-
-                        delegate: "a.show-image",
-                        type: "image",
-                        gallery: {
-                            enabled: true,
-                            navigateByImgClick: true,
-                            preload: [0,1]
-                        },
-                        image: {
-                            titleSrc: "title",
-                            tError: "The image could not be loaded."
-                        }
-                    });
 
                     $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");
                     $("#edit-review-container").removeClass("hidden");
@@ -1021,49 +1023,7 @@ $jscript = '
         });
 
         return false;
-    });
-
-    function getUserPost(business_id) {
-
-        $.ajax({
-            cache: false,
-            type: "GET",
-            data: {
-                "business_id": business_id
-            },
-            url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . '",
-            success: function(response) {
-
-                $(".review-section").html(response);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    }
-
-    getUserPost($("#business_id").val());
-
-    function getBusinessRating(business_id) {
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            data: {
-                "business_id": business_id
-            },
-            url: "' . Yii::$app->urlManager->createUrl(['data/business-rating']) . '",
-            success: function(response) {
-
-                $(".business-rating").html(response);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    }
+    });    
 
     $(".my-likes-review-trigger").on("click", function() {
 
@@ -1102,9 +1062,6 @@ $jscript = '
 
         return false;
     });
-
-    $("#my-comments-review-container").hide();
-    $("#my-photos-review-container").hide();
 
     $(".my-comments-review-trigger").on("click", function() {
 
@@ -1177,21 +1134,7 @@ $jscript = '
         }
 
         return false;
-    });
-
-    $("#review-uploaded-photo .review-post-gallery").magnificPopup({
-        delegate: "a.show-image",
-        type: "image",
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0,1]
-        },
-        image: {
-            titleSrc: "title",
-            tError: "The image could not be loaded."
-        }
-    });
+    });    
 
     $("#form-photos-review-container").on("click", ".delete-image", function() {
 
@@ -1218,12 +1161,9 @@ $jscript = '
                         $("#review-uploaded-photo").find("li#image-" + response.id).remove();
                         $("#form-review-uploaded-photo").find("li#image-" + response.id).remove();
     
-                        if ($("#form-review-uploaded-photo").find("li").length < 1) {
-    
-                            $("#form-photos-review-container").parent().addClass("hidden");
-                        }
-    
                         $(".my-total-photos-review").html(parseInt($(".my-total-photos-review").html()) - 1);
+
+                        initMagnificPopupMyReview();
     
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
@@ -1239,31 +1179,18 @@ $jscript = '
         });
 
         return false;
-    });    
-
-    ratingColor($(".my-rating"), "a");
-
-    readmoreText({
-        element: $(".my-review-description"),
-        minChars: 500,
-        ellipsesText: " . . . ",
-        moreText: "See more",
-        lessText: "See less",
     });
 
-    $(".total-review").html("' . (!empty($modelUserPostMain) ? 1 : 0) . '");
+    $(".rating-component-id").each(function() {
 
-    $("#my-rating-popover").popoverButton({
+        var thisObj = $(this);
 
-        trigger: "hover",
-        placement: "right right-top",
-        target: "#my-popover-container",
-        content: function () {
+        thisObj.parent().find("#rating-" + thisObj.val() + "").on("change", function() {
 
-            var content = $("#my-popover-container").find(".popover-content").html();
+            $("#post-review-rating-" + thisObj.val() + "").val($(this).val());
 
-            return content;
-        }
+            setOverall();
+        });
     });
 
     $("#my-rating-popover").on("mouseenter.popoverX", function(event) {

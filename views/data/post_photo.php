@@ -119,24 +119,7 @@ frontend\components\GrowlCustom::widget();
 frontend\components\FacebookShare::widget();
 
 $jscript = '
-    $("#pjax-photo-container").on("pjax:send", function() {
-
-        $("#photo-gallery").parent().parent().siblings(".overlay").show();
-        $("#photo-gallery").parent().parent().siblings(".loading-img").show();
-    });
-
-    $("#pjax-photo-container").on("pjax:complete", function() {
-
-        $("#photo-gallery").parent().parent().siblings(".overlay").hide();
-        $("#photo-gallery").parent().parent().siblings(".loading-img").hide();
-    });
-
-    $("#pjax-photo-container").on("pjax:error", function (event) {
-
-        event.preventDefault();
-    });
-
-    $("#photo-gallery .place-gallery").magnificPopup({
+   $("#photo-gallery .place-gallery").magnificPopup({
 
         delegate: "a.show-image",
         type: "image",
@@ -176,6 +159,23 @@ $jscript = '
     });
 
     $(".total-photo").html("' . $totalCount . '");
+
+    $("#pjax-photo-container").on("pjax:send", function() {
+
+        $("#photo-gallery").parent().parent().siblings(".overlay").show();
+        $("#photo-gallery").parent().parent().siblings(".loading-img").show();
+    });
+
+    $("#pjax-photo-container").on("pjax:complete", function() {
+
+        $("#photo-gallery").parent().parent().siblings(".overlay").hide();
+        $("#photo-gallery").parent().parent().siblings(".loading-img").hide();
+    });
+
+    $("#pjax-photo-container").on("pjax:error", function (event) {
+
+        event.preventDefault();
+    });
 ';
 
 $this->registerJs($jscript);
