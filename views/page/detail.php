@@ -456,7 +456,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                 ]) ?>
 
                                                                 <?= Html::a($visitValue, ['action/submit-user-visit'], [
-                                                                    'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' count',
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' been-here-count',
                                                                 ]) ?>
 
                                                             </div>
@@ -469,7 +469,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                 ]) ?>
 
                                                                 <?= Html::a($loveValue, ['action/submit-user-love'], [
-                                                                    'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' count',
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' love-place-count',
                                                                 ]) ?>
 
                                                             </div>
