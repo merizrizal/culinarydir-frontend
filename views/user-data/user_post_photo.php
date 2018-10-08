@@ -63,9 +63,7 @@ $linkPager = LinkPager::widget([
             <?php
             if (!empty($modelUserPostMainPhoto)):
 
-                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): 
-            
-                    $img = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image']; ?>
+                foreach ($modelUserPostMainPhoto as $dataUserPostMainPhoto): ?>
 
                     <li class="work-item">
 
@@ -81,9 +79,9 @@ $linkPager = LinkPager::widget([
                                     <div class="work-descr">
                                     	
                                     	<?php
-                                    	echo Html::a('<i class="fa fa-search"></i>', $img, ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+                                    	echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
                                     	
-                                    	echo Html::a('<i class="fa fa-share-alt"></i>', $img, ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMainPhoto['id'] . '-trigger']) . '&nbsp';
+                                    	echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMainPhoto['id'] . '-trigger']) . '&nbsp';
 
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']) {
 
@@ -128,46 +126,7 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$jscript = '
-    $("#photo-gallery .place-gallery").magnificPopup({
-
-        delegate: "a.show-image",
-        type: "image",
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0,1]
-        },
-        image: {
-            titleSrc: "title",
-            tError: "The image could not be loaded."
-        }
-    });
-
-    $("#photo-gallery").find(".work-item").each(function() {
-
-        var thisObj = $(this);
-        var photoId = $(this).find(".work-image").children().data("id");
-
-        $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
-
-            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
-            var title = "Foto untuk " + thisObj.find(".business-name").val();
-            var description = thisObj.find(".photo-caption").text();
-            var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
-
-            facebookShare({
-                ogUrl: url,
-                ogTitle: title,
-                ogDescription: description,
-                ogImage: image,
-                type: "Foto"
-            });
-
-            return false;
-        });
-    });
-
+$jscript = '    
     $(".total-user-photo").html("' . $totalCount . '");
 
     $("#pjax-user-photo-container").on("pjax:send", function() {

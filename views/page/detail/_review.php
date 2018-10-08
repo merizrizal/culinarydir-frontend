@@ -828,9 +828,6 @@ $jscript = '
 
     $(".delete-my-review-trigger").on("click", function(event) {
 
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this review?') . '");
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         $("#modal-confirmation").find("#btn-delete").off("click");
@@ -866,6 +863,8 @@ $jscript = '
                 }
             });
         });
+
+        $("#modal-confirmation").modal("show");
 
         return false;
     });
@@ -1137,10 +1136,7 @@ $jscript = '
     });    
 
     $("#form-photos-review-container").on("click", ".delete-image", function() {
-
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this photo?') . '");
+        
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         $("#modal-confirmation").find("#btn-delete").off("click");
@@ -1177,6 +1173,8 @@ $jscript = '
                 }
             });
         });
+
+        $("#modal-confirmation").modal("show");
 
         return false;
     });
