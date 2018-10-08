@@ -157,7 +157,7 @@ $jspopover = ''; ?>
 
                                         <div class="col-xs-5 col visible-xs text-center">
                                             
-                                            <?= $layoutRatings?>
+                                            <?= $layoutRatings ?>
                                             
                                         </div>
 
@@ -225,7 +225,7 @@ $jspopover = ''; ?>
                                                                     $businessProductCategoryList = '';
                                                                     $businessProductCategoryPopover = '';
 
-                                                                    foreach($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory){
+                                                                    foreach ($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory) {
 
                                                                         if ($key < $businessProductCategoryLimit) {
 

@@ -37,7 +37,7 @@ use common\components\Helper;
                                 <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
 
                             </div>
-                            <div class="created-at">
+                            <div class="post-date">
 
                                 <small><?= Helper::asRelativeTime($model['updated_at'], 'medium'); ?></small>
 
@@ -62,18 +62,23 @@ use common\components\Helper;
                         </div>
                     </div>
                 </div>
+                
+                <?php 
+                $loveCount = !empty($model['love_value']) ? $model['love_value'] : 0;
+                $commentCount = !empty($model['userPostComments']) ? count($model['userPostComments']) : 0; ?>
+                
                 <div class="post-header">
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <ul class="list-inline mt-0 mb-10">
                                 <li>
 
-                                    <small><i class="fa fa-thumbs-up"></i> <?= Yii::t('app', '{value, plural, =0{# Like} =1{# Like} other{# Likes}}', ['value' => !empty($model['love_value']) ? $model['love_value'] : 0]) ?></small>
+                                    <small><i class="fa fa-thumbs-up"></i> <?= Yii::t('app', '{value, plural, =0{# Like} =1{# Like} other{# Likes}}', ['value' => $loveCount ]) ?></small>
 
                                 </li>
                                 <li>
 
-                                    <small><i class="fa fa-comments"></i> <?= Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => !empty($model['userPostComments']) ? count($model['userPostComments']) : 0]) ?></small>
+                                    <small><i class="fa fa-comments"></i> <?= Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => $commentCount]) ?></small>
 
                                 </li>
                                 <li>
@@ -86,7 +91,7 @@ use common\components\Helper;
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
-                            <h5 class="font-alt m-0 business-name">
+                            <h5 class="font-alt m-0">
 
                                 <?= Html::a($model['business']['name'], ['page/detail', 'id' => $model['business']['id']]); ?>
 

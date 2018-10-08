@@ -68,7 +68,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
                     $urlResultMap = ArrayHelper::merge(['result-map'], $filter); ?>
 
                     <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) ?>
-                    <?= Html::a('<i class="fa fa-location-arrow"></i> Map', $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
+                    <?= Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
                 <div class="col-xs-5">

@@ -14,7 +14,7 @@ use yii\widgets\LinkPager;
             <div>
                 <div class="clearfix"></div>
                 <div class="col-lg-12 align-center">{pager}</div>
-            <div>
+            </div>
         </div>
     ',
     'pager' => [
