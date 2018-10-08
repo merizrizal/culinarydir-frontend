@@ -147,19 +147,17 @@ $jscript = '
     var priceMinValue = null;
     var priceMax = null;
     var priceMaxValue = null;
-    var btnRegion = null;
-    var coordinateMap = null;
-    var radiusMap = null;
+    var typingTimer;
+    var typingInterval = 500;
 
-    var initMap = function() {
+    function initMap(btnRegion, coordinateMap, radiusMap) {
+
+        var defaultLatLng = {lat: -6.9175, lng: 107.6191};
 
         if (coordinateMap.val() != "") {
 
-            var keyCoordinate = coordinateMap.val().split(",");
-            defaultLatLng = {lat: parseFloat(keyCoordinate[0]), lng: parseFloat(keyCoordinate[1])};
-        } else {
-
-            var defaultLatLng = {lat: -6.9175, lng: 107.6191};
+            var mapLatLng = coordinateMap.val().split(",");
+            defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
         }
 
         var mapOptions = {
@@ -171,12 +169,6 @@ $jscript = '
         }
 
         var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        var radius = 500;
-        var latitude = map.getCenter().lat();
-        var longitude = map.getCenter().lng();
-
-        $("<div/>").addClass("map-marker").appendTo(map.getDiv());
 
         var icon = {
             url: "' . Yii::$app->request->baseUrl . '/media/img/marker.png",
@@ -191,6 +183,10 @@ $jscript = '
             icon: icon
         });
 
+        var radius = 500;
+        var latitude = map.getCenter().lat();
+        var longitude = map.getCenter().lng();
+
         var circleRadius = new google.maps.Circle({
             strokeColor: "#FF0000",
             strokeOpacity: 0.8,
@@ -199,6 +195,8 @@ $jscript = '
             fillOpacity: 0.35,
             radius: radius,
         });
+
+        $("<div/>").addClass("map-marker").appendTo(map.getDiv());
 
         circleRadius.setMap(map);
         circleRadius.bindTo("center", marker, "position");
@@ -214,7 +212,7 @@ $jscript = '
             latitude = map.getCenter().lat();
             longitude = map.getCenter().lng();
 
-            map.panTo(new google.maps.LatLng(latitude,longitude));
+            map.panTo(new google.maps.LatLng(latitude, longitude));
 
             marker.setPosition({lat: latitude, lng: longitude});
             circleRadius.setMap(map);
@@ -229,7 +227,7 @@ $jscript = '
             latitude = map.getCenter().lat();
             longitude = map.getCenter().lng();
 
-            map.panTo(new google.maps.LatLng(latitude,longitude));
+            map.panTo(new google.maps.LatLng(latitude, longitude));
 
             marker.setPosition({lat: latitude, lng: longitude});
             circleRadius.setMap(map);
@@ -264,17 +262,13 @@ $jscript = '
 
             radius = parseInt(radiusMap.val());
 
-            if (radius == 500) {
+            if (radius == 2000) {
 
-                map.setZoom(15);
+                map.setZoom(13);
                 circleRadius.setRadius(radius);
             } else if (radius == 1000) {
 
                 map.setZoom(14);
-                circleRadius.setRadius(radius);
-            } else if (radius == 2000) {
-
-                map.setZoom(13);
                 circleRadius.setRadius(radius);
             } else {
 
@@ -290,10 +284,7 @@ $jscript = '
             radiusMap.val(radius);
             coordinateMap.val(latitude + ", " + longitude);
 
-            if (!coordinateMap.val()) {
-
-                btnRegion.html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>");
-            } else {
+            if (coordinateMap.val() != "" && radiusMap.val() != "") {
 
                 btnRegion.html($(".btn-radius-" + radiusMap.val()).text() + " <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
 
@@ -301,42 +292,35 @@ $jscript = '
 
                     btnRegion.parent().append("<span class=\"search-field-box-clear\">×</span>");
                 }
-
-                btnRegion.parent().find(".search-field-box-clear").off("click");
-
-                btnRegion.parent().find(".search-field-box-clear").on("click", function() {
-
-                    coordinateMap.val("");
-                    radiusMap.val("");
-                    btnRegion.html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-                    $(this).remove();
-                });
             }
 
             $("#modal-region").modal("hide");
         });
     };
 
+    $(".price-min-select").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'Price Min') . '",
+        minimumResultsForSearch: -1,
+        allowClear: true
+    });
+
+    $(".price-max-select").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'Price Max') . '",
+        minimumResultsForSearch: -1,
+        allowClear: true
+    });
+
     $(".btn-product-category").on("click", function() {
 
         btnProductCategory = $(this);
 
-        if (btnProductCategory.siblings(".product-category-id").val() == "") {
-
-            $("#modal-product-category").find(".input-product-category").val("");
-        }
-
         $("#modal-product-category").modal("show");
-
-        return false;
-    });
-
-    $("#modal-product-category").on("show.bs.modal", function(e) {
-
-        $("#modal-product-category").find("#modal-content").html("");
-
         $("#modal-product-category").find(".overlay").show();
         $("#modal-product-category").find(".loading-img").show();
+
+        return false;
     });
 
     $("#modal-product-category").on("shown.bs.modal", function(e) {
@@ -361,65 +345,53 @@ $jscript = '
 
     $("#modal-product-category").on("click", ".product-category-name", function() {
 
-        var id = $(this).data("id");
-        var name = $(this).html();
+        $(".input-product-category").val("");
+        btnProductCategory.siblings(".product-category-id").val($(this).data("id"));
 
-        btnProductCategory.html("<span class=\"search-field-box-placeholder\">" + name + " </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
-        btnProductCategory.siblings(".product-category-id").val(id);
+        if (btnProductCategory.siblings(".product-category-id").val() != "") {
 
-        $("#modal-product-category").modal("hide");
-        $("#modal-product-category").find(".input-product-category").val("");
+            btnProductCategory.html("<span class=\"search-field-box-placeholder\">" + $(this).html() + " </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
+        
+            if (btnProductCategory.parent().find(".search-field-box-clear").length == 0) {
 
-        if (btnProductCategory.parent().find(".search-field-box-clear").length == 0) {
-
-            btnProductCategory.parent().append("<span class=\"search-field-box-clear\">×</span>");
+                btnProductCategory.parent().append("<span class=\"search-field-box-clear\">×</span>");
+            }
         }
 
-        btnProductCategory.parent().find(".search-field-box-clear").off("click");
-
-        btnProductCategory.parent().find(".search-field-box-clear").on("click", function() {
-
-            btnProductCategory.siblings(".product-category-id").val("");
-            btnProductCategory.html("<span class=\"search-field-box-placeholder\">' . Yii::t('app', 'Product Category') . ' </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-            $(this).remove();
-        });
+        $("#modal-product-category").modal("hide");
 
         return false;
     });
 
     $(".input-product-category").on("keyup", function() {
+        
+        thisObj = $(this);
 
-        $.ajax({
-            cache: false,
-            type: "POST",
-            data: {keyword: $(this).val()},
-            url: "' . Yii::$app->urlManager->createUrl(['data/product-category']) . '",
-            success: function(response) {
+        clearTimeout(typingTimer);
 
-                $("#modal-product-category").find("#modal-content").html(response);
+        $("#modal-product-category").find(".overlay").show();
+        $("#modal-product-category").find(".loading-img").show();
 
-                $("#modal-product-category").find(".overlay").hide();
-                $("#modal-product-category").find(".loading-img").hide();
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
+        typingTimer = setTimeout(function() {
 
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-    });
+            $.ajax({
+                cache: false,
+                type: "POST",
+                data: {keyword: thisObj.val()},
+                url: "' . Yii::$app->urlManager->createUrl(['data/product-category']) . '",
+                success: function(response) {
 
-    $(".price-min-select").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Price Min') . '",
-        minimumResultsForSearch: -1,
-        allowClear: true
-    });
+                    $("#modal-product-category").find("#modal-content").html(response);
 
-    $(".price-max-select").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Price Max') . '",
-        minimumResultsForSearch: -1,
-        allowClear: true
+                    $("#modal-product-category").find(".overlay").hide();
+                    $("#modal-product-category").find(".loading-img").hide();                    
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+
+                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+                }
+            });
+        }, typingInterval);
     });
 
     $(".btn-price").on("click", function() {
@@ -485,22 +457,6 @@ $jscript = '
 
                 btnPrice.parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
-
-            btnPrice.parent().find(".search-field-box-clear").off("click");
-
-            btnPrice.parent().find(".search-field-box-clear").on("click", function() {
-
-                $(".price-min-select").val(null).trigger("change");
-                $(".price-max-select").val(null).trigger("change");
-
-                btnPrice.siblings(".price-min, .price-max").val("");
-                btnPrice.html("<span class=\"search-field-box-placeholder\">' . Yii::t('app', 'Price') . ' </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-                $(this).remove();
-            });
-        } else {
-
-            btnPrice.html("<span class=\"search-field-box-placeholder\">' . Yii::t('app', 'Price') . ' </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-            btnPrice.parent().find(".search-field-box-clear").remove();
         }
 
         $("#modal-price").modal("hide");
@@ -517,16 +473,39 @@ $jscript = '
             $("#modal-region").find(".btn-radius-500").trigger("click");
         }
 
-        initMap();
+        initMap(btnRegion, coordinateMap, radiusMap);
 
         $("#modal-region").modal("show");
 
         return false;
     });
 
-    $("#modal-region").on("shown.bs.modal", function() {
+    $(".btn-product-category").parent().on("click", ".search-field-box-clear", function() {
 
-        google.maps.event.trigger(map, "resize");
+        $(".product-category-id").val("");
+        $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(this).remove();
+
+        return false;
+    });
+
+    $(".btn-price").parent().on("click", ".search-field-box-clear", function() {
+
+        $(".price-min, .price-max").val("");
+        $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(this).remove();
+
+        return false;
+    });
+
+    $(".btn-region").parent().on("click", ".search-field-box-clear", function() {
+
+        $(".coordinate-map, .radius-map").val("");
+        $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-radius-500").trigger("click");
+        $(this).remove();
+
+        return false;
     });
 ';
 

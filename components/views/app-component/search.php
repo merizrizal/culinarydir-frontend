@@ -98,7 +98,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 <div class="form-group">
 
                                     <?php
-                                    if (!empty($keyword['product'])):
+                                    if (!empty($keyword['product']['id'])):
 
                                         $productId = $keyword['product']['id'];
                                         $productLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
@@ -328,7 +328,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 <div class="form-group">
 
                                     <?php
-                                    if (!empty($keyword['product'])):
+                                    if (!empty($keyword['product']['id'])):
 
                                         $productId = $keyword['product']['id'];
                                         $productLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
@@ -416,7 +416,6 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 </div>
 
 <?php
-
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
@@ -427,14 +426,14 @@ $jscript = '
         minimumResultsForSearch: -1
     });
 
-    $(".city-id").val("1").trigger("change");
-
     $(".category-id").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Business Category') . '",
         minimumResultsForSearch: -1,
         allowClear: true
     });
+
+    $(".city-id").val("1").trigger("change");
 
     $(".lbl-clear").on("click", function() {
 
@@ -446,34 +445,6 @@ $jscript = '
         $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".search-field-box-clear").remove();
-
-        return false;
-    });
-
-    $(".btn-product-category").parent().find(".search-field-box-clear").on("click", function() {
-
-        $(".product-category-id").val("");
-        $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(this).remove();
-
-        return false;
-    });
-
-    $(".btn-price").parent().find(".search-field-box-clear").on("click", function() {
-
-        $(".btn-price").siblings(".price-min, .price-max").val("");
-        $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(this).remove();
-
-        return false;
-    });
-
-    $(".btn-region").parent().find(".search-field-box-clear").on("click", function() {
-
-        $(".coordinate-map, .radius-map").val("");
-        $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(".btn-radius-500").trigger("click");
-        $(this).remove();
 
         return false;
     });
