@@ -128,7 +128,7 @@ $linkPager = LinkPager::widget([
                     </div>
                 '; ?>
         
-                <div class="col-lg-12">
+                <div class="col-lg-12 user-post-item">
     
                     <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
     
@@ -212,7 +212,7 @@ $linkPager = LinkPager::widget([
     
                             </p>
     
-                            <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                            <div class="row user-photo-review" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
                                 <div class="col-sm-12 col-xs-12">
                                     <ul class="works-grid works-grid-gut works-grid-5">
     
@@ -225,15 +225,11 @@ $linkPager = LinkPager::widget([
                                                     <div class="gallery-item post-gallery">
                                                         <div class="gallery-image">
                                                             <div class="work-image">
-
                                                                 <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
-
                                                             </div>
                                                             <div class="work-caption">
                                                                 <div class="work-descr">
-                                                                
                                                                 	<?= Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image"]) ?>
-                                                                	
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -253,7 +249,7 @@ $linkPager = LinkPager::widget([
                             $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
                             $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
                             
-                            $loveSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-likes-review">#</span>';
+                            $loveSpanCount = '<span class="total-likes-review">#</span>';
                             $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
                             $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
                             
@@ -286,8 +282,8 @@ $linkPager = LinkPager::widget([
                                 <div class="col-sm-7 col-tab-7 col-xs-12">
                                     <ul class="list-inline list-review mt-0 mb-0">
                                         <li>
-                                        	<?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                        					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
+                                        	<?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                        					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
                                         </li>
                                         <li>
                                         	<?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
@@ -446,6 +442,9 @@ frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 
 $jscript = '
+    $(".user-comment-review").hide();
+    $(".user-photo-review").hide();
+
     ratingColor($(".rating"), "a");
 
     readmoreText({

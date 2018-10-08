@@ -81,7 +81,7 @@ $linkPager = LinkPager::widget([
                                     	<?php
                                     	echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
                                     	
-                                    	echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMainPhoto['id'] . '-trigger']) . '&nbsp';
+                                    	echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp';
 
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']) {
 

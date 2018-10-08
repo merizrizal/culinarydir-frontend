@@ -87,7 +87,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="aicon aicon-icon-been-there-fill-1 aicon-1-5x"></i>
+                                                <li><i class="aicon aicon-icon-been-there-fill-1 aicon-1-5x"></i></li>
                                                 <li>Journey</li>
                                             </ul>
                                         </li>
@@ -99,9 +99,8 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="aicon aicon-camera aicon-1-5x"></i>
+                                                <li><i class="aicon aicon-camera aicon-1-5x"></i><span class="badge total-user-photo"></span></li>
                                                 <li><?= Yii::t('app', 'Photo') ?></li>
-                                                <span class="badge total-user-photo"></span>
                                             </ul>
                                         </li>
                                     </ul>
@@ -112,9 +111,8 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="aicon aicon-savedsearch aicon-1-5x"></i>
+                                                <li><i class="aicon aicon-savedsearch aicon-1-5x"></i><span class="badge total-saved-search">0</span></li>
                                                 <li><?= Yii::t('app', 'Saved Search') ?></li>
-                                                <span class="badge total-saved-search">0</span>
                                             </ul>
                                         </li>
                                     </ul>
@@ -125,9 +123,8 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="aicon aicon-hot-promo aicon-1-5x"></i>
+                                                <li><i class="aicon aicon-hot-promo aicon-1-5x"></i><span class="badge total-new-promo"></span></li>
                                                 <li><?= Yii::t('app', 'New Promo') ?></li>
-                                                <span class="badge total-new-promo"></span>
                                             </ul>
                                         </li>
                                     </ul>
@@ -138,7 +135,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="fa fa-ellipsis-h aicon-1-5x"></i>
+                                                <li><i class="fa fa-ellipsis-h aicon-1-5x"></i></li>
                                                 <li>More <span class="caret"></span></li>
                                             </ul>
                                         </li>

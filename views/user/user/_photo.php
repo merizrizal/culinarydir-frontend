@@ -27,9 +27,9 @@ $jscript = '
 
                 $(".user-post-photo").html(response);
 
-                $("#photo-gallery").find(".place-gallery").magnificPopup({
+                $(".user-post-photo").magnificPopup({
 
-                    delegate: "a.show-image",
+                    delegate: ".place-gallery a.show-image",
                     type: "image",
                     gallery: {
                         enabled: true,
@@ -41,32 +41,28 @@ $jscript = '
                         tError: "The image could not be loaded."
                     }
                 });
-            
-                $("#photo-gallery").find(".work-item").each(function() {
-            
-                    var thisObj = $(this);
-                    var photoId = thisObj.find(".work-image").children().data("id");
-            
-                    thisObj.find(".share-image-" + photoId + "-trigger").on("click", function() {
-            
-                        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
-                        var title = "Foto untuk " + thisObj.find(".business-name").val();
-                        var description = thisObj.find(".photo-caption").text();
-                        var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
-            
-                        facebookShare({
-                            ogUrl: url,
-                            ogTitle: title,
-                            ogDescription: description,
-                            ogImage: image,
-                            type: "Foto"
-                        });
-            
-                        return false;
+
+                $(".user-post-photo").on("click", ".share-image-trigger", function() {
+
+                    var rootObj = $(this).parents(".work-item");
+
+                    var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + rootObj.find(".work-image img").data("id");
+                    var title = "Foto untuk " + rootObj.find(".business-name").val();
+                    var description = rootObj.find(".photo-caption").text();
+                    var image = window.location.protocol + "//" + window.location.hostname + rootObj.find(".work-image").children().attr("src");
+        
+                    facebookShare({
+                        ogUrl: url,
+                        ogTitle: title,
+                        ogDescription: description,
+                        ogImage: image,
+                        type: "Foto"
                     });
+        
+                    return false;
                 });
                 
-                $(".delete-image").on("click", function() {
+                $(".user-post-photo").on("click", ".delete-image", function() {
 
                     $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
                     

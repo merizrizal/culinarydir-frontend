@@ -23,12 +23,49 @@ $jscript = '
     
                 $(".user-post-section").html(response);
 
-                $(".user-post-section").find(".user-post-main-id").each(function() {
+                $(".user-post-section").on("click", ".user-likes-review-trigger", function() {
 
                     var thisObj = $(this);
 
-                    thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-                    thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        data: {
+                            "user_post_main_id": thisObj.parents(".user-post-item").find(".user-post-main-id").val()
+                        },
+                        url: $(this).attr("href"),
+                        success: function(response) {
+        
+                            if (response.success) {
+        
+                                var loveValue = parseInt(thisObj.parent().find(".user-likes-review-trigger").find("span.total-likes-review").html());
+        
+                                if (response.is_active) {
+        
+                                    thisObj.parent().find(".user-likes-review-trigger").addClass("selected");
+                                    thisObj.parent().find("span.total-likes-review").html(loveValue + 1);
+                                } else {
+        
+                                    thisObj.parent().find(".user-likes-review-trigger").removeClass("selected");
+                                    thisObj.parent().find("span.total-likes-review").html(loveValue - 1);
+                                }
+                            } else {
+        
+                                messageResponse(response.icon, response.title, response.message, response.type);
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+        
+                            messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+                        }
+                    });
+
+                    return false;
+                });
+
+                $(".user-post-section").find(".user-post-main-id").each(function() {
+
+                    var thisObj = $(this);
 
                     thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".post-gallery").magnificPopup({
             
@@ -45,7 +82,7 @@ $jscript = '
                         }
                     });
 
-                    thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function() {
+                    $(".user-post-section").on("click", ".user-" + thisObj.val() + "-likes-review-trigger", function() {
             
                         $.ajax({
                             cache: false,
