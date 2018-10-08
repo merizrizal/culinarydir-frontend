@@ -29,9 +29,6 @@ $linkPager = LinkPager::widget([
     'options' => ['id' => 'pagination-photo', 'class' => 'pagination'],
 ]); ?>
 
-<div class="overlay" style="display: none;"></div>
-<div class="loading-img" style="display: none;"></div>
-
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
@@ -55,8 +52,12 @@ $linkPager = LinkPager::widget([
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
+<div class="row"" style="position: relative;">
+    <div class="col-md-12 post-photo-container">
+    
+    	<div class="overlay" style="display: none;"></div>
+		<div class="loading-img" style="display: none;"></div>
+    	
         <ul class="works-grid works-grid-gut works-grid-4" id="photo-gallery">
 
             <?php
@@ -68,15 +69,17 @@ $linkPager = LinkPager::widget([
                         <div class="gallery-item place-gallery">
                             <div class="gallery-image">
                                 <div class="work-image">
-
                                     <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMain['image'], 200, 200), ['class' => 'img-component', 'data-id' => $dataUserPostMain['id']]) ?>
-
                                 </div>
                                 <div class="work-caption">
                                     <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMain['text']) ? $dataUserPostMain['text'] : '' ?></div>
                                     <div class="work-descr">
-                                        <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMain['image'] ?>"><i class="fa fa-search"></i></a>
-                                        <a class="btn btn-d btn-small btn-xs btn-circle share-image-<?= $dataUserPostMain['id'] ?>-trigger"><i class="fa fa-share-alt"></i></a>
+                                        
+                                        <?php
+                                        echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMain['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+                                    	
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMain['id'] . '-trigger']) . '&nbsp'; ?>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -115,9 +118,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
-frontend\components\FacebookShare::widget();
-
 $jscript = '
    $("#photo-gallery .place-gallery").magnificPopup({
 
@@ -162,14 +162,14 @@ $jscript = '
 
     $("#pjax-photo-container").on("pjax:send", function() {
 
-        $("#photo-gallery").parent().parent().siblings(".overlay").show();
-        $("#photo-gallery").parent().parent().siblings(".loading-img").show();
+        $(".post-photo-container").children(".overlay").show();
+        $(".post-photo-container").children(".loading-img").show();
     });
 
     $("#pjax-photo-container").on("pjax:complete", function() {
 
-        $("#photo-gallery").parent().parent().siblings(".overlay").hide();
-        $("#photo-gallery").parent().parent().siblings(".loading-img").hide();
+        $(".post-photo-container").children(".overlay").hide();
+        $(".post-photo-container").children(".loading-img").hide();
     });
 
     $("#pjax-photo-container").on("pjax:error", function (event) {

@@ -523,25 +523,23 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
-                                <?php
-                                $socialMediaItems = [
-                                    'facebook' => Yii::t('app', 'Post to Facebook'),
-                                ];
-
-                                $options = [
-                                    'class' => 'social-media-share-list',
-                                    'separator' => '&nbsp;&nbsp;&nbsp;',
-                                    'item' => function ($index, $label, $name, $checked, $value) {
-                                        return '<label style="font-weight: normal;">' .
+                                <?= Html::checkboxList('social_media_share', null,
+                                    [
+                                        'facebook' => Yii::t('app', 'Post to Facebook'),
+                                    ], 
+                                    [
+                                        'class' => 'social-media-share-list',
+                                        'separator' => '&nbsp;&nbsp;&nbsp;',
+                                        'item' => function ($index, $label, $name, $checked, $value) {
+                                            
+                                            return '<label style="font-weight: normal;">' .
                                                 Html::checkbox($name, $checked, [
                                                     'value' => $value,
                                                     'class' => $value . '-review-share-trigger icheck',
                                                 ]) . ' ' . $label .
                                                 '</label>';
-                                    },
-                                ];
-
-                                echo Html::checkboxList('social_media_share', null, $socialMediaItems, $options) ?>
+                                        },
+                                   ]) ?>
 
                             </div>
                             <div class="form-group">
@@ -592,9 +590,6 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
 <?php
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
-
-frontend\components\RatingColor::widget();
-frontend\components\Readmore::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
@@ -975,14 +970,13 @@ $jscript = '
 
                     $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
 
-                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");
-                    $("#edit-review-container").removeClass("hidden");
+                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");                    
                     $("#write-review-trigger").addClass("hidden");
 
                     $("#write-review-container, #close-review-container").fadeOut(100, function() {
 
+                        $("#edit-review-container").removeClass("hidden");
                         $("#edit-review-container").fadeIn();
-                        $("#write-review-trigger").fadeIn();
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 

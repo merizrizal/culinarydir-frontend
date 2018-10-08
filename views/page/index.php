@@ -48,7 +48,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
                         <h5 class="font-alt">
-                        	<a class="section-scroll text-center text-white" href="#recent-activity">
+                        	<a class="section-scroll text-center text-white" href="#recent-activity" style="background-color: rgba(0, 0, 0, 0.5)">
                             	<?= Yii::t('app', 'Recent Activity') ?>
                         	</a>
                         </h5>

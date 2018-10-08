@@ -456,7 +456,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                 ]) ?>
 
                                                                 <?= Html::a($visitValue, ['action/submit-user-visit'], [
-                                                                    'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' count',
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . ' been-here-count',
                                                                 ]) ?>
 
                                                             </div>
@@ -469,7 +469,7 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                 ]) ?>
 
                                                                 <?= Html::a($loveValue, ['action/submit-user-love'], [
-                                                                    'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' count',
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . ' love-place-count',
                                                                 ]) ?>
 
                                                             </div>
@@ -486,12 +486,12 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                     <ul class="list-inline list-default mt-0 mb-0 visible-xs">
                                                         <li>
 
-                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here count">' . $visitValue . '</span> Been Here', ['action/submit-user-visit'], ['class' => 'been-here ' . $selectedVisit]); ?>
+                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here-count">' . $visitValue . '</span> Been Here', ['action/submit-user-visit'], ['class' => 'been-here ' . $selectedVisit]); ?>
 
                                                         </li>
                                                         <li>
 
-                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place count">' . $loveValue . '</span> Loves', ['action/submit-user-love'], ['class' => 'love-place ' . $selectedLove]); ?>
+                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place-count">' . $loveValue . '</span> Loves', ['action/submit-user-love'], ['class' => 'love-place ' . $selectedLove]); ?>
 
                                                         </li>
                                                         <li>
@@ -764,7 +764,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     ]);
 
         echo '<div class="overlay" style="display: none;"></div>';
-        echo '<div class="loading-img" style="display: none"></div>';
+        echo '<div class="loading-img" style="display: none;"></div>';
 
         $form = ActiveForm::begin([
             'id' => 'report-form',
@@ -776,13 +776,13 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
 
             echo Html::hiddenInput('business_id', $modelBusiness['id']);
 
-            echo '<label>Bisnis ini:</label>';
+            echo '<label>' . Yii::t('app', 'This business:') . '</label>';
             echo $form->field($modelUserReport, 'report_status')
                     ->radioList([
-                        'Closed' => 'Tutup',
-                        'Moved'=> 'Pindah',
-                        'Duplicate' => 'Duplikat / fiktif',
-                        'Inaccurate' => 'Informasi tidak akurat',
+                        'Closed' => Yii::t('app', 'Closed'),
+                        'Moved'=> Yii::t('app', 'Moved'),
+                        'Duplicate' => Yii::t('app', 'Duplicate'),
+                        'Inaccurate' => Yii::t('app', 'Inaccurate'),
                     ],
                     [
                         'separator' => '<br>',
@@ -794,14 +794,14 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
             echo '<label>Keterangan:</label>';
             echo $form->field($modelUserReport, 'text')->textArea([
                 'rows' => 3,
-                'placeholder' => 'Ceritakan mengenai situasi atau keluhan anda.'
+                'placeholder' => Yii::t('app', 'Tell about your situation or complaint.')
             ]);
 
             echo '
                 <div class="row">
                     <div class="col-sm-12 col-md-12 text-center">
-                        ' . Html::submitButton('Submit', ['class' => 'btn btn-round btn-d']) . '
-                        ' . Html::a('Close', null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
+                        ' . Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-round btn-d']) . '
+                        ' . Html::a(Yii::t('app', 'Close'), null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
                     </div>
                 </div>';
 
@@ -829,6 +829,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/
 
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
+frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
@@ -886,16 +887,16 @@ $jscript = '
 
                 if (response.success) {
 
-                    var count = parseInt($(".love-place.count").html());
+                    var count = parseInt($(".love-place-count").html());
 
                     if (response.is_active) {
 
                         $(".love-place").addClass("selected");
-                        $(".love-place.count").html(count + 1);
+                        $(".love-place-count").html(count + 1);
                     } else {
 
                         $(".love-place").removeClass("selected");
-                        $(".love-place.count").html(count - 1);
+                        $(".love-place-count").html(count - 1);
                     }
                 } else {
 
@@ -924,16 +925,16 @@ $jscript = '
 
                 if (response.success) {
 
-                    var count = parseInt($(".been-here.count").html());
+                    var count = parseInt($(".been-here-count").html());
 
                     if (response.is_active) {
 
                         $(".been-here").addClass("selected");
-                        $(".been-here.count").html(count + 1);
+                        $(".been-here-count").html(count + 1);
                     } else {
 
                         $(".been-here").removeClass("selected");
-                        $(".been-here.count").html(count - 1);
+                        $(".been-here-count").html(count - 1);
                     }
                 } else {
 
