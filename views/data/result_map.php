@@ -261,26 +261,7 @@ $linkPager = LinkPager::widget([
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    $("#pjax-result-map-container").on("pjax:send", function() {
-
-        $(".box-place").children(".overlay").show();
-        $(".box-place").children(".loading-img").show();
-    });
-
-    $("#pjax-result-map-container").on("pjax:complete", function() {
-
-        $(".box-place").children(".overlay").hide();
-        $(".box-place").children(".loading-img").hide();
-    });
-
-    $("#pjax-result-map-container").on("pjax:error", function (event) {
-
-        event.preventDefault();
-    });
-
-    ratingColor($(".rating"), "span");
-
-    var initMap = function() {
+    function initMap() {
 
         var mapResult;
         var mapOptions;
@@ -411,6 +392,25 @@ $jscript = '
     };
 
     initMap();
+
+    ratingColor($(".rating"), "span");
+
+    $("#pjax-result-map-container").on("pjax:send", function() {
+
+        $(".box-place").children(".overlay").show();
+        $(".box-place").children(".loading-img").show();
+    });
+
+    $("#pjax-result-map-container").on("pjax:complete", function() {
+
+        $(".box-place").children(".overlay").hide();
+        $(".box-place").children(".loading-img").hide();
+    });
+
+    $("#pjax-result-map-container").on("pjax:error", function (event) {
+
+        event.preventDefault();
+    });
 ';
 
 $this->registerJs($jscript);

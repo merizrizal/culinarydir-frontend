@@ -528,6 +528,9 @@ $jscript = '
                     error: function (xhr, ajaxOptions, thrownError) {
 
                         messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").hide();
+                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").hide();
                     }
                 });
             }

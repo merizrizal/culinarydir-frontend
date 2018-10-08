@@ -1,4 +1,5 @@
 <?php 
+
 /* @var $businessName string */
 /* @var $businessAbout string */ ?>
 
@@ -16,11 +17,13 @@
             <hr class="divider-w">
 
             <div class="box-content mt-10">
-                <p>
+            	<div class="row">
+            		<div class="col-md-12 col-xs-12">
 
-                    <?= !empty($businessAbout) ? $businessAbout : Yii::t('app', 'Data Not Available') . '.' ?>
-
-                </p>
+                        <?= !empty($businessAbout) ? $businessAbout : '<p>' . Yii::t('app', 'Data Not Available') . '.</p>' ?>
+        
+            		</div>
+            	</div>
             </div>
         </div>
     </div>

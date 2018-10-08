@@ -49,7 +49,7 @@ $appComponent = new AppComponent(); ?>
             <?php
             $urlResultList = ArrayHelper::merge(['result-list'], $filter); 
             $btnResultList = Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default btn-list']);
-            $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> Maps', '', ['class' => 'btn btn-round btn-d btn-map']); ?>
+            $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), '', ['class' => 'btn btn-round btn-d btn-map']); ?>
 
             <div class="col-md-7 col-sm-7 col-xs-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
 

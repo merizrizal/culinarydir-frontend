@@ -339,6 +339,9 @@ $jscript = '
             error: function(xhr, ajaxOptions, thrownError) {
 
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                $("#modal-product-category").find(".overlay").hide();
+                $("#modal-product-category").find(".loading-img").hide();
             }
         });
     });
@@ -384,11 +387,14 @@ $jscript = '
                     $("#modal-product-category").find("#modal-content").html(response);
 
                     $("#modal-product-category").find(".overlay").hide();
-                    $("#modal-product-category").find(".loading-img").hide();                    
+                    $("#modal-product-category").find(".loading-img").hide();
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
 
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    $("#modal-product-category").find(".overlay").hide();
+                    $("#modal-product-category").find(".loading-img").hide();
                 }
             });
         }, typingInterval);

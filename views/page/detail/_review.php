@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\JsExpression;
@@ -837,6 +838,11 @@ $jscript = '
                 cache: false,
                 type: "POST",
                 url: $(this).data("href"),
+                beforeSend: function(xhr) {
+
+                    $("#title-write-review").siblings(".overlay").show();
+                    $("#title-write-review").siblings(".loading-img").show();
+                },
                 success: function(response) {
 
                     $("#modal-confirmation").modal("hide");
@@ -856,10 +862,16 @@ $jscript = '
     
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
+
+                    $("#title-write-review").siblings(".overlay").hide();
+                    $("#title-write-review").siblings(".loading-img").hide();
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
     
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    $("#title-write-review").siblings(".overlay").show();
+                    $("#title-write-review").siblings(".loading-img").show();
                 }
             });
         });
@@ -1120,6 +1132,9 @@ $jscript = '
                 error: function (xhr, ajaxOptions, thrownError) {
 
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    $(".my-comment-section").siblings(".overlay").hide();
+                    $(".my-comment-section").siblings(".loading-img").hide();
                 }
             });
         }

@@ -115,7 +115,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg
                         <div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 align-center">{pager}</div>
-                        <div>
+                        </div>
                     </div>
                 ',
                 'pager' => [

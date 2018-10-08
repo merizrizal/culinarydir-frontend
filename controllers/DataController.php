@@ -329,7 +329,6 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-            
         } else {
 
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
@@ -401,7 +400,8 @@ class DataController extends base\BaseController
         return $this->render($fileRender, $paramsView);
     }
 
-    public function actionRecentPost() {
+    public function actionRecentPost() 
+    {   
 
         $this->layout = 'ajax';
 
