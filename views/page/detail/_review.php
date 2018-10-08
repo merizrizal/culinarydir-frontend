@@ -829,9 +829,6 @@ $jscript = '
 
     $(".delete-my-review-trigger").on("click", function(event) {
 
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this review?') . '");
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         $("#modal-confirmation").find("#btn-delete").off("click");
@@ -841,6 +838,11 @@ $jscript = '
                 cache: false,
                 type: "POST",
                 url: $(this).data("href"),
+                beforeSend: function(xhr) {
+
+                    $("#title-write-review").siblings(".overlay").show();
+                    $("#title-write-review").siblings(".loading-img").show();
+                },
                 success: function(response) {
 
                     $("#modal-confirmation").modal("hide");
@@ -860,13 +862,21 @@ $jscript = '
     
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
+
+                    $("#title-write-review").siblings(".overlay").hide();
+                    $("#title-write-review").siblings(".loading-img").hide();
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
     
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    $("#title-write-review").siblings(".overlay").show();
+                    $("#title-write-review").siblings(".loading-img").show();
                 }
             });
         });
+
+        $("#modal-confirmation").modal("show");
 
         return false;
     });
@@ -1141,10 +1151,7 @@ $jscript = '
     });    
 
     $("#form-photos-review-container").on("click", ".delete-image", function() {
-
-        $("#modal-confirmation").modal("show");
-
-        $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this photo?') . '");
+        
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
         $("#modal-confirmation").find("#btn-delete").off("click");
@@ -1181,6 +1188,8 @@ $jscript = '
                 }
             });
         });
+
+        $("#modal-confirmation").modal("show");
 
         return false;
     });

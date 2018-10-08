@@ -859,7 +859,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::begin([
         'header' => Yii::t('app', 'Confirmation'),
         'id' => 'modal-confirmation',
-        'size' => Modal::SIZE_DEFAULT,
+        'size' => Modal::SIZE_SMALL,
         'footer' => '
             <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
             <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>

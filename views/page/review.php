@@ -397,6 +397,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnifi
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
+frontend\components\GrowlCustom::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 

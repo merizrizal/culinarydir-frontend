@@ -26,7 +26,25 @@ $jscript = '
                 $(".user-post-section").find(".user-post-main-id").each(function() {
 
                     var thisObj = $(this);
+
+                    thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
+                    thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
+
+                    thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".post-gallery").magnificPopup({
             
+                        delegate: "a.show-image",
+                        type: "image",
+                        gallery: {
+                            enabled: true,
+                            navigateByImgClick: true,
+                            preload: [0,1]
+                        },
+                        image: {
+                            titleSrc: "title",
+                            tError: "The image could not be loaded."
+                        }
+                    });
+
                     thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function() {
             
                         $.ajax({
@@ -45,11 +63,11 @@ $jscript = '
                                     if (response.is_active) {
             
                                         thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
-                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue + 1).toString());
+                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html(loveValue + 1);
                                     } else {
             
                                         thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
-                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html((loveValue - 1).toString());
+                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html(loveValue - 1);
                                     }
                                 } else {
             
@@ -64,10 +82,7 @@ $jscript = '
             
                         return false;
                     });
-            
-                    thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-                    thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
-            
+
                     thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
             
                         thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
@@ -89,6 +104,7 @@ $jscript = '
                                 },
                                 url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                                 beforeSend: function(xhr) {
+
                                     $(".comment-" + thisObj.val() + "-section").siblings(".overlay").show();
                                     $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
                                 },
@@ -123,8 +139,11 @@ $jscript = '
                                     $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
                                 },
                                 error: function (xhr, ajaxOptions, thrownError) {
-            
+
                                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".overlay").hide();
+                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
                                 }
                             });
                         }
@@ -140,47 +159,23 @@ $jscript = '
                         
                         return false;
                     });
-                    
-            
-                    thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
-            
-                        delegate: "a.show-image",
-                        type: "image",
-                        gallery: {
-                            enabled: true,
-                            navigateByImgClick: true,
-                            preload: [0,1]
-                        },
-                        image: {
-                            titleSrc: "title",
-                            tError: "The image could not be loaded."
-                        }
-                    });
-            
-                    $(".review-" + thisObj.val() + "-option").hide();
-            
-                    $(".review-" + thisObj.val() + "-option-toggle").on("click", function() {
-            
-                        $(".review-" + thisObj.val() + "-option").slideToggle();
-                    });
-            
+
                     thisObj.parent().find(".user-" + thisObj.val() + "-delete-review-trigger").on("click", function() {
-            
-                        $("#modal-confirmation").modal("show");
-                    
-                        $("#modal-confirmation").find(".modal-body").html("' . Yii::t('app', 'Are you sure want to delete this review?') . '");
+
                         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
                         
                         $("#modal-confirmation").find("#btn-delete").off("click");
                         $("#modal-confirmation").find("#btn-delete").on("click", function() {
             
-                            var form = $("form#rating-popover-form-" + thisObj.val()).serialize();
-                    
                             $.ajax({
                                 cache: false,
                                 type: "POST",
-                                data: form,
                                 url: $(this).data("href"),
+                                beforeSend: function(xhr) {
+                
+                                    $(".user-post-container").children(".overlay").show();
+                                    $(".user-post-container").children(".loading-img").show();
+                                },
                                 success: function(response) {
             
                                     $("#modal-confirmation").modal("hide");
@@ -197,13 +192,23 @@ $jscript = '
                     
                                         messageResponse(response.icon, response.title, response.message, response.type);
                                     }
+
+                                    $(".user-post-container").children(".overlay").hide();
+                                    $(".user-post-container").children(".loading-img").hide();
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
-                    
+
                                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                                    $("#modal-confirmation").modal("hide");
+                    
+                                    $(".user-post-container").children(".overlay").hide();
+                                    $(".user-post-container").children(".loading-img").hide();
                                 }
                             });
                         });
+
+                        $("#modal-confirmation").modal("show");
             
                         return false;
                     });

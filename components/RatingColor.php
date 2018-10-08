@@ -11,7 +11,7 @@ class RatingColor extends Widget {
         parent::init();
 
         $jscript = '
-            var ratingColor = function(element, containerRating) {
+            function ratingColor(element, containerRating) {
 
                 element.each(function() {
 

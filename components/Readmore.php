@@ -11,7 +11,7 @@ class Readmore extends Widget {
         parent::init();
 
         $jscript = '
-            var readmoreText = function(options) {
+            function readmoreText(options) {
 
                 var minChars = options.minChars;
                 var ellipsesText = options.ellipsesText;
@@ -22,7 +22,7 @@ class Readmore extends Widget {
 
                     var content = $(this).html();
 
-                    if(content.length > minChars) {
+                    if (content.length > minChars) {
 
                         var shownContent = content.substr(0, minChars);
                         var hiddenContent = content.substr(minChars, content.length - minChars);
@@ -36,7 +36,7 @@ class Readmore extends Widget {
 
                 options.element.find(".readmore-trigger").click(function(){
 
-                    if($(this).hasClass("less")) {
+                    if ($(this).hasClass("less")) {
 
                         $(this).removeClass("less");
                         $(this).html(moreText);
