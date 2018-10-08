@@ -164,18 +164,16 @@ $csscript = '
 
 $this->registerCss($csscript);
 
-frontend\components\GrowlCustom::widget();
-
 $jscript = '
     $(".business-id").each(function() {
 
         var thisObj = $(this);
 
-        thisObj.parent().parent().parent().parent().parent().find(".unlove-place").on("click", function() {
+        thisObj.parent().find(".unlove-place").on("click", function() {
 
             $.ajax({
                 cache: false,
-                url: $(this).attr("href"),
+                url: thisObj.attr("href"),
                 type: "POST",
                 data: {
                     "business_id": thisObj.val()
@@ -188,11 +186,11 @@ $jscript = '
 
                         if (response.is_active) {
 
-                            thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
+                            thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
                             $(".total-user-love").html(count + 1);
                         } else {
 
-                            thisObj.parent().parent().parent().parent().parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
+                            thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
                             $(".total-user-love").html(count - 1);
                         }
                     } else {

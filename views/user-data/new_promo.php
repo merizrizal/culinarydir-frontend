@@ -134,8 +134,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
-
 $jscript = '
     $(".total-new-promo").html("' . $totalCount . '");
 

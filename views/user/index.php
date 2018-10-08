@@ -211,7 +211,7 @@ $this->params['beforeEndBody'][] = function() {
         ',
     ]);
 
-    echo Yii::t('app', 'Are you sure want to delete this?');
+        echo Yii::t('app', 'Are you sure want to delete this?');
 
     Modal::end();
 }; ?>
