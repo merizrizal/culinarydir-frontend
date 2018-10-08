@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
 
 <div class="row">
@@ -10,16 +11,15 @@
 
             <hr class="divider-w">
 
-            <?php
-            if (!empty($modelBusinessProduct)): ?>
-
-                <div class="box-content">
-                    <div class="row">
+			<div class="box-content mt-10">
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
 
                         <?php
-                        foreach ($modelBusinessProduct as $dataBusinessProduct): ?>
+                        if (!empty($modelBusinessProduct)):
+                    
+                            foreach ($modelBusinessProduct as $dataBusinessProduct): ?>
 
-                            <div class="col-md-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-md-8 col-xs-8">
                                         <strong><?= $dataBusinessProduct['name'] ?></strong>
@@ -35,24 +35,20 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
 
+                            <?php
+                            endforeach;
+                            
+                        else: ?>
+        
+                        	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
+        
                         <?php
-                        endforeach; ?>
-
-                    </div>
+                        endif; ?>
+                     
+                	</div>
                 </div>
-
-            <?php
-            else: ?>
-
-                <div class="box-content mt-10">
-                    <p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
-                </div>
-
-            <?php
-            endif; ?>
-
+            </div>
         </div>
     </div>
 </div>

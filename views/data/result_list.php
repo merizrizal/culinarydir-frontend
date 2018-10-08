@@ -318,23 +318,6 @@ $jspopover = ''; ?>
 
 <?php
 $jscript = '
-    $("#pjax-result-list").on("pjax:send", function() {
-
-        $(".box-place").children(".overlay").show();
-        $(".box-place").children(".loading-img").show();
-    });
-
-    $("#pjax-result-list").on("pjax:complete", function() {
-
-        $(".box-place").children(".overlay").hide();
-        $(".box-place").children(".loading-img").hide();
-    });
-
-    $("#pjax-result-list").on("pjax:error", function (event) {
-
-        event.preventDefault();
-    });
-
     $(".popover-tag").on("click", function() {
 
         return false;
@@ -377,6 +360,23 @@ $jscript = '
     });
 
     ratingColor($(".rating"), "span");
+
+    $("#pjax-result-list").on("pjax:send", function() {
+
+        $(".box-place").children(".overlay").show();
+        $(".box-place").children(".loading-img").show();
+    });
+
+    $("#pjax-result-list").on("pjax:complete", function() {
+
+        $(".box-place").children(".overlay").hide();
+        $(".box-place").children(".loading-img").hide();
+    });
+
+    $("#pjax-result-list").on("pjax:error", function (event) {
+
+        event.preventDefault();
+    });
 ';
 
 $this->registerJs($jscript . $jspopover);

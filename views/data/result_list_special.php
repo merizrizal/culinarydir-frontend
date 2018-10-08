@@ -229,6 +229,11 @@ $jspopover = ''; ?>
 
 <?php
 $jscript = '
+    $(".popover-tag").on("click", function() {
+
+        return false;
+    });
+
     $("#pjax-result-list").on("pjax:send", function() {
 
         $(".box-place").children(".overlay").show();
@@ -244,11 +249,6 @@ $jscript = '
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });
-
-    $(".popover-tag").on("click", function() {
-
-        return false;
     });
 ';
 

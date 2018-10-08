@@ -17,6 +17,16 @@ use sycomponent\Tools;
 
 $this->title = $modelBusiness['name'];
 
+$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
+$ogTitle = !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan';
+$ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
+$ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
+
+if (!empty($modelBusiness['businessImages'][0]['image'])) {
+    
+    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
+}
+
 $this->registerMetaTag([
     'name' => 'keywords',
     'content' => 'asik, makan, kuliner, bandung, jakarta'
@@ -24,17 +34,33 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => (!empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com')
+    'content' => $ogDescription
 ]);
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
-$ogTitle = $modelBusiness['name'];
-$ogDescription = (!empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com');
-$ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
+$this->registerMetaTag([
+    'property' => 'og:url',
+    'content' => $ogUrl
+]);
 
-if (!empty($modelBusiness['businessImages'][0]['image'])) {
-    $ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image']);
-} ?>
+$this->registerMetaTag([
+    'property' => 'og:type',
+    'content' => 'website'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:title',
+    'content' => $ogTitle
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' => $ogDescription
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:image',
+    'content' => $ogImage
+]); ?>
 
 <div class="main">
 
@@ -349,66 +375,53 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                 </div>
                                             </div>
 
-                                            <?php
-                                            $layoutFirstList = '
-                                                <li>
-                                                    <a href="" id="write-review-shortcut">
-                                                        <ul class="text-center">
-                                                            <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                            <li>' . Yii::t('app', 'Review') . '</li>
-                                                        </ul>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="" id="post-photo-shortcut">
-                                                        <ul class="text-center">
-                                                            <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
-                                                            <li>' . Yii::t('app', 'Photo') . '</li>
-                                                        </ul>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="" id="report-business-trigger">
-                                                        <ul class="text-center">
-                                                            <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
-                                                            <li>' . Yii::t('app', 'Report') . '</li>
-                                                        </ul>
-                                                    </a>
-                                                </li>
-                                            ';
-
-                                            $layoutSecondList = '
-                                                <li>
-                                                    <a href="" class="message-feature">
-                                                        <ul class="text-center">
-                                                            <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
-                                                            <li>Message</li>
-                                                        </ul>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="" class="booking-feature">
-                                                        <ul class="text-center">
-                                                            <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
-                                                            <li>' . Yii::t('app', 'Booking') . '</li>
-                                                        </ul>
-                                                    </a>
-                                                </li>
-                                            ' ?>
-
                                             <div class="row mt-10 mb-10 visible-lg visible-md visible-sm visible-tab">
                                                 <div class="col-lg-4 col-md-5 col-sm-5 col-tab-6 widget pull-right">
                                                     <ul class="link-icon list-inline text-center">
-
-                                                    	<?= $layoutFirstList; ?>
-
+                                                    	<li>
+                                                            <a href="" id="write-review-shortcut">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Review') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="" id="post-photo-shortcut">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="" id="report-business-trigger">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Report') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
                                                   	</ul>
                                                 </div>
                                                 <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 widget">
                                                     <ul class="link-icon list-inline">
-
-                                                        <?= $layoutSecondList; ?>
-
+                                                       <li>
+                                                            <a href="#" class="message-feature">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
+                                                                    <li>Message</li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="booking-feature">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -416,16 +429,50 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                             <div class="row mt-10 mb-10 visible-xs">
                                                 <div class="col-xs-12 widget pull-right">
                                                 	<ul class="link-icon list-inline text-center">
-
-                                                    	<?= $layoutFirstList; ?>
-
+                                                    	<li>
+                                                            <a href="" id="write-review-shortcut-xs">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Review') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="" id="post-photo-shortcut-xs">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="" id="report-business-trigger-xs">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Report') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-xs-12 widget">
                                                     <ul class="link-icon list-inline text-center">
-
-                                                        <?= $layoutSecondList; ?>
-
+                                                        <li>
+                                                            <a href="#" class="message-feature">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
+                                                                    <li>Message</li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="booking-feature">
+                                                                <ul class="text-center">
+                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                </ul>
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>

@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\JsExpression;
@@ -1121,6 +1122,9 @@ $jscript = '
                 error: function (xhr, ajaxOptions, thrownError) {
 
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    $(".my-comment-section").siblings(".overlay").hide();
+                    $(".my-comment-section").siblings(".loading-img").hide();
                 }
             });
         }
