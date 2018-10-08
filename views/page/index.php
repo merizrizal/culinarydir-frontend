@@ -140,6 +140,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg
 <?php
 frontend\components\RatingColor::widget();
 frontend\components\FacebookShare::widget();
+frontend\components\GrowlCustom::widget();
 
 $jscript = '
     $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {

@@ -14,13 +14,13 @@ class AddressType extends Widget {
     public function init() {
         parent::init();        
         
-        if($this->addressType == "Jalan") {
+        if ($this->addressType == "Jalan") {
 
             $this->addressTypeShort = "Jl";
-        } else if($this->addressType == "Komplek") {
+        } else if ($this->addressType == "Komplek") {
 
             $this->addressTypeShort = "Komp";
-        } else if($this->addressType == "Gang") {
+        } else if ($this->addressType == "Gang") {
 
             $this->addressTypeShort = "Gg";
         }

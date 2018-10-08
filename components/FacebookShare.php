@@ -11,7 +11,7 @@ class FacebookShare extends Widget {
         parent::init();
 
         $jscript = '
-            var facebookShare = function(params) {
+            function facebookShare(params) {
 
                 FB.ui({
                     method: "share_open_graph",
