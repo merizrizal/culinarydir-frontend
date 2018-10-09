@@ -187,17 +187,11 @@ class DataController extends base\BaseController
             ->distinct()
             ->asArray()->all();
 
-        $userPostComment = [];
-
-        foreach ($modelUserPostComment as $dataUserPostComment) {
-
-            $userPostComment[$dataUserPostComment['user_post_main_id']][] = $dataUserPostComment;
-        }
-
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('post_comment', [
-            'userPostComment' => $userPostComment,
+            'userPostId' => Yii::$app->request->post('user_post_main_id'),
+            'modelUserPostComment' => $modelUserPostComment,
         ]);
     }
 

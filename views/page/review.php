@@ -351,7 +351,7 @@ $jspopover = ''; ?>
                                                                                             <strong><?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;</strong>
                                                                                             <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                             <br>
-                                                                                            <p class="review-description">
+                                                                                            <p class="comment-description">
 
                                                                                                 <?= $dataUserPostComment['text']; ?>
 

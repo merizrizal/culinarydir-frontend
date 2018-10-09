@@ -173,7 +173,7 @@ $jscript = '
 
             $.ajax({
                 cache: false,
-                url: thisObj.attr("href"),
+                url: $(this).attr("href"),
                 type: "POST",
                 data: {
                     "business_id": thisObj.val()
@@ -181,25 +181,25 @@ $jscript = '
                 success: function(response) {
 
                     if (response.success) {
-
+                        
                         var count = parseInt($(".total-user-love").html());
 
                         if (response.is_active) {
-
+                            
                             thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
                             $(".total-user-love").html(count + 1);
                         } else {
-
+                            
                             thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
                             $(".total-user-love").html(count - 1);
                         }
                     } else {
-
+                        
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
+                    
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
                 }
             });

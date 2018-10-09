@@ -19,7 +19,7 @@ $this->registerMetaTag([
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]); ?>
 
-<div class="main">
+<div class="main"> 
 
     <section class="module-extra-small bg-main">
         <div class="container detail photo">
@@ -220,7 +220,7 @@ $this->registerMetaTag([
                                                                                             <strong><?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;</strong>
                                                                                             <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                             <br>
-                                                                                            <p class="review-description">
+                                                                                            <p class="comment-description">
 
                                                                                                 <?= $dataUserPostComment['text']; ?>
 

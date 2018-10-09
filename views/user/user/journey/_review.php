@@ -63,210 +63,170 @@ $jscript = '
                     return false;
                 });
 
-                $(".user-post-section").find(".user-post-main-id").each(function() {
+                $(".user-post-section").on("click", ".user-comments-review-trigger", function() {
+            
+                    $(".user-post-section").find("#user-comments-review").slideToggle();
+                    $(".user-post-section").find("#input-comments-review").trigger("focus");            
+        
+                    return false;
+                });
+
+                $(".user-post-section").on("keypress", "#input-comments-review", function(event) {
 
                     var thisObj = $(this);
-
-                    thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".post-gallery").magnificPopup({
             
-                        delegate: "a.show-image",
-                        type: "image",
-                        gallery: {
-                            enabled: true,
-                            navigateByImgClick: true,
-                            preload: [0,1]
-                        },
-                        image: {
-                            titleSrc: "title",
-                            tError: "The image could not be loaded."
-                        }
-                    });
-
-                    $(".user-post-section").on("click", ".user-" + thisObj.val() + "-likes-review-trigger", function() {
-            
+                    if (event.which == 13 && $(this).val().trim()) {
+        
                         $.ajax({
                             cache: false,
                             type: "POST",
                             data: {
-                                "user_post_main_id": thisObj.val()
+                                "user_post_main_id": thisObj.parents(".user-post-item").find(".user-post-main-id").val(),
+                                "text": $(this).val(),
                             },
-                            url: $(this).attr("href"),
+                            url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
+                            beforeSend: function(xhr) {
+
+                                $(".comment-section").siblings(".overlay").show();
+                                $(".comment-section").siblings(".loading-img").show();
+                            },
                             success: function(response) {
-            
+        
                                 if (response.success) {
-            
-                                    var loveValue = parseInt(thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").find("span.total-" + thisObj.val() + "-likes-review").html());
-            
-                                    if (response.is_active) {
-            
-                                        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
-                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html(loveValue + 1);
-                                    } else {
-            
-                                        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
-                                        thisObj.parent().find("span.total-" + thisObj.val() + "-likes-review").html(loveValue - 1);
-                                    }
+        
+                                    $("#input-comments-review").val("");
+        
+                                    $.ajax({
+                                        cache: false,
+                                        type: "POST",
+                                        data: {
+                                            "user_post_main_id": response.user_post_main_id
+                                        },
+                                        url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
+                                        success: function(response) {
+                                            
+                                            $(".comment-section").html(response);
+        
+                                            thisObj.parents(".user-post-item").find("span.total-comments-review").html(commentCount);
+                                        },
+                                        error: function(xhr, ajaxOptions, thrownError) {
+        
+                                            messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+                                        }
+                                    });
                                 } else {
-            
+        
                                     messageResponse(response.icon, response.title, response.message, response.type);
                                 }
+        
+                                $(".comment-section").siblings(".overlay").hide();
+                                $(".comment-section").siblings(".loading-img").hide();
                             },
-                            error: function(xhr, ajaxOptions, thrownError) {
-            
+                            error: function (xhr, ajaxOptions, thrownError) {
+
                                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                                $(".comment-section").siblings(".overlay").hide();
+                                $(".comment-section").siblings(".loading-img").hide();
                             }
                         });
-            
-                        return false;
-                    });
+                    }
+                });
 
-                    thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
+                $(".user-post-section").on("click", ".user-photos-review-trigger", function() {
             
-                        thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
-                        thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");            
-            
-                        return false;
-                    });
-            
-                    thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").on("keypress", function(event) {
-            
-                        if (event.which == 13 && $(this).val().trim()) {
-            
-                            $.ajax({
-                                cache: false,
-                                type: "POST",
-                                data: {
-                                    "user_post_main_id": thisObj.val(),
-                                    "text": $(this).val(),
-                                },
-                                url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
-                                beforeSend: function(xhr) {
-
-                                    $(".comment-" + thisObj.val() + "-section").siblings(".overlay").show();
-                                    $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
-                                },
-                                success: function(response) {
-            
-                                    if (response.success) {
-            
-                                        $("#input-" + response.user_post_main_id + "-comments-review").val("");
-            
-                                        $.ajax({
-                                            cache: false,
-                                            type: "POST",
-                                            data: {
-                                                "user_post_main_id": response.user_post_main_id
-                                            },
-                                            url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
-                                            success: function(response) {
-            
-                                                $(".comment-" + thisObj.val() + "-section").html(response);
-                                            },
-                                            error: function(xhr, ajaxOptions, thrownError) {
-            
-                                                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                                            }
-                                        });
-                                    } else {
-            
-                                        messageResponse(response.icon, response.title, response.message, response.type);
-                                    }
-            
-                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".overlay").hide();
-                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
-                                },
-                                error: function (xhr, ajaxOptions, thrownError) {
-
-                                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".overlay").hide();
-                                    $(".comment-" + response.user_post_main_id + "-section").siblings(".loading-img").hide();
-                                }
-                            });
-                        }
-                    });
-            
+                    if ($(".user-post-section").find("#user-photos-review").find(".gallery-photo-review").length) {            
+        
+                        $(".user-post-section").find("#user-photos-review").toggle(500);
+                    }
                     
-                    thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function() {
+                    return false;
+                });
+
+                $(".user-post-section").magnificPopup({
             
-                        if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {            
+                    delegate: ".post-gallery a.show-image",
+                    type: "image",
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0,1]
+                    },
+                    image: {
+                        titleSrc: "title",
+                        tError: "The image could not be loaded."
+                    }
+                });
+
+                $(".user-post-section").on("click", ".share-review-trigger", function() {
             
-                            thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
-                        }
-                        
-                        return false;
+                    var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(".user-post-section").find(".user-post-main-id").val();
+                    var title = "Rating " + $(".user-post-section").find(".rating").text().trim() + " untuk " + $(".user-post-section").find(".business-name").val();
+                    var description = $(".user-post-section").find(".review-description").text();
+                    var image = window.location.protocol + "//" + window.location.hostname + $(".user-post-section").parent().find("#user-photos-review").eq(0).find(".work-image").children().attr("src");
+        
+                    facebookShare({
+                        ogUrl: url,
+                        ogTitle: title,
+                        ogDescription: description,
+                        ogImage: image,
+                        type: "Review"
                     });
+        
+                    return false;
+                });
 
-                    thisObj.parent().find(".user-" + thisObj.val() + "-delete-review-trigger").on("click", function() {
+                $(".user-post-section").on("click", ".user-delete-review-trigger", function() {
 
-                        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
-                        
-                        $("#modal-confirmation").find("#btn-delete").off("click");
-                        $("#modal-confirmation").find("#btn-delete").on("click", function() {
+                    $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
+                    
+                    $("#modal-confirmation").find("#btn-delete").off("click");
+                    $("#modal-confirmation").find("#btn-delete").on("click", function() {
+        
+                        $.ajax({
+                            cache: false,
+                            type: "POST",
+                            url: $(this).data("href"),
+                            beforeSend: function(xhr) {
             
-                            $.ajax({
-                                cache: false,
-                                type: "POST",
-                                url: $(this).data("href"),
-                                beforeSend: function(xhr) {
+                                $(".user-post-container").children(".overlay").show();
+                                $(".user-post-container").children(".loading-img").show();
+                            },
+                            success: function(response) {
+        
+                                $("#modal-confirmation").modal("hide");
                 
-                                    $(".user-post-container").children(".overlay").show();
-                                    $(".user-post-container").children(".loading-img").show();
-                                },
-                                success: function(response) {
-            
-                                    $("#modal-confirmation").modal("hide");
-                    
-                                    if (response.success) {
-            
-                                        getUserPostReview();
-                    
-                                        var totalUserPost = parseInt($(".total-user-post").html());
-                                        $(".total-user-post").html(totalUserPost - 1);
+                                if (response.success) {
+        
+                                    getUserPostReview();
+                
+                                    var totalUserPost = parseInt($(".total-user-post").html());
+                                    $(".total-user-post").html(totalUserPost - 1);
 
-                                        messageResponse(response.icon, response.title, response.message, response.type);
-                                    } else {
-                    
-                                        messageResponse(response.icon, response.title, response.message, response.type);
-                                    }
-
-                                    $(".user-post-container").children(".overlay").hide();
-                                    $(".user-post-container").children(".loading-img").hide();
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-
-                                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                                    $("#modal-confirmation").modal("hide");
-                    
-                                    $(".user-post-container").children(".overlay").hide();
-                                    $(".user-post-container").children(".loading-img").hide();
+                                    messageResponse(response.icon, response.title, response.message, response.type);
+                                } else {
+                
+                                    messageResponse(response.icon, response.title, response.message, response.type);
                                 }
-                            });
-                        });
 
-                        $("#modal-confirmation").modal("show");
-            
-                        return false;
-                    });
-            
-                    thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
-            
-                        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
-                        var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + thisObj.parent().find(".business-name").val();
-                        var description = thisObj.parent().find(".review-description").text();
-                        var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
-            
-                        facebookShare({
-                            ogUrl: url,
-                            ogTitle: title,
-                            ogDescription: description,
-                            ogImage: image,
-                            type: "Review"
+                                $(".user-post-container").children(".overlay").hide();
+                                $(".user-post-container").children(".loading-img").hide();
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+
+                                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                                $("#modal-confirmation").modal("hide");
+                
+                                $(".user-post-container").children(".overlay").hide();
+                                $(".user-post-container").children(".loading-img").hide();
+                            }
                         });
-            
-                        return false;
                     });
+
+                    $("#modal-confirmation").modal("show");
+        
+                    return false;
                 });
             },
             error: function(xhr, ajaxOptions, thrownError) {
