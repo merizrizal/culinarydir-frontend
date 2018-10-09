@@ -5,68 +5,66 @@ use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */
-/* @var $userPostComment array */ ?>
+/* @var $modelUserPostComment core\models\UserPostComment */ 
+/* @var $userPostId frontend\controllers\DataController */?>
 
 <?php
 $jscript = '';
 
-if (!empty($userPostComment)):
+if (!empty($modelUserPostComment)): ?>
 
-    foreach ($userPostComment as $userPostId => $modelUserPostComment): ?>
+    <div class="comment-container">
 
-        <div class="comment-container">
+        <?php
+        foreach ($modelUserPostComment as $dataUserPostComment): ?>
 
-            <?php
-            foreach ($modelUserPostComment as $dataUserPostComment): ?>
+            <div class="comment-post">
+                <div class="row mb-10">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-comments-image">
 
-                <div class="comment-post">
-                    <div class="row mb-10">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="widget">
-                                <div class="widget-comments-image">
-                                    <a href="<?= Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']]) ?>">
+                                    <?php
+                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-                                        <?php
-                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                    if (!empty($dataUserPostComment['user']['image'])) {
 
-                                        if (!empty($dataUserPostComment['user']['image'])) {
+                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                    }
 
-                                            $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                        }
+                                    $imgUserProfileComment = Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                    
+                                    echo Html::a($imgUserProfileComment, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
-                                        echo Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']); ?>
+                            </div>
 
-                                    </a>
-                                </div>
+                            <div class="widget-comments-body">
+                                <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
+                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                <br>
+                                <p class="comment-description">
 
-                                <div class="widget-comments-body">
-                                    <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                    <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                    <br>
-                                    <p class="review-description">
+                                    <?= $dataUserPostComment['text']; ?>
 
-                                        <?= $dataUserPostComment['text']; ?>
-
-                                    </p>
-                                </div>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-            <?php
-            endforeach; ?>
+        <?php
+        endforeach; ?>
 
-        </div>
+    </div>
 
     <?php
     $jscript .= '
-        $(".total-' . $userPostId . '-comments-review").html("' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . '");
-
-        $(".comment-' . $userPostId . '-section").html($(".post-' . $userPostId . '-comment-container").html());
+        var commentCount = ' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . ';
+        
+        $(".total-' . $userPostId . '-comments-review").html(commentCount);
     ';
 
-    endforeach;
 endif; ?>
 
 <?php

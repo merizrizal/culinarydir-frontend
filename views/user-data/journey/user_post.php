@@ -212,7 +212,7 @@ $linkPager = LinkPager::widget([
     
                             </p>
     
-                            <div class="row user-photo-review" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                            <div class="row user-photo-review" id="user-photos-review">
                                 <div class="col-sm-12 col-xs-12">
                                     <ul class="works-grid works-grid-gut works-grid-5">
     
@@ -250,13 +250,13 @@ $linkPager = LinkPager::widget([
                             $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
                             
                             $loveSpanCount = '<span class="total-likes-review">#</span>';
-                            $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
-                            $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
+                            $commentSpanCount = '<span class="total-comments-review">#</span>';
+                            $photoSpanCount = '<span class="total-photos-review">#</span>';
                             
                             $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; 
                             
-                            $shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']);
-                            $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-' . $dataUserPostMain['id'] . '-delete-review-trigger']); ?>
+                            $shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']);
+                            $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-delete-review-trigger']); ?>
     
                             <div class="row visible-xs">
                                 <div class="col-xs-3">
@@ -286,12 +286,12 @@ $linkPager = LinkPager::widget([
                         					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
                                         </li>
                                         <li>
-                                        	<?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                        					<?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
+                                        	<?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                        					<?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-comments-review-trigger visible-xs']); ?>
                                         </li>
                                         <li>
-                                        	<?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                        					<?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
+                                        	<?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                        					<?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-photos-review-trigger visible-xs']); ?>
                                         </li>
                                         <li class="visible-xs-inline-block">
                                             <?= $shareBtn ?>
@@ -334,13 +334,13 @@ $linkPager = LinkPager::widget([
                             <hr class="divider-w mt-10">
     
                             <div class="row">
-                                <div class="user-comment-review" id="user-<?= $dataUserPostMain['id']; ?>-comments-review">
+                                <div class="user-comment-review" id="user-comments-review">
                                     <div class="col-sm-12">
                                         <div class="input-group mt-10 mb-10">
                                             <span class="input-group-addon"><i class="fa fa-comment"></i></span>
                                             
                                             <?= Html::textInput('comment_input', null, [
-                                                'id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 
+                                                'id' => 'input-comments-review', 
                                                 'class' => 'form-control', 
                                                 'placeholder' => Yii::t('app', 'Write a Comment')                                                    
                                             ]); ?>
@@ -350,7 +350,7 @@ $linkPager = LinkPager::widget([
                                         <div class="overlay" style="display: none;"></div>
                                         <div class="loading-img" style="display: none;"></div>
                                         
-                                        <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
+                                        <div class="comment-section">
                                             <div class="comment-container">
     
                                                 <?php
