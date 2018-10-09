@@ -115,6 +115,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                                             'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                                                                             'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
                                                                                             'captionElement' => '.rating-' . $dataRatingComponent['id'],
+                                                                                            'showCaption' => false,
                                                                                         ]
                                                                                     ]); ?>
 
