@@ -50,7 +50,7 @@ use common\components\Helper;
                         <div class="col-sm-12 col-xs-12">
 
                             <?php
-                            $img = Yii::$app->urlManager->baseUrl . '/media/img/360x135.283no-image-available.jpg';
+                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135);
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 
@@ -117,6 +117,7 @@ use common\components\Helper;
                                         'displayOnly' => true,
                                         'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                         'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                        'showCaption' => false,
                                     ]
                                 ]); ?>
 

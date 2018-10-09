@@ -69,7 +69,7 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
 
                                 <?php
-                                $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
 
                                 if (!empty($dataUserLove['business']['businessImages'][0]['image'])) {
 
