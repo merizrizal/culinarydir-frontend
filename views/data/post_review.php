@@ -88,7 +88,6 @@ $jspopover = ''; ?>
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
-                $userReviewComment = [];
         
                 if (!empty($dataUserPostMain['userVotes'])) {
         
@@ -103,18 +102,9 @@ $jspopover = ''; ?>
                     }
                 }
         
-                if (!empty($dataUserPostMain['userPostComments'])) {
-        
-                    foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment) {
-        
-                        $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
-                    }
-                }
-        
                 $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
         
                 ksort($ratingComponent);
-                ksort($userReviewComment);
         
                 $layoutUser = '
                     <div class="widget-posts-image">
@@ -124,7 +114,7 @@ $jspopover = ''; ?>
                     <div class="widget-posts-body">
                         ' . Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
                         <br>
-                        <small>' . Helper::asRelativeTime($dataUserPostMain['updated_at']) . '</small>
+                        <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
                     </div>
                 '; ?>
         
@@ -182,7 +172,7 @@ $jspopover = ''; ?>
         
                                                                     <div class="col-sm-7 col-xs-7">
         
-                                                                        <?= ' ' . $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                        <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
         
                                                                     </div>
                                                                 </div>
@@ -327,48 +317,45 @@ $jspopover = ''; ?>
                                     <div class="comment-container">
         
                                         <?php
-                                        if (!empty($userReviewComment)):
+                                        foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment): ?>
         
-                                            foreach ($userReviewComment as $dataUserPostComment): ?>
-        
-                                                <div class="comment-post">
-                                                    <div class="row mb-10">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <div class="widget">
-                                                                <div class="widget-comments-image">
-        
-                                                                    <?php
-                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                            <div class="comment-post">
+                                                <div class="row mb-10">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="widget">
+                                                            <div class="widget-comments-image">
     
-                                                                    if (!empty($dataUserPostComment['user']['image'])) {
+                                                                <?php
+                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+                                                                if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                }
+
+                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                
+                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                
+                                                            </div>
     
-                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                    }
+                                                            <div class="widget-comments-body">
+                                                                <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
+                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                <br>
+                                                                <p class="comment-description">
     
-                                                                    $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                                                    
-                                                                    echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
-                                                                    
-                                                                </div>
-        
-                                                                <div class="widget-comments-body">
-                                                                    <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
-                                                                    <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                    <br>
-                                                                    <p class="comment-description">
-        
-                                                                        <?= $dataUserPostComment['text']; ?>
-        
-                                                                    </p>
-                                                                </div>
+                                                                    <?= $dataUserPostComment['text']; ?>
+    
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
         
-                                            <?php
-                                            endforeach;
-                                        endif; ?>
+                                        <?php
+                                        endforeach; ?>
         
                                     </div>
                                 </div>
@@ -417,7 +404,6 @@ $jscript = '
 
         thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
         thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
-
         
         thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
             delegate: "a.show-image",

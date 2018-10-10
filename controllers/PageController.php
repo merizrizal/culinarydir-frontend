@@ -271,9 +271,35 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
+                
+        $dataUserVoteReview = [];
+        
+        if (!empty($modelUserPostMain['userVotes'])) {
+            
+            $ratingComponentValue = [];
+            $totalVoteValue = 0;
+            
+            foreach ($modelUserPostMain['userVotes'] as $dataUserVote) {
+                
+                if (!empty($dataUserVote['ratingComponent'])) {
+                    
+                    $totalVoteValue += $dataUserVote['vote_value'];
+                    
+                    $ratingComponentValue[$dataUserVote['rating_component_id']] = $dataUserVote['vote_value'];
+                }
+            }
+            
+            $overallValue = !empty($totalVoteValue) && !empty($ratingComponentValue) ? ($totalVoteValue / count($ratingComponentValue)) : 0;
+            
+            $dataUserVoteReview = [
+                'overallValue' => $overallValue,
+                'ratingComponentValue' => $ratingComponentValue
+            ];
+        }
 
         return $this->render('review', [
-            'modelUserPostMain' => $modelUserPostMain
+            'modelUserPostMain' => $modelUserPostMain,
+            'dataUserVoteReview' => $dataUserVoteReview
         ]);
     }
 

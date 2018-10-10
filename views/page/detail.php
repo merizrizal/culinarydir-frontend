@@ -20,7 +20,7 @@ $this->title = $modelBusiness['name'];
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
 $ogTitle = !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan';
 $ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
-$ogImage = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg');
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     

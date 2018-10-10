@@ -188,7 +188,7 @@ class ActionController extends base\BaseController
 
             $image = Tools::uploadFileWithoutModel('/img/user_post/', 'Post[image]', $modelUserPostMainPhoto->id, '', true);
 
-            $modelUserPostMainPhoto->unique_id = $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id . '-' . time();
+            $modelUserPostMainPhoto->unique_id = Yii::$app->security->generateRandomString();
             $modelUserPostMainPhoto->business_id = $post['business_id'];
             $modelUserPostMainPhoto->user_id = Yii::$app->user->getIdentity()->id;
             $modelUserPostMainPhoto->type = 'Photo';
@@ -611,6 +611,7 @@ class ActionController extends base\BaseController
 
         $modelUserPostMain->text = $post['Post']['review']['text'];
         $modelUserPostMain->is_publish = true;
+        $modelUserPostMain->created_at = Yii::$app->formatter->asDatetime(time());
 
         $flag = $modelUserPostMain->save();
 
