@@ -117,6 +117,7 @@ use common\components\Helper;
                                         'displayOnly' => true,
                                         'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                         'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                        'showCaption' => false,
                                     ]
                                 ]); ?>
 

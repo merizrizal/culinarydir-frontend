@@ -24,17 +24,17 @@ if (!empty($modelUserPostComment)): ?>
                         <div class="widget">
                             <div class="widget-comments-image">
 
-                                    <?php
-                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                <?php
+                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-                                    if (!empty($dataUserPostComment['user']['image'])) {
+                                if (!empty($dataUserPostComment['user']['image'])) {
 
-                                        $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                    }
+                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                }
 
-                                    $imgUserProfileComment = Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                    
-                                    echo Html::a($imgUserProfileComment, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                $imgUserProfileComment = Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                
+                                echo Html::a($imgUserProfileComment, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
                             </div>
 
