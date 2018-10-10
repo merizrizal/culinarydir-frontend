@@ -39,7 +39,7 @@ use common\components\Helper;
                             </div>
                             <div class="post-date">
 
-                                <small><?= Helper::asRelativeTime($model['updated_at'], 'medium'); ?></small>
+                                <small><?= Helper::asRelativeTime($model['created_at'], 'medium'); ?></small>
 
                             </div>
                         </div>

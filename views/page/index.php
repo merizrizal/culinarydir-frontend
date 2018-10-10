@@ -8,6 +8,8 @@ use frontend\components\AppComponent;
 
 $this->title = 'Home';
 
+$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg';
+
 $this->registerMetaTag([
     'name' => 'keywords',
     'content' => 'asik, makan, kuliner, bandung, jakarta'
@@ -18,9 +20,32 @@ $this->registerMetaTag([
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
-$appComponent = new AppComponent(); 
+$this->registerMetaTag([
+    'property' => 'og:url',
+    'content' => Yii::$app->urlManager->createAbsoluteUrl('')
+]);
 
-$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg'; ?>
+$this->registerMetaTag([
+    'property' => 'og:type',
+    'content' => 'website'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:title',
+    'content' => 'Asikmakan'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:image',
+    'content' => Yii::$app->urlManager->getHostInfo() . $background
+]);
+
+$appComponent = new AppComponent(); ?>
 
 <section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" id="home" data-background="<?= $background ?>">
     <div class="titan-caption">

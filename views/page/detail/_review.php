@@ -53,7 +53,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             <div class="widget-posts-body">
                                 ' . Html::a(Yii::$app->user->getIdentity()->full_name, ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username], ['class' => 'my-review-user-name']) . '
                                 <br>
-                                <small class="my-review-created">' . Helper::asRelativeTime($modelUserPostMain['updated_at']) . '</small>
+                                <small class="my-review-created">' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
                             </div>
                         '; ?>
 
@@ -269,58 +269,46 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <div class="my-comment-section">
                                                 <div class="comment-container">
     
-                                                    <?php
-                                                    $userReviewComment = [];
+                                                    <?php    
+                                                    foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment): ?>
     
-                                                    if (!empty($modelUserPostMain['userPostComments'])):
-    
-                                                        foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment) {
-    
-                                                            $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
-                                                        }
-    
-                                                        ksort($userReviewComment);
-    
-                                                        foreach ($userReviewComment as $dataUserPostComment): ?>
-    
-                                                            <div class="comment-post">
-                                                                <div class="row mb-10">
-                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                        <div class="widget">
-                                                                            <div class="widget-comments-image">
-    
-                                                                                <?php
-                                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                                        <div class="comment-post">
+                                                            <div class="row mb-10">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <div class="widget">
+                                                                        <div class="widget-comments-image">
 
-                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+                                                                            <?php
+                                                                            $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
-                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                                }
+                                                                            if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                            }
+
+                                                                            $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                            
+                                                                            echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                                 
-                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
-                                                                                    
-                                                                            </div>
-    
-                                                                            <div class="widget-comments-body">
-                                                                                <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                                <br>
-                                                                                <p class="comment-description">
-    
-                                                                                    <?= $dataUserPostComment['text']; ?>
-    
-                                                                                </p>
-                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="widget-comments-body">
+                                                                            <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
+                                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                            <br>
+                                                                            <p class="comment-description">
+
+                                                                                <?= $dataUserPostComment['text']; ?>
+
+                                                                            </p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
     
-                                                        <?php
-                                                        endforeach;
-                                                    endif; ?>
+                                                    <?php
+                                                    endforeach; ?>
     
                                                 </div>
                                             </div>

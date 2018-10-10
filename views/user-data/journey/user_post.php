@@ -88,7 +88,6 @@ $linkPager = LinkPager::widget([
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
-                $userReviewComment = [];
         
                 if (!empty($dataUserPostMain['userVotes'])) {
         
@@ -103,18 +102,9 @@ $linkPager = LinkPager::widget([
                     }
                 }
         
-                if (!empty($dataUserPostMain['userPostComments'])) {
-        
-                    foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment) {
-        
-                        $userReviewComment[$dataUserPostComment['id']] = $dataUserPostComment;
-                    }
-                }
-        
                 $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
         
                 ksort($ratingComponent);
-                ksort($userReviewComment);
         
                 $layoutUser = '
                     <div class="widget-posts-image business-image">
@@ -124,7 +114,7 @@ $linkPager = LinkPager::widget([
                     <div class="widget-posts-body business-review">
                         ' . Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) . '
                         <br>
-                        <small>' . Helper::asRelativeTime($dataUserPostMain['updated_at']) . '</small>
+                        <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
                     </div>
                 '; ?>
         
@@ -354,46 +344,43 @@ $linkPager = LinkPager::widget([
                                             <div class="comment-container">
     
                                                 <?php
-                                                if (!empty($userReviewComment)):
+                                                foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment): ?>
     
-                                                    foreach ($userReviewComment as $dataUserPostComment): ?>
-    
-                                                        <div class="comment-post">
-                                                            <div class="row mb-10">
-                                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                    <div class="widget">
-                                                                        <div class="widget-comments-image">
-    																		
-    																		<?php
-    																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-    
-                                                                            if (!empty($dataUserPostComment['user']['image'])) {
-    
-                                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                            }
-    
-                                                                            $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                                                            
-                                                                            echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
-                                                                            
-                                                                        </div>
-    
-                                                                        <div class="widget-comments-body">
-                                                                            <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
-                                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                            <br>
-                                                                            <p class="comment-description">
-                                                                                <?= $dataUserPostComment['text']; ?>
-                                                                            </p>
-                                                                        </div>
+                                                    <div class="comment-post">
+                                                        <div class="row mb-10">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <div class="widget">
+                                                                    <div class="widget-comments-image">
+																		
+																		<?php
+																		$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+                                                                        if (!empty($dataUserPostComment['user']['image'])) {
+
+                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                        }
+
+                                                                        $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+                                                                        
+                                                                        echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="widget-comments-body">
+                                                                        <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
+                                                                        <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                        <br>
+                                                                        <p class="comment-description">
+                                                                            <?= $dataUserPostComment['text']; ?>
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
     
-                                                    <?php
-                                                    endforeach;
-                                                endif; ?>
+                                                <?php
+                                                endforeach; ?>
     
                                             </div>
                                         </div>
