@@ -87,7 +87,7 @@ $linkPager = LinkPager::widget([
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
                                                 if (!empty($dataBusinessImage['image'])) {
 
@@ -113,7 +113,7 @@ $linkPager = LinkPager::widget([
                                             ]);
                                         } else {
 
-                                            $image = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
 
                                             if (!empty($dataBusiness['businessImages'][0]['image'])) {
 

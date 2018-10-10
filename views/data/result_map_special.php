@@ -91,7 +91,7 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-12 col-tab-6 col-xs-12 col">
 
                                         <?php
-                                        $image = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                        $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
 
                                         if (!empty($dataBusinessPromo['image'])) {
 

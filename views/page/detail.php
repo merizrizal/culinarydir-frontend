@@ -123,7 +123,7 @@ $this->registerMetaTag([
                                                                 
                                                                 foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
                                                                     
-                                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available.jpg';
+                                                                    $href = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
                                                                     if (!empty($dataBusinessImage['image'])) {
                                                                         
@@ -177,7 +177,7 @@ $this->registerMetaTag([
 
                                                                 foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
                                                                     
-                                                                    $href = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available.jpg';
+                                                                    $href = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
                                                                     if (!empty($dataBusinessProduct['image'])) {
                                                                         
@@ -582,16 +582,14 @@ $this->registerMetaTag([
                                                                 <div class="col-sm-4 col-tab-12 col-xs-12">
 
                                                                     <?php
-                                                                    $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
 
                                                                     if (!empty($dataBusinessPromo['image'])) {
 
                                                                         $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
                                                                     }
-
-                                                                    $img = Html::img($img); 
                                                                     
-                                                                    echo Html::a($img, ['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>
+                                                                    echo Html::a(Html::img($img), ['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>
 
                                                                 </div>
                                                                 

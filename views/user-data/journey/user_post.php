@@ -77,7 +77,7 @@ $linkPager = LinkPager::widget([
                     });
                 ';
         
-                $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-60-60.jpg';
+                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 60, 60);
         
                 if (!empty($dataUserPostMain['business']['businessImages'][0]['image'])) {
         
@@ -168,6 +168,7 @@ $linkPager = LinkPager::widget([
                                                                                 'displayOnly' => true,
                                                                                 'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                                                                 'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                                'showCaption' => false,
                                                                             ]
                                                                         ]); ?>
     
@@ -202,7 +203,7 @@ $linkPager = LinkPager::widget([
     
                             </p>
     
-                            <div class="row user-photo-review" id="user-photos-review">
+                            <div class="row user-photo-review" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
                                 <div class="col-sm-12 col-xs-12">
                                     <ul class="works-grid works-grid-gut works-grid-5">
     
@@ -324,14 +325,13 @@ $linkPager = LinkPager::widget([
                             <hr class="divider-w mt-10">
     
                             <div class="row">
-                                <div class="user-comment-review" id="user-comments-review">
+                                <div class="user-comment-review">
                                     <div class="col-sm-12">
                                         <div class="input-group mt-10 mb-10">
                                             <span class="input-group-addon"><i class="fa fa-comment"></i></span>
                                             
                                             <?= Html::textInput('comment_input', null, [
-                                                'id' => 'input-comments-review', 
-                                                'class' => 'form-control', 
+                                                'class' => 'form-control input-comments-review', 
                                                 'placeholder' => Yii::t('app', 'Write a Comment')                                                    
                                             ]); ?>
                                             
@@ -433,6 +433,26 @@ $jscript = '
     $(".user-photo-review").hide();
 
     ratingColor($(".rating"), "a");
+    
+    $(".user-post-main-id").each(function() {
+
+        var thisObj = $(this);
+        
+        thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
+                
+            delegate: "a.show-image",
+            type: "image",
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0,1]
+            },
+            image: {
+                titleSrc: "title",
+                tError: "The image could not be loaded."
+            }
+        });
+    });
 
     readmoreText({
         element: $(".review-description"),
@@ -459,7 +479,7 @@ $jscript = '
     $("#pjax-user-post-container").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });    
+    });
 ';
 
 $this->registerJs($jscript . $jspopover);
