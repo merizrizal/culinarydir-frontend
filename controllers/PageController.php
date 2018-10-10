@@ -246,13 +246,9 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition(['child.is_publish' => true])
-                        ->orderBy(['child.created_at' => SORT_ASC]);
+                    $query->andOnCondition(['child.is_publish' => true]);
                 },
-                'userVotes' => function ($query) {
-
-                    $query->orderBy(['rating_component_id' => SORT_ASC]);
-                },
+                'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
 
                     $query->andOnCondition(['rating_component.is_active' => true]);
