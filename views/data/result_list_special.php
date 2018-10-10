@@ -92,7 +92,7 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
 
                                         <?php
-                                        $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-347-210.jpg';
+                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
 
                                         if (!empty($dataBusinessPromo['image'])) {
 

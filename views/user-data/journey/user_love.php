@@ -75,10 +75,8 @@ $linkPager = LinkPager::widget([
 
                                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 347, 210);
                                 }
-                                
-                                $img = Html::img($img);
 
-                                echo Html::a($img, ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
+                                echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
 
                             </div>
                         </div>

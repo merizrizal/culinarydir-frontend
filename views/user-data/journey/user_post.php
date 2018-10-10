@@ -77,7 +77,7 @@ $linkPager = LinkPager::widget([
                     });
                 ';
         
-                $img = Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-60-60.jpg';
+                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 60, 60);
         
                 if (!empty($dataUserPostMain['business']['businessImages'][0]['image'])) {
         
