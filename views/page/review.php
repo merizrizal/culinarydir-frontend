@@ -197,7 +197,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                             <div class="row" id="user-photos-review-container">
                                                 <div class="col-sm-12 col-xs-12">
-                                                    <ul class="works-grid works-grid-gut works-grid-5" id="user-photos-review">
+                                                    <ul class="works-grid works-grid-gut works-grid-5">
 
                                                         <?php
                                                         if (!empty($modelUserPostMain['userPostMains'])):
@@ -517,7 +517,7 @@ $jscript = '
         return false;
     });
 
-    $("#user-photos-review .post-gallery").magnificPopup({
+    $(".post-gallery").magnificPopup({
 
         delegate: "a.show-image",
         type: "image",

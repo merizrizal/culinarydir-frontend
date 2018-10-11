@@ -201,7 +201,7 @@ $jspopover = ''; ?>
                         </div>
                     </div>
         
-                    <div class="row" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                    <div class="row user-photo-review">
                         <div class="col-sm-12 col-xs-12">
                             <ul class="works-grid works-grid-gut works-grid-5">
         
@@ -240,9 +240,9 @@ $jspopover = ''; ?>
                     $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
                     $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
                     
-                    $loveSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-likes-review">#</span>';
-                    $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
-                    $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
+                    $loveSpanCount = '<span class="total-likes-review">#</span>';
+                    $commentSpanCount = '<span class="total-comments-review">#</span>';
+                    $photoSpanCount = '<span class="total-photos-review">#</span>';
                     
                     $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
         
@@ -250,7 +250,7 @@ $jspopover = ''; ?>
                         <div class="col-xs-3">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
-                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $loveCount . '</span>' ?></small>
+                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span>' ?></small>
                                 </li>
                             </ul>
                         </div>
@@ -270,26 +270,26 @@ $jspopover = ''; ?>
                         <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-' . $dataUserPostMain['id'] . '-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-comments-review-trigger visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-comments-review-trigger visible-xs']); ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-' . $dataUserPostMain['id'] . '-photos-review-trigger visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-photos-review-trigger visible-xs']); ?>
                                 </li>
                                 <li class="visible-xs-inline-block">
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-' . $dataUserPostMain['id'] . '-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
@@ -298,14 +298,13 @@ $jspopover = ''; ?>
                     <hr class="divider-w mt-10">
         
                     <div class="row">
-                        <div class="user-comment-review" id="user-<?= $dataUserPostMain['id']; ?>-comments-review">
+                        <div class="user-comment-review">
                             <div class="col-sm-12">
                                 <div class="input-group mt-10 mb-10">
                                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
         
                                     <?= Html::textInput('comment_input', null, [
-                                        'id' => 'input-' . $dataUserPostMain['id'] . '-comments-review', 
-                                        'class' => 'form-control', 
+                                        'class' => 'form-control input-comments-review',
                                         'placeholder' => Yii::t('app', 'Write a Comment')]); ?>
         
                                 </div>
@@ -313,7 +312,7 @@ $jspopover = ''; ?>
                                 <div class="overlay" style="display: none;"></div>
                                 <div class="loading-img" style="display: none;"></div>
                                 
-                                <div class="comment-<?= $dataUserPostMain['id']; ?>-section">
+                                <div class="comment-section">
                                     <div class="comment-container">
         
                                         <?php
@@ -398,14 +397,14 @@ $jspopover = ''; ?>
 
 <?php
 $jscript = '    
+    $(".user-comment-review").hide();
+    $(".user-photo-review").hide();
+
+    ratingColor($(".rating"), "a");
+
     $(".user-post-main-id").each(function() {
 
-        var thisObj = $(this);
-
-        thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").hide();
-        thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").hide();
-        
-        thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
+        $(this).parent().find(".post-gallery").magnificPopup({
             delegate: "a.show-image",
             type: "image",
             gallery: {
@@ -418,143 +417,7 @@ $jscript = '
                 tError: "The image could not be loaded."
             }
         });
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").on("click", function() {
-
-            $.ajax({
-                cache: false,
-                type: "POST",
-                data: {
-                    "user_post_main_id": thisObj.val()
-                },
-                url: $(this).attr("href"),
-                success: function(response) {
-
-                    if (response.success) {
-
-                        var loveValue = parseInt($(".total-" + thisObj.val() + "-likes-review").html());
-
-                        if (response.is_active) {
-
-                            thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").addClass("selected");
-                            $(".total-" + thisObj.val() + "-likes-review").html(loveValue + 1);
-                        } else {
-
-                            thisObj.parent().find(".user-" + thisObj.val() + "-likes-review-trigger").removeClass("selected");
-                            $(".total-" + thisObj.val() + "-likes-review").html(loveValue - 1);
-                        }
-                    } else {
-
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                }
-            });
-
-            return false;
-        });        
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-comments-review-trigger").on("click", function() {
-
-            thisObj.parent().find("#user-" + thisObj.val() + "-comments-review").slideToggle();
-            thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").trigger("focus");
-
-            return false;
-        });
-
-        thisObj.parent().find("#input-" + thisObj.val() + "-comments-review").on("keypress", function(event) {
-
-            if (event.which == 13 && $(this).val().trim()) {
-
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    data: {
-                        "user_post_main_id": thisObj.val(),
-                        "text": $(this).val(),
-                    },
-                    url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
-                    beforeSend: function(xhr) {
-
-                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").show();
-                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").show();
-                    },
-                    success: function(response) {
-
-                        if (response.success) {
-
-                            $("#input-" + thisObj.val() + "-comments-review").val("");
-
-                            $.ajax({
-                                cache: false,
-                                type: "POST",
-                                data: {
-                                    "user_post_main_id": thisObj.val()
-                                },
-                                url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
-                                success: function(response) {
-
-                                    $(".comment-" + thisObj.val() + "-section").html(response);
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-
-                                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                                }
-                            });
-                        } else {
-
-                            messageResponse(response.icon, response.title, response.message, response.type);
-                        }
-
-                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").hide();
-                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").hide();
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-
-                        messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                        $(".comment-" + thisObj.val() + "-section").siblings(".overlay").hide();
-                        $(".comment-" + thisObj.val() + "-section").siblings(".loading-img").hide();
-                    }
-                });
-            }
-        });
-
-        thisObj.parent().find(".user-" + thisObj.val() + "-photos-review-trigger").on("click", function() {
-
-            if (thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").find(".gallery-photo-review").length) {
-            
-                thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").toggle(500);
-            }
-
-            return false;
-        });
-
-        thisObj.parent().find(".share-review-" + thisObj.val() + "-trigger").on("click", function() {
-
-            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.val();
-            var title = "Rating " + thisObj.parent().find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
-            var description = thisObj.parent().find(".review-description").text();
-            var image = window.location.protocol + "//" + window.location.hostname + thisObj.parent().find("#user-" + thisObj.val() + "-photos-review").eq(0).find(".work-image").children().attr("src");
-
-            facebookShare({
-                ogUrl: url,
-                ogTitle: title,
-                ogDescription: description,
-                ogImage: image,
-                type: "Review"
-            });
-
-            return false;
-        });
     });
-
-    $(".total-review").html(parseInt($(".total-review").html()) + ' . $totalCount . ');
-
-    ratingColor($(".rating"), "a");
 
     readmoreText({
         element: $(".review-description"),
@@ -563,6 +426,8 @@ $jscript = '
         moreText: "See more",
         lessText: "See less",
     });
+
+    $(".total-review").html(parseInt($(".total-review").html()) + ' . $totalCount . ');
 
     $("#pjax-review-container").on("pjax:send", function() {
 

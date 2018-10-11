@@ -160,7 +160,7 @@ class UserDataController extends base\BaseController
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->andWhere(['user.username' => Yii::$app->request->get('username')])
-            ->orderBy(['user_post_main.updated_at' => SORT_DESC])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 

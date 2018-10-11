@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use sycomponent\Tools;
 
@@ -6,6 +7,19 @@ use sycomponent\Tools;
 /* @var $modelUser core\models\User */
 
 $this->title = $modelUser['full_name'];
+
+$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+
+if (!empty($modelUser['userPerson']['person']['about_me'])) {
+    
+    $ogDescription = $modelUser['userPerson']['person']['about_me'];
+}
+
+if (!empty($modelUser['image'])) {
+    
+    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/' . $modelUser['image'];
+}
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -15,6 +29,31 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:url',
+    'content' => Yii::$app->urlManager->createAbsoluteUrl(['user/user-profile', 'user' => $modelUser['username']])
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:type',
+    'content' => 'website'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:title',
+    'content' => $modelUser['full_name']
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' =>  $ogDescription
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:image',
+    'content' => $ogImage
 ]); ?>
 
 <div class="main">

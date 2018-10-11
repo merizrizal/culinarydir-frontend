@@ -1216,6 +1216,144 @@ $jscript = '
 
         return false;
     });
+
+    $(".review-section").on("click", ".user-likes-review-trigger", function() {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "user_post_main_id": thisObj.parents(".review-post").find(".user-post-main-id").val()
+            },
+            url: thisObj.attr("href"),
+            success: function(response) {
+
+                if (response.success) {
+
+                    var loveValue = parseInt(thisObj.parents(".review-post").find(".total-likes-review").html());
+
+                    if (response.is_active) {
+
+                        thisObj.addClass("selected");
+                        thisObj.parents(".review-post").find(".total-likes-review").html(loveValue + 1);
+                    } else {
+
+                        thisObj.removeClass("selected");
+                        thisObj.parents(".review-post").find(".total-likes-review").html(loveValue - 1);
+                    }
+                } else {
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+
+        return false;
+    });
+
+    $(".review-section").on("click", ".user-comments-review-trigger", function() {
+
+        $(this).parents(".review-post").find(".user-comment-review").slideToggle();
+        $(this).parents(".review-post").find(".input-comments-review").trigger("focus");
+
+        return false;
+    });
+
+    $(".review-section").on("keypress", ".input-comments-review", function(event) {
+
+        var thisObj = $(this);
+
+        if (event.which == 13 && thisObj.val().trim()) {
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                data: {
+                    "user_post_main_id": thisObj.parents(".review-post").find(".user-post-main-id").val(),
+                    "text": $(this).val(),
+                },
+                url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
+                beforeSend: function(xhr) {
+
+                    thisObj.parent().siblings(".overlay").show();
+                    thisObj.parent().siblings(".loading-img").show();
+                },
+                success: function(response) {
+
+                    if (response.success) {
+
+                        thisObj.val("");
+
+                        $.ajax({
+                            cache: false,
+                            type: "POST",
+                            data: {
+                                "user_post_main_id": response.user_post_main_id
+                            },
+                            url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
+                            success: function(response) {
+
+                                thisObj.parent().siblings(".comment-section").html(response);
+
+                                thisObj.parents(".review-post").find("span.total-comments-review").html(commentCount);
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+
+                                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+                            }
+                        });
+                    } else {
+
+                        messageResponse(response.icon, response.title, response.message, response.type);
+                    }
+
+                    thisObj.parent().siblings(".overlay").hide();
+                    thisObj.parent().siblings(".loading-img").hide();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                    thisObj.parent().siblings(".overlay").hide();
+                    thisObj.parent().siblings(".loading-img").hide();
+                }
+            });
+        }
+    });
+
+    $(".review-section").on("click", ".user-photos-review-trigger", function() {
+
+        if ($(this).parents(".review-post").find(".user-photo-review").find(".gallery-photo-review").length) {
+            
+            $(this).parents(".review-post").find(".user-photo-review").toggle(500);
+        }
+
+        return false;
+    });
+
+    $(".review-section").on("click", ".share-review-trigger", function() {
+
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".review-post").find(".user-post-main-id").val();
+        var title = "Rating " + $(this).parents(".review-post").find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
+        var description = $(this).parents(".review-post").find(".review-description").text();
+        var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
+
+        facebookShare({
+            ogUrl: url,
+            ogTitle: title,
+            ogDescription: description,
+            ogImage: image,
+            type: "Review"
+        });
+
+        return false;
+    });
 ';
 
 if (!empty($dataUserVoteReview['overallValue'])) {
