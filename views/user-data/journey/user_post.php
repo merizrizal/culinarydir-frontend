@@ -203,7 +203,7 @@ $linkPager = LinkPager::widget([
     
                             </p>
     
-                            <div class="row user-photo-review" id="user-<?= $dataUserPostMain['id']; ?>-photos-review">
+                            <div class="row user-photo-review">
                                 <div class="col-sm-12 col-xs-12">
                                     <ul class="works-grid works-grid-gut works-grid-5">
     
@@ -253,7 +253,7 @@ $linkPager = LinkPager::widget([
                                 <div class="col-xs-3">
                                     <ul class="list-inline mt-0 mb-0">
                                         <li>
-                                            <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-' . $dataUserPostMain['id'] . '-likes-review">' . $loveCount . '</span>' ?></small>
+                                            <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span>' ?></small>
                                         </li>
                                     </ul>
                                 </div>
@@ -425,9 +425,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-frontend\components\RatingColor::widget();
-frontend\components\Readmore::widget();
-
 $jscript = '
     $(".user-comment-review").hide();
     $(".user-photo-review").hide();
@@ -435,11 +432,8 @@ $jscript = '
     ratingColor($(".rating"), "a");
     
     $(".user-post-main-id").each(function() {
-
-        var thisObj = $(this);
         
-        thisObj.parent().find("#user-" + thisObj.val() + "-photo-review, .post-gallery").magnificPopup({
-                
+        $(this).parent().find(".post-gallery").magnificPopup({
             delegate: "a.show-image",
             type: "image",
             gallery: {

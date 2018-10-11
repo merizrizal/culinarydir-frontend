@@ -36,7 +36,8 @@ class UserController extends base\BaseHistoryUrlController
     public function actionIndex()
     {
         $modelUser = User::find()
-            ->andWhere(['id' => Yii::$app->user->getIdentity()->id])
+            ->joinWith(['userPerson.person'])
+            ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
             ->asArray()->one();
     
         return $this->render('index', [
@@ -52,8 +53,9 @@ class UserController extends base\BaseHistoryUrlController
         } else {
             
             $modelUser = User::find()
+                ->joinWith(['userPerson.person'])
                 ->andWhere(['username' => Yii::$app->request->get('user')])
-                ->asArray()->one();            
+                ->asArray()->one();
 
             return $this->render('user_profile', [
                 'modelUser' => $modelUser

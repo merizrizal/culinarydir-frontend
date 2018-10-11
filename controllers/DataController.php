@@ -107,7 +107,7 @@ class DataController extends base\BaseController
             ->andWhere(['user_post_main.business_id' => Yii::$app->request->get('business_id')])
             ->andWhere(['user_post_main.is_publish' => true])
             ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
-            ->orderBy(['user_post_main.updated_at' => SORT_DESC])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
@@ -413,7 +413,7 @@ class DataController extends base\BaseController
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.is_publish' => true])
             ->andWhere(['user_post_main.type' => 'Review'])
-            ->orderBy(['user_post_main.updated_at' => SORT_DESC])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 

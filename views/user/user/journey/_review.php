@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /* @var $this yii\web\View */
 /* @var $username string */ ?>
 
@@ -42,21 +43,21 @@ $jscript = '
             data: {
                 "user_post_main_id": thisObj.parents(".user-post-item").find(".user-post-main-id").val()
             },
-            url: $(this).attr("href"),
+            url: thisObj.attr("href"),
             success: function(response) {
 
                 if (response.success) {
 
-                    var loveValue = parseInt(thisObj.parent().find(".user-likes-review-trigger").find("span.total-likes-review").html());
+                    var loveValue = parseInt(thisObj.parents(".user-post-item").find(".total-likes-review").html());
 
                     if (response.is_active) {
 
-                        thisObj.parent().find(".user-likes-review-trigger").addClass("selected");
-                        thisObj.parent().find("span.total-likes-review").html(loveValue + 1);
+                        thisObj.addClass("selected");
+                        thisObj.parents(".user-post-item").find(".total-likes-review").html(loveValue + 1);
                     } else {
 
-                        thisObj.parent().find(".user-likes-review-trigger").removeClass("selected");
-                        thisObj.parent().find("span.total-likes-review").html(loveValue - 1);
+                        thisObj.removeClass("selected");
+                        thisObj.parents(".user-post-item").find(".total-likes-review").html(loveValue - 1);
                     }
                 } else {
 
@@ -73,11 +74,9 @@ $jscript = '
     });
 
     $(".user-post-section").on("click", ".user-comments-review-trigger", function() {
-
-        var thisObj = $(this);
         
-        thisObj.parents(".user-post-item").find(".user-comment-review").slideToggle();
-        thisObj.parents(".user-post-item").find(".input-comments-review").trigger("focus");            
+        $(this).parents(".user-post-item").find(".user-comment-review").slideToggle();
+        $(this).parents(".user-post-item").find(".input-comments-review").trigger("focus");            
 
         return false;
     });
@@ -86,7 +85,7 @@ $jscript = '
 
         var thisObj = $(this);
 
-        if (event.which == 13 && $(this).val().trim()) {
+        if (event.which == 13 && thisObj.val().trim()) {
 
             $.ajax({
                 cache: false,
@@ -146,11 +145,9 @@ $jscript = '
     
     $(".user-post-section").on("click", ".user-photos-review-trigger", function() {
 
-        var thisObj = $(this);
+        if ($(this).parents(".user-post-item").find(".user-photo-review").find(".gallery-photo-review").length) {       
 
-        if (thisObj.parents(".user-post-item").find(".user-photo-review").find(".gallery-photo-review").length) {       
-
-            thisObj.parents(".user-post-item").find(".user-photo-review").toggle(500);
+            $(this).parents(".user-post-item").find(".user-photo-review").toggle(500);
         }
         
         return false;
@@ -158,12 +155,10 @@ $jscript = '
     
     $(".user-post-section").on("click", ".share-review-trigger", function() {
 
-        var thisObj = $(this);
-
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + thisObj.parents(".user-post-item").find(".user-post-main-id").val();
-        var title = "Rating " + thisObj.parents(".user-post-item").find(".rating").text().trim() + " untuk " + thisObj.parents(".user-post-item").find(".business-name").val();
-        var description = thisObj.parents(".user-post-item").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + thisObj.parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".user-post-item").find(".user-post-main-id").val();
+        var title = "Rating " + $(this).parents(".user-post-item").find(".rating").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-name").val();
+        var description = $(this).parents(".user-post-item").find(".review-description").text();
+        var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
 
         facebookShare({
             ogUrl: url,
