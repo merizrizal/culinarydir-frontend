@@ -157,8 +157,8 @@ $jspopover = ''; ?>
                                                                     <div class="col-sm-5 col-xs-5">
         
                                                                         <?= StarRating::widget([
-                                                                            'id' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
-                                                                            'name' => 'user-' . $dataUserPostMain['id'] . '-' . strtolower($dataUserVote['ratingComponent']['name']) . '-rating',
+                                                                            'id' => 'user-' . $dataUserPostMain['id'] . '-' . $dataUserVote['ratingComponent']['name'] . '-rating',
+                                                                            'name' => 'user-' . $dataUserPostMain['id'] . '-' . $dataUserVote['ratingComponent']['name'] . '-rating',
                                                                             'value' => $dataUserVote['vote_value'],
                                                                             'pluginOptions' => [
                                                                                 'displayOnly' => true,
@@ -244,7 +244,7 @@ $jspopover = ''; ?>
                     $commentSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-comments-review">#</span>';
                     $photoSpanCount = '<span class="total-' . $dataUserPostMain['id'] . '-photos-review">#</span>';
                     
-                    $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : 0; ?>
+                    $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
         
                     <div class="row visible-xs">
                         <div class="col-xs-3">

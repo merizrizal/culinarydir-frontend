@@ -47,7 +47,7 @@ $this->registerMetaTag([
 
 $appComponent = new AppComponent(); ?>
 
-<section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" id="home" data-background="<?= $background ?>">
+<section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">

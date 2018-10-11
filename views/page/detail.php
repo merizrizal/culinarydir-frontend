@@ -20,7 +20,7 @@ $this->title = $modelBusiness['name'];
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
 $ogTitle = !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan';
 $ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     
@@ -115,6 +115,8 @@ $this->registerMetaTag([
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
+                                                        $noImg = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425));
+                                                        
                                                         if (!empty($modelBusiness['businessImages'])):
                                                             
                                                             if (count($modelBusiness['businessImages']) > 1) {
@@ -123,18 +125,18 @@ $this->registerMetaTag([
                                                                 
                                                                 foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
                                                                     
-                                                                    $href = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
                                                                     if (!empty($dataBusinessImage['image'])) {
                                                                         
-                                                                        $href = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
                                                                     }
                                                                     
                                                                     $images[] = [
                                                                         'title' => '',
-                                                                        'href' => $href,
+                                                                        'href' => $img,
                                                                         'type' => 'image/jpeg',
-                                                                        'poster' => $href,
+                                                                        'poster' => $img,
                                                                     ];
                                                                 }
                                                                 
@@ -150,15 +152,10 @@ $this->registerMetaTag([
                                                                 echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image']);
                                                             }
 
-                                                        else: ?>
-
-                                                            <div class="titan-caption">
-                                                                <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2"><?= Yii::t('app', 'Currently there is no photo available') ?></div>
-                                                                </div>
-                                                            </div>
-
-                                                        <?php
+                                                        else:
+                                                        
+                                                            echo $noImg;
+                                                            
                                                         endif; ?>
 
                                                     </div>
@@ -177,18 +174,18 @@ $this->registerMetaTag([
 
                                                                 foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
                                                                     
-                                                                    $href = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
                                                                     if (!empty($dataBusinessProduct['image'])) {
                                                                         
-                                                                        $href = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
                                                                     }
                                                                     
                                                                     $images[] = [
                                                                         'title' => '',
-                                                                        'href' => $href,
+                                                                        'href' => $img,
                                                                         'type' => 'image/jpeg',
-                                                                        'poster' => $href,
+                                                                        'poster' => $img,
                                                                     ];
                                                                 }
     
@@ -204,15 +201,10 @@ $this->registerMetaTag([
                                                                 echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image']);
                                                             }
 
-                                                        else: ?>
+                                                        else:
+                                                        
+                                                            echo $noImg;
 
-                                                            <div class="titan-caption">
-                                                                <div class="caption-content">
-                                                                    <div class="font-alt titan-title-size-2"><?= Yii::t('app', 'Currently there is no menu available') ?></div>
-                                                                </div>
-                                                            </div>
-
-                                                        <?php
                                                         endif; ?>
 
                                                     </div>
@@ -558,7 +550,7 @@ $this->registerMetaTag([
                             <?php
                             if (!empty($modelBusiness['businessPromos'])): ?>
 
-                                <div id="special" class="row mt-10">
+                                <div class="row mt-10">
                                     <div class="col-sm-12 col-xs-12">
                                         <div class="box bg-white">
                                             <div class="box-title">

@@ -12,7 +12,7 @@ $this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['na
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/photo', 'id' => $modelUserPostMain['id']]);
 $ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Asikmakan';
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
 if (!empty($modelUserPostMain['image'])) {
     

@@ -28,13 +28,13 @@ use kartik\file\FileInput;
     
                 <div class="box-title" id="title-post-photo">
                     <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Add Photo') ?></h4>
-                    <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i> <?= Yii::t('app', 'Cancel') ?></a></span>
+                    <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i><?= Yii::t('app', 'Cancel') ?></a></span>
                 </div>
     
                 <div class="box-content">
     
                     <div class="form-group">
-                        <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i> <?= Yii::t('app', 'Add Photo') ?></button>
+                        <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i><?= Yii::t('app', 'Add Photo') ?></button>
                     </div>
     
                     <div class="row" id="post-photo-container">
@@ -63,23 +63,25 @@ use kartik\file\FileInput;
     
                             <div class="form-group">
     
-                                <?= Html::checkboxList('social_media_share', null,
-                                    [
+                                <?= Html::checkboxList('social_media_share', null, [
                                         'facebook' => Yii::t('app', 'Post to Facebook'),
-                                    ], 
+                                    ],
                                     [
                                         'class' => 'social-media-share-list',
                                         'separator' => '&nbsp;&nbsp;&nbsp;',
                                         'item' => function ($index, $label, $name, $checked, $value) {
                                             
-                                            return '<label style="font-weight: normal;">' .
-                                                Html::checkbox($name, $checked, [
-                                                    'value' => $value,
-                                                    'class' => $value . '-photo-share-trigger icheck',
-                                                ]) . ' ' . $label .
-                                                '</label>';
+                                            return '
+                                                <label style="font-weight: normal;">' .
+                                                    Html::checkbox($name, $checked, [
+                                                        'value' => $value,
+                                                        'class' => $value . '-photo-share-trigger icheck',
+                                                    ]) . ' ' . $label .
+                                                '</label>
+                                            ';
                                         },
-                                   ]) ?>
+                                    ]
+                                ); ?>
     
                             </div>
     

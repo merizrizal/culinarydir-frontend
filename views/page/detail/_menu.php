@@ -1,5 +1,4 @@
 <?php
-
 /* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
 
 <div class="row">
@@ -41,7 +40,9 @@
                             
                         else: ?>
         
-                        	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
+                        	<p>
+                        		<?= Yii::t('app', 'Currently there is no menu available') . '.' ?>
+                    		</p>
         
                         <?php
                         endif; ?>

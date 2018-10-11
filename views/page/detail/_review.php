@@ -269,46 +269,49 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <div class="my-comment-section">
                                                 <div class="comment-container">
     
-                                                    <?php    
-                                                    foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment): ?>
+                                                    <?php
+                                                    if (!empty($modelUserPostMain['userPostComments'])):
+                                                    
+                                                        foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment): ?>
+        
+                                                            <div class="comment-post">
+                                                                <div class="row mb-10">
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                        <div class="widget">
+                                                                            <div class="widget-comments-image">
     
-                                                        <div class="comment-post">
-                                                            <div class="row mb-10">
-                                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                    <div class="widget">
-                                                                        <div class="widget-comments-image">
-
-                                                                            <?php
-                                                                            $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-
-                                                                            if (!empty($dataUserPostComment['user']['image'])) {
-
-                                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
-                                                                            }
-
-                                                                            $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                                                            
-                                                                            echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                <?php
+                                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+    
+                                                                                if (!empty($dataUserPostComment['user']['image'])) {
+    
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                }
+    
+                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
                                                                                 
-                                                                        </div>
-
-                                                                        <div class="widget-comments-body">
-                                                                            <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
-                                                                            <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
-                                                                            <br>
-                                                                            <p class="comment-description">
-
-                                                                                <?= $dataUserPostComment['text']; ?>
-
-                                                                            </p>
+                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                    
+                                                                            </div>
+    
+                                                                            <div class="widget-comments-body">
+                                                                                <?= Html::a($dataUserPostComment['user']['full_name'], Yii::$app->urlManager->createUrl(['user/user-profile', 'user' => $dataUserPostComment['user']['username']])); ?>&nbsp;&nbsp;&nbsp;
+                                                                                <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
+                                                                                <br>
+                                                                                <p class="comment-description">
+    
+                                                                                    <?= $dataUserPostComment['text']; ?>
+    
+                                                                                </p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-    
-                                                    <?php
-                                                    endforeach; ?>
+        
+                                                        <?php
+                                                        endforeach;
+                                                    endif; ?>
     
                                                 </div>
                                             </div>
@@ -513,23 +516,25 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
-                                <?= Html::checkboxList('social_media_share', null,
-                                    [
+                                <?= Html::checkboxList('social_media_share', null, [
                                         'facebook' => Yii::t('app', 'Post to Facebook'),
-                                    ], 
+                                    ],
                                     [
                                         'class' => 'social-media-share-list',
                                         'separator' => '&nbsp;&nbsp;&nbsp;',
                                         'item' => function ($index, $label, $name, $checked, $value) {
                                             
-                                            return '<label style="font-weight: normal;">' .
-                                                Html::checkbox($name, $checked, [
-                                                    'value' => $value,
-                                                    'class' => $value . '-review-share-trigger icheck',
-                                                ]) . ' ' . $label .
-                                                '</label>';
+                                            return '
+                                                <label style="font-weight: normal;">' .
+                                                    Html::checkbox($name, $checked, [
+                                                        'value' => $value,
+                                                        'class' => $value . '-review-share-trigger icheck',
+                                                    ]) . ' ' . $label .
+                                                '</label>
+                                            ';
                                         },
-                                   ]) ?>
+                                    ]
+                                ); ?>
 
                             </div>
                             <div class="form-group">
@@ -542,7 +547,8 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         </div>
                     </div>
 
-                <?php ActiveForm::end(); ?>
+                <?php 
+                ActiveForm::end(); ?>
 
             </div>
         </div>

@@ -209,7 +209,7 @@ $jscript = '
         var mapOptions;
         var mapResultDefaultLatLng = {lat: -6.9175, lng: 107.6191};
 
-        var mapResultContainer = document.getElementById("result-map");
+        var mapResultContainer = document.getElementById("maps");
         var mapObject = $("#map-object").val();
 
         mapResultContainer.style.width = "100%";

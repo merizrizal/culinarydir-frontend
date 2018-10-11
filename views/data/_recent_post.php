@@ -83,7 +83,7 @@ use common\components\Helper;
                                 </li>
                                 <li>
 
-                                    <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['id' => 'share-feature', 'class' => 'share-feature-' . $model['id'] . '-trigger']); ?></small>
+                                    <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-feature-' . $model['id'] . '-trigger']); ?></small>
 
                                 </li>
                             </ul>

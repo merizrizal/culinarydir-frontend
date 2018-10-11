@@ -1,13 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessPromo core\models\BusinessPromo */
 
 $this->title = $modelBusinessPromo['title'];
 
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::$app->urlManager->baseUrl . '/media/img/no-image-available-490-276.jpg';
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
 if (!empty($modelBusinessPromo['image'])) {
     
@@ -85,7 +86,7 @@ $this->registerMetaTag([
                                             <div class="col-sm-12 col-xs-12 text-center">
 
                                                 <?php
-                                                $img = Yii::$app->urlManager->getHostInfo() . Yii::$app->urlManager->baseUrl . '/media/img/no-image-available.jpg';
+                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                 
                                                 if (!empty($modelBusinessPromo['image'])) {
 

@@ -52,7 +52,7 @@ $linkPager = LinkPager::widget([
     </div>
 </div>
 
-<div class="row"" style="position: relative;">
+<div class="row" style="position: relative;">
     <div class="col-md-12 post-photo-container">
     
     	<div class="overlay" style="display: none;"></div>
