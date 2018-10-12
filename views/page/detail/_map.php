@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">
-            <div class="box-title">
+            <div class="box-title" id="title-map">
                 <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Map') ?></h4>
             </div>
 

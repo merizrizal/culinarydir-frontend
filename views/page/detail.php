@@ -550,7 +550,7 @@ $this->registerMetaTag([
                             <?php
                             if (!empty($modelBusiness['businessPromos'])): ?>
 
-                                <div class="row mt-10">
+                                <div id="special" class="row mt-10">
                                     <div class="col-sm-12 col-xs-12">
                                         <div class="box bg-white">
                                             <div class="box-title">
