@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -110,7 +111,7 @@ class SiteController extends base\BaseController
                 if (($flag = $modelUserPerson->save())) {
 
                     if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
-
+                        
                         $socmedFLag = true;
                         $modelUserSocialMedia->user_id = $modelUserRegister->id;
 
@@ -148,7 +149,7 @@ class SiteController extends base\BaseController
                             Yii::$app->mailer->compose(['html' => 'account_activation'], [
                                     'email' => $post['UserRegister']['email'],
                                     'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                    'user' => $modelUserRegister
+                                    'userToken' => $modelUserRegister->account_activation_token
                                 ]
                             )
                             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
@@ -236,7 +237,7 @@ class SiteController extends base\BaseController
 
         if (!empty($post['loginButton']) && $model->load($post) && $model->login()) {
 
-            return $this->goBack(['page/default']);
+            return $this->goBack();
         } else {
 
             return $this->render('login', [
@@ -324,10 +325,6 @@ class SiteController extends base\BaseController
 
     public function onAuthSuccess($client)
     {
-        $socmed = '';
-        $socmedEmail = '';
-        $first_name = '';
-        $last_name = '';
         $loginFlag = false;
         $userAttributes = $client->getUserAttributes();
 
@@ -372,9 +369,7 @@ class SiteController extends base\BaseController
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
 
-                    if ($modelUserSocialMedia['facebook_id'] === $userAttributes['id']) {
-                        $loginFlag = true;
-                    }
+                    $loginFlag = ($modelUserSocialMedia['facebook_id'] === $userAttributes['id']);
                 }
             } else if ($socmed === 'Google') {
 
@@ -385,9 +380,7 @@ class SiteController extends base\BaseController
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
 
-                    if ($modelUserSocialMedia['google_id'] === $userAttributes['id']) {
-                        $loginFlag = true;
-                    }
+                    $loginFlag = ($modelUserSocialMedia['google_id'] === $userAttributes['id']);
                 }
             }
 
@@ -398,7 +391,7 @@ class SiteController extends base\BaseController
                 $model->login_id = $socmedEmail;
 
                 if ($model->login()) {
-                    return $this->goBack(['page/default']);
+                    return $this->goBack();
                 }
             } else {
 

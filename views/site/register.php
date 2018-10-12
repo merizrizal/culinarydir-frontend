@@ -74,14 +74,16 @@ if (!empty($getFlashMessage)) {
                                     ]);
 
                                         if (!empty($socmed)) {
-    
+                                            
                                             if ($socmed === 'Facebook') {
-    
-                                                echo $form->field($modelUserSocialMedia, 'facebook_id')->hiddenInput(['class' => 'form-control']);
+                                                
+                                                $socmedId = 'facebook_id';
                                             } else if ($socmed === 'Google') {
-    
-                                                echo $form->field($modelUserSocialMedia, 'google_id')->hiddenInput(['class' => 'form-control']);
+                                                
+                                                $socmedId = 'google_id';
                                             }
+                                            
+                                            echo $form->field($modelUserSocialMedia, $socmedId)->hiddenInput(['class' => 'form-control']);
                                         } ?>
     
                                         <div class="row">
@@ -179,7 +181,7 @@ if (!empty($getFlashMessage)) {
                                         <div class="row">
                                             <div class="form-group col-md-12">
     
-                                                <?= Html::submitButton(Yii::t('app', 'Register'), ['class' => 'btn btn-block btn-round btn-d']) ?>
+                                                <?= Html::submitButton(Yii::t('app', 'Register'), ['class' => 'btn btn-block btn-round btn-d']); ?>
     
                                                 <div class="mt-20 mb-20 align-center"><?= Yii::t('app', 'OR') ?></div>
     
@@ -222,7 +224,8 @@ if (!empty($getFlashMessage)) {
                                             </div>
                                         </div>
 
-                                    <?php ActiveForm::end(); ?>
+                                    <?php 
+                                    ActiveForm::end(); ?>
 
                                 </div>
                             </div>
