@@ -126,7 +126,45 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$jscript = '    
+$jscript = '
+    $(".user-post-photo").magnificPopup({
+
+        delegate: ".place-gallery a.show-image",
+        type: "image",
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1]
+        },
+        image: {
+            titleSrc: "title",
+            tError: "The image could not be loaded."
+        }
+    });
+
+    $("#photo-gallery").find(".work-item").each(function() {
+
+        $(this).find(".share-image-trigger").on("click", function() {
+    
+            var rootObj = $(this).parents(".work-item");
+    
+            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + rootObj.find(".work-image img").data("id");
+            var title = "Foto untuk " + rootObj.find(".business-name").val();
+            var description = (rootObj.find(".photo-caption").text() === "") ? "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com" : rootObj.find(".photo-caption").text();
+            var image = window.location.protocol + "//" + window.location.hostname + rootObj.find(".work-image").children().attr("src");
+    
+            facebookShare({
+                ogUrl: url,
+                ogTitle: title,
+                ogDescription: description,
+                ogImage: image,
+                type: "Foto"
+            });
+    
+            return false;
+        });
+    });
+    
     $(".total-user-photo").html("' . $totalCount . '");
 
     $("#pjax-user-photo-container").on("pjax:send", function() {
