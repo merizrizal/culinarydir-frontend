@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /* @var $this yii\web\View */
 /* @var $username string */ ?>
 

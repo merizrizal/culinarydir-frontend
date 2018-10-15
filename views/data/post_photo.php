@@ -119,7 +119,7 @@ $linkPager = LinkPager::widget([
 
 <?php
 $jscript = '
-   $("#photo-gallery .place-gallery").magnificPopup({
+    $("#photo-gallery .place-gallery").magnificPopup({
 
         delegate: "a.show-image",
         type: "image",
@@ -143,7 +143,7 @@ $jscript = '
 
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
             var title = "Foto untuk " + $(".business-name").text().trim();
-            var description = thisObj.find(".photo-caption").text();
+            var description = (thisObj.find(".photo-caption").text() === "") ? "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com" : thisObj.find(".photo-caption").text();
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
 
             facebookShare({

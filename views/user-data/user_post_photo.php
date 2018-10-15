@@ -75,7 +75,7 @@ $linkPager = LinkPager::widget([
                                     <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainPhoto['image'], 200, 200), ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
                                 </div>
                                 <div class="work-caption">
-                                    <div class="work-descr hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
+                                    <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
                                     <div class="work-descr">
                                     	
                                     	<?php

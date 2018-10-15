@@ -443,6 +443,7 @@ $jscript = '
     $(".comments-review-trigger").on("click", function() {
 
         $("#comments-review-container").slideToggle();
+        $("#input-comments-review").trigger("focus");
 
         return false;
     });

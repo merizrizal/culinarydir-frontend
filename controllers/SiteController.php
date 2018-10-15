@@ -364,7 +364,7 @@ class SiteController extends base\BaseController
 
                 if (empty($modelUserSocialMedia['facebook_id'])) {
 
-                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->user_id = $modelUser->id;
                     $modelUserSocialMedia->facebook_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
@@ -375,7 +375,7 @@ class SiteController extends base\BaseController
 
                 if (empty($modelUserSocialMedia['google_id'])) {
 
-                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->user_id = $modelUser->id;
                     $modelUserSocialMedia->google_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
