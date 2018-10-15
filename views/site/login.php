@@ -131,7 +131,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                             </div>
                                         </div>
 
-                                    <?php ActiveForm::end(); ?>
+                                    <?php
+                                    ActiveForm::end(); ?>
 
                                 </div>
                             </div>

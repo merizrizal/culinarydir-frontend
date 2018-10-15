@@ -13,7 +13,7 @@ class GrowlCustom extends Widget {
         \kartik\growl\GrowlAsset::register($this->getView());
 
         $jscript = '
-            var messageResponse = function(icon, title, message, type) {
+            function messageResponse(icon, title, message, type) {
             
                 $.notify({
                     icon: icon,

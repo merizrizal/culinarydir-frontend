@@ -5,7 +5,6 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 use kartik\file\FileInput;
-use kartik\growl\Growl;
 use core\models\City;
 
 /* @var $this yii\web\View */
@@ -26,28 +25,7 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
-]);
-
-$getFlashMessage = Yii::$app->session->getFlash('message');
-
-if (!empty($getFlashMessage)) {
-
-    echo Growl::widget([
-        'type' => $getFlashMessage['type'],
-        'title' => $getFlashMessage['title'],
-        'icon' => $getFlashMessage['icon'],
-        'body' => $getFlashMessage['message'],
-        'showSeparator' => true,
-        'delay' => $getFlashMessage['delay'],
-        'pluginOptions' => [
-            'showProgressbar' => false,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'left',
-            ]
-        ]
-    ]);
-} ?>
+]); ?>
 
 <div class="main">
 
@@ -192,7 +170,8 @@ if (!empty($getFlashMessage)) {
     
                                             </div>
 
-                                        <?php ActiveForm::end(); ?>
+                                        <?php
+                                        ActiveForm::end(); ?>
 
                                     </div>
                                 </div>
@@ -207,6 +186,8 @@ if (!empty($getFlashMessage)) {
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+
 $csscript = '
     .img-profile {
         position: relative;
@@ -234,5 +215,10 @@ $jscript = '
         minimumResultsForSearch: -1
     });
 ';
+
+if (!empty(($message = Yii::$app->session->getFlash('message')))) {
+    
+    $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Update Profile Successful') . '", "' . $message['message'] . '", "success");';
+}
 
 $this->registerJs($jscript); ?>

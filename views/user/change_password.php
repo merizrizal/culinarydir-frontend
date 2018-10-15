@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\growl\Growl;
 
 /* @var $this yii\web\View */
 /* @var $modelChangePassword frontend\models\ChangePassword */
@@ -17,28 +16,7 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
-]);
-
-$getFlashMessage = Yii::$app->session->getFlash('message');
-
-if (!empty($getFlashMessage)) {
-
-    echo Growl::widget([
-        'type' => $getFlashMessage['type'],
-        'title' => $getFlashMessage['title'],
-        'icon' => $getFlashMessage['icon'],
-        'body' => $getFlashMessage['message'],
-        'showSeparator' => true,
-        'delay' => $getFlashMessage['delay'],
-        'pluginOptions' => [
-            'showProgressbar' => false,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'left',
-            ]
-        ]
-    ]);
-} ?>
+]); ?>
 
 <div class="main">
     <section class="module-extra-small bg-main">
@@ -87,7 +65,8 @@ if (!empty($getFlashMessage)) {
                                             </div>
                                         </div>
 
-                                    <?php ActiveForm::end(); ?>
+                                    <?php
+                                    ActiveForm::end(); ?>
 
                                 </div>
                             </div>
@@ -98,3 +77,15 @@ if (!empty($getFlashMessage)) {
         </div>
     </section>
 </div>
+
+<?php 
+frontend\components\GrowlCustom::widget();
+
+$jscript = '';
+
+if (!empty(($message = Yii::$app->session->getFlash('message')))) {
+    
+    $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Change Password Successful') . '" , "' . $message['message'] . '", "success");';
+}
+
+$this->registerJs($jscript); ?>
