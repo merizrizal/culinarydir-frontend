@@ -143,7 +143,7 @@ $jscript = '
 
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
             var title = "Foto untuk " + $(".business-name").text().trim();
-            var description = thisObj.find(".photo-caption").text() != "" ? thisObj.find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
+            var description = thisObj.find(".photo-caption").text() !== "" ? thisObj.find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
 
             facebookShare({

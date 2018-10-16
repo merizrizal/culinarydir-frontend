@@ -76,7 +76,7 @@ $jscript = '
     $(".user-post-section").on("click", ".user-comments-review-trigger", function() {
         
         $(this).parents(".user-post-item").find(".user-comment-review").slideToggle();
-        $(this).parents(".user-post-item").find(".input-comments-review").trigger("focus");            
+        $(this).parents(".user-post-item").find(".input-comments-review").trigger("focus");
 
         return false;
     });

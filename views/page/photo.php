@@ -321,6 +321,7 @@ $jscript = '
     $(".comments-photo-trigger").on("click", function() {
 
         $("#comments-photo-container").slideToggle();
+        $("#input-comments-photo").trigger("focus");
 
         return false;
     });

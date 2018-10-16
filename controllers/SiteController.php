@@ -370,7 +370,7 @@ class SiteController extends base\BaseController
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
 
-                    $loginFlag = ($modelUserSocialMedia['facebook_id'] === $userAttributes['id']);
+                    $loginFlag = ($modelUserSocialMedia->facebook_id === $userAttributes['id']);
                 }
             } else if ($socmed === 'Google') {
 
@@ -381,7 +381,7 @@ class SiteController extends base\BaseController
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
 
-                    $loginFlag = ($modelUserSocialMedia['google_id'] === $userAttributes['id']);
+                    $loginFlag = ($modelUserSocialMedia->google_id === $userAttributes['id']);
                 }
             }
 

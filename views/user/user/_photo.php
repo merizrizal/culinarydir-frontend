@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /* @var $this yii\web\View */
 /* @var $username string */ ?>
 
@@ -40,7 +41,7 @@ $jscript = '
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + $(this).parents(".work-item").find(".work-image img").data("id");
         var title = "Foto untuk " + $(this).parents(".work-item").find(".business-name").val();
-        var description = $(this).parents(".work-item").find(".photo-caption").text() != "" ? $(this).find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
+        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src");
 
         facebookShare({
