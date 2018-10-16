@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use kartik\rating\StarRating;
@@ -157,7 +158,7 @@ $jscript = '
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $model['id']]) . '";
         var title = "Rating " + $(".rating-' . $model['id'] . '").text().trim() + " untuk " + "' . $model['business']['name'] . '";
-        var description = "' . $model['text'] . '";
+        var description = "' . addslashes($model['text']) . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";
 
         facebookShare({

@@ -5,7 +5,6 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 use core\models\City;
-use kartik\growl\Growl;
 use yii\authclient\widgets\AuthChoice;
 
 /* @var $this yii\web\View */
@@ -27,28 +26,7 @@ $this->registerMetaTag([
 ]);
 
 kartik\select2\Select2Asset::register($this);
-kartik\select2\ThemeKrajeeAsset::register($this);
-
-$getFlashMessage = Yii::$app->session->getFlash('message');
-
-if (!empty($getFlashMessage)) {
-
-    echo Growl::widget([
-        'type' => $getFlashMessage['type'],
-        'title' => $getFlashMessage['title'],
-        'icon' => $getFlashMessage['icon'],
-        'body' => $getFlashMessage['message'],
-        'showSeparator' => true,
-        'delay' => $getFlashMessage['delay'],
-        'pluginOptions' => [
-            'showProgressbar' => false,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'left',
-            ]
-        ]
-    ]);
-} ?>
+kartik\select2\ThemeKrajeeAsset::register($this); ?>
 
 <div class="main">
     <section class="module-small bg-main">
@@ -198,8 +176,10 @@ if (!empty($getFlashMessage)) {
                                                             $btnType = '';
         
                                                             if ($client->getName() === 'facebook') {
+                                                                
                                                                 $btnType = 'btn-primary';
                                                             } else if ($client->getName() === 'google') {
+                                                                
                                                                 $btnType = 'btn-border-d';
                                                             }
         
@@ -238,6 +218,8 @@ if (!empty($getFlashMessage)) {
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
+
 $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
@@ -245,5 +227,10 @@ $jscript = '
         minimumResultsForSearch: -1
     });
 ';
+
+if (!empty(($getFlashMessage = Yii::$app->session->getFlash('message')))) {
+    
+    $jscript .= 'messageResponse("' . $getFlashMessage['icon'] . '", "' . $getFlashMessage['title'] . '", "' . $getFlashMessage['message'] . '", "' . $getFlashMessage['type'] . '");';
+}
 
 $this->registerJs($jscript); ?>

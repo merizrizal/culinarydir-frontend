@@ -32,7 +32,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+    	<?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
@@ -119,7 +119,7 @@ $linkPager = LinkPager::widget([
 
 <?php
 $jscript = '
-   $("#photo-gallery .place-gallery").magnificPopup({
+    $("#photo-gallery .place-gallery").magnificPopup({
 
         delegate: "a.show-image",
         type: "image",
@@ -143,7 +143,7 @@ $jscript = '
 
             var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
             var title = "Foto untuk " + $(".business-name").text().trim();
-            var description = thisObj.find(".photo-caption").text();
+            var description = thisObj.find(".photo-caption").text() != "" ? thisObj.find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
             var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
 
             facebookShare({

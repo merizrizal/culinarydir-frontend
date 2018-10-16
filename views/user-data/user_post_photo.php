@@ -126,7 +126,22 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$jscript = '    
+$jscript = '
+    $("#photo-gallery .place-gallery").magnificPopup({
+
+        delegate: "a.show-image",
+        type: "image",
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1]
+        },
+        image: {
+            titleSrc: "title",
+            tError: "The image could not be loaded."
+        }
+    });
+
     $(".total-user-photo").html("' . $totalCount . '");
 
     $("#pjax-user-photo-container").on("pjax:send", function() {

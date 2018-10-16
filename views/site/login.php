@@ -100,12 +100,14 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                                         ]);
     
                                                             foreach ($authAuthChoice->getClients() as $client):
-        
+                                                            
                                                                 $btnType = '';
         
                                                                 if ($client->getName() === 'facebook') {
+                                                                    
                                                                     $btnType = 'btn-primary';
                                                                 } else if ($client->getName() === 'google') {
+                                                                    
                                                                     $btnType = 'btn-border-d';
                                                                 }
         
@@ -131,7 +133,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
                                             </div>
                                         </div>
 
-                                    <?php ActiveForm::end(); ?>
+                                    <?php
+                                    ActiveForm::end(); ?>
 
                                 </div>
                             </div>

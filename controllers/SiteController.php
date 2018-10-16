@@ -104,6 +104,7 @@ class SiteController extends base\BaseController
                 if (($flag = $modelUserRegister->save())) {
 
                     $modelUserPerson = new UserPerson();
+
                     $modelUserPerson->user_id = $modelUserRegister->id;
                     $modelUserPerson->person_id = $modelPerson->id;
                 }
@@ -335,7 +336,7 @@ class SiteController extends base\BaseController
             $first_name = $userAttributes['first_name'];
             $last_name = $userAttributes['last_name'];
         } else if ($client->id === 'google') {
-            
+
             $socmed = 'Google';
             $socmedEmail = $userAttributes['emails'][0]['value'];
             $first_name = $userAttributes['name']['givenName'];
@@ -349,7 +350,7 @@ class SiteController extends base\BaseController
 
         if (empty($modelUser)) {
 
-            return $this->redirect(['site/register',
+            return $this->redirect(['register',
                 'socmed' => $socmed,
                 'email' => $socmedEmail,
                 'first_name' => $first_name,
@@ -359,12 +360,12 @@ class SiteController extends base\BaseController
         } else {
 
             $modelUserSocialMedia = !empty($modelUser->userSocialMedia) ? $modelUser->userSocialMedia : new UserSocialMedia();
-
+            
             if ($socmed === 'Facebook') {
 
                 if (empty($modelUserSocialMedia['facebook_id'])) {
 
-                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->user_id = $modelUser->id;
                     $modelUserSocialMedia->facebook_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
@@ -375,7 +376,7 @@ class SiteController extends base\BaseController
 
                 if (empty($modelUserSocialMedia['google_id'])) {
 
-                    $modelUserSocialMedia->user_id = $modelUser['id'];
+                    $modelUserSocialMedia->user_id = $modelUser->id;
                     $modelUserSocialMedia->google_id = $userAttributes['id'];
                     $loginFlag = $modelUserSocialMedia->save();
                 } else {
