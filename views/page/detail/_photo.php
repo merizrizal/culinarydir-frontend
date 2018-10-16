@@ -134,10 +134,10 @@ $jscript = '
         });
     }
 
+    getUserPhoto($("#business_id").val());
+
     $("#post-photo-container").hide();
     $("#close-post-photo-container").hide();
-
-    getUserPhoto($("#business_id").val());
 
     $("#post-photo-shortcut").on("click", function(event) {
 
@@ -304,7 +304,25 @@ $jscript = '
         });
 
         return false;
-    });    
+    });
+
+    $(".gallery-section").on("click", ".share-image-trigger", function() {
+
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + $(this).parents(".work-item").find(".work-image img").data("id");
+        var title = "Foto untuk " + $(".business-name").text().trim();
+        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).parents(".work-item").find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
+        var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src");
+
+        facebookShare({
+            ogUrl: url,
+            ogTitle: title,
+            ogDescription: description,
+            ogImage: image,
+            type: "Foto"
+        });
+
+        return false;
+    });
 ';
 
 $this->registerJs($jscript); ?>

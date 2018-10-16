@@ -78,7 +78,7 @@ $linkPager = LinkPager::widget([
                                         <?php
                                         echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMain['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
                                     	
-                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-' . $dataUserPostMain['id'] . '-trigger']) . '&nbsp'; ?>
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp'; ?>
                                         
                                     </div>
                                 </div>
@@ -132,30 +132,6 @@ $jscript = '
             titleSrc: "title",
             tError: "The image could not be loaded."
         }
-    });
-
-    $("#photo-gallery").find(".work-item").each(function() {
-
-        var thisObj = $(this);
-        var photoId = $(this).find(".work-image").children().data("id");
-
-        $(this).find(".share-image-" + photoId + "-trigger").on("click", function() {
-
-            var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + photoId;
-            var title = "Foto untuk " + $(".business-name").text().trim();
-            var description = thisObj.find(".photo-caption").text() !== "" ? thisObj.find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
-            var image = window.location.protocol + "//" + window.location.hostname + thisObj.find(".work-image").children().attr("src");
-
-            facebookShare({
-                ogUrl: url,
-                ogTitle: title,
-                ogDescription: description,
-                ogImage: image,
-                type: "Foto"
-            });
-
-            return false;
-        });
     });
 
     $(".total-photo").html("' . $totalCount . '");
