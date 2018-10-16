@@ -12,6 +12,7 @@ use core\models\UserPostMain;
 use frontend\models\Post;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 /**
  * Page Controller
@@ -140,6 +141,10 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->one();
 
         Yii::$app->formatter->timeZone = 'UTC';
+        
+        if (empty($modelBusiness)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -233,6 +238,10 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['id' => $id])
             ->distinct()
             ->asArray()->one();
+        
+        if (empty($modelBusinessPromo)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
         return $this->render('detail_promo', [
             'modelBusinessPromo' => $modelBusinessPromo
@@ -268,6 +277,10 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
+                
+        if (empty($modelUserPostMain)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
                 
         $dataUserVoteReview = [];
         
@@ -320,6 +333,10 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.type' => 'Photo'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
+                
+        if (empty($modelUserPostMain)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
         return $this->render('photo', [
             'modelUserPostMain' => $modelUserPostMain

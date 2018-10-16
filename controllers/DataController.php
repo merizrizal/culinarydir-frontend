@@ -137,7 +137,7 @@ class DataController extends base\BaseController
     }
 
     public function actionPostPhoto()
-    {
+    {        
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
@@ -395,8 +395,7 @@ class DataController extends base\BaseController
     }
 
     public function actionRecentPost() 
-    {   
-
+    {
         $this->layout = 'ajax';
 
         $modelUserPostMain = UserPostMain::find()
