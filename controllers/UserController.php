@@ -11,6 +11,7 @@ use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 use yii\base\InvalidArgumentException;
+use yii\web\NotFoundHttpException;
 
 /**
  * User Controller
@@ -56,6 +57,10 @@ class UserController extends base\BaseHistoryUrlController
                 ->joinWith(['userPerson.person'])
                 ->andWhere(['username' => Yii::$app->request->get('user')])
                 ->asArray()->one();
+            
+            if (empty($modelUser)) {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
 
             return $this->render('user_profile', [
                 'modelUser' => $modelUser
