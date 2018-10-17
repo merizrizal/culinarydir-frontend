@@ -149,7 +149,14 @@ $this->registerMetaTag([
                                                                 ]);
                                                             } else {
                                                                 
-                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image']);
+                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
+                                                                
+                                                                if (!empty($modelBusiness['businessImages'][0]['image'])) {
+                                                                    
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
+                                                                }
+                                                                
+                                                                echo Html::img($img);
                                                             }
 
                                                         else:
@@ -198,7 +205,14 @@ $this->registerMetaTag([
                                                                 ]);
                                                             } else {
                                                                 
-                                                                echo Html::img(Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image']);
+                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
+                                                                
+                                                                if (!empty($modelBusiness['businessProducts'][0]['image'])) {
+                                                                    
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $modelBusiness['businessProducts'][0]['image'];
+                                                                }
+                                                                
+                                                                echo Html::img($img);
                                                             }
 
                                                         else:
