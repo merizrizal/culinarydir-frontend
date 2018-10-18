@@ -450,7 +450,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
                                 <?= $form->field($modelPost, '[review]text')->textarea([
                                     'class' => 'form-control',
-                                    'placeholder' => Yii::t('app', 'Share your experience here'),
+                                    'placeholder' => Yii::t('app', 'What do you like about this place? Criticism and suggestions for improvement?'),
                                     'rows' => 6,
                                 ]); ?>
 
@@ -510,6 +510,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                         'layoutTemplates' => [
                                             'footer' => '',
                                         ],
+                                        'dropZoneTitle' => Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos, maximum size 2 Mb/photo')
                                     ]
                                 ]); ?>
 
