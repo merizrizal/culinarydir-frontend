@@ -275,17 +275,15 @@ class DataController extends base\BaseController
                 if ($get['price_min'] == 0 && $get['price_max'] != 0) {
 
                     $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
-                }
-
-                if ($get['price_min'] != 0 && $get['price_max'] == 0) {
+                } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
 
                     $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
-                }
-
-                if ($get['price_min'] != 0 && $get['price_max'] != 0) {
-
-                    $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']])
-                        ->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
+                } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
+                    
+                    $modelBusiness = $modelBusiness->andFilterWhere(['or', [
+                        'between', 'business_detail.price_min', $get['price_min'], $get['price_max']], [
+                        'between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
+                    ]);
                 }
             }
 

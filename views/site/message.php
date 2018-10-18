@@ -36,7 +36,7 @@ $this->registerMetaTag([
 
                                     <div class="mb-10"><small><?= $messages ?></small></div>
 
-                                    <?= !empty($links) ? Html::a($links['name'], $links['url']) : '' ?>
+                                    <?= !empty($links) ? Html::a($links['name'], $links['url'], ['class' => 'btn btn-block btn-round btn-d']) : '' ?>
 
                                 </div>
                             </div>

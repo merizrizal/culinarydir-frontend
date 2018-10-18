@@ -178,7 +178,7 @@ class SiteController extends base\BaseController
                         return $this->render('message', [
                             'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
                             'title' => Yii::t('app', 'You Have Successfully Registered to {app}', ['app' => Yii::$app->name]),
-                            'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the link below.'),
+                            'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
                             'links' => ['name' => Yii::t('app', 'Login to {app}', ['app' => Yii::$app->name]), 'url' => ['site/login']],
                         ]);
                     }
@@ -437,7 +437,7 @@ class SiteController extends base\BaseController
             return $this->render('message', [
                 'fullname' => $modelUser['full_name'],
                 'title' => Yii::t('app', 'Your Account Has Been Activated'),
-                'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the link below.'),
+                'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
                 'links' => ['name' => Yii::t('app', 'Login to {app}', ['app' => Yii::$app->name]), 'url' => ['site/login']],
             ]);
         } else {

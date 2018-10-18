@@ -161,4 +161,3 @@ if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
 }
 
 $this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
-
