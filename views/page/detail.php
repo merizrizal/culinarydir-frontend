@@ -19,7 +19,7 @@ $this->title = $modelBusiness['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
 $ogTitle = !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan';
-$ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
+$ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Makanan Favorit Anda di Asikmakan.com';
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
@@ -115,7 +115,7 @@ $this->registerMetaTag([
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $noImg = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425));
+                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425);
                                                         
                                                         if (!empty($modelBusiness['businessImages'])):
                                                             
@@ -149,8 +149,6 @@ $this->registerMetaTag([
                                                                 ]);
                                                             } else {
                                                                 
-                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                                
                                                                 if (!empty($modelBusiness['businessImages'][0]['image'])) {
                                                                     
                                                                     $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
@@ -161,7 +159,7 @@ $this->registerMetaTag([
 
                                                         else:
                                                         
-                                                            echo $noImg;
+                                                            echo Html::img($img);
                                                             
                                                         endif; ?>
 
@@ -173,6 +171,8 @@ $this->registerMetaTag([
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
+                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425);
+                                                        
                                                         if (!empty($modelBusiness['businessProducts'])):
                                                         
                                                             if (count($modelBusiness['businessProducts']) > 1) {
@@ -205,8 +205,6 @@ $this->registerMetaTag([
                                                                 ]);
                                                             } else {
                                                                 
-                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                                
                                                                 if (!empty($modelBusiness['businessProducts'][0]['image'])) {
                                                                     
                                                                     $img = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $modelBusiness['businessProducts'][0]['image'];
@@ -217,7 +215,7 @@ $this->registerMetaTag([
 
                                                         else:
                                                         
-                                                            echo $noImg;
+                                                            echo Html::img($img);
 
                                                         endif; ?>
 
@@ -800,7 +798,7 @@ $this->registerMetaTag([
 $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
     Modal::begin([
-        'header' => 'Coming Soon',
+        'header' => Yii::t('app', 'Coming Soon'),
         'id' => 'modal-coming-soon',
         'size' => Modal::SIZE_SMALL,
     ]);

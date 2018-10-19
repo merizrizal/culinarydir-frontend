@@ -842,7 +842,8 @@ $jscript = '
                 success: function(response) {
 
                     $("#modal-confirmation").modal("hide");
-    
+                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Write a Review') . '");
+
                     if (response.success) {
     
                         var totalUserPost = parseInt($(".total-review").html());
@@ -850,7 +851,8 @@ $jscript = '
 
                         $("#edit-review-container").fadeOut(100, function() {
 
-                            $("#write-review-trigger").removeClass("hidden");
+                            $("#write-review-trigger").fadeIn();
+                            $("#edit-review-container").addClass("hidden");
                         });
 
                         messageResponse(response.icon, response.title, response.message, response.type);
@@ -977,8 +979,7 @@ $jscript = '
 
                     $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
 
-                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");                    
-                    $("#write-review-trigger").addClass("hidden");
+                    $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");
 
                     $("#write-review-container, #close-review-container").fadeOut(100, function() {
 

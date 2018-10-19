@@ -591,9 +591,8 @@ class ActionController extends base\BaseController
                 Review Anda gagal disimpan<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review</li>
-                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb</li>
+                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb/foto</li>
                     <li>Pastikan Anda tidak mengupload lebih dari 10 foto</li>
-                    <li>Pastikan panjang review anda lebih dari 20 karakter</li>
                 </ol>
             ';
             $result['type'] = 'danger';
@@ -781,12 +780,11 @@ class ActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Review Gagal.';
             $result['message'] = '
-                Review baru Anda gagal disimpan.<br>
+                Review Anda gagal disimpan.<br>
                 <ol>
                     <li>Pastikan Anda mengisi rating dan review.</li>
-                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb.</li>
+                    <li>Pastikan Anda memilih foto dengan ukuran max. 2Mb/foto.</li>
                     <li>Pastikan Anda tidak mengupload lebih dari 10 foto.</li>
-                    <li>Pastikan panjang review anda lebih dari 20 karakter.</li>
                 </ol>
             ';
             $result['type'] = 'danger';
