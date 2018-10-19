@@ -117,19 +117,19 @@ $this->registerMetaTag([
                                                         <?php
                                                         $noImg = Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425));
                                                         
-                                                        if (!empty($modelBusiness['businessImages'])):
+                                                        if (!empty($dataBusinessImage['Suasana'])):
                                                             
-                                                            if (count($modelBusiness['businessImages']) > 1) {
+                                                            if (count($dataBusinessImage['Suasana']) > 1) {
                                                                 
                                                                 $images = [];
                                                                 
-                                                                foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+                                                                foreach ($dataBusinessImage['Suasana'] as $businessImage) {
                                                                     
                                                                     $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
-                                                                    if (!empty($dataBusinessImage['image'])) {
+                                                                    if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $businessImage['image'];
                                                                     }
                                                                     
                                                                     $images[] = [
@@ -151,9 +151,9 @@ $this->registerMetaTag([
                                                                 
                                                                 $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                 
-                                                                if (!empty($modelBusiness['businessImages'][0]['image'])) {
+                                                                if (!empty($dataBusinessImage['Suasana'][0]['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['Suasana'][0]['image'];
                                                                 }
                                                                 
                                                                 echo Html::img($img);
@@ -173,19 +173,19 @@ $this->registerMetaTag([
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        if (!empty($modelBusiness['businessProducts'])):
+                                                        if (!empty($dataBusinessImage['Menu'])):
                                                         
-                                                            if (count($modelBusiness['businessProducts']) > 1) {
+                                                            if (count($dataBusinessImage['Menu']) > 1) {
                                                                 
                                                                 $images = [];
 
-                                                                foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
+                                                                foreach ($dataBusinessImage['Menu'] as $businessImage) {
                                                                     
                                                                     $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                     
-                                                                    if (!empty($dataBusinessProduct['image'])) {
+                                                                    if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $dataBusinessProduct['image'];
+                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $businessImage['image'];
                                                                     }
                                                                     
                                                                     $images[] = [
@@ -207,9 +207,9 @@ $this->registerMetaTag([
                                                                 
                                                                 $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
                                                                 
-                                                                if (!empty($modelBusiness['businessProducts'][0]['image'])) {
+                                                                if (!empty($dataBusinessImage['Menu'][0]['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/business_product/' . $modelBusiness['businessProducts'][0]['image'];
+                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['Menu'][0]['image'];
                                                                 }
                                                                 
                                                                 echo Html::img($img);
