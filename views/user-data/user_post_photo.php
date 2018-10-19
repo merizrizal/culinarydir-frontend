@@ -144,18 +144,21 @@ $jscript = '
 
     $(".total-user-photo").html("' . $totalCount . '");
 
+    $("#pjax-user-photo-container").off("pjax:send");
     $("#pjax-user-photo-container").on("pjax:send", function() {
 
         $(".user-post-photo-container").children(".overlay").show();
         $(".user-post-photo-container").children(".loading-img").show();
     });
 
+    $("#pjax-user-photo-container").off("pjax:complete");
     $("#pjax-user-photo-container").on("pjax:complete", function() {
 
         $(".user-post-photo-container").children(".overlay").hide();
         $(".user-post-photo-container").children(".loading-img").hide();
     });
 
+    $("#pjax-user-photo-container").off("pjax:error");
     $("#pjax-user-photo-container").on("pjax:error", function (event) {
 
         event.preventDefault();

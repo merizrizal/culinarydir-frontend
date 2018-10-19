@@ -132,18 +132,21 @@ $linkPager = LinkPager::widget([
 
 <?php
 $jscript = '
+    $("#pjax-user-visit-container").off("pjax:send");
     $("#pjax-user-visit-container").on("pjax:send", function() {
 
         $(".user-visit-container").children(".overlay").show();
         $(".user-visit-container").children(".loading-img").show();
     });
 
+    $("#pjax-user-visit-container").off("pjax:complete");
     $("#pjax-user-visit-container").on("pjax:complete", function() {
 
         $(".user-visit-container").children(".overlay").hide();
         $(".user-visit-container").children(".loading-img").hide();
     });
 
+    $("#pjax-user-visit-container").off("pjax:error");
     $("#pjax-user-visit-container").on("pjax:error", function (event) {
 
         event.preventDefault();
