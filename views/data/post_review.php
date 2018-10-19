@@ -429,18 +429,21 @@ $jscript = '
 
     $(".total-review").html(parseInt($(".total-review").html()) + ' . $totalCount . ');
 
+    $("#pjax-review-container").off("pjax:send");
     $("#pjax-review-container").on("pjax:send", function() {
 
         $(".post-review-container").children(".overlay").show();
         $(".post-review-container").children(".loading-img").show();
     });
 
+    $("#pjax-review-container").off("pjax:complete");
     $("#pjax-review-container").on("pjax:complete", function() {
 
         $(".post-review-container").children(".overlay").hide();
         $(".post-review-container").children(".loading-img").hide();
     });
 
+    $("#pjax-review-container").off("pjax:error");
     $("#pjax-review-container").on("pjax:error", function (event) {
 
         event.preventDefault();

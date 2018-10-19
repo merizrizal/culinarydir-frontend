@@ -458,18 +458,21 @@ $jscript = '
 
     $(".total-user-post").html("' . $totalCount . '");
 
+    $("#pjax-user-post-container").off("pjax:send");
     $("#pjax-user-post-container").on("pjax:send", function() {
 
         $(".user-post-container").children(".overlay").show();
         $(".user-post-container").children(".loading-img").show();
     });
 
+    $("#pjax-user-post-container").off("pjax:complete");
     $("#pjax-user-post-container").on("pjax:complete", function() {
 
         $(".user-post-container").children(".overlay").hide();
         $(".user-post-container").children(".loading-img").hide();
     });
 
+    $("#pjax-user-post-container").off("pjax:error");
     $("#pjax-user-post-container").on("pjax:error", function (event) {
 
         event.preventDefault();

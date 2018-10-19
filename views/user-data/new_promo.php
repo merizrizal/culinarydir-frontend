@@ -135,18 +135,21 @@ $linkPager = LinkPager::widget([
 $jscript = '
     $(".total-new-promo").html("' . $totalCount . '");
 
+    $("#pjax-new-promo-container").off("pjax:send");
     $("#pjax-new-promo-container").on("pjax:send", function() {
 
         $(".new-promo-container").children(".overlay").show();
         $(".new-promo-container").children(".loading-img").show();
     });
 
+    $("#pjax-new-promo-container").off("pjax:complete");
     $("#pjax-new-promo-container").on("pjax:complete", function() {
 
         $(".new-promo-container").children(".overlay").hide();
         $(".new-promo-container").children(".loading-img").hide();
     });
 
+    $("#pjax-new-promo-container").off("pjax:error");
     $("#pjax-new-promo-container").on("pjax:error", function (event) {
 
         event.preventDefault();

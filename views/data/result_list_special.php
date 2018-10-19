@@ -234,18 +234,23 @@ $jscript = '
         return false;
     });
 
+    $("#pjax-result-list").off("pjax:send");
     $("#pjax-result-list").on("pjax:send", function() {
 
         $(".box-place").children(".overlay").show();
         $(".box-place").children(".loading-img").show();
     });
 
+    $("#pjax-result-list").off("pjax:complete");
     $("#pjax-result-list").on("pjax:complete", function() {
+
+        $("html, body").animate({ scrollTop: $("section.in-result").offset().top }, "slow");
 
         $(".box-place").children(".overlay").hide();
         $(".box-place").children(".loading-img").hide();
     });
 
+    $("#pjax-result-list").off("pjax:error");
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();

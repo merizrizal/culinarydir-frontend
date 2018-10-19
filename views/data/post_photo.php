@@ -136,18 +136,21 @@ $jscript = '
 
     $(".total-photo").html("' . $totalCount . '");
 
+    $("#pjax-photo-container").off("pjax:send");
     $("#pjax-photo-container").on("pjax:send", function() {
 
         $(".post-photo-container").children(".overlay").show();
         $(".post-photo-container").children(".loading-img").show();
     });
 
+    $("#pjax-photo-container").off("pjax:complete");
     $("#pjax-photo-container").on("pjax:complete", function() {
 
         $(".post-photo-container").children(".overlay").hide();
         $(".post-photo-container").children(".loading-img").hide();
     });
 
+    $("#pjax-photo-container").off("pjax:error");
     $("#pjax-photo-container").on("pjax:error", function (event) {
 
         event.preventDefault();

@@ -220,9 +220,17 @@ class PageController extends base\BaseHistoryUrlController
 
             $modelPost->text = $modelUserPostMain['text'];
         }
+        
+        $dataBusinessImage = [];
+        
+        foreach ($modelBusiness['businessImages'] as $businessImage) {
+            
+            $dataBusinessImage[$businessImage['category']][] = $businessImage;
+        }
 
         return $this->render('detail', [
             'modelBusiness' => $modelBusiness,
+            'dataBusinessImage' => $dataBusinessImage,
             'modelUserPostMain' => $modelUserPostMain,
             'dataUserVoteReview' => $dataUserVoteReview,
             'modelPost' => $modelPost,

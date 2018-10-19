@@ -206,18 +206,21 @@ $jscript = '
         });
     });
 
+    $("#pjax-user-love-container").off("pjax:send");
     $("#pjax-user-love-container").on("pjax:send", function() {
 
         $(".user-love-container").children(".overlay").show();
         $(".user-love-container").children(".loading-img").show();
     });
 
+    $("#pjax-user-love-container").off("pjax:complete");
     $("#pjax-user-love-container").on("pjax:complete", function() {
 
         $(".user-love-container").children(".overlay").hide();
         $(".user-love-container").children(".loading-img").hide();
     });
 
+    $("#pjax-user-love-container").off("pjax:error");
     $("#pjax-user-love-container").on("pjax:error", function (event) {
 
         event.preventDefault();
