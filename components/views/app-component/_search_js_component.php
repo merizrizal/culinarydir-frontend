@@ -19,7 +19,7 @@ $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
         'header' => Yii::t('app', 'Product Category'),
-        'id'     => 'modal-product-category',
+        'id' => 'modal-product-category',
     ]);
 
         echo '
@@ -90,7 +90,7 @@ $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
         'header' => Yii::t('app', 'Region'),
-        'id'     => 'modal-region',
+        'id' => 'modal-region',
         'footer' => '
             <div class="row">
                 <div class="col-md-10 col-sm-10 col-xs-12 text-left">
