@@ -51,6 +51,9 @@ class ActionController extends base\BaseController
         if (!empty(($post = Yii::$app->request->post()))) {
 
             $modelUserPostMain = UserPostMain::find()
+                ->joinWith([
+                    'userPostComments'
+                ])
                 ->andWhere(['unique_id' => $post['business_id'] . '-' . Yii::$app->user->getIdentity()->id])
                 ->one();
 
@@ -752,6 +755,7 @@ class ActionController extends base\BaseController
                 }
             }
         }
+        
 
         $result = [];
 
@@ -768,6 +772,7 @@ class ActionController extends base\BaseController
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
+            $result['userPostComments'] = $modelUserPostMain->userPostComments;
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
             $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);

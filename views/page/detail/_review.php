@@ -33,7 +33,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 
             <div class="box-content">
 
-                <div class="form-group <?= empty($modelUserPostMain) ? 'hidden' : '' ?>" id="edit-review-container">
+                <div class="form-group" id="edit-review-container">
                 
                 	<?php
                 	if (!empty(Yii::$app->user->getIdentity())):
@@ -326,7 +326,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         
                 </div>
 
-                <div class="form-group has-feedback <?= !empty($modelUserPostMain) ? 'hidden' : '' ?>" id="write-review-trigger">
+                <div class="form-group has-feedback" id="write-review-trigger">
                     <i class="fa fa-pencil-alt form-control-feedback"></i>
                     <input type="text" class="form-control" placeholder="<?= Yii::t('app', 'Share your experience here') ?>"/>
                 </div>
@@ -591,7 +591,8 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    var prevReview;    
+    var prevReview;
+    var cancelWrite;
 
     function getBusinessRating(business_id) {
 
@@ -745,9 +746,17 @@ $jscript = '
     $("#close-review-container > a, #cancel-write-review").on("click", function(event) {
 
         $("#write-review-container, #close-review-container").fadeOut(100, function() {
+            
+            if (cancelWrite) {
 
-            $("#edit-review-container").fadeIn();
-            $("#write-review-trigger").fadeIn();
+                $("#write-review-trigger").fadeIn();
+                $("#edit-review-container").fadeOut();
+            } else {
+
+                $("#write-review-trigger").fadeOut();
+                $("#edit-review-container").fadeIn();
+            }
+            
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         });
 
@@ -793,13 +802,15 @@ $jscript = '
             type: "POST",
             url: "' . Yii::$app->urlManager->createUrl(['redirect/write-review']) . '",
             success: function(response) {
-
-                thisObj.fadeOut(100, function() {
+                
+                $("#write-review-trigger").fadeOut(100, function() {
 
                     $("#write-review-container").fadeIn();
                     $("#close-review-container").fadeIn();
                     $("#post-review-text").trigger("focus");
                 });
+
+                cancelWrite = true;
             },
             error: function(xhr, ajaxOptions, thrownError) {
 
@@ -819,6 +830,8 @@ $jscript = '
 
             $("#post-review-text").trigger("focus");
         });
+
+        cancelWrite = false;
 
         return false;
     });
@@ -852,7 +865,6 @@ $jscript = '
                         $("#edit-review-container").fadeOut(100, function() {
 
                             $("#write-review-trigger").fadeIn();
-                            $("#edit-review-container").addClass("hidden");
                         });
 
                         messageResponse(response.icon, response.title, response.message, response.type);
@@ -974,8 +986,9 @@ $jscript = '
                     ratingColor($(".my-rating"), "a");
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
-
-                    $("#edit-review-container").find(".total-empty-comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total-empty-comments-review");
+                    
+                    $("#edit-review-container").find(".total--comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total--comments-review");
+                    $("#edit-review-container").find(".total-" + response.userPostMain.id + "-comments-review").html(Object.keys(response.userPostComments).length);
 
                     $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
 
@@ -983,8 +996,7 @@ $jscript = '
 
                     $("#write-review-container, #close-review-container").fadeOut(100, function() {
 
-                        $("#edit-review-container").removeClass("hidden");
-                        $("#edit-review-container").fadeIn();
+                        $("#edit-review-container").show();
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
@@ -1048,7 +1060,7 @@ $jscript = '
 
                     var loveValue = parseInt($(".my-total-likes-review").html());
 
-                    if(response.is_active) {
+                    if (response.is_active) {
 
                         $(".my-likes-review-trigger").addClass("selected");
                         $(".my-total-likes-review").html(loveValue + 1);
@@ -1364,6 +1376,18 @@ if (!empty($dataUserVoteReview['overallValue'])) {
         var overall = ' . $dataUserVoteReview['overallValue'] . ';
 
         $(".rating-overall").html(parseFloat(overall.toFixed(1)));
+    ';
+}
+
+if (!empty($modelUserPostMain)) {
+    
+    $jscript .= '
+        $("#write-review-trigger").hide();
+    ';
+} else {
+    
+    $jscript .= '
+        $("#edit-review-container").hide();
     ';
 }
 
