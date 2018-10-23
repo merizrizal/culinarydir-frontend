@@ -869,13 +869,13 @@ $jscript = '
                         });
                         
                         $(".temp-overall-rating").val(0);
-                        $("#overall-rating").rating("reset");
+                        $("#overall-rating").rating("clear");
 
                         $(".rating-component-id").each(function() {
 
-                            $(".temp-rating-" + $(this).val()).val("");
-                            $(this).parent().find("#rating-" + $(this).val() + "").rating("reset");
-                            $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val() + "").val());
+                            $(".temp-rating-" + $(this).val()).val(0);
+                            $(this).parent().find("#rating-" + $(this).val()).rating("clear");
+                            $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val()).val());
                         });
 
                         prevReview = "";
@@ -1012,8 +1012,10 @@ $jscript = '
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
                     
                     $("#edit-review-container").find(".total--comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total--comments-review");
-                    $("#edit-review-container").find(".total-" + response.userPostMain.id + "-comments-review").html(Object.keys(response.userPostComments).length);
-
+                    $("#edit-review-container").find(".total-" + response.userPostMain.id + "-comments-review").html(response.commentCount);
+                    
+                    $(".my-comment-section").html(response.userPostComments);
+                    
                     $("#edit-review-container").find(".my-user-post-main-id").val(response.userPostMain.id);
 
                     $("#title-write-review").find("h4").html("' . Yii::t('app', 'Your Review') . '");
