@@ -805,6 +805,8 @@ $jscript = '
                 
                 $("#write-review-trigger").fadeOut(100, function() {
 
+                    prevReview = $("#post-review-text").val();
+
                     $("#write-review-container").fadeIn();
                     $("#close-review-container").fadeIn();
                     $("#post-review-text").trigger("focus");
@@ -860,12 +862,23 @@ $jscript = '
                     if (response.success) {
     
                         var totalUserPost = parseInt($(".total-review").html());
-                        $(".total-review").html(totalUserPost - 1);
 
                         $("#edit-review-container").fadeOut(100, function() {
 
                             $("#write-review-trigger").fadeIn();
                         });
+
+                        $(".my-likes-review-trigger").removeClass("selected");
+
+                        $(".total-review").html(totalUserPost - 1);
+                        $(".my-total-likes-review").html(0);
+                        $(".my-total-photos-review").html(0);
+
+                        $("#post-review-text").val("");
+                        $(".my-review-description").html("");
+
+                        $("#form-review-uploaded-photo").children().remove();
+                        $("#review-uploaded-photo").children().remove();
 
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
@@ -931,8 +944,6 @@ $jscript = '
 
                         $(".total-review").html(parseInt($(".total-review").html()) + 1);
                     }
-
-                    prevReview = response.userPostMain.text;
 
                     $(".my-rating").find("a").html(parseFloat($(".rating-overall").text()).toFixed(1));
 
