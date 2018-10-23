@@ -44,9 +44,6 @@ AppAsset::register($this); ?>
 <?php $this->beginBody() ?>
 
     <main>
-        <div class="page-loader">
-            <div class="loader">Loading...</div>
-        </div>
 
         <?php
         $appComponent = new AppComponent();

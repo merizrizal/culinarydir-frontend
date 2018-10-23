@@ -1,13 +1,14 @@
 <?php
-
 namespace frontend\components;
 
 use yii\base\Widget;
 use yii\web\View;
 
-class GrowlCustom extends Widget {
+class GrowlCustom extends Widget
+{
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         \kartik\growl\GrowlAsset::register($this->getView());

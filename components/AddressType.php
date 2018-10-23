@@ -1,19 +1,22 @@
 <?php
-
 namespace frontend\components;
 
 use yii\base\Widget;
 use yii\helpers\Html;
 
-class AddressType extends Widget {
-    
+class AddressType extends Widget
+{
+
     public $address;
+
     public $addressType;
+
     private $addressTypeShort;
 
-    public function init() {
-        parent::init();        
-        
+    public function init()
+    {
+        parent::init();
+
         if ($this->addressType == "Jalan") {
 
             $this->addressTypeShort = "Jl";
@@ -25,9 +28,9 @@ class AddressType extends Widget {
             $this->addressTypeShort = "Gg";
         }
     }
-    
-    public function run() {
-        
+
+    public function run()
+    {
         return Html::encode($this->addressTypeShort . '. ' . $this->address);
     }
     

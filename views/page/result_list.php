@@ -91,17 +91,7 @@ frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
 $jscript = '
-    $(".result-list-search").hide();
-
-    $(".btn-search-toggle").on("click", function() {
-
-        $(".result-list-search").toggle();
-    });
-
-    $(".btn-list").on("click", function() {
-
-        return false;
-    });
+    $(".result-list-search").hide();    
 
     $.ajax({
         cache: false,
@@ -116,6 +106,57 @@ $jscript = '
 
             messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
         }
+    });
+
+    $(".btn-search-toggle").on("click", function() {
+
+        $(".result-list-search").toggle();
+    });
+
+    $(".btn-list").on("click", function() {
+
+        return false;
+    });
+
+    $(".result-list").on("click", ".popover-tag", function() {
+
+        return false;
+    });
+
+    $(".result-list").on("click", ".love-button", function() {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            url: "'. Yii::$app->urlManager->createUrl('action/submit-user-love').'",
+            type: "POST",
+            data: {
+                "business_id": thisObj.data("id")
+            },
+            success: function(response) {
+
+                if (response.success) {
+
+                    if (response.is_active) {
+
+                        thisObj.removeClass("far fa-heart").addClass("fas fa-heart");
+                    } else {
+
+                        thisObj.removeClass("fas fa-heart").addClass("far fa-heart");
+                    }
+                } else {
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+
+        return false;
     });
 ';
 

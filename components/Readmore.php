@@ -1,13 +1,14 @@
 <?php
-
 namespace frontend\components;
 
 use yii\base\Widget;
 use yii\web\View;
 
-class Readmore extends Widget {
+class Readmore extends Widget
+{
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $jscript = '
