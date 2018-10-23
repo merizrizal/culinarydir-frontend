@@ -213,7 +213,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                                         }
                                                     ),
                                                     [
-                                                        'item' => function ($index, $label, $name, $checked, $value) use($colDivider, $column, $modelFacility) {
+                                                        'item' => function ($index, $label, $name, $checked, $value) use ($colDivider, $column, $modelFacility) {
 
                                                             $checkboxes = '
                                                                 <div class="row">
@@ -417,6 +417,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
 <?php
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
+
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '

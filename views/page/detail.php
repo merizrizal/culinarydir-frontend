@@ -8,6 +8,7 @@ use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
+/* @var $dataBusinessImage core\models\BusinessImage */
 /* @var $modelRatingComponent core\models\RatingComponent */
 /* @var $modelUserReport core\models\UserReport */
 /* @var $modelUserPostMain core\models\UserPostMain */
@@ -18,9 +19,9 @@ use sycomponent\Tools;
 $this->title = $modelBusiness['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
-$ogTitle = !empty($modelBusiness['name']) ? $modelBusiness['name'] : 'Asikmakan';
+$ogTitle = $modelBusiness['name'];
 $ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Makanan Favorit Anda di Asikmakan.com';
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     
@@ -60,7 +61,9 @@ $this->registerMetaTag([
 $this->registerMetaTag([
     'property' => 'og:image',
     'content' => $ogImage
-]); ?>
+]); 
+
+$noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425); ?>
 
 <div class="main">
 
@@ -115,54 +118,43 @@ $this->registerMetaTag([
                                                     <div class="col-sm-10 col-sm-offset-1">
 
                                                         <?php
-                                                        $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425);
-                                                        
-                                                        if (!empty($dataBusinessImage['Ambience'])):
+                                                        $images = [];
+
+                                                        if (!empty($dataBusinessImage['Ambience']) && count($dataBusinessImage['Ambience']) > 0) {
                                                             
-                                                            if (count($dataBusinessImage['Ambience']) > 1) {
+                                                            foreach ($dataBusinessImage['Ambience'] as $businessImage) {
                                                                 
-                                                                $images = [];
-                                                                
-                                                                foreach ($dataBusinessImage['Ambience'] as $businessImage) {
-                                                                    
-                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                                    
-                                                                    if (!empty($businessImage['image'])) {
-                                                                        
-                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $businessImage['image'];
-                                                                    }
-                                                                    
-                                                                    $images[] = [
-                                                                        'title' => '',
-                                                                        'href' => $img,
-                                                                        'type' => 'image/jpeg',
-                                                                        'poster' => $img,
-                                                                    ];
-                                                                }
-                                                                
-                                                                echo dosamigos\gallery\Carousel::widget([
-                                                                    'items' => $images,
-                                                                    'json' => true,
-                                                                    'templateOptions' => ['id' => 'gallery_business'],
-                                                                    'clientOptions' => ['container' => '#gallery_business'],
-                                                                    'options' => ['id' => 'gallery_business'],
-                                                                ]);
-                                                            } else {
                                                                 $img = $noImg;
                                                                 
-                                                                if (!empty($dataBusinessImage['Ambience'][0]['image'])) {
+                                                                if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['Ambience'][0]['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
                                                                 }
                                                                 
-                                                                echo Html::img($img);
+                                                                $images[] = [
+                                                                    'title' => '',
+                                                                    'href' => $img,
+                                                                    'type' => 'image/jpeg',
+                                                                    'poster' => $img,
+                                                                ];
                                                             }
-
-                                                        else:
+                                                        } else {
                                                         
-                                                            echo Html::img($noImg);
-                                                            
-                                                        endif; ?>
+                                                            $images[] = [
+                                                                'title' => '',
+                                                                'href' => $noImg,
+                                                                'type' => 'image/jpeg',
+                                                                'poster' => $noImg,
+                                                            ];
+                                                        };
+                                                        
+                                                        echo dosamigos\gallery\Carousel::widget([
+                                                            'items' => $images,
+                                                            'json' => true,
+                                                            'templateOptions' => ['id' => 'gallery_business'],
+                                                            'clientOptions' => ['container' => '#gallery_business'],
+                                                            'options' => ['id' => 'gallery_business'],
+                                                        ]); ?>
 
                                                     </div>
                                                 </div>
@@ -171,54 +163,44 @@ $this->registerMetaTag([
                                                 <div class="row">
                                                     <div class="col-sm-10 col-sm-offset-1">
 
-                                                        <?php
-                                                        if (!empty($dataBusinessImage['Menu'])):
+                                                        <?php                                                        
+                                                        $images = [];
                                                         
-                                                            if (count($dataBusinessImage['Menu']) > 1) {
-                                                                
-                                                                $images = [];
-
-                                                                foreach ($dataBusinessImage['Menu'] as $businessImage) {
+                                                        if (!empty($dataBusinessImage['Menu']) && count($dataBusinessImage['Menu']) > 0) {
+                                                        
+                                                            foreach ($dataBusinessImage['Menu'] as $businessImage) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                                    
-                                                                    if (!empty($businessImage['image'])) {
-                                                                        
-                                                                        $img = Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $businessImage['image'];
-                                                                    }
-                                                                    
-                                                                    $images[] = [
-                                                                        'title' => '',
-                                                                        'href' => $img,
-                                                                        'type' => 'image/jpeg',
-                                                                        'poster' => $img,
-                                                                    ];
-                                                                }
-    
-                                                                echo dosamigos\gallery\Carousel::widget([
-                                                                    'items' => $images,
-                                                                    'json' => true,
-                                                                    'templateOptions' => ['id' => 'gallery_menu'],
-                                                                    'clientOptions' => ['container' => '#gallery_menu'],
-                                                                    'options' => ['id' => 'gallery_menu'],
-                                                                ]);
-                                                            } else {
-                                                                
                                                                 $img = $noImg;
                                                                 
-                                                                if (!empty($dataBusinessImage['Menu'][0]['image'])) {
+                                                                if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['Menu'][0]['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
                                                                 }
                                                                 
-                                                                echo Html::img($img);
+                                                                $images[] = [
+                                                                    'title' => '',
+                                                                    'href' => $img,
+                                                                    'type' => 'image/jpeg',
+                                                                    'poster' => $img,
+                                                                ];
                                                             }
-
-                                                        else:
+                                                        } else {
+                                                            
+                                                            $images[] = [
+                                                                'title' => '',
+                                                                'href' => $noImg,
+                                                                'type' => 'image/jpeg',
+                                                                'poster' => $noImg,
+                                                            ];
+                                                        } 
                                                         
-                                                            echo Html::img($noImg);
-
-                                                        endif; ?>
+                                                        echo dosamigos\gallery\Carousel::widget([
+                                                            'items' => $images,
+                                                            'json' => true,
+                                                            'templateOptions' => ['id' => 'gallery_menu'],
+                                                            'clientOptions' => ['container' => '#gallery_menu'],
+                                                            'options' => ['id' => 'gallery_menu'],
+                                                        ]); ?>
 
                                                     </div>
                                                 </div>
@@ -643,9 +625,8 @@ $this->registerMetaTag([
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <li><i class="aicon aicon-document-edit aicon-1-5x"></i></li>
+                                                                <li><i class="aicon aicon-document-edit aicon-1-5x"></i><span class="badge total-review"></span></li>
                                                                 <li><?= Yii::t('app', 'Review') ?></li>
-                                                                <span class="badge total-review"></span>
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -668,9 +649,8 @@ $this->registerMetaTag([
                                                     <ul class="link-icon list-inline">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <li><i class="aicon aicon-camera aicon-1-5x"></i></li>
+                                                                <li><i class="aicon aicon-camera aicon-1-5x"></i><span class="badge total-photo"></span></li>
                                                                 <li><?= Yii::t('app', 'Photo') ?></li>
-                                                                <span class="badge total-photo"></span>
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -820,13 +800,12 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
             'id' => 'report-form',
             'action' => ['action/submit-report'],
             'fieldConfig' => [
-                'template' => '{input}{error}'
+                'template' => '{label}{input}{error}'
             ],
         ]);
 
             echo Html::hiddenInput('business_id', $modelBusiness['id']);
 
-            echo '<label>' . Yii::t('app', 'This business:') . '</label>';
             echo $form->field($modelUserReport, 'report_status')
                     ->radioList([
                         'Closed' => Yii::t('app', 'Closed'),
@@ -839,13 +818,15 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
                         'itemOptions' => [
                             'class' => 'report-subject icheck',
                         ],
-                    ]);
+                    ])
+                    ->label(Yii::t('app', 'This business:'));
 
-            echo '<label>Keterangan:</label>';
-            echo $form->field($modelUserReport, 'text')->textArea([
-                'rows' => 3,
-                'placeholder' => Yii::t('app', 'Tell about your situation or complaint.')
-            ]);
+            echo $form->field($modelUserReport, 'text')
+                    ->textArea([
+                        'rows' => 3,
+                        'placeholder' => Yii::t('app', 'Tell about your situation or complaint.')
+                    ])
+                    ->label(Yii::t('app', 'Note'));
 
             echo '
                 <div class="row">
@@ -886,6 +867,8 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
+    $("#menu").removeClass("in active");
+
     $("#see-map-shortcut").on("click", function(event) {
 
         if (!$("a[aria-controls=\"view-map\"]").parent().hasClass("active")) {
@@ -1107,9 +1090,7 @@ $jscript = '
         $(this).find(".form-group").removeClass("has-error");
         $(this).find(".form-group").removeClass("has-success");
         $(this).find(".form-group").find(".help-block").html("");
-    });
-
-    $("#menu").removeClass("in active");
+    });    
 ';
 
 $this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>

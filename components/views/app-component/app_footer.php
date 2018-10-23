@@ -33,7 +33,7 @@
                 <div class="widget">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h5 class="widget-title font-alt">Client Login</h5>
+                            <h5 class="widget-title font-alt">&nbsp;</h5>
                         </div>
 
                         <div class="clearfix"></div>

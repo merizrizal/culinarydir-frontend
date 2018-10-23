@@ -77,7 +77,7 @@ class UserActionController extends base\BaseController
     }
 
     public function actionDeleteUserPost($id)
-    {        
+    {
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         

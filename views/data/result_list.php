@@ -92,17 +92,17 @@ $jspopover = ''; ?>
                                         <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusiness['id']]) ?>">
 
                                             <?php
-                                            if (count($dataBusiness['businessImages']) > 1) {
-
-                                                $images = [];
+                                            $images = [];
+                                            
+                                            if (count($dataBusiness['businessImages']) > 0) {                                                
 
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
 
                                                     if (!empty($dataBusinessImage['image'])) {
 
-                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 429, 241);
                                                     }
 
                                                     $images[] = [
@@ -111,32 +111,32 @@ $jspopover = ''; ?>
                                                         'type' => 'image/jpeg',
                                                         'poster' => $href,
                                                     ];
-                                                }
-
-                                                echo dosamigos\gallery\Carousel::widget([
-                                                    'items' => $images,
-                                                    'json' => true,
-                                                    'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                                    'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusiness['id']],
-                                                    'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                                ]);
+                                                }                                                
                                             } else {
 
-                                                $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
-
-                                                if (!empty($dataBusiness['businessImages'][0]['image'])) {
-
-                                                    $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 490, 276);
-                                                }
-
-                                                echo Html::img($image);
-                                            } ?>
+                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
+                                                
+                                                $images[] = [
+                                                    'title' => '',
+                                                    'href' => $href,
+                                                    'type' => 'image/jpeg',
+                                                    'poster' => $href,
+                                                ];
+                                            }
+                                            
+                                            echo dosamigos\gallery\Carousel::widget([
+                                                'items' => $images,
+                                                'json' => true,
+                                                'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
+                                                'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusiness['id']],
+                                                'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
+                                            ]); ?>
 
                                         </div>
 
                                         <?php
                                         $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart';
-                                        $vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
+                                        $voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
                                         $voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
                                         
                                         $layoutRatings = '
@@ -144,7 +144,7 @@ $jspopover = ''; ?>
                                                 <h2 class="mt-0 mb-20 text-red"><span class="' . $classLove . ' love-button" data-id="' . $dataBusiness['id'] . '"></span></h2>
                                             </div>
                                             <div class="rating rating-top">
-                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10">' . number_format($vote_value, 1) . '</span></h2>' .
+                                                <h2 class="mt-0 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
                                                 Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                             </div>
                                         '; ?>
@@ -267,7 +267,7 @@ $jspopover = ''; ?>
                                                             <h2 class="mt-0 mb-20 text-red"><span class="<?= $classLove ?> love-button" data-id="<?= $dataBusiness['id'] ?>"></span></h2>
                                                         </div>
                                                         <div class="rating pull-right">
-                                                            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1) ?></span></h2>
+                                                            <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($voteValue, 1) ?></span></h2>
                                                             <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                         </div>
                                                     </div>
@@ -317,48 +317,7 @@ $jspopover = ''; ?>
 </div>
 
 <?php
-$jscript = '
-    $(".popover-tag").on("click", function() {
-
-        return false;
-    });
-
-    $(".love-button").on("click", function() {
-
-        var business_id = $(this).data("id");
-
-        $.ajax({
-            cache: false,
-            url: "'. Yii::$app->urlManager->createUrl('action/submit-user-love').'",
-            type: "POST",
-            data: {
-                "business_id": business_id
-            },
-            success: function(response) {
-
-                if (response.success) {
-
-                    if (response.is_active) {
-
-                        $(".love-" + business_id).find("span.love-button").removeClass("far fa-heart").addClass("fas fa-heart");
-                    } else {
-
-                        $(".love-" + business_id).find("span.love-button").removeClass("fas fa-heart").addClass("far fa-heart");
-                    }
-                } else {
-
-                    messageResponse(response.icon, response.title, response.message, response.type);
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-            }
-        });
-
-        return false;
-    });
-
+$jscript = '    
     ratingColor($(".rating"), "span");
 
     $("#pjax-result-list").off("pjax:send");

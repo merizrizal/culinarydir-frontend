@@ -107,20 +107,7 @@ frontend\components\RatingColor::widget();
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    $(".result-map-search").hide();
-
-    $(".btn-search-map-toggle").on("click", function() {
-
-        $(".result-map-search").toggle();
-    });
-
-    $(".btn-list").off("click");
-    $(".btn-map").off("click");
-
-    $(".btn-map").on("click", function() {
-
-        return false;
-    });
+    $(".result-map-search").hide();    
 
     $.ajax({
         cache: false,
@@ -135,6 +122,16 @@ $jscript = '
 
             messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
         }
+    });
+
+    $(".btn-search-map-toggle").on("click", function() {
+
+        $(".result-map-search").toggle();
+    });
+
+    $(".btn-map").on("click", function() {
+
+        return false;
     });
 ';
 

@@ -1,13 +1,14 @@
 <?php
-
 namespace frontend\components;
 
 use yii\base\Widget;
 use yii\web\View;
 
-class RatingColor extends Widget {
+class RatingColor extends Widget
+{
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $jscript = '

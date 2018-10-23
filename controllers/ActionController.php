@@ -772,7 +772,11 @@ class ActionController extends base\BaseController
             $result['user'] = Yii::$app->user->getIdentity()->full_name;
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
-            $result['userPostComments'] = $modelUserPostMain->userPostComments;
+            $result['userPostComments'] = $this->renderPartial('@frontend/views/data/post_comment', [
+                'userPostId' => $modelUserPostMain->id,
+                'modelUserPostComment' => $modelUserPostMain->userPostComments,
+            ]);
+            $result['commentCount'] = count($modelUserPostMain->userPostComments);
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
             $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
