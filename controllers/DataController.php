@@ -236,7 +236,6 @@ class DataController extends base\BaseController
 
             $modelBusiness = Business::find()
                 ->joinWith([
-                    'membershipType',
                     'businessCategories' => function($query) {
                         
                         $query->andOnCondition(['business_category.is_active' => true]);
@@ -280,9 +279,10 @@ class DataController extends base\BaseController
                     $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
                 } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
                     
-                    $modelBusiness = $modelBusiness->andFilterWhere(['or', [
-                        'between', 'business_detail.price_min', $get['price_min'], $get['price_max']], [
-                        'between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
+                    $modelBusiness = $modelBusiness->andFilterWhere([
+                        'or', 
+                        ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
+                        ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
                     ]);
                 }
             }

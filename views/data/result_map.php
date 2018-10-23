@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
@@ -81,17 +80,20 @@ $linkPager = LinkPager::widget([
                                     <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
 
                                         <?php
-                                        if (count($dataBusiness['businessImages']) > 1) {
-
-                                            $images = [];
+                                        $images = [];
+                                        
+                                        $image = '';
+                                        $href = '';
+                                        
+                                        if (count($dataBusiness['businessImages']) > 0) {                                            
 
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
 
-                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
+                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 446, 251);
 
                                                 if (!empty($dataBusinessImage['image'])) {
 
-                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 490, 276);
+                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 446, 251);
                                                 }
 
                                                 $images[] = [
@@ -100,38 +102,40 @@ $linkPager = LinkPager::widget([
                                                     'type' => 'image/jpeg',
                                                     'poster' => $href,
                                                 ];
-
-                                                $image = $href;
-                                            }
-
-                                            echo dosamigos\gallery\Carousel::widget([
-                                                'items' => $images,
-                                                'json' => true,
-                                                'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                                'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusiness['id']],
-                                                'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                            ]);
+                                                
+                                                $image = empty($image) ? $href : $image;
+                                            }                                            
                                         } else {
 
-                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 446, 251);
 
-                                            if (!empty($dataBusiness['businessImages'][0]['image'])) {
-
-                                                $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 490, 276);
-                                            }
-
-                                            echo Html::img($image);
-                                        } ?>
+                                            $images[] = [
+                                                'title' => '',
+                                                'href' => $href,
+                                                'type' => 'image/jpeg',
+                                                'poster' => $href,
+                                            ];
+                                            
+                                            $image = $href;
+                                        }
+                                        
+                                        echo dosamigos\gallery\Carousel::widget([
+                                            'items' => $images,
+                                            'json' => true,
+                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
+                                            'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusiness['id']],
+                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
+                                        ]); ?>
 
                                     </div>
 									
 									<?php 
-									$vote_value = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
+									$voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
 									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
 									
 									$layoutRatings = '
                                         <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($vote_value, 1) . '</span></h2>' .
+                                            <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
                                             Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                         </div>
                                     '; ?>
@@ -210,7 +214,7 @@ $linkPager = LinkPager::widget([
 
                                                 <div class="col-md-3 col visible-lg visible-md text-center">
                                                     <div class="rating pull-right">
-                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($vote_value, 1); ?></span></h3>
+                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($voteValue, 1); ?></span></h3>
                                                         <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                     </div>
                                                 </div>

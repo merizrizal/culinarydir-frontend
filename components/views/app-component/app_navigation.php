@@ -76,8 +76,6 @@ use yii\helpers\Html; ?>
                 <?php
                 else: ?>
 
-                    <!--<li><a class="icon" href="#"><i class="aicon aicon-heart2 aicon-2x"></i></a></li>
-                    <li><a class="icon" href="#"><i class="aicon aicon-savedsearch aicon-2x"></i></a></li>-->
                     <li class="dropdown">
     
                         <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i>', '#', ['class' => 'icon dropdown-toggle hidden-xs', 'data-toggle' => 'dropdown']) ?>

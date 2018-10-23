@@ -1,13 +1,14 @@
 <?php
-
 namespace frontend\components;
 
 use yii\base\Widget;
 use yii\web\View;
 
-class FacebookShare extends Widget {
+class FacebookShare extends Widget
+{
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $jscript = '
