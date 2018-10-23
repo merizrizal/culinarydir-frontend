@@ -461,11 +461,12 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                 <div class="row" id="form-photos-review-container">
                                     <div class="col-sm-12 col-xs-12">
                                         <ul class="works-grid works-grid-gut works-grid-5" id="form-review-uploaded-photo">
-
+											
                                             <?php
                                             if (!empty($modelUserPostMain['userPostMains'])):
 
-                                                foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild): ?>
+                                                foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild):
+                                                    echo Html::hiddenInput('user_post_main_child_id', $modelUserPostMainChild['id'], ['class' => 'user-post-main-child-id']); ?>
 
                                                     <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
                                                         <div class="gallery-item review-post-gallery">
@@ -866,6 +867,29 @@ $jscript = '
 
                             $("#write-review-trigger").fadeIn();
                         });
+                        
+                        $(".temp-overall-rating").val(0);
+                        $("#overall-rating").rating("reset");
+
+                        $(".rating-component-id").each(function() {
+
+                            $(".temp-rating-" + $(this).val()).val("");
+                            $(this).parent().find("#rating-" + $(this).val() + "").rating("reset");
+                            $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val() + "").val());
+                        });
+
+                        prevReview = "";
+                        $("#post-review-text").val(prevReview);
+
+                        $("#form-review-uploaded-photo").children().remove();
+                        $("#review-uploaded-photo").children().remove();
+                        $(".my-total-photos-review").html(0);
+
+                        if ($(".my-likes-review-trigger").hasClass("selected")) {
+                            
+                            $(".my-likes-review-trigger").removeClass("selected");
+                            $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
+                        }
 
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
@@ -973,8 +997,8 @@ $jscript = '
                         var tempRating = $("#post-review-rating-" + $(this).val() + "").val();
 
                         tempOverall += parseInt(tempRating);
-
-                        $(".temp-rating-" + $(this).val() + "").val(tempRating);
+                        
+                        $(".temp-rating-" + $(this).val()).val(tempRating);
                     });
 
                     $(".temp-overall-rating").val(tempOverall / parseInt($(".rating-component-id").length));
