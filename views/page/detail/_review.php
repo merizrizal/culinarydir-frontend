@@ -846,32 +846,30 @@ $jscript = '
         $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
 
+            $("#modal-confirmation").modal("hide");
+
             $.ajax({
                 cache: false,
                 type: "POST",
                 url: $(this).data("href"),
                 beforeSend: function(xhr) {
-
+                    
                     $("#title-write-review").siblings(".overlay").show();
                     $("#title-write-review").siblings(".loading-img").show();
                 },
                 success: function(response) {
-
-                    $("#modal-confirmation").modal("hide");
+                    
                     $("#title-write-review").find("h4").html("' . Yii::t('app', 'Write a Review') . '");
 
                     if (response.success) {
     
                         var totalUserPost = parseInt($(".total-review").html());
+                        $(".total-review").html(totalUserPost - 1);
 
                         $("#edit-review-container").fadeOut(100, function() {
 
                             $("#write-review-trigger").fadeIn();
                         });
-
-                        $(".total-review").html(totalUserPost - 1);
-                        $(".my-total-likes-review").html(0);
-                        $(".my-total-photos-review").html(0);
                         
                         $(".temp-overall-rating").val(0);
                         $("#overall-rating").rating("clear");
@@ -883,18 +881,16 @@ $jscript = '
                             $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val()).val());
                         });
 
-                        $(".my-rating").find("a").html(parseFloat($(".rating-overall").text()).toFixed(1));
-                        ratingColor($(".my-rating"), "a");
-
                         $("#post-review-text").val("");
-                        $(".my-review-description").html("");
 
                         $("#form-review-uploaded-photo").children().remove();
                         $("#review-uploaded-photo").children().remove();
+                        $(".my-total-photos-review").html(0);
 
                         if ($(".my-likes-review-trigger").hasClass("selected")) {
                             
                             $(".my-likes-review-trigger").removeClass("selected");
+                            $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
                         }
 
                         messageResponse(response.icon, response.title, response.message, response.type);
