@@ -128,7 +128,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                 
                                                                 if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1200, 706, false, false);
                                                                 }
                                                                 
                                                                 $images[] = [
@@ -174,7 +174,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                 
                                                                 if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1200, 706, false, false);
                                                                 }
                                                                 
                                                                 $images[] = [
