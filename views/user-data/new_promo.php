@@ -69,11 +69,11 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
 
                                 if (!empty($dataBusinessPromo['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 335, 203);
 
                                 }
                                 

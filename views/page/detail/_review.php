@@ -190,7 +190,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                         	    
                         	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
-                        	    $commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
+                        	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
                         	    $photoSpanCount = '<span class="my-total-photos-review">#</span>';
                         	    
                         	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
@@ -1017,9 +1017,7 @@ $jscript = '
                     ratingColor($(".my-rating"), "a");
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
-                    
-                    $("#edit-review-container").find(".total--comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total--comments-review");
-                    $("#edit-review-container").find(".total-" + response.userPostMain.id + "-comments-review").html(response.commentCount);
+                    $("#edit-review-container").find(".my-total-comments-review").html(response.commentCount);
                     
                     $(".my-comment-section").html(response.userPostComments);
                     
@@ -1157,6 +1155,8 @@ $jscript = '
                             success: function(response) {
 
                                 $(".my-comment-section").html(response);
+                                
+                                $(".my-total-comments-review").html(commentCount);
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
 

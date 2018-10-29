@@ -69,7 +69,7 @@ $this->registerMetaTag([
                 	$img = '/img/user/default-avatar.png';
                 	
                 	if (!empty($modelUser['image'])) {
-                	    $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);
+                	    $img = Tools::thumb('/img/user/', $modelUser['image'], 160, 160);
                 	}
                 	
                 	$userNameMail = '

@@ -52,16 +52,16 @@ use yii\helpers\Html; ?>
                                                 	
                                                 	if (!empty(Yii::$app->user->getIdentity()->image)) {
                                                 	   
-                                            	       $img = Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200);    
+                                            	       $img = Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 32, 32);    
                                                 	}
                                                 	
                                                 	echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
     
                                                 </div>
                                                 <div class="widget-posts-body">
-                                                    <strong><?= Yii::$app->user->getIdentity()->full_name ?></strong>
+                                                    <strong><?= Yii::$app->user->getIdentity()->full_name ?>&nbsp;&nbsp;&nbsp;</strong>
                                                     <br>
-                                                    <small><?= Yii::$app->user->getIdentity()->email ?></small>
+                                                    <small><?= Yii::$app->user->getIdentity()->email ?>&nbsp;&nbsp;&nbsp;</small>
                                                 </div>
                                             </div>
                                         </div>

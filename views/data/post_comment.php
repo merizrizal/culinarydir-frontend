@@ -61,8 +61,6 @@ if (!empty($modelUserPostComment)): ?>
     <?php
     $jscript .= '
         var commentCount = ' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . ';
-        
-        $(".total-' . $userPostId . '-comments-review").html(commentCount);
     ';
 
 endif; ?>

@@ -77,11 +77,11 @@ $linkPager = LinkPager::widget([
                     });
                 ';
         
-                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 60, 60);
+                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 64, 64);
         
                 if (!empty($dataUserPostMain['business']['businessImages'][0]['image'])) {
         
-                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 60, 60);
+                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 64, 64);
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
@@ -216,7 +216,7 @@ $linkPager = LinkPager::widget([
                                                     <div class="gallery-item post-gallery">
                                                         <div class="gallery-image">
                                                             <div class="work-image">
-                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
                                                             </div>
                                                             <div class="work-caption">
                                                                 <div class="work-descr">
@@ -357,7 +357,7 @@ $linkPager = LinkPager::widget([
 
                                                                         if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
                                                                         }
 
                                                                         $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
