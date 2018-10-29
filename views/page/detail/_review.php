@@ -42,7 +42,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                     	
                     	if (!empty(Yii::$app->user->getIdentity()->image)) {
                     	    
-                    	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200);
+                    	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 64, 64);
                     	}
                     	
                     	$layoutUser = '
@@ -164,7 +164,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
     
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
     
                                                                 </div>
                                                                 <div class="work-caption">
@@ -285,7 +285,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
     
                                                                                 if (!empty($dataUserPostComment['user']['image'])) {
     
-                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
                                                                                 }
     
                                                                                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
@@ -473,7 +473,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
 
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
 
                                                                 </div>
                                                                 <div class="work-caption">
@@ -541,7 +541,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
-                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['class' => 'btn btn-default btn-standard btn-round']) ?>
+                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['id' => 'submit-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
                                 <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
@@ -706,6 +706,11 @@ $jscript = '
         }
     });
 
+    $("#my-rating-popover").on("click", function() {
+
+        return false;
+    });
+
     $("#write-review-shortcut").on("click", function(event) {
 
         if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
@@ -843,8 +848,9 @@ $jscript = '
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
-        $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
+            $("#modal-confirmation").find("#btn-delete").off("click");
 
             $("#modal-confirmation").modal("hide");
 
@@ -929,6 +935,12 @@ $jscript = '
         });
     });
 
+    $("#submit-write-review").on("click", function(event) {
+
+        $("#title-write-review").siblings(".overlay").show();
+        $("#title-write-review").siblings(".loading-img").show();
+    });
+
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -942,11 +954,6 @@ $jscript = '
             type: "POST",
             data: formData,
             url: thisObj.attr("action"),
-            beforeSend: function(xhr) {
-
-                $("#title-write-review").siblings(".overlay").show();
-                $("#title-write-review").siblings(".loading-img").show();
-            },
             success: function(response) {
 
                 $("#post-photo-input").fileinput("clear");
@@ -1189,8 +1196,9 @@ $jscript = '
         
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
-        $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
+            $("#modal-confirmation").find("#btn-delete").off("click");
 
             $.ajax({
                 cache: false,
@@ -1253,6 +1261,11 @@ $jscript = '
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find(".temp-rating-" + $(this).val() + "").val());
             }
         });
+
+        return false;
+    });
+
+    $(".review-section").on("click", ".user-rating-popover", function() {
 
         return false;
     });

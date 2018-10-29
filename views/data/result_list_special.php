@@ -92,14 +92,28 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
 
                                         <?php
-                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
 
                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
+                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
                                         }
 
-                                        echo Html::img($img); ?>
+                                        $images = [];
+                                        $images[] = [
+                                            'title' => '',
+                                            'href' => $href,
+                                            'type' => 'image/jpeg',
+                                            'poster' => $href,
+                                        ];
+                                        
+                                        echo dosamigos\gallery\Carousel::widget([
+                                            'items' => $images,
+                                            'json' => true,
+                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                            'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusinessPromo['id']],
+                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                        ]); ?>
 
                                     </div>
 

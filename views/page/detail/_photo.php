@@ -87,7 +87,7 @@ use kartik\file\FileInput;
     
                             <div class="form-group">
     
-                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload ' . Yii::t('app', 'Photo'), ['class' => 'btn btn-default btn-standard btn-round']) ?>
+                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload ' . Yii::t('app', 'Photo'), ['id' => 'submit-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
     
                                 <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
     
@@ -223,6 +223,12 @@ $jscript = '
         });
     });
 
+    $("#submit-post-photo").on("click", function() {
+        
+        $("form#post-photo-form").siblings(".overlay").show();
+        $("form#post-photo-form").siblings(".loading-img").show();
+    });
+
     $("form#post-photo-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -242,11 +248,6 @@ $jscript = '
             type: "POST",
             data: formData,
             url: thisObj.attr("action"),
-            beforeSend: function(xhr) {
-
-                thisObj.siblings(".overlay").show();
-                thisObj.siblings(".loading-img").show();
-            },
             success: function(response) {
 
                 $("#add-photo-input").fileinput("clear");
