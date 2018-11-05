@@ -1041,7 +1041,12 @@ $jscript = '
                                 var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
                                 var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMain.text;
-                                var image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
+                                var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425) . '";
+
+                                if ($.trim(response.userPostMainPhoto)) {
+
+                                    image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
+                                }
 
                                 facebookShare({
                                     ogUrl: url,
@@ -1395,6 +1400,11 @@ $jscript = '
             ogImage: image,
             type: "Review"
         });
+
+        return false;
+    });
+
+    $(".review-section").on("click", ".rating a", function() {
 
         return false;
     });
