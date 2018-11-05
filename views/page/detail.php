@@ -20,7 +20,17 @@ $this->title = $modelBusiness['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
 $ogTitle = $modelBusiness['name'];
-$ogDescription = !empty($modelBusiness['about']) ? preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) : 'Temukan Makanan Favorit Anda di Asikmakan.com';
+
+$ogDescription = 'Kunjungi kami di ' . AddressType::widget([
+    'addressType' => $modelBusiness['businessLocation']['address_type'],
+    'address' => $modelBusiness['businessLocation']['address']
+]);
+
+if (!empty($modelBusiness['about'])) {
+    
+    $ogDescription = preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about']));
+}
+
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
