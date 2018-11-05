@@ -69,11 +69,11 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
 
                                 if (!empty($dataUserLove['business']['businessImages'][0]['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 347, 210);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 335, 203);
                                 }
 
                                 echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
@@ -102,12 +102,10 @@ $linkPager = LinkPager::widget([
 
                                             <div class="col-lg-3 col-md-2 col-sm-2 col-tab-3 col-xs-3">
 
-                                                <?= Html::hiddenInput('business_id', $dataUserLove['business']['id'], ['class' => 'business-id']) ?>
-
                                                 <div class="widget">
                                                     <ul class="heart-rating">
                                                         <li>
-                                                            <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place']) ?>
+                                                            <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place', 'data-business-id' => $dataUserLove['business']['id']]) ?>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -163,49 +161,6 @@ $csscript = '
 $this->registerCss($csscript);
 
 $jscript = '
-    $(".business-id").each(function() {
-
-        var thisObj = $(this);
-
-        thisObj.parent().find(".unlove-place").on("click", function() {
-
-            $.ajax({
-                cache: false,
-                url: $(this).attr("href"),
-                type: "POST",
-                data: {
-                    "business_id": thisObj.val()
-                },
-                success: function(response) {
-
-                    if (response.success) {
-                        
-                        var count = parseInt($(".total-user-love").html());
-
-                        if (response.is_active) {
-                            
-                            thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
-                            $(".total-user-love").html(count + 1);
-                        } else {
-                            
-                            thisObj.parent().find(".unlove-place").html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
-                            $(".total-user-love").html(count - 1);
-                        }
-                    } else {
-                        
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                }
-            });
-
-            return false;
-        });
-    });
-
     $("#pjax-user-love-container").off("pjax:send");
     $("#pjax-user-love-container").on("pjax:send", function() {
 

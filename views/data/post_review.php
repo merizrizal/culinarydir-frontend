@@ -81,7 +81,7 @@ $jspopover = ''; ?>
         
                 if (!empty($dataUserPostMain['user']['image'])) {
         
-                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 200, 200);
+                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 64, 64);
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']);
@@ -136,7 +136,7 @@ $jspopover = ''; ?>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="rating">
                             	<h3 class="mt-0 mb-0">
-                                    <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success']); ?>
+                                    <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success user-rating-popover']); ?>
                             	</h3>
                             </div>
                             <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
@@ -215,7 +215,7 @@ $jspopover = ''; ?>
                                                 <div class="gallery-image">
                                                     <div class="work-image">
         
-                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
         
                                                     </div>
                                                     <div class="work-caption">
@@ -329,7 +329,7 @@ $jspopover = ''; ?>
 
                                                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
                                                                 }
 
                                                                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);

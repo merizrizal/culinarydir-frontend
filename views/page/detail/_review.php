@@ -42,7 +42,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                     	
                     	if (!empty(Yii::$app->user->getIdentity()->image)) {
                     	    
-                    	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 200, 200);
+                    	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 64, 64);
                     	}
                     	
                     	$layoutUser = '
@@ -164,7 +164,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
     
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
     
                                                                 </div>
                                                                 <div class="work-caption">
@@ -190,7 +190,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                         	    
                         	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
-                        	    $commentSpanCount = '<span class="total-' . $modelUserPostMain['id'] . '-comments-review">#</span>';
+                        	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
                         	    $photoSpanCount = '<span class="my-total-photos-review">#</span>';
                         	    
                         	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
@@ -285,7 +285,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
     
                                                                                 if (!empty($dataUserPostComment['user']['image'])) {
     
-                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
                                                                                 }
     
                                                                                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
@@ -473,7 +473,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
 
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
 
                                                                 </div>
                                                                 <div class="work-caption">
@@ -541,7 +541,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
-                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['class' => 'btn btn-default btn-standard btn-round']) ?>
+                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['id' => 'submit-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
                                 <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
@@ -706,6 +706,11 @@ $jscript = '
         }
     });
 
+    $("#my-rating-popover").on("click", function() {
+
+        return false;
+    });
+
     $("#write-review-shortcut").on("click", function(event) {
 
         if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
@@ -843,35 +848,34 @@ $jscript = '
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
-        $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
+            $("#modal-confirmation").find("#btn-delete").off("click");
+
+            $("#modal-confirmation").modal("hide");
 
             $.ajax({
                 cache: false,
                 type: "POST",
                 url: $(this).data("href"),
                 beforeSend: function(xhr) {
-
+                    
                     $("#title-write-review").siblings(".overlay").show();
                     $("#title-write-review").siblings(".loading-img").show();
                 },
                 success: function(response) {
-
-                    $("#modal-confirmation").modal("hide");
+                    
                     $("#title-write-review").find("h4").html("' . Yii::t('app', 'Write a Review') . '");
 
                     if (response.success) {
     
                         var totalUserPost = parseInt($(".total-review").html());
+                        $(".total-review").html(totalUserPost - 1);
 
                         $("#edit-review-container").fadeOut(100, function() {
 
                             $("#write-review-trigger").fadeIn();
                         });
-
-                        $(".total-review").html(totalUserPost - 1);
-                        $(".my-total-likes-review").html(0);
-                        $(".my-total-photos-review").html(0);
                         
                         $(".temp-overall-rating").val(0);
                         $("#overall-rating").rating("clear");
@@ -883,18 +887,16 @@ $jscript = '
                             $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val()).val());
                         });
 
-                        $(".my-rating").find("a").html(parseFloat($(".rating-overall").text()).toFixed(1));
-                        ratingColor($(".my-rating"), "a");
-
                         $("#post-review-text").val("");
-                        $(".my-review-description").html("");
 
                         $("#form-review-uploaded-photo").children().remove();
                         $("#review-uploaded-photo").children().remove();
+                        $(".my-total-photos-review").html(0);
 
                         if ($(".my-likes-review-trigger").hasClass("selected")) {
                             
                             $(".my-likes-review-trigger").removeClass("selected");
+                            $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
                         }
 
                         messageResponse(response.icon, response.title, response.message, response.type);
@@ -933,6 +935,12 @@ $jscript = '
         });
     });
 
+    $("#submit-write-review").on("click", function(event) {
+
+        $("#title-write-review").siblings(".overlay").show();
+        $("#title-write-review").siblings(".loading-img").show();
+    });
+
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -946,11 +954,6 @@ $jscript = '
             type: "POST",
             data: formData,
             url: thisObj.attr("action"),
-            beforeSend: function(xhr) {
-
-                $("#title-write-review").siblings(".overlay").show();
-                $("#title-write-review").siblings(".loading-img").show();
-            },
             success: function(response) {
 
                 $("#post-photo-input").fileinput("clear");
@@ -1014,9 +1017,7 @@ $jscript = '
                     ratingColor($(".my-rating"), "a");
 
                     $("#edit-review-container").find(".my-total-photos-review").html(parseInt($("#edit-review-container").find(".my-total-photos-review").html()) + parseInt(response.userPostMainPhoto.length));
-                    
-                    $("#edit-review-container").find(".total--comments-review").addClass("total-" + response.userPostMain.id + "-comments-review").removeClass("total--comments-review");
-                    $("#edit-review-container").find(".total-" + response.userPostMain.id + "-comments-review").html(response.commentCount);
+                    $("#edit-review-container").find(".my-total-comments-review").html(response.commentCount);
                     
                     $(".my-comment-section").html(response.userPostComments);
                     
@@ -1159,6 +1160,8 @@ $jscript = '
                             success: function(response) {
 
                                 $(".my-comment-section").html(response);
+                                
+                                $(".my-total-comments-review").html(commentCount);
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
 
@@ -1198,8 +1201,9 @@ $jscript = '
         
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
-        $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
+            $("#modal-confirmation").find("#btn-delete").off("click");
 
             $.ajax({
                 cache: false,
@@ -1262,6 +1266,11 @@ $jscript = '
                 $("#my-popover-container").find(".popover-content").find("#my-rating-" + $(this).val() + "").rating("update", $("#write-review-container").find(".star-rating").find(".temp-rating-" + $(this).val() + "").val());
             }
         });
+
+        return false;
+    });
+
+    $(".review-section").on("click", ".user-rating-popover", function() {
 
         return false;
     });

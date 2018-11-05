@@ -69,11 +69,11 @@ $linkPager = LinkPager::widget([
                             <div class="col-sm-12 col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
 
                                 if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 347, 210);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 335, 203);
                                 }
 
                                 echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>

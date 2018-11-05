@@ -128,7 +128,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                 
                                                                 if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
                                                                 }
                                                                 
                                                                 $images[] = [
@@ -174,7 +174,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                 
                                                                 if (!empty($businessImage['image'])) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 756, 425);
+                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
                                                                 }
                                                                 
                                                                 $images[] = [
@@ -567,16 +567,30 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                             <div class="row mb-10">
                                                                 <div class="col-sm-4 col-tab-12 col-xs-12">
-
-                                                                    <?php
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
-
-                                                                    if (!empty($dataBusinessPromo['image'])) {
-
-                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 347, 210);
-                                                                    }
                                                                     
-                                                                    echo Html::a(Html::img($img), ['page/detail-promo', 'id' => $dataBusinessPromo['id']]); ?>
+                                                                    <?php
+                                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
+                            
+                                                                    if (!empty($dataBusinessPromo['image'])) {
+                            
+                                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
+                                                                    }
+                            
+                                                                    $images = [];
+                                                                    $images[] = [
+                                                                        'title' => '',
+                                                                        'href' => $href,
+                                                                        'type' => 'image/jpeg',
+                                                                        'poster' => $href,
+                                                                    ];
+                                                                    
+                                                                    echo dosamigos\gallery\Carousel::widget([
+                                                                        'items' => $images,
+                                                                        'json' => true,
+                                                                        'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                                                        'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusinessPromo['id']],
+                                                                        'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                                                    ]); ?>
 
                                                                 </div>
                                                                 
@@ -789,7 +803,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
-        'header' => '<i class="aicon aicon-warning"></i> Report',
+        'header' => '<i class="aicon aicon-warning"></i> ' . Yii::t('app', 'Report'),
         'id' => 'modal-report',
     ]);
 
@@ -831,7 +845,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
             echo '
                 <div class="row">
                     <div class="col-sm-12 col-md-12 text-center">
-                        ' . Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-round btn-d']) . '
+                        ' . Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-round btn-d btn-submit-modal-report']) . '
                         ' . Html::a(Yii::t('app', 'Close'), null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
                     </div>
                 </div>';
@@ -1031,6 +1045,12 @@ $jscript = '
         return false;
     });
 
+    $(".btn-submit-modal-report").on("click", function() {
+
+        $(this).parents("#report-form").siblings(".overlay").show();
+        $(this).parents("#report-form").siblings(".loading-img").show();
+    });
+
     $("form#report-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
@@ -1038,6 +1058,9 @@ $jscript = '
         if (thisObj.find(".has-error").length)  {
             return false;
         }
+
+        thisObj.siblings(".overlay").show();
+        thisObj.siblings(".loading-img").show();
 
         var formData = new FormData(this);
 
@@ -1050,10 +1073,6 @@ $jscript = '
             type: "POST",
             data: formData,
             url: thisObj.attr("action"),
-            beforeSend: function(xhr) {
-                thisObj.siblings(".overlay").show();
-                thisObj.siblings(".loading-img").show();
-            },
             success: function(response) {
 
                 if (response.success) {
