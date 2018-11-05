@@ -201,6 +201,8 @@ class ActionController extends base\BaseController
             $modelUserPostMainPhoto->love_value = 0;
 
             $flag = $modelUserPostMainPhoto->save();
+            
+            $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainPhoto->image;
 
             $dataSocialShare = [];
 

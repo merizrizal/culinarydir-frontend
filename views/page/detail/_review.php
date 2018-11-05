@@ -988,7 +988,7 @@ $jscript = '
 
                         cloneImageReviewContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("200x200", "") + "\"><i class=\"fa fa-search\"></i></a>");
+                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
 
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
@@ -1042,11 +1042,11 @@ $jscript = '
                                 var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
                                 var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
                                 var description = response.userPostMain.text;
-                                var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425) . '";
+                                var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
 
                                 if ($.trim(response.userPostMainPhoto)) {
 
-                                    image = window.location.protocol + "//" + window.location.hostname + $("#form-review-uploaded-photo li").eq(0).find(".work-image").children().attr("src");
+                                    image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto[0].image.replace("72x72", "");
                                 }
 
                                 facebookShare({
@@ -1400,7 +1400,12 @@ $jscript = '
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".review-post").find(".user-post-main-id").val();
         var title = "Rating " + $(this).parents(".review-post").find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
+        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+
+        if ($(this).parents(".review-post").find(".user-photo-review").find(".gallery-photo-review").length) {
+
+            image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".review-post").find(".user-photo-review").eq(0).find(".work-image").children().attr("src").replace("72x72", "");
+        }
 
         facebookShare({
             ogUrl: url,
@@ -1409,11 +1414,6 @@ $jscript = '
             ogImage: image,
             type: "Review"
         });
-
-        return false;
-    });
-
-    $(".review-section").on("click", ".rating a", function() {
 
         return false;
     });
