@@ -278,7 +278,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                             'address' => $modelBusiness['businessLocation']['address']
                                                                         ]);
 
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut', 'class' => 'font-12 ']); ?>
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut', 'class' => 'font-12']); ?>
 
                                                                     </li>
                                                                     <li class="visible-xs">
@@ -290,7 +290,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                             'address' => $modelBusiness['businessLocation']['address']
                                                                         ]);
 
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut-xs', 'class' => 'font-12 ']); ?>
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut-xs', 'class' => 'font-12']); ?>
 
                                                                     </li>
                                                                     <li>
