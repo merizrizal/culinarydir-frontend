@@ -314,14 +314,12 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
                                                                     <li class="icon-list-parent">
-                                                                        <i class="aicon aicon-clock"></i>
+                                                                        <i class="aicon aicon-clock"></i> <?= Yii::t('app', 'Operational Hours') ?>
 
                                                                         <?php
                                                                         if (!empty($modelBusiness['businessHours'])): ?>
-
-                                                                            <?= Yii::t('app', 'Operational Hours') ?>
-                                                                            
-                                                                            <ul class="icon-list">
+                                                                        
+                                                                        	<table style="margin-left: 18px">
 
 																				<?php
                                                                                 $days = Yii::$app->params['days'];
@@ -330,12 +328,16 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                                                     $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00')); ?>
 
-                                                                                    <li><?= Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . ': ' . ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) ?></li>
+                                                                                    <tr>
+                                                                                        <td><?= Yii::t('app', $days[$dataBusinessHour['day'] - 1]) ?></td>
+                                                                                        <td>&nbsp; : &nbsp;</td>
+                                                                                        <td><?= $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm')) ?></td>
+                                                                                    </tr>
 
                                                                                 <?php
                                                                                 endforeach; ?>
 
-                                                                            </ul>
+                                                                            </table>
 
                                                                         <?php
                                                                         else:
