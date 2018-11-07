@@ -51,7 +51,7 @@ use common\components\Helper;
                         <div class="col-sm-12 col-xs-12">
 
                             <?php
-                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135);
+                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135, false, false);
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 

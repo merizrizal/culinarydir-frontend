@@ -92,11 +92,11 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
 
                                         <?php
-                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
+                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
 
                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
+                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
                                         }
 
                                         $images = [];

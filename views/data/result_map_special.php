@@ -91,14 +91,28 @@ $jspopover = ''; ?>
                                     <div class="col-md-5 col-sm-12 col-tab-6 col-xs-12 col">
 
                                         <?php
-                                        $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 347, 210);
+                                        $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 597, 336);
 
                                         if (!empty($dataBusinessPromo['image'])) {
 
-                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 490, 276);
+                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 597, 336);
                                         }
 
-                                        echo Html::img($image); ?>
+                                        $images = [];
+                                        $images[] = [
+                                            'title' => '',
+                                            'href' => $image,
+                                            'type' => 'image/jpeg',
+                                            'poster' => $image,
+                                        ];
+                                        
+                                        echo dosamigos\gallery\Carousel::widget([
+                                            'items' => $images,
+                                            'json' => true,
+                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                            'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusinessPromo['id']],
+                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
+                                        ]); ?>
 
                                     </div>
                                     <div class="col-md-7 col-sm-12 col-tab-6 col-xs-12 col">
