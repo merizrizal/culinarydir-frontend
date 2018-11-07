@@ -66,7 +66,7 @@ if ($popover):
         
                                 <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                     'class' => 'form-control input-name',
-                                    'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
+                                    'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
                                 ]) ?>
         
                             </div>
@@ -262,7 +262,7 @@ else: ?>
     
                             <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                 'class' => 'form-control input-name',
-                                'placeholder' => 'Ketik Nama Tempat / Jenis Makanan'
+                                'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
                             ]) ?>
     
                         </div>

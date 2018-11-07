@@ -265,7 +265,7 @@ class DataController extends base\BaseController
                     },
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
                 ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
 
@@ -343,7 +343,7 @@ class DataController extends base\BaseController
                     'business.businessProductCategories.productCategory',
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']]])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
                 ->andFilterWhere(['business_category.category_id' => $get['category_id']])
                 ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
