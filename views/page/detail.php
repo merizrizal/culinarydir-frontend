@@ -809,6 +809,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
 </div>
 
+<?= Html::img($ogImage, ['id' => 'img-for-share-link']) ?>
+
 <?php
 $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
@@ -866,7 +868,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
                 <div class="row">
                     <div class="col-sm-12 col-md-12 text-center">
                         ' . Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-round btn-d btn-submit-modal-report']) . '
-                        ' . Html::a(Yii::t('app', 'Close'), null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
+                        ' . Html::a(Yii::t('app', 'Cancel'), null, ['class' => 'btn btn-round btn-default btn-close-modal-report']) . '
                     </div>
                 </div>';
 
@@ -879,8 +881,8 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
         'id' => 'modal-confirmation',
         'size' => Modal::SIZE_SMALL,
         'footer' => '
-            <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
             <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>
+            <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
         ',
     ]);
 
@@ -901,6 +903,8 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
+    $("#img-for-share-link").hide();
+    
     $("#menu").removeClass("in active");
 
     $("#see-map-shortcut").on("click", function(event) {
