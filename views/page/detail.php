@@ -295,6 +295,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         ]);
 
                                                                         echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut-xs', 'class' => 'font-12']); ?>
+                                                                        
+                                                                        <br>
+                                                                        
+                                                                        <?= $modelBusiness['businessLocation']['address_info'] ?>
 
                                                                     </li>
                                                                     <li>
