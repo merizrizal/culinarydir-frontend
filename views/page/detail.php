@@ -31,6 +31,21 @@ if (!empty($modelBusiness['about'])) {
     $ogDescription = preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about']));
 }
 
+foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
+    
+    $ogDescription .= ' ' . $dataBusinessCategory['category']['name'];
+}
+
+foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+
+    $ogDescription .= ' ' . $dataBusinessProductCategory['productCategory']['name'] . ',';
+}
+
+foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
+    
+    $ogDescription .= ' ' . $dataBusinessFacility['facility']['name'] . ',';
+}
+
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
