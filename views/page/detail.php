@@ -24,11 +24,11 @@ $ogTitle = $modelBusiness['name'];
 $ogDescription = 'Kunjungi kami di ' . AddressType::widget([
     'addressType' => $modelBusiness['businessLocation']['address_type'],
     'address' => $modelBusiness['businessLocation']['address']
-]);
+]) . '.';
 
 if (!empty($modelBusiness['about'])) {
     
-    $ogDescription = preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about']));
+    $ogDescription = preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) . '.';
 }
 
 foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
