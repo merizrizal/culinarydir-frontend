@@ -237,7 +237,8 @@ class PageController extends base\BaseHistoryUrlController
             'modelPost' => $modelPost,
             'modelPostPhoto' => $modelPostPhoto,
             'modelRatingComponent' => $modelRatingComponent,
-            'modelUserReport' => $modelUserReport
+            'modelUserReport' => $modelUserReport,
+            'queryParams' => Yii::$app->request->getQueryParams(),
         ]);
     }
 

@@ -5,6 +5,7 @@ use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $modelUser core\models\User */
+/* @var $queryParams array */
 
 $this->title = $modelUser['full_name'];
 
@@ -146,13 +147,15 @@ $this->registerMetaTag([
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active p-0" id="view-journey">
                                 <?= $this->render('user/_journey', [
-                                    'username' => $modelUser['username']
+                                    'username' => $modelUser['username'],
+                                    'queryParams' => $queryParams,
                                 ]) ?>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-photo">
                                 <?= $this->render('user/_photo', [
-                                    'username' => $modelUser['username']
+                                    'username' => $modelUser['username'],
+                                    'queryParams' => $queryParams,
                                 ]) ?>
                             </div>
                         </div>

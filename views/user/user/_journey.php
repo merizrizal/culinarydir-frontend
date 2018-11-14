@@ -1,7 +1,8 @@
 <?php 
 
 /* @var $this yii\web\View */
-/* @var $username string */ ?>
+/* @var $username string */
+/* @var $queryParams array */ ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -24,19 +25,22 @@
                 <div class="tab-content p-15">
                     <div role="tabpanel" class="tab-pane fade in active p-0" id="view-review">
                         <?= $this->render('journey/_review', [
-                            'username' => $username
+                            'username' => $username,
+                            'queryParams' => $queryParams,
                         ]) ?>
                     </div>
 
                     <div role="tabpanel" class="tab-pane fade p-0" id="view-love">
                         <?= $this->render('journey/_love', [
-                            'username' => $username
+                            'username' => $username,
+                            'queryParams' => $queryParams,
                         ]) ?>
                     </div>
 
                     <div role="tabpanel" class="tab-pane fade p-0" id="view-been-there">
                         <?= $this->render('journey/_been_there', [
-                            'username' => $username
+                            'username' => $username,
+                            'queryParams' => $queryParams,
                         ]) ?>
                     </div>
                 </div>

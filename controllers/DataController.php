@@ -78,7 +78,20 @@ class DataController extends base\BaseController
 
     public function actionPostReview()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['page/detail', 
+                'id' => $queryParams['business_id'],
+                'redirect' => 'review', 
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -138,7 +151,20 @@ class DataController extends base\BaseController
 
     public function actionPostPhoto()
     {        
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['page/detail',
+                'id' => $queryParams['business_id'],
+                'redirect' => 'photo',
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserPostMain = UserPostMain::find()
             ->andWhere(['type' => 'Photo'])
@@ -224,10 +250,56 @@ class DataController extends base\BaseController
             'modelRatingComponent' => $modelRatingComponent,
         ]);
     }
+    
+    public function actionRecentPost()
+    {
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(['page/index']);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
+        $modelUserPostMain = UserPostMain::find()
+        ->joinWith([
+            'business',
+            'user',
+            'userPostMains child' => function($query) {
+            
+            $query->andOnCondition(['child.is_publish' => true]);
+            },
+            'userVotes',
+            'userPostComments',
+            ])
+            ->andWhere(['user_post_main.parent_id' => null])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['user_post_main.type' => 'Review'])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
+            ->distinct()
+            ->asArray();
+            
+            $dataProviderUserPostMain = new ActiveDataProvider([
+                'query' => $modelUserPostMain,
+                'pagination' => [
+                    'route' => 'data/recent-post',
+                ]
+            ]);
+            
+            return $this->render('recent_post', [
+                'dataProviderUserPostMain' => $dataProviderUserPostMain,
+            ]);
+    }
 
     private function getResult($fileRender)
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(str_replace('/data/result-', '/page/result-', Yii::$app->request->getUrl()));
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $get = Yii::$app->request->get();
         $paramsView = [];
@@ -390,39 +462,5 @@ class DataController extends base\BaseController
         ]);
 
         return $this->render($fileRender, $paramsView);
-    }
-
-    public function actionRecentPost() 
-    {
-        $this->layout = 'ajax';
-
-        $modelUserPostMain = UserPostMain::find()
-            ->joinWith([
-                'business',
-                'user',
-                'userPostMains child' => function($query) {
-                    
-                    $query->andOnCondition(['child.is_publish' => true]);
-                },
-                'userVotes',
-                'userPostComments',
-            ])
-            ->andWhere(['user_post_main.parent_id' => null])
-            ->andWhere(['user_post_main.is_publish' => true])
-            ->andWhere(['user_post_main.type' => 'Review'])
-            ->orderBy(['user_post_main.created_at' => SORT_DESC])
-            ->distinct()
-            ->asArray();
-
-        $dataProviderUserPostMain = new ActiveDataProvider([
-            'query' => $modelUserPostMain,
-            'pagination' => [
-                'route' => 'data/recent-post',
-            ]
-        ]);
-
-        return $this->render('recent_post', [
-            'dataProviderUserPostMain' => $dataProviderUserPostMain,
-        ]);
     }
 }

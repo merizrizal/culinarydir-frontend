@@ -15,6 +15,7 @@ use sycomponent\Tools;
 /* @var $modelPost frontend\models\Post */
 /* @var $modelPostPhoto frontend\models\Post */
 /* @var $dataUserVoteReview array */
+/* @var $queryParams array */
 
 $this->title = $modelBusiness['name'];
 
@@ -770,6 +771,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     'dataUserVoteReview' => $dataUserVoteReview,
                                                     'modelPost' => $modelPost,
                                                     'modelRatingComponent' => $modelRatingComponent,
+                                                    'queryParams' => $queryParams,
                                                 ]) ?>
 
                                             </div>
@@ -788,6 +790,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 <?= $this->render('detail/_photo.php', [
                                                     'modelBusiness' => $modelBusiness,
                                                     'modelPostPhoto' => $modelPostPhoto,
+                                                    'queryParams' => $queryParams,
                                                 ]) ?>
 
                                             </div>

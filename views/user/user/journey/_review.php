@@ -1,7 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $username string */ ?>
+/* @var $username string */
+/* @var $queryParams array */ ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -16,10 +17,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            data: {
-                "username": "' . $username . '"
-            },
-            url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post']) . '",
+            url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
             success: function(response) {
     
                 $(".user-post-section").html(response);

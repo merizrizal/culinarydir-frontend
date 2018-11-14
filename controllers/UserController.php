@@ -7,6 +7,7 @@ use core\models\User;
 use frontend\models\ChangePassword;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
@@ -42,7 +43,8 @@ class UserController extends base\BaseHistoryUrlController
             ->asArray()->one();
     
         return $this->render('index', [
-            'modelUser' => $modelUser
+            'modelUser' => $modelUser,
+            'queryParams' => Yii::$app->request->getQueryParams(),
         ]);
     }
 
@@ -50,7 +52,7 @@ class UserController extends base\BaseHistoryUrlController
     {
         if (!empty(Yii::$app->user->id) && Yii::$app->user->getIdentity()->username == Yii::$app->request->get('user')) {
 
-            return $this->redirect(['user/index']);
+            return $this->redirect(ArrayHelper::merge(['user/index'], Yii::$app->request->getQueryParams()));
         } else {
             
             $modelUser = User::find()
@@ -63,7 +65,8 @@ class UserController extends base\BaseHistoryUrlController
             }
 
             return $this->render('user_profile', [
-                'modelUser' => $modelUser
+                'modelUser' => $modelUser,
+                'queryParams' => Yii::$app->request->getQueryParams(),
             ]);
         }
     }

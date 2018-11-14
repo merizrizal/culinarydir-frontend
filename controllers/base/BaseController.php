@@ -78,7 +78,6 @@ class BaseController extends \yii\web\Controller
     /**
      * @inheritdoc
      */
-
     public function beforeAction($action)
     {
         $this->getView()->params['assetCommon'] = \common\assets\AppAsset::register($this->getView());

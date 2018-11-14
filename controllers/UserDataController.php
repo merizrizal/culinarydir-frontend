@@ -34,7 +34,20 @@ class UserDataController extends base\BaseController
 
     public function actionUserVisit()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'visit',
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserVisit = UserVisit::find()
             ->joinWith([
@@ -80,7 +93,20 @@ class UserDataController extends base\BaseController
 
     public function actionUserLove()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'love',
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserLove = UserLove::find()
             ->joinWith([
@@ -128,7 +154,20 @@ class UserDataController extends base\BaseController
 
     public function actionUserPost()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'review',
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -191,7 +230,20 @@ class UserDataController extends base\BaseController
 
     public function actionUserPostPhoto()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'photo',
+                'page' => $queryParams['page'],
+                'per-page' => $queryParams['per-page'],
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
 
         $modelUserPostMainPhoto = UserPostMain::find()
             ->joinWith([

@@ -14,6 +14,7 @@ use common\components\Helper;
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $modelPost frontend\models\Post */
 /* @var $dataUserVoteReview array */
+/* @var $queryParams array */
 
 kartik\popover\PopoverXAsset::register($this);
 
@@ -668,7 +669,7 @@ $jscript = '
         data: {
             "business_id": $("#business_id").val()
         },
-        url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
         success: function(response) {
 
             $(".review-section").html(response);

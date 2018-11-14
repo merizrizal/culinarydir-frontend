@@ -122,7 +122,7 @@ $jscript = '
             data: {
                 "business_id": business_id
             },
-            url: "' . Yii::$app->urlManager->createUrl(['data/post-photo']) . '",
+            url: "' . Yii::$app->urlManager->createUrl(['data/post-photo']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
             success: function(response) {
 
                 $(".gallery-section").html(response);
