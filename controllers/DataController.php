@@ -85,8 +85,8 @@ class DataController extends base\BaseController
             $this->redirect(['page/detail', 
                 'id' => $queryParams['business_id'],
                 'redirect' => 'review', 
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             
@@ -158,8 +158,8 @@ class DataController extends base\BaseController
             $this->redirect(['page/detail',
                 'id' => $queryParams['business_id'],
                 'redirect' => 'photo',
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             

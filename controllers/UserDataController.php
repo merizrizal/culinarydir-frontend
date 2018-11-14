@@ -41,8 +41,8 @@ class UserDataController extends base\BaseController
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'visit',
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             
@@ -100,8 +100,8 @@ class UserDataController extends base\BaseController
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'love',
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             
@@ -161,8 +161,8 @@ class UserDataController extends base\BaseController
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'review',
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             
@@ -237,8 +237,8 @@ class UserDataController extends base\BaseController
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'photo',
-                'page' => $queryParams['page'],
-                'per-page' => $queryParams['per-page'],
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
             
