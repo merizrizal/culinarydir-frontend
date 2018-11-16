@@ -133,6 +133,11 @@ $jscript = '
 
         return false;
     });
+
+    $(".result-map").on("click", ".popover-tag", function() {
+
+        return false;
+    });
 ';
 
 $this->registerJs($jscript); ?>

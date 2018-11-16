@@ -9,46 +9,49 @@ use common\components\Helper;
 /* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */ ?>
 
-<div class="col-xs-12 col-tab-6 col-sm-6 col-md-4 col-lg-4">
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
     <div class="recent-post">
         <div class="box">
             <div class="post">
                 <div class="head">
                     <div class="row">
-                        <div class="user-photo col-lg-3 col-xs-3">
+                        <div class="col-xs-12">
                         
-                        	<?php 
-                        	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png'; 
-                        	
-                        	if (!empty($model['user']['image'])) {
-                        	    
-                        	    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $model['user']['image'], 100, 100);
-                        	}
-                        	
-                        	echo Html::a(Html::img($img, [
-                        	    'class' => 'img-responsive img-circle img-profile-thumb img-component',
-                        	    'height' => 50,
-                        	    'width' => 50
-                        	]), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
-                        	
-                        </div>
-                        <div class="user-name col-lg-9 col-xs-9">
-                            <div class="full-name">
-
-                                <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
-
-                            </div>
-                            <div class="post-date">
-
-                                <small><?= Helper::asRelativeTime($model['created_at'], 'medium'); ?></small>
-
-                            </div>
-                        </div>
+                        	<div class="widget">
+                        		<div class="widget-posts-image">
+                        		
+                        			<?php 
+                                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png'; 
+                                	
+                                	if (!empty($model['user']['image'])) {
+                                	    
+                                	    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $model['user']['image'], 100, 100);
+                                	}
+                                	
+                                	echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
+                                	
+                        		</div>
+                        		
+                        		<div class="widget-posts-body">
+                        		
+                        			<div class="full-name">
+        
+                                        <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
+        
+                                    </div>
+                                    <div class="post-date">
+        
+                                        <small><?= Helper::asRelativeTime($model['created_at'], 'medium'); ?></small>
+        
+                                    </div>
+                        		</div>
+                        	</div>
+                    	</div>
                     </div>
                 </div>
                 <div class="post-thumbnail">
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
 
                             <?php
                             $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135, false, false);
@@ -70,7 +73,7 @@ use common\components\Helper;
                 
                 <div class="post-header">
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12 col">
+                        <div class="col-xs-12 col">
                             <ul class="list-inline mt-0 mb-10">
                                 <li>
 
@@ -100,34 +103,38 @@ use common\components\Helper;
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-tab-6 col-sm-5 col-xs-5 col">
-                            <div class="widget star-rating">
-
-                                <?php
-                                $ratingValue = 0;
-
-                                foreach ($model['userVotes'] as $dataUserVotes) {
-                                    $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($model['userVotes']) ? ($dataUserVotes['vote_value'] / count($model['userVotes'])) : 0;
-                                }
-
-                                echo StarRating::widget([
-                                    'id' => 'rating-' . $model['id'],
-                                    'name' => 'rating_' . $model['id'],
-                                    'value' => $ratingValue,
-                                    'pluginOptions' => [
-                                        'displayOnly' => true,
-                                        'filledStar' => '<span class="aicon aicon-star-full"></span>',
-                                        'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                        'showCaption' => false,
-                                    ]
-                                ]); ?>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-tab-6 col-sm-7 col-xs-7 col pb-10">
-                            <div class="rating rating-<?= $model['id']; ?>">
-                                <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format($ratingValue, 1) ?></span></h4>
-                            </div>
+                    	<div class="col-xs-12 col">
+                        	<ul class="list-inline mt-0 mb-10">
+                                <li>
+                                    <div class="widget star-rating">
+        
+                                        <?php
+                                        $ratingValue = 0;
+        
+                                        foreach ($model['userVotes'] as $dataUserVotes) {
+                                            $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($model['userVotes']) ? ($dataUserVotes['vote_value'] / count($model['userVotes'])) : 0;
+                                        }
+        
+                                        echo StarRating::widget([
+                                            'id' => 'rating-' . $model['id'],
+                                            'name' => 'rating_' . $model['id'],
+                                            'value' => $ratingValue,
+                                            'pluginOptions' => [
+                                                'displayOnly' => true,
+                                                'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                'showCaption' => false,
+                                            ]
+                                        ]); ?>
+        
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="rating rating-<?= $model['id']; ?>">
+                                        <h4 class="mt-0 mb-0"><span class="label label-success"><?= number_format($ratingValue, 1) ?></span></h4>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -137,7 +144,6 @@ use common\components\Helper;
 
                             <?php
                             $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 85, '. . .') . '<br>' : '';
-
                             $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
 
                             echo $textReview; ?>

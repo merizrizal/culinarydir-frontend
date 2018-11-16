@@ -31,9 +31,7 @@ $linkPager = LinkPager::widget([
     'firstPageLabel' => '<i class="fa fa-angle-double-left"></i>',
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     'options' => ['id' => 'pagination-review', 'class' => 'pagination'],
-]);
-
-$jspopover = ''; ?>
+]); ?>
 
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
@@ -41,12 +39,7 @@ $jspopover = ''; ?>
         <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
-    <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
-
-        <?= $linkPager; ?>
-
-    </div>
-    <div class="col-tab-6 visible-tab text-right">
+    <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
         <?= $linkPager; ?>
 
@@ -68,14 +61,6 @@ $jspopover = ''; ?>
         if (!empty($modelUserPostMain)):
         
             foreach ($modelUserPostMain as $dataUserPostMain):
-        
-                $jspopover .= '
-                    $("#user-rating-popover' . $dataUserPostMain['id'] . '").popoverButton({
-                        trigger: "hover",
-                        placement: "right right-top",
-                        target: "#user-container-popover' . $dataUserPostMain['id'] . '"
-                    });
-                ';
         
                 $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
         
@@ -104,36 +89,27 @@ $jspopover = ''; ?>
         
                 $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
         
-                ksort($ratingComponent);
-        
-                $layoutUser = '
-                    <div class="widget-posts-image">
-                        ' . Html::a($img, ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
-                    </div>
-        
-                    <div class="widget-posts-body">
-                        ' . Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) . '
-                        <br>
-                        <small>' . Helper::asRelativeTime($dataUserPostMain['created_at']) . '</small>
-                    </div>
-                '; ?>
+                ksort($ratingComponent); ?>
         
                 <div class="col-lg-12 review-post">
         
                     <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
         
                     <div class="row mb-10">
-                        <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
+                        <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
                             <div class="widget">
-                                <?= $layoutUser ?>
+                                <div class="widget-posts-image">
+                                    <?= Html::a($img, ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
+                                </div>
+                    
+                                <div class="widget-posts-body">
+                                    <?= Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
+                                    <br>
+                                    <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-9 visible-xs">
-                            <div class="widget">
-                                <?= $layoutUser ?>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
                             <div class="rating">
                             	<h3 class="mt-0 mb-0">
                                     <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'] . '', 'class' => 'label label-success user-rating-popover']); ?>
@@ -378,12 +354,7 @@ $jspopover = ''; ?>
         <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
-    <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
-
-        <?= $linkPager; ?>
-
-    </div>
-    <div class="col-tab-6 visible-tab text-right">
+    <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
         <?= $linkPager; ?>
 
@@ -403,6 +374,12 @@ $jscript = '
     ratingColor($(".rating"), "a");
 
     $(".user-post-main-id").each(function() {
+
+        $("#user-rating-popover" + $(this).val()).popoverButton({
+            trigger: "hover",
+            placement: "right right-top",
+            target: "#user-container-popover" + $(this).val()
+        });
 
         $(this).parent().find(".post-gallery").magnificPopup({
             delegate: "a.show-image",
@@ -450,6 +427,6 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . $jspopover);
+$this->registerJs($jscript);
 
 Pjax::end(); ?>

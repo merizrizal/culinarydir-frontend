@@ -9,8 +9,6 @@ use common\components\Helper;
 /* @var $userPostId frontend\controllers\DataController */?>
 
 <?php
-$jscript = '';
-
 if (!empty($modelUserPostComment)): ?>
 
     <div class="comment-container">
@@ -58,12 +56,12 @@ if (!empty($modelUserPostComment)): ?>
 
     </div>
 
-    <?php
-    $jscript .= '
-        var commentCount = ' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . ';
-    ';
-
+<?php
 endif; ?>
 
 <?php
+$jscript = '
+    var commentCount = ' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . ';
+';
+
 $this->registerJs($jscript); ?>

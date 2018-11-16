@@ -63,17 +63,20 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row mb-10">
-                                    <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
+                                    <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
                                         <div class="widget">
-                                            <?= $layoutUser ?>
+                                            <div class="widget-posts-image">
+                                                <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) ?>
+                                            </div>
+                                                
+                                            <div class="widget-posts-body">
+                                                <?= Html::a(Yii::$app->user->getIdentity()->full_name, ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username], ['class' => 'my-review-user-name']) ?>
+                                                <br>
+                                                <small class="my-review-created"><?=  Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-9 visible-xs">
-                                        <div class="widget">
-                                            <?= $layoutUser ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
     									<div class="my-rating">
                                         	<h3 class="mt-0 mb-0">
                                                 <?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
@@ -708,44 +711,6 @@ $jscript = '
     });
 
     $("#my-rating-popover").on("click", function() {
-
-        return false;
-    });
-
-    $("#write-review-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $("#write-review-shortcut-xs").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
 
         return false;
     });

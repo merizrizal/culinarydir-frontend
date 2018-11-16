@@ -30,9 +30,7 @@ $linkPager = LinkPager::widget([
     'firstPageLabel' => '<i class="fa fa-angle-double-left"></i>',
     'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     'options' => ['id' => 'pagination-result-list', 'class' => 'pagination'],
-]);
-
-$jspopover = ''; ?>
+]); ?>
 
 <div class="container">
     <div class="row">
@@ -43,12 +41,7 @@ $jspopover = ''; ?>
                     <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
-                <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
-
-                    <?= $linkPager; ?>
-
-                </div>
-                <div class="col-tab-6 visible-tab text-right">
+                <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-tab visible-sm text-right">
 
                     <?= $linkPager; ?>
 
@@ -74,19 +67,13 @@ $jspopover = ''; ?>
             <?php
             if (!empty($modelBusiness)):
 
-                foreach ($modelBusiness as $dataBusiness):
-
-                    $jspopover .= '
-                        $("#business-product-category-popover' . $dataBusiness['id'] . '").popoverButton({
-                            trigger: "hover focus",
-                            placement: "bottom bottom-left",
-                            target: "#business-product-category-container-popover' . $dataBusiness['id'] . '"
-                        });
-                    '; ?>
+                foreach ($modelBusiness as $dataBusiness): ?>
 
                         <div class="row mb-10">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="box box-small">
+                                
+                                	<?= Html::hiddenInput('business_id', $dataBusiness['id'], ['class' => 'business-id']) ?>
 
                                     <div class="row">
                                         <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusiness['id']]) ?>">
@@ -296,15 +283,10 @@ $jspopover = ''; ?>
                     <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
-                <div class="col-sm-6 visible-lg visible-md visible-sm text-right">
+                <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
                     <?= $linkPager; ?>
-
-                </div>
-                <div class="col-tab-6 visible-tab text-right">
-
-                    <?= $linkPager; ?>
-
+            
                 </div>
                 <div class="col-xs-12 visible-xs">
 
@@ -319,6 +301,15 @@ $jspopover = ''; ?>
 <?php
 $jscript = '    
     ratingColor($(".rating"), "span");
+
+    $(".business-id").each(function() {
+
+        $("#business-product-category-popover" + $(this).val()).popoverButton({
+            trigger: "hover focus",
+            placement: "bottom bottom-left",
+            target: "#business-product-category-container-popover" + $(this).val()
+        });
+    });
 
     $("#pjax-result-list").off("pjax:send");
     $("#pjax-result-list").on("pjax:send", function() {
@@ -343,6 +334,6 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . $jspopover);
+$this->registerJs($jscript);
 
 Pjax::end(); ?>

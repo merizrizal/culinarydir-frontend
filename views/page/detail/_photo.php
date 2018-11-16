@@ -139,42 +139,6 @@ $jscript = '
     $("#post-photo-container").hide();
     $("#close-post-photo-container").hide();
 
-    $("#post-photo-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-photo\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $("#post-photo-shortcut-xs").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-photo-xs\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo-xs\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo-xs\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
     $("#close-post-photo-container > a, #cancel-post-photo").on("click", function(event) {
 
         $("#post-photo-container, #close-post-photo-container").fadeOut(100, function() {

@@ -38,12 +38,7 @@ $linkPager = LinkPager::widget([
                 <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
             </div>
-            <div class="col-lg-6 visible-lg text-right">
-
-                <?= $linkPager; ?>
-
-            </div>
-            <div class="col-tab-6 visible-tab text-right">
+            <div class="col-lg-6 col-tab-6 visible-lg visible-tab text-right">
 
                 <?= $linkPager; ?>
 

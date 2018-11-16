@@ -86,36 +86,29 @@ kartik\popover\PopoverXAsset::register($this); ?>
 										if (!empty($modelUserPostMain['user']['image'])) {
 										    
 										    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
-										}
-										
-										$layout = '
-                                            <div class="widget">
-                                                <div class="widget-posts-image">
-													
-												    ' .	Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
-
-                                                </div>
-
-                                                <div class="widget-posts-body">
-                                                    ' . Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
-                                                    <br>
-                                                    <small>' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
-                                                </div>
-                                            </div>
-                                        '; ?>
+										} ?>
 
                                         <div class="review-container">
 
                                             <?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
 
                                             <div class="row mb-10">
-                                                <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
-                                                    <?= $layout ?>
+                                                <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
+                                                    <div class="widget">
+                                                        <div class="widget-posts-image">
+        													
+        												    <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+        
+                                                        </div>
+        
+                                                        <div class="widget-posts-body">
+                                                            <?= Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+                                                            <br>
+                                                            <small><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-9 visible-xs">
-                                                    <?= $layout ?>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
 													<div class="rating">
                                                     	<h3 class="mt-0 mb-0">
                                                     		<?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'user-rating-popover', 'class' => 'label label-success']); ?>

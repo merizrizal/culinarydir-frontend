@@ -285,36 +285,20 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         <div class="col-xs-12">
                                                             <div class="widget">
                                                                 <ul class="icon-list">
-                                                                    <li class="visible-lg visible-md visible-sm visible-tab">
+                                                                    <li>
                                                                         <i class="aicon aicon-home"></i>
 
-                                                                        <?php
+                                                                        <?php 
                                                                         echo AddressType::widget([
                                                                             'addressType' => $modelBusiness['businessLocation']['address_type'],
                                                                             'address' => $modelBusiness['businessLocation']['address']
                                                                         ]);
-
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut', 'class' => 'font-12']); ?>
                                                                         
-                                                                        <br>
+                                                                        echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' : '';
+                                                                        echo $modelBusiness['businessLocation']['address_info'];
                                                                         
-                                                                        <?= $modelBusiness['businessLocation']['address_info'] ?>
-
-                                                                    </li>
-                                                                    <li class="visible-xs">
-                                                                        <i class="aicon aicon-home"></i>
-
-                                                                        <?php
-                                                                        echo AddressType::widget([
-                                                                            'addressType' => $modelBusiness['businessLocation']['address_type'],
-                                                                            'address' => $modelBusiness['businessLocation']['address']
-                                                                        ]);
-
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['id' => 'see-map-shortcut-xs', 'class' => 'font-12']); ?>
-                                                                        
-                                                                        <br>
-                                                                        
-                                                                        <?= $modelBusiness['businessLocation']['address_info'] ?>
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab']);
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut xs font-12 visible-xs']); ?>
 
                                                                     </li>
                                                                     <li>
@@ -402,7 +386,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 <div class="col-lg-4 col-md-5 col-sm-5 col-tab-6 widget pull-right">
                                                     <ul class="link-icon list-inline text-center">
                                                     	<li>
-                                                            <a href="" id="write-review-shortcut">
+                                                            <a href="" class="write-review-shortcut">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Review') ?></li>
@@ -410,7 +394,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" id="post-photo-shortcut">
+                                                            <a href="" class="post-photo-shortcut">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Photo') ?></li>
@@ -418,7 +402,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" id="report-business-trigger">
+                                                            <a href="" class="report-business-trigger">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Report') ?></li>
@@ -430,7 +414,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 widget">
                                                     <ul class="link-icon list-inline">
                                                        <li>
-                                                            <a href="#" class="message-feature">
+                                                            <a href="" class="message-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
                                                                     <li>Message</li>
@@ -438,7 +422,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="booking-feature">
+                                                            <a href="" class="booking-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Booking') ?></li>
@@ -450,10 +434,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </div>
 
                                             <div class="row mt-10 mb-10 visible-xs">
-                                                <div class="col-xs-12 widget pull-right">
+                                                <div class="col-xs-12 widget">
                                                 	<ul class="link-icon list-inline text-center">
                                                     	<li>
-                                                            <a href="" id="write-review-shortcut-xs">
+                                                            <a href="" class="write-review-shortcut">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Review') ?></li>
@@ -461,7 +445,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" id="post-photo-shortcut-xs">
+                                                            <a href="" class="post-photo-shortcut xs">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Photo') ?></li>
@@ -469,7 +453,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" id="report-business-trigger-xs">
+                                                            <a href="" class="report-business-trigger">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Report') ?></li>
@@ -481,7 +465,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 <div class="col-xs-12 widget">
                                                     <ul class="link-icon list-inline text-center">
                                                         <li>
-                                                            <a href="#" class="message-feature">
+                                                            <a href="" class="message-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
                                                                     <li>Message</li>
@@ -489,7 +473,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="booking-feature">
+                                                            <a href="" class="booking-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Booking') ?></li>
@@ -925,32 +909,15 @@ $jscript = '
     
     $("#menu").removeClass("in active");
 
-    $("#see-map-shortcut").on("click", function(event) {
+    $(".see-map-shortcut").on("click", function(event) {
 
-        if (!$("a[aria-controls=\"view-map\"]").parent().hasClass("active")) {
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
 
-            $("a[aria-controls=\"view-map\"]").tab("show");
+        if (!$("a[aria-controls=\"view-map" + xs + "\"]").parent().hasClass("active")) {
 
-            $("a[aria-controls=\"view-map\"]").on("shown.bs.tab", function (e) {
+            $("a[aria-controls=\"view-map" + xs + "\"]").tab("show");
 
-                $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $("#see-map-shortcut-xs").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-map-xs\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-map-xs\"]").tab("show");
-
-            $("a[aria-controls=\"view-map-xs\"]").on("shown.bs.tab", function (e) {
+            $("a[aria-controls=\"view-map" + xs + "\"]").on("shown.bs.tab", function (e) {
 
                 $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
                 $(this).off("shown.bs.tab");
@@ -1066,14 +1033,7 @@ $jscript = '
         return false;
     });
 
-    $("#report-business-trigger").on("click", function() {
-
-        $("#modal-report").modal("show");
-
-        return false;
-    });
-
-    $("#report-business-trigger-xs").on("click", function() {
+    $(".report-business-trigger").on("click", function() {
 
         $("#modal-report").modal("show");
 
@@ -1091,6 +1051,45 @@ $jscript = '
 
         $(this).parents("#report-form").siblings(".overlay").show();
         $(this).parents("#report-form").siblings(".loading-img").show();
+    });
+
+    $(".write-review-shortcut").on("click", function(event) {
+
+        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-review\"]").tab("show");
+
+            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+
+            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
+    $(".post-photo-shortcut").on("click", function(event) {
+
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
+
+        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+        }
+
+        return false;
     });
 
     $("form#report-form").on("beforeSubmit", function(event) {

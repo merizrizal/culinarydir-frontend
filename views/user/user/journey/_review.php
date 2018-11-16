@@ -31,6 +31,11 @@ $jscript = '
 
     getUserPostReview();
 
+    $(".user-post-section").on("click", ".user-rating-popover", function() {
+
+        return false;
+    });
+
     $(".user-post-section").on("click", ".user-likes-review-trigger", function() {
 
         var thisObj = $(this);

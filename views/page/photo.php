@@ -106,14 +106,21 @@ $this->registerMetaTag([
                                             <?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
     
                                             <div class="row mb-10">
-                                                <div class="col-md-4 col-sm-5 col-xs-6 visible-lg visible-md visible-sm visible-tab">
+                                                <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
                                                 
-                                                    <?= $layout ?>
-                                                    
-                                                </div>
-                                                <div class="col-xs-9 visible-xs">
-                                                
-                                                    <?= $layout ?>
+                                                    <div class="widget">
+                                                        <div class="widget-posts-image">
+                    
+                    									   <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+                                
+                                                        </div>
+                                
+                                                        <div class="widget-posts-body">
+                                                            <?= Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+                                                            <br>
+                                                            <small><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
+                                                        </div>
+                                                    </div>
                                                     
                                                 </div>
                                             </div>
