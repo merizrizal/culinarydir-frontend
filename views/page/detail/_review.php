@@ -424,9 +424,9 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                             'filledStar' => '<span class="aicon aicon-star-full"></span>',
                                                                             'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
                                                                             'showClear' => false,
-                                                                            'clearCaption' => $dataRatingComponent['name'],
+                                                                            'clearCaption' => Yii::t('app', $dataRatingComponent['name']),
                                                                             'captionElement' => '.rating-' . $dataRatingComponent['id'],
-                                                                            'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '" : val + " &nbsp;&nbsp;&nbsp;' . $dataRatingComponent['name'] . '";}'),
+                                                                            'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '" : val + " &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '";}'),
                                                                             'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
                                                                         ]
                                                                     ]); ?>

@@ -159,7 +159,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                                                                             <div class="col-sm-7 col-xs-7">
 
-                                                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
 
                                                                                             </div>
                                                                                         </div>

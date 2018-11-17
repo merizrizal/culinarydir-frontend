@@ -1,11 +1,11 @@
 <?php
 
+use common\components\Helper;
+use kartik\rating\StarRating;
+use sycomponent\Tools;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
-use kartik\rating\StarRating;
-use common\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -148,7 +148,7 @@ $linkPager = LinkPager::widget([
         
                                                                     <div class="col-sm-7 col-xs-7">
         
-                                                                        <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . $dataUserVote['ratingComponent']['name']; ?>
+                                                                        <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
         
                                                                     </div>
                                                                 </div>

@@ -62,7 +62,7 @@ use kartik\rating\StarRating;
 
                                 <div class="col-sm-6 col-xs-6 business-rating-components">
 
-                                    <?= number_format($ratingValue, 1) . ' &nbsp; ' . $dataBusinessDetailVote['ratingComponent']['name'] ?>
+                                    <?= number_format($ratingValue, 1) . ' &nbsp; ' . Yii::t('app', $dataBusinessDetailVote['ratingComponent']['name']) ?>
 
                                 </div>
                             </div>
@@ -95,7 +95,7 @@ use kartik\rating\StarRating;
 
                                 <div class="col-sm-6 col-xs-6 business-rating-components">
 
-                                    <?= 0 . ' &nbsp; ' . $dataRatingComponent['name'] ?>
+                                    <?= 0 . ' &nbsp; ' . Yii::t('app', $dataRatingComponent['name']) ?>
 
                                 </div>
                             </div>
