@@ -98,7 +98,7 @@ $linkPager = LinkPager::widget([
                     <?= Html::hiddenInput('business_name', $dataUserPostMain['business']['name'], ['class' => 'business-name']) ?>
     
                     <div class="row mb-10">
-                        <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
+                        <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget img-place">
                                 <div class="widget-posts-image business-image">
                                     <?= Html::a($img, ['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>
@@ -111,11 +111,11 @@ $linkPager = LinkPager::widget([
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
+                        <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
     
     						<div class="rating">
                             	<h3 class="mt-0 mb-0">                                    
-                                    <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success user-rating-popover']); ?>                                    
+                                    <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success user-rating-popover pt-10']); ?>                                    
                             	</h3>
                             </div>
     
@@ -168,6 +168,34 @@ $linkPager = LinkPager::widget([
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-xs-12 visible-xs">
+                        	<ul class="list-inline mt-0 mb-0">
+                                <li>
+                                    <div class="widget star-rating">
+        
+                                        <?= StarRating::widget([
+                                            'id' => 'rating-' . $dataUserPostMain['id'],
+                                            'name' => 'rating_' . $dataUserPostMain['id'],
+                                            'value' => $overallValue,
+                                            'pluginOptions' => [
+                                                'displayOnly' => true,
+                                                'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                'showCaption' => false,
+                                            ]
+                                        ]); ?>
+        
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="rating rating-<?= $dataUserPostMain['id']; ?>">
+                                        <h4 class="mt-0 mb-0">
+                                        	<?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['class' => 'label label-success user-rating-popover']); ?>
+                                        </h4>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
     

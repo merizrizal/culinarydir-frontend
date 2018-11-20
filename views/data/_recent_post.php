@@ -112,6 +112,7 @@ use common\components\Helper;
                                         $ratingValue = 0;
         
                                         foreach ($model['userVotes'] as $dataUserVotes) {
+                                            
                                             $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($model['userVotes']) ? ($dataUserVotes['vote_value'] / count($model['userVotes'])) : 0;
                                         }
         
