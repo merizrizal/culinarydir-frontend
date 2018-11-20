@@ -901,15 +901,12 @@ $jscript = '
         });
     });
 
-    $("#submit-write-review").on("click", function(event) {
-
-        $("#title-write-review").siblings(".overlay").show();
-        $("#title-write-review").siblings(".loading-img").show();
-    });
-
     $("form#review-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
+
+        $("#title-write-review").siblings(".overlay").show();
+        $("#title-write-review").siblings(".loading-img").show();
 
         var formData = new FormData(this);
 

@@ -187,15 +187,12 @@ $jscript = '
         });
     });
 
-    $("#submit-post-photo").on("click", function() {
-        
-        $("form#post-photo-form").siblings(".overlay").show();
-        $("form#post-photo-form").siblings(".loading-img").show();
-    });
-
     $("form#post-photo-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
+
+        thisObj.siblings(".overlay").show();
+        thisObj.siblings(".loading-img").show();
 
         if(thisObj.find(".has-error").length)  {
             return false;

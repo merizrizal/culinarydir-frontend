@@ -20,22 +20,22 @@ class RatingColor extends Widget
 
                     if (vote_value == 5) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-info pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-info");
                     } else if (vote_value < 5 && vote_value >= 4 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-success pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-success");
                     } else if (vote_value < 4 && vote_value >= 3 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-gold pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-gold");
                     } else if (vote_value < 3 && vote_value >= 2 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-warning pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-warning");
                     } else if (vote_value < 2 && vote_value >= 1 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-danger pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-danger");
                     } else {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-default pt-10");
+                        $(this).find(containerRating).removeClass("label-success").addClass("label-default");
                     }
                 });
             }

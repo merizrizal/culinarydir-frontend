@@ -178,7 +178,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             'items' => $images,
                                                             'json' => true,
                                                             'templateOptions' => ['id' => 'gallery_business'],
-                                                            'clientOptions' => ['container' => '#gallery_business'],
+                                                            'clientOptions' => [
+                                                                'container' => '#gallery_business',
+                                                                'startSlideshow' => false,
+                                                            ],
                                                             'options' => ['id' => 'gallery_business'],
                                                         ]); ?>
 
@@ -224,7 +227,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             'items' => $images,
                                                             'json' => true,
                                                             'templateOptions' => ['id' => 'gallery_menu'],
-                                                            'clientOptions' => ['container' => '#gallery_menu'],
+                                                            'clientOptions' => [
+                                                                'container' => '#gallery_menu',
+                                                                'startSlideshow' => false,
+                                                            ],
                                                             'options' => ['id' => 'gallery_menu'],
                                                         ]); ?>
 
@@ -422,10 +428,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="booking-feature">
+                                                            <a href="" class="online-order-feature">
                                                                 <ul class="text-center">
-                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -473,10 +479,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="booking-feature">
+                                                            <a href="" class="online-order-feature">
                                                                 <ul class="text-center">
-                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -930,6 +936,45 @@ $jscript = '
         return false;
     });
 
+    $(".write-review-shortcut").on("click", function(event) {
+
+        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-review\"]").tab("show");
+
+            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+
+            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
+    $(".post-photo-shortcut").on("click", function(event) {
+
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
+
+        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
     $(".love-place").on("click", function() {
 
         $.ajax({
@@ -1013,7 +1058,7 @@ $jscript = '
         return false;
     });
 
-    $(".booking-feature").on("click", function() {
+    $(".online-order-feature").on("click", function() {
 
         $("#modal-coming-soon").modal("show");
 
@@ -1047,61 +1092,20 @@ $jscript = '
         return false;
     });
 
-    $(".btn-submit-modal-report").on("click", function() {
-
-        $(this).parents("#report-form").siblings(".overlay").show();
-        $(this).parents("#report-form").siblings(".loading-img").show();
-    });
-
-    $(".write-review-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".post-photo-shortcut").on("click", function(event) {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
     $("form#report-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
 
-        if (thisObj.find(".has-error").length)  {
-            return false;
-        }
-
         thisObj.siblings(".overlay").show();
         thisObj.siblings(".loading-img").show();
+
+        if (thisObj.find(".has-error").length)  {
+
+            thisObj.siblings(".overlay").hide();
+            thisObj.siblings(".loading-img").hide();
+
+            return false;
+        }
 
         var formData = new FormData(this);
 
