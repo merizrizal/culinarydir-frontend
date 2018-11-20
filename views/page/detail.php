@@ -178,7 +178,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             'items' => $images,
                                                             'json' => true,
                                                             'templateOptions' => ['id' => 'gallery_business'],
-                                                            'clientOptions' => ['container' => '#gallery_business'],
+                                                            'clientOptions' => [
+                                                                'container' => '#gallery_business',
+                                                                'startSlideshow' => false,
+                                                            ],
                                                             'options' => ['id' => 'gallery_business'],
                                                         ]); ?>
 
@@ -224,7 +227,10 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             'items' => $images,
                                                             'json' => true,
                                                             'templateOptions' => ['id' => 'gallery_menu'],
-                                                            'clientOptions' => ['container' => '#gallery_menu'],
+                                                            'clientOptions' => [
+                                                                'container' => '#gallery_menu',
+                                                                'startSlideshow' => false,
+                                                            ],
                                                             'options' => ['id' => 'gallery_menu'],
                                                         ]); ?>
 

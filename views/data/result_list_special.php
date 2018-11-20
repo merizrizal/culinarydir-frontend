@@ -98,7 +98,10 @@ $linkPager = LinkPager::widget([
                                             'items' => $images,
                                             'json' => true,
                                             'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                            'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusinessPromo['id']],
+                                            'clientOptions' => [
+                                                'container' => '#blueimp-gallery-' . $dataBusinessPromo['id'],
+                                                'startSlideshow' => false,
+                                            ],
                                             'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
                                         ]); ?>
 

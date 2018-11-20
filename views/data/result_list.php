@@ -113,9 +113,12 @@ $linkPager = LinkPager::widget([
                                             
                                             echo dosamigos\gallery\Carousel::widget([
                                                 'items' => $images,
-                                                'json' => true,
+                                                'json' => true,                                                
                                                 'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                                'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusiness['id']],
+                                                'clientOptions' => [
+                                                    'container' => '#blueimp-gallery-' . $dataBusiness['id'],
+                                                    'startSlideshow' => false,
+                                                ],
                                                 'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
                                             ]); ?>
 
