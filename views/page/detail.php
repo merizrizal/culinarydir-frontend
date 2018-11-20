@@ -428,7 +428,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="booking-feature">
+                                                            <a href="" class="online-order-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -479,7 +479,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="booking-feature">
+                                                            <a href="" class="online-order-feature">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -1058,7 +1058,7 @@ $jscript = '
         return false;
     });
 
-    $(".booking-feature").on("click", function() {
+    $(".online-order-feature").on("click", function() {
 
         $("#modal-coming-soon").modal("show");
 
