@@ -430,8 +430,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         <li>
                                                             <a href="" class="booking-feature">
                                                                 <ul class="text-center">
-                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
@@ -481,8 +481,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         <li>
                                                             <a href="" class="booking-feature">
                                                                 <ul class="text-center">
-                                                                    <li><i class="aicon aicon-inspection-checklist aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Booking') ?></li>
+                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
+                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
                                                                 </ul>
                                                             </a>
                                                         </li>
