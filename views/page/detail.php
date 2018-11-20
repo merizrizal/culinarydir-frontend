@@ -930,6 +930,45 @@ $jscript = '
         return false;
     });
 
+    $(".write-review-shortcut").on("click", function(event) {
+
+        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-review\"]").tab("show");
+
+            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+
+            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
+    $(".post-photo-shortcut").on("click", function(event) {
+
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
+
+        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
+
+            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
     $(".love-place").on("click", function() {
 
         $.ajax({
@@ -1047,61 +1086,20 @@ $jscript = '
         return false;
     });
 
-    $(".btn-submit-modal-report").on("click", function() {
-
-        $(this).parents("#report-form").siblings(".overlay").show();
-        $(this).parents("#report-form").siblings(".loading-img").show();
-    });
-
-    $(".write-review-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".post-photo-shortcut").on("click", function(event) {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
     $("form#report-form").on("beforeSubmit", function(event) {
 
         var thisObj = $(this);
 
-        if (thisObj.find(".has-error").length)  {
-            return false;
-        }
-
         thisObj.siblings(".overlay").show();
         thisObj.siblings(".loading-img").show();
+
+        if (thisObj.find(".has-error").length)  {
+
+            thisObj.siblings(".overlay").hide();
+            thisObj.siblings(".loading-img").hide();
+
+            return false;
+        }
 
         var formData = new FormData(this);
 
