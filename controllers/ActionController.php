@@ -424,7 +424,7 @@ class ActionController extends base\BaseController
         $modelUserPostMain->business_id = $post['business_id'];
         $modelUserPostMain->user_id = Yii::$app->user->getIdentity()->id;
         $modelUserPostMain->type = 'Review';
-        $modelUserPostMain->text = $post['Post']['review']['text'];
+        $modelUserPostMain->text = preg_replace("/\r\n/", "", $post['Post']['review']['text']);
         $modelUserPostMain->is_publish = true;
         $modelUserPostMain->love_value = 0;
 
@@ -613,7 +613,7 @@ class ActionController extends base\BaseController
         
         $isUpdate = $modelUserPostMain->is_publish;
 
-        $modelUserPostMain->text = $post['Post']['review']['text'];
+        $modelUserPostMain->text = preg_replace("/\r\n/", " ", $post['Post']['review']['text']);
         $modelUserPostMain->is_publish = true;
         $modelUserPostMain->created_at = Yii::$app->formatter->asDatetime(time());
 
