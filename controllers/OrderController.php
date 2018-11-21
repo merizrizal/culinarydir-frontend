@@ -27,12 +27,17 @@ class OrderController extends base\BaseController
             ]);
     }
     
-    public function actionOrderList() {
-        
+    public function actionOrderList()
+    {
         $modelTransactionSession = null;
         
         return $this->render('order_list', [
             'modelTransactionSession'=> $modelTransactionSession,
         ]);
+    }
+    
+    public function actionCheckout()
+    {
+        return $this->render('checkout');
     }
 }
