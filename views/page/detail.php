@@ -251,10 +251,11 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     <h4 class="font-alt mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
                                                 </div>
 
+												<div class="visible-tab col-tab-12 clearfix"></div>
                                                 <div class="visible-xs col-xs-12 clearfix"></div>
 
-                                                <div class="col-sm-5 col-tab-5 col-xs-12">
-                                                    <h5 class="mb-0">
+                                                <div class="col-sm-5 col-tab-12 col-xs-12">
+                                                    <h5 class="pull-right visible-lg visible-md visible-sm mb-0">
 
                                                         <?php
                                                         $categories = '';
@@ -264,8 +265,9 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             $categories .= $dataBusinessCategory['category']['name'] . ' / ';
                                                         } ?>
 
-                                                        <strong class="pull-right visible-lg visible-md visible-sm visible-tab m-0"><?= trim($categories, ' / ') ?></strong>
+                                                        <strong><?= trim($categories, ' / ') ?></strong>
                                                     </h5>
+                                                    <h5 class="visible-tab mt-10"><?= trim($categories, ' / ') ?></h5>
                                                     <h6 class="visible-xs mt-10"><?= trim($categories, ' / ') ?></h6>
                                                 </div>
                                             </div>
