@@ -865,6 +865,8 @@ $jscript = '
                             $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
                         }
 
+                        getBusinessRating($("#business_id").val());
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
     
