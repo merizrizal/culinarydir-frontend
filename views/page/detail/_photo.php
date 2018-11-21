@@ -58,6 +58,7 @@ use kartik\file\FileInput;
                                     'layoutTemplates' => [
                                         'footer' => '',
                                     ],
+                                    'dropZoneTitle' => Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos, maximum size 2 Mb/photo')
                                 ]
                             ]); ?>
     
