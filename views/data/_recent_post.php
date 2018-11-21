@@ -9,7 +9,7 @@ use common\components\Helper;
 /* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */ ?>
 
-<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+<div class="col-lg-4 col-md-4 col-sm-6 col-tab-6 col-xs-12">
     <div class="recent-post">
         <div class="box">
             <div class="post">
@@ -144,7 +144,7 @@ use common\components\Helper;
                         <div class="col-sm-12 col-xs-12">
 
                             <?php
-                            $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 85, '. . .') . '<br>' : '';
+                            $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 80, '. . .') . '<br>' : '';
                             $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
 
                             echo $textReview; ?>
