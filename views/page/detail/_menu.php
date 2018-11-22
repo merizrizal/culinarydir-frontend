@@ -1,4 +1,7 @@
 <?php
+
+use yii\helpers\Html;
+
 /* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
 
 <div class="row">
@@ -20,20 +23,27 @@
                             foreach ($modelBusinessProduct as $dataBusinessProduct): ?>
 
                                 <div class="row">
-                                    <div class="col-md-8 col-xs-8">
+                                    <div class="col-md-8 col-xs-7">
                                         <strong><?= $dataBusinessProduct['name'] ?></strong>
                                         <span style="display: block; width: 80%"></span>
                                     </div>
-                                    <div class="col-md-4 col-xs-4">
+                                    <div class="col-md-4 col-xs-5">
                                         <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-xs-9">
-                                        <p>
+                                <div class="row mb-20">
+                                    <div class="col-md-8 col-xs-12">
+                                        <p class="mb-0">
                                             <?= $dataBusinessProduct['description'] ?>
                                         </p>
                                     </div>
+                                    <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
+                                    
+                                    	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', null, [
+                                    	    'class' => 'btn btn-success btn-round btn-xs'
+                                    	]) ?>
+                                    	
+                                	</div>
                                 </div>
 
                             <?php
