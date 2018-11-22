@@ -21,20 +21,20 @@ use yii\helpers\Html; ?>
         <div class="collapse navbar-collapse" id="custom-collapse">
             <ul class="nav navbar-nav navbar-right">
             	<li>
-            	
-            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i>', ['order/order-list'], ['class' => 'icon hidden-xs']) ?>
-            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-tab']) ?>
-                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-xs']) ?>
-            	
-            	</li>
-            
-                <li>
 
                     <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i>', ['page/index'], ['class' => 'icon hidden-xs']) ?>
                     <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-tab']) ?>
                     <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-xs']) ?>
 
                 </li>
+                
+                <li>
+            	
+            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i>', ['order/order-list'], ['class' => 'icon hidden-xs']) ?>
+            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-tab']) ?>
+                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-xs']) ?>
+            	
+            	</li>
 
                 <?php
                 if (!Yii::$app->user->isGuest): ?>

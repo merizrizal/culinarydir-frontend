@@ -1,8 +1,21 @@
 <?php
 
 use yii\helpers\Html;
+use core\models\TransactionSession;
 
-/* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
+/* @var $this yii\web\View */
+/* @var $modelBusinessProduct core\models\BusinessProduct */ 
+
+if (!Yii::$app->user->getIsGuest()) {
+    
+    $modelTransactionSession = TransactionSession::find()
+        ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+        ->andWhere(['transaction_session.is_closed' => false])
+        ->asArray()->one();
+    
+    echo Html::hiddenInput('sess_id', !empty($modelTransactionSession['id']) ? $modelTransactionSession['id'] : null, ['class' => 'sess-id']);
+    echo Html::hiddenInput('total_price', !empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0, ['class' => 'total-price']);
+} ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -39,9 +52,13 @@ use yii\helpers\Html;
                                     </div>
                                     <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
                                     
-                                    	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', null, [
-                                    	    'class' => 'btn btn-success btn-round btn-xs'
+                                    	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
+                                    	    'class' => 'btn btn-success btn-round btn-xs add-to-cart'
                                     	]) ?>
+                                    	
+                                    	<?= Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']) ?>
+                                        <?= Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']) ?>
+                                        <?= Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
                                     	
                                 	</div>
                                 </div>
@@ -64,3 +81,49 @@ use yii\helpers\Html;
         </div>
     </div>
 </div>
+
+<?php
+$jscript = '
+    $(".add-to-cart").on("click", function() {
+
+        var thisObj = $(this);
+        var menuName = thisObj.siblings(".menu-name").val();
+        var totalPrice = parseInt($(".total-price").val()) + parseInt(thisObj.siblings(".price").val());
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: thisObj.attr("href"),
+            data: {
+                "sess_id": $(".sess-id").val(),
+                "total_price": totalPrice,
+                "menu_id": thisObj.siblings(".menu-id").val(),
+                "price": thisObj.siblings(".price").val()
+            },
+            beforeSend: function(xhr) {
+
+                thisObj.find("i").removeClass("fa fa-plus").addClass("icon-hourglass");
+            },
+            success: function(response) {
+
+                if (response.success) {
+
+                    $(".sess-id").val(response.sess_id);
+                    $(".total-price").val(totalPrice);
+                }
+
+                thisObj.find("i").removeClass("icon-hourglass").addClass("fa fa-plus");
+                messageResponse(response.message.icon, response.message.title, response.message.text.replace("<product>", menuName), response.message.type);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                thisObj.find("span").removeClass("icon-hourglass").addClass("fa fa-plus");
+                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+            }
+        });
+
+        return false;
+    });
+';
+
+$this->registerJs($jscript); ?>
