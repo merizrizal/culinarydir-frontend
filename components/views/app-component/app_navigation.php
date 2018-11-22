@@ -13,7 +13,7 @@ use yii\helpers\Html; ?>
             </button>
             
             <?php 
-            $img = Html::img(Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-logo.png', ['class' => 'img-responsive img-component', 'style' => 'height: 30px; margin-top: 5px;']);
+            $img = Html::img(Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-logo.png', ['class' => 'img-responsive img-component']);
             
             echo Html::a($img, ['page/index'], ['class' => 'navbar-brand']) ?>
             

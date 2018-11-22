@@ -9,7 +9,7 @@ use common\components\Helper;
 /* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */ ?>
 
-<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+<div class="col-lg-4 col-md-4 col-sm-6 col-tab-6 col-xs-12">
     <div class="recent-post">
         <div class="box">
             <div class="post">
@@ -54,11 +54,11 @@ use common\components\Helper;
                         <div class="col-xs-12">
 
                             <?php
-                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135, false, false);
+                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 478, 165, false, false);
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 360, 135);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 478, 165);
                             }
 
                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), ['page/review', 'id' => $model['id']]); ?>
@@ -144,7 +144,7 @@ use common\components\Helper;
                         <div class="col-sm-12 col-xs-12">
 
                             <?php
-                            $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 85, '. . .') . '<br>' : '';
+                            $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 80, '. . .') . '<br>' : '';
                             $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
 
                             echo $textReview; ?>
