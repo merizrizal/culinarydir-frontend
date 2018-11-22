@@ -20,14 +20,18 @@
             							<div class="col-sm-5 col-xs-12">
             								<h4 class="font-alt text-center">Data Pemesan</h4>
             								<hr class="divider-w">
-            								<div class="form-group">
-            									<input type="text" name="name" class="form-control" value="Herryawan Wiguna" placeholder="Nama Pemesan">
-            								</div>
-            								<div class="form-group">
-            									<input type="text" name="nowa" class="form-control" value="0812-1482-7198" placeholder="No Whatsapp">
-            								</div>
-            								<div class="form-group">
-            									<textarea rows="3" class="form-control" placeholder="Alamat Pemesan">Jl. Maleer IV No. 231/118 RT.006 RW.002</textarea>
+            								<div class="row mt-10">
+                								<div class="col-sm-12 col-xs-12">
+                									<div class="form-group">
+                    									<input type="text" name="name" class="form-control" value="Herryawan Wiguna" placeholder="Nama Pemesan">
+                    								</div>
+                    								<div class="form-group">
+                    									<input type="text" name="nowa" class="form-control" value="0812-1482-7198" placeholder="No Whatsapp">
+                    								</div>
+                    								<div class="form-group">
+                    									<textarea rows="3" class="form-control" placeholder="Alamat Pemesan">Jl. Maleer IV No. 231/118 RT.006 RW.002</textarea>
+                    								</div>
+                								</div>
             								</div>            								
             							</div>
             							<div class="col-sm-7 col-xs-12">
@@ -94,7 +98,7 @@
                                             </div>
                                             <div class="row mt-10">
                                             	<div class="col-sm-12">
-                                            		<button class="btn btn-success btn-round btn-block">Checkout</button>
+                                            		<button class="btn btn-d btn-round btn-block">Pesan Sekarang</button>
                                             	</div>
                                             </div>
             							</div>

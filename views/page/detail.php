@@ -251,10 +251,11 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     <h4 class="font-alt mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
                                                 </div>
 
+												<div class="visible-tab col-tab-12 clearfix"></div>
                                                 <div class="visible-xs col-xs-12 clearfix"></div>
 
-                                                <div class="col-sm-5 col-tab-5 col-xs-12">
-                                                    <h5 class="mb-0">
+                                                <div class="col-sm-5 col-tab-12 col-xs-12">
+                                                    <h5 class="pull-right visible-lg visible-md visible-sm mb-0">
 
                                                         <?php
                                                         $categories = '';
@@ -264,8 +265,9 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             $categories .= $dataBusinessCategory['category']['name'] . ' / ';
                                                         } ?>
 
-                                                        <strong class="pull-right visible-lg visible-md visible-sm visible-tab m-0"><?= trim($categories, ' / ') ?></strong>
+                                                        <strong><?= trim($categories, ' / ') ?></strong>
                                                     </h5>
+                                                    <h5 class="visible-tab mt-10"><?= trim($categories, ' / ') ?></h5>
                                                     <h6 class="visible-xs mt-10"><?= trim($categories, ' / ') ?></h6>
                                                 </div>
                                             </div>
@@ -479,7 +481,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-feature">
+                                                            <a href="" class="online-order-feature xs">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -738,7 +740,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         </a>
                                                     </li>
                                                     <li role="presentation">
-                                                        <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab">
+                                                        <a href="#view-menu" aria-controls="view-menu-xs" role="tab" data-toggle="tab">
                                                         	<h6><i class="aicon aicon-icon-budicon"></i> Menu</h6>
                                                         </a>
                                                     </li>
@@ -975,6 +977,26 @@ $jscript = '
         return false;
     });
 
+    $(".online-order-feature").on("click", function() {
+
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
+
+        if (!$("a[aria-controls=\"view-menu" + xs + "\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-menu" + xs + "\"]").tab("show");
+
+            $("a[aria-controls=\"view-menu" + xs + "\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+            $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
     $(".love-place").on("click", function() {
 
         $.ajax({
@@ -1052,13 +1074,6 @@ $jscript = '
     });
 
     $(".message-feature").on("click", function() {
-
-        $("#modal-coming-soon").modal("show");
-
-        return false;
-    });
-
-    $(".online-order-feature").on("click", function() {
 
         $("#modal-coming-soon").modal("show");
 

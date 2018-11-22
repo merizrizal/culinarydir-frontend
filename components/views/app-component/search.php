@@ -86,7 +86,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
 
                                 </div>
@@ -316,7 +316,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
 
                                 </div>

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <div class="row">
     <div class="col-sm-12 col-xs-12">
         <div class="box bg-white">
-            <div class="box-title">
+            <div class="box-title" id="title-menu">
                 <h4 class="mt-0 mb-0 inline-block">Menu</h4>
             </div>
 
@@ -40,7 +40,7 @@ use yii\helpers\Html;
                                     <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
                                     
                                     	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', null, [
-                                    	    'class' => 'btn btn-success btn-round btn-xs'
+                                    	    'class' => 'btn btn-d btn-round btn-xs'
                                     	]) ?>
                                     	
                                 	</div>
