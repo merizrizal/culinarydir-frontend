@@ -430,7 +430,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-feature">
+                                                            <a href="" class="online-order-shortcut">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -481,7 +481,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-feature xs">
+                                                            <a href="" class="online-order-shortcut xs">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -977,7 +977,7 @@ $jscript = '
         return false;
     });
 
-    $(".online-order-feature").on("click", function() {
+    $(".online-order-shortcut").on("click", function() {
 
         var xs = $(this).hasClass("xs") ? "-xs" : "";
 
