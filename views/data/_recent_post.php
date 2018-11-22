@@ -54,11 +54,11 @@ use common\components\Helper;
                         <div class="col-xs-12">
 
                             <?php
-                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 360, 135, false, false);
+                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 478, 165, false, false);
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 360, 135);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 478, 165);
                             }
 
                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), ['page/review', 'id' => $model['id']]); ?>
