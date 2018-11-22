@@ -481,7 +481,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-feature">
+                                                            <a href="" class="online-order-feature xs">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -740,7 +740,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         </a>
                                                     </li>
                                                     <li role="presentation">
-                                                        <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab">
+                                                        <a href="#view-menu" aria-controls="view-menu-xs" role="tab" data-toggle="tab">
                                                         	<h6><i class="aicon aicon-icon-budicon"></i> Menu</h6>
                                                         </a>
                                                     </li>
@@ -977,6 +977,26 @@ $jscript = '
         return false;
     });
 
+    $(".online-order-feature").on("click", function() {
+
+        var xs = $(this).hasClass("xs") ? "-xs" : "";
+
+        if (!$("a[aria-controls=\"view-menu" + xs + "\"]").parent().hasClass("active")) {
+
+            $("a[aria-controls=\"view-menu" + xs + "\"]").tab("show");
+
+            $("a[aria-controls=\"view-menu" + xs + "\"]").on("shown.bs.tab", function (e) {
+
+                $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
+                $(this).off("shown.bs.tab");
+            });
+        } else {
+            $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
+        }
+
+        return false;
+    });
+
     $(".love-place").on("click", function() {
 
         $.ajax({
@@ -1054,13 +1074,6 @@ $jscript = '
     });
 
     $(".message-feature").on("click", function() {
-
-        $("#modal-coming-soon").modal("show");
-
-        return false;
-    });
-
-    $(".online-order-feature").on("click", function() {
 
         $("#modal-coming-soon").modal("show");
 
