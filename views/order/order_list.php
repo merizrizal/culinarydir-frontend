@@ -90,7 +90,11 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                             		<div class="row">
                                             			<div class="col-sm-7">
                                             			
-                                            				<?= Html::textInput('menu_notes', null, ['class' => 'form-control', 'placeholder' => Yii::t('app', 'Write a Note')]); ?>
+                                            				<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
+                                        				        'class' => 'form-control menu-notes', 
+                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
+                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
+                                            				]); ?>
                                             				
                                             			</div>
                                             		</div>
@@ -109,7 +113,11 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		</div>
                                                 		<div class="col-xs-12">
                                                 		
-                                    						<?= Html::textInput('menu_notes', null, ['class' => 'form-control', 'placeholder' => Yii::t('app', 'Write a Note')]); ?>
+                                    						<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
+                                        				        'class' => 'form-control menu-notes', 
+                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
+                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
+                                            				]); ?>
                                     						
                                             			</div>
                                             		</div>
@@ -197,7 +205,11 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                             		<div class="row">
                                             			<div class="col-tab-8">
                                     
-                                    						<?= Html::textInput('menu_notes', null, ['class' => 'menu-notes', 'placeholder' => Yii::t('app', 'Write a Note')]); ?>
+                                    						<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
+                                        				        'class' => 'form-control menu-notes', 
+                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
+                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
+                                            				]); ?>
                                     						
                                             			</div>
                                             		</div>
@@ -224,12 +236,12 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                     <tbody>
                                                         <tr>
                                                             <th>Total</th>
-                                                            <td id="jumlah-harga"><?= Yii::$app->formatter->asCurrency($jumlahHarga) ?></td>
+                                                            <td id="total-price"><?= Yii::$app->formatter->asCurrency($jumlahHarga) ?></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                         
-                                                <?= Html::a('Lanjut ke Checkout', $urlCheckout, ['class' => 'btn btn-lg btn-block btn-round btn-d']) ?>
+                                                <?= Html::a(Yii::t('app', 'Go to Checkout'), $urlCheckout, ['class' => 'btn btn-lg btn-block btn-round btn-d']) ?>
                         
                                             </div>
                                         </div>
@@ -249,6 +261,43 @@ $this->title = Yii::t('app', 'Order List'); ?>
 frontend\components\GrowlCustom::widget();
 
 $jscript = '
+    $(".menu-notes").focusout(function() {
+        
+        var thisObj = $(this);
+        var note = thisObj.val();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: thisObj.data("url"),
+            data: {
+                "note": note
+            },
+            beforeSend: function(xhr) {
+
+                thisObj.parents(".list-order").find(".overlay").show();
+                thisObj.parents(".list-order").find(".loading-img").show();
+            },
+            success: function(response) {
+
+                if (!response.success) {
+
+                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
+                }
+
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
+            }
+        });
+    });
+
     $(".amount").on("change", function() {
 
         var thisObj = $(this);
@@ -270,7 +319,7 @@ $jscript = '
 
                 if (response.success) {
 
-                    $("#jumlah-harga").html(response.total_price);
+                    $("#total-price").html(response.total_price);
                     thisObj.parents(".list-order").find(".subtotal").children().html(response.subtotal);
                 } else {
 
@@ -319,7 +368,7 @@ $jscript = '
                         }
                     });
 
-                    $("#jumlah-harga").html(response.total_price);
+                    $("#total-price").html(response.total_price);
                 } else {
 
                     messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);

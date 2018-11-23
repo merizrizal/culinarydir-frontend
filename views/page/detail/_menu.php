@@ -12,7 +12,7 @@ if (!Yii::$app->user->getIsGuest()) {
         ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
         ->andWhere(['transaction_session.is_closed' => false])
         ->asArray()->one();
-    
+        
     echo Html::hiddenInput('sess_id', !empty($modelTransactionSession['id']) ? $modelTransactionSession['id'] : null, ['class' => 'sess-id']);
     echo Html::hiddenInput('total_price', !empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0, ['class' => 'total-price']);
 } ?>
@@ -29,6 +29,9 @@ if (!Yii::$app->user->getIsGuest()) {
 			<div class="box-content mt-10">
 				<div class="row">
 					<div class="col-md-12 col-xs-12">
+					
+						<div class="overlay" style="display: none;"></div>
+    					<div class="loading-img" style="display: none;"></div>
 
                         <?php
                         if (!empty($modelBusinessProduct)):
@@ -65,12 +68,9 @@ if (!Yii::$app->user->getIsGuest()) {
 
                             <?php
                             endforeach;
-                            
                         else: ?>
         
-                        	<p>
-                        		<?= Yii::t('app', 'Currently there is no menu available') . '.' ?>
-                    		</p>
+                        	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?> </p>
         
                         <?php
                         endif; ?>
@@ -102,22 +102,27 @@ $jscript = '
             },
             beforeSend: function(xhr) {
 
-                thisObj.find("i").removeClass("fa fa-plus").addClass("icon-hourglass");
+                thisObj.parents(".box-content").find(".overlay").show();
+                thisObj.parents(".box-content").find(".loading-img").show();
             },
             success: function(response) {
-
+                
                 if (response.success) {
 
                     $(".sess-id").val(response.sess_id);
                     $(".total-price").val(totalPrice);
                 }
+                
+                thisObj.parents(".box-content").find(".overlay").hide();
+                thisObj.parents(".box-content").find(".loading-img").hide();
 
-                thisObj.find("i").removeClass("icon-hourglass").addClass("fa fa-plus");
                 messageResponse(response.message.icon, response.message.title, response.message.text.replace("<product>", menuName), response.message.type);
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                thisObj.find("span").removeClass("icon-hourglass").addClass("fa fa-plus");
+                thisObj.parents(".box-content").find(".overlay").hide();
+                thisObj.parents(".box-content").find(".loading-img").hide();
+
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
             }
         });
