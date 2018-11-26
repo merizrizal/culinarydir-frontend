@@ -13,10 +13,10 @@ $this->title = Yii::t('app', 'Order List'); ?>
         <div class="container detail">
         
         	<div class="row">
-                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+                <div class="col-md-10 col-md-offset-1 col-xs-12">
                 
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
                         	<div class="box bg-white">
                         		<div class="box-title">
                             		<h4 class="font-alt text-center"><?= Yii::t('app', 'Order List') ?></h4>
@@ -55,7 +55,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		<div class="col-sm-2">
                                                 			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
                                                 		</div>
-                                                		<div class="col-lg-2 col-md-3 col-sm-3">
+                                                		<div class="col-lg-2 col-sm-3">
                                             
                                                             <?= TouchSpin::widget([
                                                                 'name' => 'amount',
@@ -99,7 +99,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                             			</div>
                                             		</div>
                                         		</div>
-                                        		
                                         		
                                         		<div class="list-order visible-xs">
                                                 	<div class="row">
@@ -159,7 +158,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                     					
                                             		</div>
                                         		</div>
-                                        		
                                         		
                                         		<div class="list-order visible-tab">
                                                 	<div class="row">

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use core\models\TransactionSession;
 
 /* @var $this yii\web\View */
-/* @var $modelBusinessProduct core\models\BusinessProduct */ 
+/* @var $modelBusinessProduct core\models\BusinessProduct */
 
 if (!Yii::$app->user->getIsGuest()) {
     
@@ -18,7 +18,7 @@ if (!Yii::$app->user->getIsGuest()) {
 } ?>
 
 <div class="row">
-    <div class="col-sm-12 col-xs-12">
+    <div class="col-xs-12">
         <div class="box bg-white">
             <div class="box-title" id="title-menu">
                 <h4 class="mt-0 mb-0 inline-block">Menu</h4>
@@ -28,7 +28,7 @@ if (!Yii::$app->user->getIsGuest()) {
 
 			<div class="box-content mt-10">
 				<div class="row">
-					<div class="col-md-12 col-xs-12">
+					<div class="col-xs-12">
 					
 						<div class="overlay" style="display: none;"></div>
     					<div class="loading-img" style="display: none;"></div>
@@ -41,7 +41,6 @@ if (!Yii::$app->user->getIsGuest()) {
                                 <div class="row">
                                     <div class="col-md-8 col-xs-7">
                                         <strong><?= $dataBusinessProduct['name'] ?></strong>
-                                        <span style="display: block; width: 80%"></span>
                                     </div>
                                     <div class="col-md-4 col-xs-5">
                                         <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
@@ -56,12 +55,13 @@ if (!Yii::$app->user->getIsGuest()) {
                                     <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
             
                                     	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
-                                    	    'class' => 'btn btn-success btn-round btn-xs add-to-cart'
+                                    	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
                                     	]) ?>
                                     	
-                                    	<?= Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']) ?>
-                                        <?= Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']) ?>
-                                        <?= Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
+                                    	<?php
+                                    	echo Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']);
+                                    	echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
+                                    	echo Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
                                     	
                                 	</div>
                                 </div>
@@ -96,6 +96,7 @@ $jscript = '
             url: thisObj.attr("href"),
             data: {
                 "sess_id": $(".sess-id").val(),
+                "business_id": $("#business_id").val(),
                 "total_price": totalPrice,
                 "menu_id": thisObj.siblings(".menu-id").val(),
                 "price": thisObj.siblings(".price").val()
