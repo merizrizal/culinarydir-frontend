@@ -154,7 +154,7 @@ $jscript = '
         $("#post-photo-container").find(".form-group").removeClass("has-error");
         $("#post-photo-container").find(".form-group").find(".help-block").html("");
 
-        $(".facebook-photo-share-trigger").iCheck("uncheck");
+        $(".facebook-photo-share-trigger").prop("checked", false).trigger("change");
 
         return false;
     });
@@ -220,7 +220,7 @@ $jscript = '
 
                     getUserPhoto($("#business_id").val());
 
-                    $(".facebook-photo-share-trigger").iCheck("uncheck");
+                    $(".facebook-photo-share-trigger").prop("checked", false).trigger("change");
 
                     if ($.trim(response.socialShare)){
 

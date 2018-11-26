@@ -591,10 +591,6 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 </ul>
 
 <?php
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
-
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
-
 $jscript = '
     var prevReview;
     var cancelWrite;
@@ -760,7 +756,7 @@ $jscript = '
         $("#post-review-text").val(prevReview);
         $("#post-photo-input").fileinput("clear");
 
-        $(".facebook-review-share-trigger").iCheck("uncheck");
+        $(".facebook-review-share-trigger").prop("checked", false).trigger("change");
 
         return false;
     });
@@ -996,7 +992,7 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
-                    $(".facebook-review-share-trigger").iCheck("uncheck");
+                    $(".facebook-review-share-trigger").prop("checked", false).trigger("change");
 
                     if ($.trim(response.socialShare)) {
 

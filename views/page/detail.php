@@ -902,7 +902,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
 };
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
@@ -910,7 +910,7 @@ frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $("#img-for-share-link").hide();
@@ -1152,12 +1152,12 @@ $jscript = '
 
     $("#modal-report").on("hidden.bs.modal", function() {
 
-        $(this).find("#userreport-report_status").find("input.report-subject").iCheck("uncheck");
+        $(this).find("#userreport-report_status").find("input.report-subject").prop("checked", false).trigger("change");
         $(this).find(".form-group").removeClass("has-error");
         $(this).find(".form-group").removeClass("has-success");
         $(this).find(".form-group").find(".help-block").html("");
     });    
 ';
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>
 
