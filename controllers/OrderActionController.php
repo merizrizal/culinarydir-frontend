@@ -34,48 +34,51 @@ class OrderActionController extends base\BaseController
     }
     
     public function actionSaveOrder()
-    {    
+    {
         $post = Yii::$app->request->post();
         
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = true;
+        $modelTransactionSession = TransactionSession::find()
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.is_closed' => false])
+            ->one();
         
-        if (empty($post['sess_id'])) {
+        $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
+        
+        if (!empty($modelTransactionSession)) {
             
-            $modelTransactionSession = new TransactionSession();
-            $modelTransactionSession->customer_name = Yii::$app->user->identity->username;
-            $modelTransactionSession->total_price = $post['total_price'];
-            $modelTransactionSession->user_ordered = Yii::$app->user->identity->id;
-            
-            $flag = $modelTransactionSession->save();
+            $modelTransactionSession->total_price += $post['price'];
         } else {
             
-            $modelTransactionSession = TransactionSession::findOne($post['sess_id']);
-            $modelTransactionSession->total_price = $post['total_price'];
-            
-            $flag = $modelTransactionSession->save();
+            $modelTransactionSession = new TransactionSession();
+            $modelTransactionSession->total_price = $post['price'];
+            $modelTransactionSession->user_ordered = Yii::$app->user->identity->id;
+            $modelTransactionSession->business_id = $post['business_id'];
         }
         
-        if ($flag) {
+        if ($modelTransactionSession->business_id == $post['business_id']) {
             
-            $modelTransactionItem = TransactionItem::find()
-                ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
-                ->andWhere(['business_product_id' => $post['menu_id']])
-                ->one();
+            if (($flag = $modelTransactionSession->save())) {
             
-            if (!empty($modelTransactionItem)) {
+                $modelTransactionItem = TransactionItem::find()
+                    ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
+                    ->andWhere(['business_product_id' => $post['menu_id']])
+                    ->one();
                 
-                $modelTransactionItem->amount++;
-            } else {
+                if (!empty($modelTransactionItem)) {
+                    
+                    $modelTransactionItem->amount++;
+                } else {
+                    
+                    $modelTransactionItem = new TransactionItem();
+                    $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
+                    $modelTransactionItem->business_product_id = $post['menu_id'];
+                    $modelTransactionItem->price = $post['price'];
+                    $modelTransactionItem->amount = 1;
+                }
                 
-                $modelTransactionItem = new TransactionItem();
-                $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
-                $modelTransactionItem->business_product_id = $post['menu_id'];
-                $modelTransactionItem->price = $post['price'];
-                $modelTransactionItem->amount = 1;
+                $flag = $modelTransactionItem->save();
             }
-            
-            $flag = $modelTransactionItem->save();
         }
         
         $return = [];
@@ -84,8 +87,6 @@ class OrderActionController extends base\BaseController
             
             $transaction->commit();
             
-            $return['success'] = true;
-            $return['sess_id'] = $modelTransactionSession->id;
             $return['message']['type'] = 'success';
             $return['message']['icon'] = 'fa fa-check';
             $return['message']['title'] = 'Penambahan menu sukses';
@@ -94,7 +95,6 @@ class OrderActionController extends base\BaseController
             
             $transaction->rollBack();
             
-            $return['success'] = false;
             $return['message']['type'] = 'danger';
             $return['message']['icon'] = 'fa fa-warning';
             $return['message']['title'] = 'Penambahan menu gagal';
@@ -106,11 +106,10 @@ class OrderActionController extends base\BaseController
     }
     
     public function actionChangeQty($id)
-    {    
+    {
         $post = Yii::$app->request->post();
         
         $transaction = Yii::$app->db->beginTransaction();
-        $flag = true;
         
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
@@ -122,17 +121,15 @@ class OrderActionController extends base\BaseController
         $jumlahPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
         
-        if (($flag = $modelTransactionItem->save())) {
+        if ($modelTransactionItem->save()) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price = $modelTransactionSession->total_price + ($modelTransactionItem->price * ($post['amount'] - $jumlahPrior));
-            
-            $flag = $modelTransactionSession->save();
+            $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $jumlahPrior);
         }
         
         $return = [];
         
-        if ($flag) {
+        if ($modelTransactionSession->save()) {
             
             $transaction->commit();
             
@@ -146,16 +143,18 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['message']['type'] = 'danger';
             $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan produk gagal';
-            $return['message']['text'] = 'Harap cek kembali produk yang Anda tambahkan';
+            $return['message']['title'] = 'Perubahan jumlah menu gagal';
+            $return['message']['text'] = 'Terjadi kesalahan saat proses perubahan jumlah menu, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $return;
     }
     
-    public function actionRemoveItem($id)
-    {    
+    public function actionRemoveItem()
+    {
+        $post = Yii::$app->request->post();
+        
         $transaction = Yii::$app->db->beginTransaction();
         $flag = true;
         
@@ -163,18 +162,18 @@ class OrderActionController extends base\BaseController
             ->joinWith([
                 'transactionSession'
             ])
-            ->andWhere(['transaction_item.id' => $id])
+            ->andWhere(['transaction_item.id' => $post['item_id']])
             ->one();
         
         if (($flag = $modelTransactionItem->save())) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price = $modelTransactionSession->total_price - ($modelTransactionItem->price * $modelTransactionItem->amount);
+            $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
             
             $flag = $modelTransactionSession->save();
         }
         
-        if (($flag = TransactionItem::deleteAll(['id' => $id]))) {
+        if (($flag = TransactionItem::deleteAll(['id' => $post['item_id']]))) {
             
             if ($modelTransactionSession->total_price == 0) {
                 
@@ -197,8 +196,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['message']['type'] = 'danger';
             $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan produk gagal';
-            $return['message']['text'] = 'Harap cek kembali produk yang Anda tambahkan';
+            $return['message']['title'] = 'Penghapusan produk gagal';
+            $return['message']['text'] = 'Terjadi kesalahan saat proses penghapusan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -234,7 +233,7 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['message']['type'] = 'danger';
             $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan keterangan gagal';
+            $return['message']['title'] = 'Input keterangan gagal';
             $return['message']['text'] = 'Harap input kembali keterangan untuk menu ini.';
         }
         

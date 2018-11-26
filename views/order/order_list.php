@@ -29,8 +29,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                     <?php
                                     $noDataClass = '';
                                     $urlCheckout = null;
-                        
-                                    $jumlahHarga = 0;
                                     
                                     if (!empty($modelTransactionSession) && !empty($modelTransactionSession['transactionItems'])):
                                     
@@ -39,10 +37,12 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                         
                                         foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem):
                                             
-                                            $subtotal = $dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount'];
-                                            $jumlahHarga += $subtotal; ?>
+                                            $subtotal = $dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount']; ?>
                             				
                             				<div class="list-order-group">
+                            				
+                            					<?= Html::hiddenInput('menu_id', $dataTransactionItem['id'], ['class' => 'item-id']) ?>
+                            					
                                         		<div class="list-order hidden-xs">
                                                 	<div class="row">
                                                 		
@@ -82,7 +82,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		</div>
                                                 		<div class="col-md-1 col-sm-1 text-right">
                                                 		
-                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item', 'id' => $dataTransactionItem['id']], ['class' => 'remove-item']) ?>
+                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
                                                 			
                                                 		</div>
                                             		</div>
@@ -107,7 +107,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		</div>
                                                 		<div class="col-xs-3 text-right">
                                                 		
-                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item', 'id' => $dataTransactionItem['id']], ['class' => 'remove-item']) ?>
+                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
                                                 			
                                                 		</div>
                                                 		<div class="col-xs-12">
@@ -191,7 +191,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                             			</div>
                                                 		<div class="col-tab-1 text-right">
                                                 		
-                                                			<?= Html::a('<i class="fa fa-times fa-1x"></i>', ['order-action/remove-item', 'id' => $dataTransactionItem['id']], ['class' => 'remove-item']) ?>
+                                                			<?= Html::a('<i class="fa fa-times fa-1x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
                                                 			
                                                 		</div>
                                                 		
@@ -234,7 +234,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                     <tbody>
                                                         <tr>
                                                             <th>Total</th>
-                                                            <td id="total-price"><?= Yii::$app->formatter->asCurrency($jumlahHarga) ?></td>
+                                                            <td id="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -259,43 +259,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
 frontend\components\GrowlCustom::widget();
 
 $jscript = '
-    $(".menu-notes").focusout(function() {
-        
-        var thisObj = $(this);
-        var note = thisObj.val();
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: thisObj.data("url"),
-            data: {
-                "note": note
-            },
-            beforeSend: function(xhr) {
-
-                thisObj.parents(".list-order").find(".overlay").show();
-                thisObj.parents(".list-order").find(".loading-img").show();
-            },
-            success: function(response) {
-
-                if (!response.success) {
-
-                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
-                }
-
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
-
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
-            }
-        });
-    });
-
     $(".amount").on("change", function() {
 
         var thisObj = $(this);
@@ -340,11 +303,15 @@ $jscript = '
     $(".remove-item").on("click", function() {
 
         var thisObj = $(this);
+        var itemID = thisObj.parents(".list-order-group").find(".item-id").val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
+            data: {
+                "item_id": itemID,
+            },
             beforeSend: function(xhr) {
 
                 thisObj.parents(".list-order").find(".overlay").show();
@@ -354,17 +321,14 @@ $jscript = '
 
                 if (response.success) {
 
-                    thisObj.parents(".list-order").fadeOut(100, function() {
-
-                        var rootObj = $(this).parent().parent();
-
-                        $(this).parent().remove();
-
-                        if (rootObj.find(".list-order").length < 1) {
-
-                            rootObj.children("#no-data").removeClass("hidden");
-                        }
-                    });
+                    var rootObj = thisObj.parents(".box-content");
+    
+                    thisObj.parents(".list-order-group").remove();
+    
+                    if (rootObj.find(".list-order").length < 1) {
+    
+                        rootObj.children("#no-data").removeClass("hidden");
+                    }
 
                     $("#total-price").html(response.total_price);
                 } else {
@@ -372,19 +336,56 @@ $jscript = '
                     messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
                 }
 
-                thisObj.parents(".list-order").find(".overlay").show();
-                thisObj.parents(".list-order").find(".loading-img").show();
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
 
-                thisObj.parents(".list-order").find(".overlay").show();
-                thisObj.parents(".list-order").find(".loading-img").show();
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
             }
         });
 
         return false;
+    });
+
+    $(".menu-notes").on("change", function() {
+        
+        var thisObj = $(this);
+        var note = thisObj.val();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: thisObj.data("url"),
+            data: {
+                "note": note
+            },
+            beforeSend: function(xhr) {
+
+                thisObj.parents(".list-order").find(".overlay").show();
+                thisObj.parents(".list-order").find(".loading-img").show();
+            },
+            success: function(response) {
+
+                if (!response.success) {
+
+                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
+                }
+
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+
+                thisObj.parents(".list-order").find(".overlay").hide();
+                thisObj.parents(".list-order").find(".loading-img").hide();
+            }
+        });
     });
 ';
 
