@@ -204,16 +204,6 @@ class ActionController extends base\BaseController
             
             $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainPhoto->image;
 
-            $dataSocialShare = [];
-
-            if (!empty($post['social_media_share'])) {
-
-                foreach ($post['social_media_share'] as $socialShare) {
-
-                    $dataSocialShare[$socialShare] = true;
-                }
-            }
-
             $result = [];
 
             if ($flag) {
@@ -221,7 +211,6 @@ class ActionController extends base\BaseController
                 $transaction->commit();
 
                 $result['userPostMainPhoto'] = $modelUserPostMainPhoto->toArray();
-                $result['socialShare'] = $dataSocialShare;
                 $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Upload Foto Sukses';
@@ -553,19 +542,6 @@ class ActionController extends base\BaseController
             }
         }
 
-        if ($flag) {
-
-            $dataSocialShare = [];
-
-            if (!empty($post['social_media_share'])) {
-
-                foreach ($post['social_media_share'] as $socialShare) {
-
-                    $dataSocialShare[$socialShare] = true;
-                }
-            }
-        }
-
         $result = [];
 
         if ($flag) {
@@ -582,7 +558,6 @@ class ActionController extends base\BaseController
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
-            $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
         } else {
@@ -745,20 +720,6 @@ class ActionController extends base\BaseController
             }
         }
 
-        if ($flag) {
-
-            $dataSocialShare = [];
-
-            if (!empty($post['social_media_share'])) {
-
-                foreach ($post['social_media_share'] as $socialShare) {
-
-                    $dataSocialShare[$socialShare] = true;
-                }
-            }
-        }
-        
-
         $result = [];
 
         if ($flag) {
@@ -780,7 +741,6 @@ class ActionController extends base\BaseController
             ]);
             $result['commentCount'] = count($modelUserPostMain->userPostComments);
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
-            $result['socialShare'] = $dataSocialShare;
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
         } else {
