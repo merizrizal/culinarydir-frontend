@@ -58,17 +58,16 @@ $this->title = 'Checkout'; ?>
                                             
                                             <div class="row mt-10">
                                             	<div class="col-sm-5 col-sm-offset-7">
-                                                    <h4 class="font-alt"><?= Yii::t('app', 'Total Order') ?></h4>
                                                     <table class="table table-responsive table-striped table-border checkout-table">
                                                         <tbody>
                                                             <tr>
-                                                                <th>Total (Estimasi)</th>
+                                                                <th class="font-alt">Total (Estimasi)</th>
                                                                 <td id="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                             
-                                                    <?= Html::button('Pesan Sekarang', [
+                                                    <?= Html::button(Yii::t('app', 'Order Now'), [
                                             		    'class' => 'btn btn-d btn-round btn-block btn-submit-order',
                                             		    'data-url' => Yii::$app->urlManager->createUrl(['order/checkout', 'id' => $modelTransactionSession['id']])
                                             		]) ?>
