@@ -43,30 +43,18 @@ use yii\helpers\Html;
                                             </p>
                                         </div>
                                         <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
-                
+            
                                         	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
-                                        	    'class' => 'btn btn-success btn-round btn-xs add-to-cart'
+                                        	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
                                         	]) ?>
                                         	
-                                            <?= Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']) ?>
-                                            <?= Html::hiddenInput('price', $dataBusinessProduct['price'], ['class' => 'price']) ?>
-                                            <?= Html::hiddenInput('business_id', $dataBusinessProduct['business_id'], ['class' => 'business-id']) ?>
+                                        	<?php
+                                        	echo Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']);
+                                        	echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
+                                        	echo Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
                                         	
                                     	</div>
                                     </div>
-
-                                    <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
-            
-                                    	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
-                                    	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
-                                    	]) ?>
-                                    	
-                                    	<?php
-                                    	echo Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']);
-                                    	echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
-                                    	echo Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
-                                    	
-                                	</div>
                                 </div>
 
                             <?php
