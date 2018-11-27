@@ -12,6 +12,14 @@ $this->title = 'Checkout'; ?>
 	<section class="module-extra-small bg-main">
 		<div class="container detail checkout-order">
 		
+			<div class="row mb-20">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Order List'), ['order/order-list']) ?>
+
+                </div>
+            </div>
+		
 			<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
             
