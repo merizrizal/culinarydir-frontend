@@ -44,26 +44,16 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                     	if (!empty(Yii::$app->user->getIdentity()->image)) {
                     	    
                     	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 64, 64);
-                    	}
+                    	} 
                     	
-                    	$layoutUser = '
-                            <div class="widget-posts-image">
-                                ' . Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) . '
-                            </div>
-                                
-                            <div class="widget-posts-body">
-                                ' . Html::a(Yii::$app->user->getIdentity()->full_name, ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username], ['class' => 'my-review-user-name']) . '
-                                <br>
-                                <small class="my-review-created">' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
-                            </div>
-                        '; ?>
+                    	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
 
                     	<?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'my-user-post-main-id']) ?>
 
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row mb-10">
-                                    <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
+                                    <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
                                         <div class="widget">
                                             <div class="widget-posts-image">
                                                 <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) ?>
@@ -76,10 +66,10 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
+                                    <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
     									<div class="my-rating">
                                         	<h3 class="mt-0 mb-0">
-                                                <?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                                <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
                                         	</h3>
                      					</div>
                                         <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
@@ -142,6 +132,34 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xs-12 visible-xs">
+                                    	<ul class="list-inline mt-0 mb-0">
+                                            <li>
+                                                <div class="widget star-rating">
+                    
+                                                    <?= StarRating::widget([
+                                                        'id' => 'rating-' . $modelUserPostMain['id'],
+                                                        'name' => 'rating_' . $modelUserPostMain['id'],
+                                                        'value' => $overallValue,
+                                                        'pluginOptions' => [
+                                                            'displayOnly' => true,
+                                                            'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                            'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                            'showCaption' => false,
+                                                        ]
+                                                    ]); ?>
+                    
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="rating rating-<?= $modelUserPostMain['id']; ?>">
+                                                    <h4 class="mt-0 mb-0">
+                                                    	<?= Html::a(number_format($overallValue, 1), '#', ['class' => 'label label-success my-rating-popover']); ?>
+                                                    </h4>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 
                                 <div class="row">
@@ -199,6 +217,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         	    
                         	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
                         	    
+                        	    $shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-my-review-trigger']);
                         	    $editBtn = Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); 
                         	    $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
     
@@ -238,6 +257,9 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
                                             </li>
                                             <li class="visible-xs-inline-block">
+                                                <?= $shareBtn ?>
+                                            </li>
+                                            <li class="visible-xs-inline-block">
                                                 <?= $editBtn ?>
                                             </li>
                                             <li class="visible-xs-inline-block">
@@ -247,6 +269,9 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     </div>
                                     <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
+                                    		<li>
+                                                <?= $shareBtn ?>
+                                            </li>
                                             <li>
                                                 <?= $editBtn ?>
                                             </li>
@@ -522,29 +547,6 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                             </div>
                             <div class="form-group">
 
-                                <?= Html::checkboxList('social_media_share', null, [
-                                        'facebook' => Yii::t('app', 'Post to Facebook'),
-                                    ],
-                                    [
-                                        'class' => 'social-media-share-list',
-                                        'separator' => '&nbsp;&nbsp;&nbsp;',
-                                        'item' => function ($index, $label, $name, $checked, $value) {
-                                            
-                                            return '
-                                                <label style="font-weight: normal;">' .
-                                                    Html::checkbox($name, $checked, [
-                                                        'value' => $value,
-                                                        'class' => $value . '-review-share-trigger icheck',
-                                                    ]) . ' ' . $label .
-                                                '</label>
-                                            ';
-                                        },
-                                    ]
-                                ); ?>
-
-                            </div>
-                            <div class="form-group">
-
                                 <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['id' => 'submit-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
 
                                 <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
@@ -591,10 +593,6 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
 </ul>
 
 <?php
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
-
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
-
 $jscript = '
     var prevReview;
     var cancelWrite;
@@ -710,7 +708,7 @@ $jscript = '
         }
     });
 
-    $("#my-rating-popover").on("click", function() {
+    $("#my-rating-popover, .my-rating-popover").on("click", function() {
 
         return false;
     });
@@ -760,7 +758,7 @@ $jscript = '
         $("#post-review-text").val(prevReview);
         $("#post-photo-input").fileinput("clear");
 
-        $(".facebook-review-share-trigger").iCheck("uncheck");
+        $(".facebook-review-share-trigger").prop("checked", false).trigger("change");
 
         return false;
     });
@@ -791,6 +789,29 @@ $jscript = '
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
+    });
+
+    $(".share-my-review-trigger").on("click", function(event) {
+
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(".my-user-post-main-id").val();
+        var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
+        var description = $(".my-review-description").text();
+        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+
+        if ($("#review-uploaded-photo").children(".gallery-photo-review").length) {
+
+            image = window.location.protocol + "//" + window.location.hostname + $("#review-uploaded-photo").children(".gallery-photo-review").eq(0).find(".show-image").attr("href");
+        }
+
+        facebookShare({
+            ogUrl: url,
+            ogTitle: title,
+            ogDescription: description,
+            ogImage: image,
+            type: "Review"
+        });
+
+        return false;
     });
 
     $(".edit-my-review-trigger").on("click", function(event) {
@@ -995,35 +1016,6 @@ $jscript = '
                         $("#edit-review-container").show();
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
-
-                    $(".facebook-review-share-trigger").iCheck("uncheck");
-
-                    if ($.trim(response.socialShare)) {
-
-                        $.each(response.socialShare, function(socialName, value) {
-
-                            if (socialName === "facebook" && response.socialShare[socialName]) {
-
-                                var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + response.userPostMain.id;
-                                var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
-                                var description = response.userPostMain.text;
-                                var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
-
-                                if ($.trim(response.userPostMainPhoto)) {
-
-                                    image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto[0].image.replace("72x72", "");
-                                }
-
-                                facebookShare({
-                                    ogUrl: url,
-                                    ogTitle: title,
-                                    ogDescription: description,
-                                    ogImage: image,
-                                    type: "Review"
-                                });
-                            }
-                        });
-                    }
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
