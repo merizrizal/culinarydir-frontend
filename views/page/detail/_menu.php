@@ -45,7 +45,7 @@ use yii\helpers\Html;
                                         <div class="col-sm-4 col-xs-5">
                 
                                         	<?php
-                                        	echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order'), ['order-action/save-order'], [
+                                        	echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), ['order-action/save-order'], [
                                         	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
                                         	]);
                                         	
