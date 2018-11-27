@@ -22,40 +22,42 @@ $this->title = Yii::t('app', 'Order List'); ?>
                             		<h4 class="font-alt text-center"><?= Yii::t('app', 'Order List') ?></h4>
                             	</div>
                     
-                                <hr>
+                                <hr class="divider-w">
                                 
                                 <div class="box-content">
                                 
                                     <?php
                                     $noDataClass = '';
-                                    $urlCheckout = null;
                                     
                                     if (!empty($modelTransactionSession) && !empty($modelTransactionSession['transactionItems'])):
                                     
                                         $noDataClass = 'hidden';
-                                        $urlCheckout = ['order/checkout', 'id' => $modelTransactionSession['id']];
+                                        $removeButton = Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']);
                                         
                                         foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem):
-                                            
-                                            $subtotal = $dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount']; ?>
+                                        
+                                            $notes = Html::textInput('menu_notes', $dataTransactionItem['note'], [
+                                                'class' => 'form-control menu-notes',
+                                                'placeholder' => Yii::t('app', 'Write a Note'),
+                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
+                                            ]); ?>
                             				
                             				<div class="list-order-group">
                             				
                             					<?= Html::hiddenInput('item_id', $dataTransactionItem['id'], ['class' => 'item-id']) ?>
                             					
-                                        		<div class="list-order hidden-xs">
+                            					<div class="overlay" style="display: none;"></div>
+                            					<div class="loading-img" style="display: none;"></div>
+                            					
+                                        		<div class="list-order visible-lg visible-md visible-sm visible-tab">
                                                 	<div class="row">
-                                                		
-                                                		<div class="overlay" style="display: none;"></div>
-                                    					<div class="loading-img" style="display: none;"></div>
-                                    					
-                                                    	<div class="col-sm-4">
+                                                    	<div class="col-sm-4 col-tab-6">
                                                     		<h5 class="product-title"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
                                                 		</div>
-                                                		<div class="col-sm-2">
+                                                		<div class="col-sm-2 col-tab-2">
                                                 			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
                                                 		</div>
-                                                		<div class="col-lg-2 col-sm-3">
+                                                		<div class="col-lg-2 col-sm-3 col-tab-3">
                                             
                                                             <?= TouchSpin::widget([
                                                                 'name' => 'amount',
@@ -77,24 +79,20 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                             ]); ?>
                                                             
                                             			</div>
-                                                		<div class="col-sm-2 subtotal">
-                                                			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($subtotal) ?></h5>
+                                                		<div class="col-sm-2 visible-lg visible-md visible-sm subtotal">
+                                                			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount']) ?></h5>
                                                 		</div>
-                                                		<div class="col-md-1 col-sm-1 text-right">
+                                                		<div class="col-md-1 col-sm-1 col-tab-1 text-right">
                                                 		
-                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
+                                                			<?= $removeButton ?>
                                                 			
                                                 		</div>
                                             		</div>
                                             		
                                             		<div class="row">
-                                            			<div class="col-sm-7">
+                                            			<div class="col-sm-7 col-tab-8">
                                             			
-                                            				<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
-                                        				        'class' => 'form-control menu-notes', 
-                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
-                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
-                                            				]); ?>
+                                            				<?= $notes ?>
                                             				
                                             			</div>
                                             		</div>
@@ -107,16 +105,12 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		</div>
                                                 		<div class="col-xs-3 text-right">
                                                 		
-                                                			<?= Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
+                                                			<?= $removeButton ?>
                                                 			
                                                 		</div>
                                                 		<div class="col-xs-12">
                                                 		
-                                    						<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
-                                        				        'class' => 'form-control menu-notes', 
-                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
-                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
-                                            				]); ?>
+                                    						<?= $notes ?>
                                     						
                                             			</div>
                                             		</div>
@@ -152,64 +146,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                             ]); ?>
                                                             
                                             			</div>
-                                            			
-                                            			<div class="overlay" style="display: none;"></div>
-                                    					<div class="loading-img" style="display: none;"></div>
-                                    					
-                                            		</div>
-                                        		</div>
-                                        		
-                                        		<div class="list-order visible-tab">
-                                                	<div class="row">
-                                                    	<div class="col-tab-6">
-                                                    		<h5 class="product-title"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
-                                                		</div>
-                                                		<div class="col-tab-2">
-                                                			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
-                                                		</div>
-                                                		<div class="col-tab-3">
-                                            
-                                                            <?= TouchSpin::widget([
-                                                                'name' => 'amount',
-                                                                'value' => $dataTransactionItem['amount'],
-                                                                'options' => [
-                                                                    'class' => 'amount text-right input-sm',
-                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty', 'id' => $dataTransactionItem['id']])
-                                                                ],
-                                                                'pluginOptions' => [
-                                                                    'style' => 'width: 30%',
-                                                                    'min' => 1,
-                                                                    'max' => 50,
-                                                                    'step' => 1,
-                                                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                    'buttondown_class' => "btn btn-default btn-xs",
-                                                                    'buttonup_class' => "btn btn-default btn-xs"
-                                                                ],
-                                                            ]); ?>
-                                                            
-                                            			</div>
-                                                		<div class="col-tab-1 text-right">
-                                                		
-                                                			<?= Html::a('<i class="fa fa-times fa-1x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']) ?>
-                                                			
-                                                		</div>
-                                                		
-                                                		<div class="overlay" style="display: none;"></div>
-                                    					<div class="loading-img" style="display: none;"></div>
-                                    					
-                                            		</div>
-                                            		
-                                            		<div class="row">
-                                            			<div class="col-tab-8">
-                                    
-                                    						<?= Html::textInput('menu_notes', $dataTransactionItem['note'], [
-                                        				        'class' => 'form-control menu-notes', 
-                                            				    'placeholder' => Yii::t('app', 'Write a Note'), 
-                                            				    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
-                                            				]); ?>
-                                    						
-                                            			</div>
                                             		</div>
                                         		</div>
                                     
@@ -228,20 +164,18 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                     
                                     <div class="row mt-70">
                                         <div class="col-sm-5 col-sm-offset-7">
-                                            <div class="shop-cart-totalbox">
-                                                <h4 class="font-alt"><?= Yii::t('app', 'Total Order') ?></h4>
-                                                <table class="table table-responsive table-striped table-border checkout-table">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th>Total</th>
-                                                            <td id="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                        
-                                                <?= Html::a(Yii::t('app', 'Go to Checkout'), $urlCheckout, ['class' => 'btn btn-lg btn-block btn-round btn-d']) ?>
-                        
-                                            </div>
+                                            <h4 class="font-alt"><?= Yii::t('app', 'Total Order') ?></h4>
+                                            <table class="table table-responsive table-striped table-border checkout-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Total</th>
+                                                        <td id="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                    
+                                            <?= Html::a(Yii::t('app', 'Go to Checkout'), ['order/checkout', 'id' => $modelTransactionSession['id']], ['class' => 'btn btn-lg btn-block btn-round btn-d']) ?>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -273,8 +207,8 @@ $jscript = '
             },
             beforeSend: function(xhr) {
 
-                thisObj.parent().parent().siblings(".overlay").show();
-                thisObj.parent().parent().siblings(".loading-img").show();
+                thisObj.parents(".list-order-group").find(".overlay").show();
+                thisObj.parents(".list-order-group").find(".loading-img").show();
             },
             success: function(response) {
 
@@ -287,15 +221,15 @@ $jscript = '
                     messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
                 }
 
-                thisObj.parent().parent().siblings(".overlay").hide();
-                thisObj.parent().parent().siblings(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
 
-                thisObj.parent().parent().siblings(".overlay").hide();
-                thisObj.parent().parent().siblings(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             }
         });
     });
@@ -314,8 +248,8 @@ $jscript = '
             },
             beforeSend: function(xhr) {
 
-                thisObj.parents(".list-order").find(".overlay").show();
-                thisObj.parents(".list-order").find(".loading-img").show();
+                thisObj.parents(".list-order-group").find(".overlay").show();
+                thisObj.parents(".list-order-group").find(".loading-img").show();
             },
             success: function(response) {
 
@@ -336,15 +270,15 @@ $jscript = '
                     messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
                 }
 
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
 
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             }
         });
 
@@ -365,8 +299,8 @@ $jscript = '
             },
             beforeSend: function(xhr) {
 
-                thisObj.parents(".list-order").find(".overlay").show();
-                thisObj.parents(".list-order").find(".loading-img").show();
+                thisObj.parents(".list-order-group").find(".overlay").show();
+                thisObj.parents(".list-order-group").find(".loading-img").show();
             },
             success: function(response) {
 
@@ -375,15 +309,15 @@ $jscript = '
                     messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
                 }
 
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
 
-                thisObj.parents(".list-order").find(".overlay").hide();
-                thisObj.parents(".list-order").find(".loading-img").hide();
+                thisObj.parents(".list-order-group").find(".overlay").hide();
+                thisObj.parents(".list-order-group").find(".loading-img").hide();
             }
         });
     });
