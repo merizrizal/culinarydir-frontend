@@ -41,7 +41,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                             				
                             				<div class="list-order-group">
                             				
-                            					<?= Html::hiddenInput('menu_id', $dataTransactionItem['id'], ['class' => 'item-id']) ?>
+                            					<?= Html::hiddenInput('item_id', $dataTransactionItem['id'], ['class' => 'item-id']) ?>
                             					
                                         		<div class="list-order hidden-xs">
                                                 	<div class="row">

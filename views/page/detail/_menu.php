@@ -43,15 +43,15 @@ use yii\helpers\Html;
                                             </p>
                                         </div>
                                         <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
-            
-                                        	<?= Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
-                                        	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
-                                        	]) ?>
-                                        	
+                
                                         	<?php
-                                        	echo Html::hiddenInput('nama_menu', $dataBusinessProduct['name'], ['class' => 'menu-name']);
-                                        	echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
-                                        	echo Html::hiddenInput('harga_satuan', $dataBusinessProduct['price'], ['class' => 'price']) ?>
+                                        	echo Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
+                                        	    'class' => 'btn btn-d btn-round btn-xs add-to-cart'
+                                        	]);
+                                        	
+                                            echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
+                                            echo Html::hiddenInput('price', $dataBusinessProduct['price'], ['class' => 'price']);
+                                            echo Html::hiddenInput('business_id', $dataBusinessProduct['business_id'], ['class' => 'business-id']); ?>
                                         	
                                     	</div>
                                     </div>
