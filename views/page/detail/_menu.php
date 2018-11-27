@@ -28,21 +28,21 @@ use yii\helpers\Html;
 								
 								<div class="business-menu">
                                     <div class="row">
-                                        <div class="col-md-8 col-xs-7">
+                                        <div class="col-sm-8 col-xs-7">
                                             <strong class="menu-name"><?= $dataBusinessProduct['name'] ?></strong>
                                             <span style="display: block; width: 80%"></span>
                                         </div>
-                                        <div class="col-md-4 col-xs-5">
+                                        <div class="col-sm-4 col-xs-5">
                                             <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                         </div>
                                     </div>
                                     <div class="row mb-20">
-                                        <div class="col-md-8 col-xs-12">
+                                        <div class="col-sm-8 col-xs-7">
                                             <p class="mb-0">
                                                 <?= $dataBusinessProduct['description'] ?>
                                             </p>
                                         </div>
-                                        <div class="col-md-offset-0 col-md-4 col-xs-offset-7 col-xs-5">
+                                        <div class="col-sm-4 col-xs-5">
                 
                                         	<?php
                                         	echo Html::a('<i class="fa fa-plus"></i> Pesan Ini', ['order-action/save-order'], [
@@ -50,8 +50,7 @@ use yii\helpers\Html;
                                         	]);
                                         	
                                             echo Html::hiddenInput('menu_id', $dataBusinessProduct['id'], ['class' => 'menu-id']);
-                                            echo Html::hiddenInput('price', $dataBusinessProduct['price'], ['class' => 'price']);
-                                            echo Html::hiddenInput('business_id', $dataBusinessProduct['business_id'], ['class' => 'business-id']); ?>
+                                            echo Html::hiddenInput('price', $dataBusinessProduct['price'], ['class' => 'price']); ?>
                                         	
                                     	</div>
                                     </div>
@@ -86,7 +85,7 @@ $jscript = '
             data: {
                 "menu_id": thisObj.siblings(".menu-id").val(),
                 "price": thisObj.siblings(".price").val(),
-                "business_id": thisObj.siblings(".business-id").val()
+                "business_id": $(".business-id").val()
             },
             beforeSend: function(xhr) {
 
