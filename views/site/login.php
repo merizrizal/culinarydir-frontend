@@ -160,4 +160,4 @@ if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "Reset Berhasil", "' . $message . '", "success");';
 }
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>
