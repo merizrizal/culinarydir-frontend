@@ -91,6 +91,7 @@ $this->title = 'Checkout'; ?>
 </div>
 
 <?php
+frontend\components\GrowlCustom::widget();
 
 $jscript = '
     $(".btn-submit-order").on("click", function() {
@@ -124,12 +125,16 @@ $jscript = '
             },
             success: function(response) {
 
+                if (!response.success) {
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+
                 thisObj.parents(".box-content").find(".overlay").hide();
                 thisObj.parents(".box-content").find(".loading-img").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                 thisObj.parents(".box-content").find(".overlay").hide();
                 thisObj.parents(".box-content").find(".loading-img").hide();

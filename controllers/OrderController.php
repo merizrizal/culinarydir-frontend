@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * Order controller
@@ -62,19 +63,26 @@ class OrderController extends base\BaseController
             
             if (Yii::$app->request->post()) {
                 
-//                 echo '<pre>'; print_r(Yii::$app->request->post()); exit();
+                $modelTransactionSession->is_closed = true;
                 
-//                 $modelTransactionSession->is_closed = true;
-                
-//                 if ($modelTransactionSession->save()) {
+                if ($modelTransactionSession->save()) {
                     
-//                     $businessPhone = $modelTransactionSession->business->phone1;
-//                     $messageOrder = Yii::$app->request->post('message');
+                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession->business->phone1), 1);
+                    $messageOrder = Yii::$app->request->post('message');
                     
-//                     return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=%20' . $messageOrder);
-//                 } else {
+                    return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
+                } else {
                     
-//                 }
+                    $result = [];
+                    $result['success'] = false;
+                    $result['icon'] = 'aicon aicon-icon-info';
+                    $result['title'] = 'Gagal Checkout';
+                    $result['message'] = 'Terjadi kesalahan ketika menyimpan data';
+                    $result['type'] = 'danger';
+                    
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return $result;
+                }
             }
             
             return $this->render('checkout', [
