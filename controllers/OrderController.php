@@ -6,7 +6,6 @@ use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
 /**
  * Order controller
@@ -67,21 +66,27 @@ class OrderController extends base\BaseController
                 
                 if ($modelTransactionSession->save()) {
                     
-                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession->business->phone1), 1);
-                    $messageOrder = Yii::$app->request->post('message');
+                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
+                    
+                    $itemCount = count($modelTransactionSession['transactionItems']) - 1;
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',%0ASaya ' . Yii::$app->user->getIdentity()->full_name . ' ingin memesan:%0A%0A';
+                    
+                    foreach ($modelTransactionSession['transactionItems'] as $itemIndex => $dataTransactionItem) {
+                        
+                        $messageOrder .= $dataTransactionItem['businessProduct']['name'] . ' (Jumlah: ' . $dataTransactionItem['amount'] . ')';
+                        $messageOrder .= (!empty($dataTransactionItem['note'])) ? '%0A' . $dataTransactionItem['note'] : '';
+                        $messageOrder .= ($itemCount !== $itemIndex) ? '%0A%0A' : '';
+                    }
+                    
+                    $messageOrder = str_replace(' ', '%20', $messageOrder);
                     
                     return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
                 } else {
                     
-                    $result = [];
-                    $result['success'] = false;
-                    $result['icon'] = 'aicon aicon-icon-info';
-                    $result['title'] = 'Gagal Checkout';
-                    $result['message'] = 'Terjadi kesalahan ketika menyimpan data';
-                    $result['type'] = 'danger';
-                    
-                    Yii::$app->response->format = Response::FORMAT_JSON;
-                    return $result;
+                    Yii::$app->session->setFlash('message', [
+                        'title' => 'Gagal Checkout',
+                        'message' => 'Terjadi kesalahan saat menyimpan data',
+                    ]);
                 }
             }
             
