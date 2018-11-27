@@ -234,7 +234,7 @@ $jscript = '
             circleRadius.bindTo("center", marker, "position");
         });
 
-        $(".radius-500").on("ifChecked", function() {
+        $(".radius-500").on("change", function() {
 
             radius = parseInt($(this).data("radius"));
 
@@ -242,7 +242,7 @@ $jscript = '
             circleRadius.setRadius(radius);
         });
 
-        $(".radius-1000").on("ifChecked", function() {
+        $(".radius-1000").on("change", function() {
 
             radius = parseInt($(this).data("radius"));
 
@@ -250,7 +250,7 @@ $jscript = '
             circleRadius.setRadius(radius);
         });
 
-        $(".radius-2000").on("ifChecked", function() {
+        $(".radius-2000").on("change", function() {
 
             radius = parseInt($(this).data("radius"));
 
