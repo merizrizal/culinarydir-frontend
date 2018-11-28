@@ -104,7 +104,7 @@ $appComponent = new AppComponent(); ?>
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDORji7AXzhxgYhuKOGJg6_KYrnTPYPOn8', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $(".result-map-search").hide();    

@@ -260,8 +260,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
-
 $jscript = '
     function initMap() {
 
