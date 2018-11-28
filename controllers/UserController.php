@@ -152,11 +152,7 @@ class UserController extends base\BaseHistoryUrlController
         if ($modelChangePassword->load(Yii::$app->request->post()) && $modelChangePassword->validate() && $modelChangePassword->changePassword()) {
 
             Yii::$app->session->setFlash('message', [
-                'type' => 'success',
-                'delay' => 1000,
-                'icon' => 'aicon aicon-icon-tick-in-circle',
                 'message' => 'Anda berhasil mengubah password baru di Asikmakan',
-                'title' => 'Berhasil Mengubah Password',
             ]);
         }
 
