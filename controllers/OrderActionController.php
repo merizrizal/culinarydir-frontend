@@ -83,25 +83,25 @@ class OrderActionController extends base\BaseController
                 
                 $transaction->commit();
                 
-                $return['message']['type'] = 'success';
-                $return['message']['icon'] = 'fa fa-check';
-                $return['message']['title'] = 'Penambahan menu sukses';
-                $return['message']['text'] = '<product> telah ditambahkan ke dalam daftar';
+                $return['type'] = 'success';
+                $return['icon'] = 'aicon aicon-icon-tick-in-circle';
+                $return['title'] = 'Penambahan menu sukses';
+                $return['text'] = '<product> telah ditambahkan ke dalam daftar';
             } else {
                 
                 $transaction->rollBack();
                 
-                $return['message']['type'] = 'danger';
-                $return['message']['icon'] = 'fa fa-warning';
-                $return['message']['title'] = 'Penambahan menu gagal';
-                $return['message']['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
+                $return['type'] = 'danger';
+                $return['icon'] = 'aicon aicon-icon-info';
+                $return['title'] = 'Penambahan menu gagal';
+                $return['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
             }
         } else {
             
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan menu gagal';
-            $return['message']['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Penambahan menu gagal';
+            $return['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
