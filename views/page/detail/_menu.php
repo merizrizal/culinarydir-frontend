@@ -1,4 +1,5 @@
 <?php
+
 /* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
 
 <div class="row">
@@ -22,7 +23,6 @@
                                 <div class="row">
                                     <div class="col-md-8 col-xs-8">
                                         <strong><?= $dataBusinessProduct['name'] ?></strong>
-                                        <span style="display: block; width: 80%"></span>
                                     </div>
                                     <div class="col-md-4 col-xs-4">
                                         <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>

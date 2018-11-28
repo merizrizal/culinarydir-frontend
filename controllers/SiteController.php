@@ -65,6 +65,7 @@ class SiteController extends base\BaseController
     public function actionRegister()
     {
         if (!Yii::$app->user->isGuest) {
+            
             return $this->goHome();
         }
 
@@ -230,6 +231,7 @@ class SiteController extends base\BaseController
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
+            
             return $this->goHome();
         }
 
@@ -392,6 +394,7 @@ class SiteController extends base\BaseController
                 $model->login_id = $socmedEmail;
 
                 if ($model->login()) {
+                    
                     return $this->goBack();
                 }
             } else {

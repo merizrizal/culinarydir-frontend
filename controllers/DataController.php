@@ -262,15 +262,15 @@ class DataController extends base\BaseController
         }
         
         $modelUserPostMain = UserPostMain::find()
-        ->joinWith([
-            'business',
-            'user',
-            'userPostMains child' => function($query) {
-            
-            $query->andOnCondition(['child.is_publish' => true]);
-            },
-            'userVotes',
-            'userPostComments',
+            ->joinWith([
+                'business',
+                'user',
+                'userPostMains child' => function($query) {
+                
+                    $query->andOnCondition(['child.is_publish' => true]);
+                },
+                'userVotes',
+                'userPostComments',
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.is_publish' => true])
@@ -279,16 +279,16 @@ class DataController extends base\BaseController
             ->distinct()
             ->asArray();
             
-            $dataProviderUserPostMain = new ActiveDataProvider([
-                'query' => $modelUserPostMain,
-                'pagination' => [
-                    'route' => 'data/recent-post',
-                ]
-            ]);
-            
-            return $this->render('recent_post', [
-                'dataProviderUserPostMain' => $dataProviderUserPostMain,
-            ]);
+        $dataProviderUserPostMain = new ActiveDataProvider([
+            'query' => $modelUserPostMain,
+            'pagination' => [
+                'route' => 'data/recent-post',
+            ]
+        ]);
+        
+        return $this->render('recent_post', [
+            'dataProviderUserPostMain' => $dataProviderUserPostMain,
+        ]);
     }
 
     private function getResult($fileRender)
