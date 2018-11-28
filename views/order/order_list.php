@@ -47,7 +47,6 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                     if (!empty($modelTransactionSession['transactionItems'])):
                                     
                                         $noDataClass = 'hidden';
-                                        $removeButton = Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']);
                                         
                                         foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem):
                                         
@@ -55,12 +54,11 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 'class' => 'form-control menu-notes',
                                                 'placeholder' => Yii::t('app', 'Write a Note'),
                                                 'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $dataTransactionItem['id']])
-                                            ]); ?>
+                                            ]);
+                                            
+                                            $removeButton = Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item', 'id' => $dataTransactionItem['id']], ['class' => 'remove-item']); ?>
                             				
                             				<div class="list-order-group">
-                            				
-                            					<?= Html::hiddenInput('item_id', $dataTransactionItem['id'], ['class' => 'item-id']) ?>
-                            					
                             					<div class="list-order visible-lg visible-md visible-sm visible-tab">
                                                 	<div class="row">
                                                     	<div class="col-lg-5 col-sm-4 col-tab-6">
@@ -273,15 +271,11 @@ $jscript = '
     $(".remove-item").on("click", function() {
 
         var thisObj = $(this);
-        var itemID = thisObj.parents(".list-order-group").find(".item-id").val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
-            data: {
-                "item_id": itemID,
-            },
             beforeSend: function(xhr) {
 
                 thisObj.siblings(".overlay").show();

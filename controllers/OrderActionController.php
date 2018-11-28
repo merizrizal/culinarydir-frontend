@@ -27,6 +27,7 @@ class OrderActionController extends base\BaseController
                         'save-order' => ['post'],
                         'change-qty' => ['post'],
                         'remove-item' => ['post'],
+                        'save-notes' => ['post']
                     ],
                 ],
             ]);
@@ -159,10 +160,8 @@ class OrderActionController extends base\BaseController
         return $return;
     }
     
-    public function actionRemoveItem()
+    public function actionRemoveItem($id)
     {
-        $post = Yii::$app->request->post();
-        
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
@@ -170,7 +169,7 @@ class OrderActionController extends base\BaseController
             ->joinWith([
                 'transactionSession'
             ])
-            ->andWhere(['transaction_item.id' => $post['item_id']])
+            ->andWhere(['transaction_item.id' => $id])
             ->one();
         
         if (!empty($modelTransactionItem)) {
