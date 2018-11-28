@@ -8,7 +8,6 @@ use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 
-
 /**
  * OrderAction controller
  */
@@ -89,6 +88,9 @@ class OrderActionController extends base\BaseController
             $return['message']['icon'] = 'fa fa-warning';
             $return['message']['title'] = 'Penambahan menu gagal';
             $return['message']['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
+        
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return $return;
         }
         
         if ($flag) {
