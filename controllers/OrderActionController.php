@@ -41,11 +41,12 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
         $return = [];
         
-        if (empty($modelTransactionSession)) {
+        if (!empty($modelTransactionSession)) {
+            
+            $modelTransactionSession->total_price += $post['price'];
+        } else {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
@@ -55,7 +56,8 @@ class OrderActionController extends base\BaseController
             
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
-            $modelTransactionSession->total_price += $post['price'];
+            $transaction = Yii::$app->db->beginTransaction();
+            $flag = false;
             
             if (($flag = $modelTransactionSession->save())) {
                 
