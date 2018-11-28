@@ -37,8 +37,15 @@
                         </div>
 
                         <div class="clearfix"></div>
+                        
                         <div class="col-sm-12">
                             <img class="img-responsive img-component" src="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-logo-footer.png' ?>">
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <div class="col-sm-12">
+                            <a href='https://play.google.com/store/apps/details?id=com.asikmakan.app&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Temukan di Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'/></a>
                         </div>
                     </div>
                 </div>

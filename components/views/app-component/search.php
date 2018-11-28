@@ -86,7 +86,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
 
                                 </div>
@@ -316,7 +316,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
 
                                 </div>
@@ -416,9 +416,9 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 </div>
 
 <?php
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $(".city-id").select2({
@@ -440,7 +440,7 @@ $jscript = '
 
         $(".input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
         $(".category-id").val(null).trigger("change");
-        $(".facility").iCheck("uncheck");
+        $(".facility").prop("checked", false).trigger("change");
 
         $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
@@ -451,4 +451,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>

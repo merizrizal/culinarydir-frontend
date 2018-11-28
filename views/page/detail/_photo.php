@@ -58,32 +58,9 @@ use kartik\file\FileInput;
                                     'layoutTemplates' => [
                                         'footer' => '',
                                     ],
+                                    'dropZoneTitle' => Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos, maximum size 2 Mb/photo')
                                 ]
                             ]); ?>
-    
-                            <div class="form-group">
-    
-                                <?= Html::checkboxList('social_media_share', null, [
-                                        'facebook' => Yii::t('app', 'Post to Facebook'),
-                                    ],
-                                    [
-                                        'class' => 'social-media-share-list',
-                                        'separator' => '&nbsp;&nbsp;&nbsp;',
-                                        'item' => function ($index, $label, $name, $checked, $value) {
-                                            
-                                            return '
-                                                <label style="font-weight: normal;">' .
-                                                    Html::checkbox($name, $checked, [
-                                                        'value' => $value,
-                                                        'class' => $value . '-photo-share-trigger icheck',
-                                                    ]) . ' ' . $label .
-                                                '</label>
-                                            ';
-                                        },
-                                    ]
-                                ); ?>
-    
-                            </div>
     
                             <div class="form-group">
     
@@ -153,7 +130,7 @@ $jscript = '
         $("#post-photo-container").find(".form-group").removeClass("has-error");
         $("#post-photo-container").find(".form-group").find(".help-block").html("");
 
-        $(".facebook-photo-share-trigger").iCheck("uncheck");
+        $(".facebook-photo-share-trigger").prop("checked", false).trigger("change");
 
         return false;
     });
@@ -218,30 +195,6 @@ $jscript = '
                     $("#cancel-post-photo").trigger("click");
 
                     getUserPhoto($("#business_id").val());
-
-                    $(".facebook-photo-share-trigger").iCheck("uncheck");
-
-                    if ($.trim(response.socialShare)){
-
-                        $.each(response.socialShare, function(socialName, value) {
-
-                            if (socialName === "facebook" && response.socialShare[socialName]) {
-
-                                var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + response.userPostMainPhoto.id;
-                                var title = "Foto untuk " + $(".business-name").text().trim();
-                                var description = response.userPostMainPhoto.text;
-                                var image = window.location.protocol + "//" + window.location.hostname + response.userPostMainPhoto.image;
-
-                                facebookShare({
-                                    ogUrl: url,
-                                    ogTitle: title,
-                                    ogDescription: description,
-                                    ogImage: image,
-                                    type: "Foto"
-                                });
-                            }
-                        });
-                    }
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {

@@ -251,10 +251,11 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     <h4 class="font-alt mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
                                                 </div>
 
+												<div class="visible-tab col-tab-12 clearfix"></div>
                                                 <div class="visible-xs col-xs-12 clearfix"></div>
 
-                                                <div class="col-sm-5 col-tab-5 col-xs-12">
-                                                    <h5 class="mb-0">
+                                                <div class="col-sm-5 col-tab-12 col-xs-12">
+                                                    <h5 class="pull-right visible-lg visible-md visible-sm mb-0">
 
                                                         <?php
                                                         $categories = '';
@@ -264,8 +265,9 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             $categories .= $dataBusinessCategory['category']['name'] . ' / ';
                                                         } ?>
 
-                                                        <strong class="pull-right visible-lg visible-md visible-sm visible-tab m-0"><?= trim($categories, ' / ') ?></strong>
+                                                        <strong><?= trim($categories, ' / ') ?></strong>
                                                     </h5>
+                                                    <h5 class="visible-tab mt-10"><?= trim($categories, ' / ') ?></h5>
                                                     <h6 class="visible-xs mt-10"><?= trim($categories, ' / ') ?></h6>
                                                 </div>
                                             </div>
@@ -900,7 +902,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
 };
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
 frontend\components\GrowlCustom::widget();
 frontend\components\RatingColor::widget();
@@ -908,7 +910,7 @@ frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $("#img-for-share-link").hide();
@@ -1150,12 +1152,12 @@ $jscript = '
 
     $("#modal-report").on("hidden.bs.modal", function() {
 
-        $(this).find("#userreport-report_status").find("input.report-subject").iCheck("uncheck");
+        $(this).find("#userreport-report_status").find("input.report-subject").prop("checked", false).trigger("change");
         $(this).find(".form-group").removeClass("has-error");
         $(this).find(".form-group").removeClass("has-success");
         $(this).find(".form-group").find(".help-block").html("");
     });    
 ';
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>
 

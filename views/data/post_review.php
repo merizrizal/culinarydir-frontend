@@ -112,7 +112,7 @@ $linkPager = LinkPager::widget([
                         <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
                             <div class="rating">
                             	<h3 class="mt-0 mb-0">
-                                    <?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success user-rating-popover pt-10']); ?>
+                                    <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success user-rating-popover pt-10']); ?>
                             	</h3>
                             </div>
                             <div id="user-container-popover<?= $dataUserPostMain['id']; ?>" class="popover popover-x popover-default popover-rating">
@@ -187,7 +187,7 @@ $linkPager = LinkPager::widget([
                                 <li>
                                     <div class="rating rating-<?= $dataUserPostMain['id']; ?>">
                                         <h4 class="mt-0 mb-0">
-                                        	<?= Html::a(number_format(!empty($overallValue) ? $overallValue : 0, 1), '#', ['class' => 'label label-success user-rating-popover']); ?>
+                                        	<?= Html::a(number_format($overallValue, 1), '#', ['class' => 'label label-success user-rating-popover']); ?>
                                         </h4>
                                     </div>
                                 </li>
