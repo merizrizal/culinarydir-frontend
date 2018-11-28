@@ -34,9 +34,6 @@ $this->title = 'Checkout'; ?>
             					
             					<div class="box-content">
             					
-            						<div class="overlay" style="display: none;"></div>
-    								<div class="loading-img" style="display: none;"></div>
-            					
                 					<?= Html::beginForm(['order/checkout', 'id' => $modelTransactionSession['id']], 'post') ?>
                 					
                 						<?= Html::hiddenInput('transaction_id', $modelTransactionSession['id'])?>
