@@ -215,8 +215,6 @@ class OrderActionController extends base\BaseController
     {
         $post = Yii::$app->request->post();
         
-        $transaction = Yii::$app->db->beginTransaction();
-        
         $modelTransactionItem = TransactionItem::find()
             ->andWhere(['transaction_item.id' => $id])
             ->one();
@@ -227,12 +225,8 @@ class OrderActionController extends base\BaseController
         
         if ($modelTransactionItem->save()) {
             
-            $transaction->commit();
-            
             $return['success'] = true;
         } else {
-            
-            $transaction->rollBack();
             
             $return['success'] = false;
             $return['type'] = 'danger';
