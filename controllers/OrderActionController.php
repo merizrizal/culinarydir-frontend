@@ -38,7 +38,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
@@ -54,7 +54,7 @@ class OrderActionController extends base\BaseController
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->total_price = $post['price'];
-            $modelTransactionSession->user_ordered = Yii::$app->user->identity->id;
+            $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
         }
         
@@ -85,10 +85,10 @@ class OrderActionController extends base\BaseController
             
             $transaction->rollBack();
             
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan menu gagal';
-            $return['message']['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Penambahan menu gagal';
+            $return['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
             
             Yii::$app->response->format = Response::FORMAT_JSON;
             return $return;
@@ -98,18 +98,18 @@ class OrderActionController extends base\BaseController
             
             $transaction->commit();
             
-            $return['message']['type'] = 'success';
-            $return['message']['icon'] = 'fa fa-check';
-            $return['message']['title'] = 'Penambahan menu sukses';
-            $return['message']['text'] = '<product> telah ditambahkan ke dalam daftar';
+            $return['type'] = 'success';
+            $return['icon'] = 'aicon aicon-icon-tick-in-circle';
+            $return['title'] = 'Penambahan menu sukses';
+            $return['text'] = '<product> telah ditambahkan ke dalam daftar';
         } else {
             
             $transaction->rollBack();
             
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan menu gagal';
-            $return['message']['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Penambahan menu gagal';
+            $return['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -152,10 +152,10 @@ class OrderActionController extends base\BaseController
             $transaction->rollBack();
             
             $return['success'] = false;
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Perubahan jumlah menu gagal';
-            $return['message']['text'] = 'Terjadi kesalahan saat proses perubahan jumlah menu, silahkan ulangi kembali';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Perubahan jumlah menu gagal';
+            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah menu, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -167,7 +167,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $transaction = Yii::$app->db->beginTransaction();
-        $flag = true;
+        $flag = false;
         
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
@@ -176,19 +176,19 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_item.id' => $post['item_id']])
             ->one();
         
-        if (($flag = $modelTransactionItem->save())) {
+        if (!empty($modelTransactionItem)) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
             $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
             
             $flag = $modelTransactionSession->save();
-        }
-        
-        if (($flag = TransactionItem::deleteAll(['id' => $post['item_id']]))) {
             
-            if ($modelTransactionSession->total_price == 0) {
+            if (($flag = $modelTransactionItem->delete())) {
                 
-                $flag = TransactionSession::deleteAll(['id' => $modelTransactionSession->id]);
+                if ($modelTransactionSession->total_price == 0) {
+                    
+                    $flag = $modelTransactionSession->delete();
+                }
             }
         }
         
@@ -205,10 +205,10 @@ class OrderActionController extends base\BaseController
             $transaction->rollBack();
             
             $return['success'] = false;
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penghapusan produk gagal';
-            $return['message']['text'] = 'Terjadi kesalahan saat proses penghapusan, silahkan ulangi kembali';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Penghapusan produk gagal';
+            $return['text'] = 'Terjadi kesalahan saat proses penghapusan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -222,9 +222,6 @@ class OrderActionController extends base\BaseController
         $transaction = Yii::$app->db->beginTransaction();
         
         $modelTransactionItem = TransactionItem::find()
-            ->joinWith([
-                'transactionSession'
-            ])
             ->andWhere(['transaction_item.id' => $id])
             ->one();
             
@@ -242,10 +239,10 @@ class OrderActionController extends base\BaseController
             $transaction->rollBack();
             
             $return['success'] = false;
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Input keterangan gagal';
-            $return['message']['text'] = 'Harap input kembali keterangan untuk menu ini.';
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Input keterangan gagal';
+            $return['text'] = 'Harap input kembali keterangan untuk menu ini.';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;

@@ -30,7 +30,6 @@ use yii\helpers\Html;
                                     <div class="row">
                                         <div class="col-sm-8 col-xs-7">
                                             <strong class="menu-name"><?= $dataBusinessProduct['name'] ?></strong>
-                                            <span style="display: block; width: 80%"></span>
                                         </div>
                                         <div class="col-sm-4 col-xs-5">
                                             <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
@@ -97,7 +96,7 @@ $jscript = '
                 thisObj.parents(".box-content").find(".overlay").hide();
                 thisObj.parents(".box-content").find(".loading-img").hide();
 
-                messageResponse(response.message.icon, response.message.title, response.message.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.message.type);
+                messageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.type);
             },
             error: function (xhr, ajaxOptions, thrownError) {
 

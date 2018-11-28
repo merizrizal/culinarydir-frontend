@@ -62,7 +62,7 @@ $this->title = 'Checkout'; ?>
                                                         <table class="table table-responsive table-striped table-border checkout-table">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th><?= Yii::t('app', 'Total') ?></th>
+                                                                    <th class="font-alt"><?= Yii::t('app', 'Total') ?></th>
                                                                     <td><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
                                                                 </tr>
                                                             </tbody>

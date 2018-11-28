@@ -33,10 +33,13 @@ class OrderController extends base\BaseController
     {
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
-                'transactionItems',
+                'transactionItems' => function($query) {
+                    
+                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                },
                 'transactionItems.businessProduct'
             ])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
             
@@ -50,11 +53,14 @@ class OrderController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
-                'transactionItems',
+                'transactionItems' => function($query) {
+                
+                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                },
                 'transactionItems.businessProduct'
             ])
             ->andWhere(['transaction_session.id' => $id])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
