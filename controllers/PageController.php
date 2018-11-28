@@ -144,6 +144,7 @@ class PageController extends base\BaseHistoryUrlController
         Yii::$app->formatter->timeZone = 'UTC';
         
         if (empty($modelBusiness)) {
+            
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -250,6 +251,7 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->one();
         
         if (empty($modelBusinessPromo)) {
+            
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -289,6 +291,7 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
+            
             throw new NotFoundHttpException('The requested page does not exist.');
         }
                 
@@ -345,6 +348,7 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
+            
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
