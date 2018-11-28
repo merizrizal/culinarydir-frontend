@@ -12,6 +12,21 @@ $this->title = Yii::t('app', 'Order List'); ?>
     <section class="module-extra-small bg-main">
         <div class="container detail">
         
+        	<div class="row mb-20">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+					
+					<?php
+					if (!empty($modelTransactionSession)) {
+					    
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelTransactionSession['business_id']]);
+					} else {
+					  
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']);
+					} ?>
+
+                </div>
+            </div>
+            
         	<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
                 
@@ -29,7 +44,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                     <?php
                                     $noDataClass = '';
                                     
-                                    if (!empty($modelTransactionSession) && !empty($modelTransactionSession['transactionItems'])):
+                                    if (!empty($modelTransactionSession['transactionItems'])):
                                     
                                         $noDataClass = 'hidden';
                                         $removeButton = Html::a('<i class="fa fa-times fa-2x"></i>', ['order-action/remove-item'], ['class' => 'remove-item']);
@@ -187,8 +202,15 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                    
-                                            <?= Html::a(Yii::t('app', 'Go to Checkout'), ['order/checkout', 'id' => $modelTransactionSession['id']], ['class' => 'btn btn-lg btn-block btn-round btn-d']) ?>
+                    						
+                    						<?php
+                    						if (!empty($modelTransactionSession)) {
+                    						    
+                						        echo Html::a(Yii::t('app', 'Go to Checkout'), ['order/checkout', 'id' => $modelTransactionSession['id']], ['class' => 'btn btn-lg btn-block btn-round btn-d checkout-btn']);
+                    						} else {
+                    						    
+                    						    echo Html::a(Yii::t('app', 'Go to Checkout'), null, ['class' => 'btn btn-lg btn-block btn-round btn-d checkout-btn', 'disabled' => 'disabled']);
+                    						} ?>
                                             
                                         </div>
                                     </div>
@@ -232,7 +254,7 @@ $jscript = '
                     thisObj.parents(".list-order").find(".subtotal").children().html(response.subtotal);
                 } else {
 
-                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
+                    messageResponse(response.icon, response.title, response.text, response.type);
                 }
 
                 thisObj.parent().siblings(".overlay").hide();
@@ -273,15 +295,22 @@ $jscript = '
     
                     thisObj.parents(".list-order-group").remove();
     
-                    if (rootObj.find(".list-order").length < 1) {
+                    if (rootObj.find(".list-order-group").length < 1) {
     
                         rootObj.children("#no-data").removeClass("hidden");
+
+                        $(".checkout-btn").attr("disabled", "disabled");
+
+                        $(".checkout-btn").on("click", function(e) {
+                
+                            e.preventDefault();
+                        });
                     }
 
                     $("#total-price").html(response.total_price);
                 } else {
 
-                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
+                    messageResponse(response.icon, response.title, response.text, response.type);
                 }
 
                 thisObj.siblings(".overlay").hide();
@@ -320,7 +349,7 @@ $jscript = '
 
                 if (!response.success) {
 
-                    messageResponse(response.message.icon, response.message.title, response.message.text, response.message.type);
+                    messageResponse(response.icon, response.title, response.text, response.type);
                 }
 
                 thisObj.siblings(".overlay").hide();
