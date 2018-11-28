@@ -63,7 +63,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                             					
                             					<div class="list-order visible-lg visible-md visible-sm visible-tab">
                                                 	<div class="row">
-                                                    	<div class="col-lg-4 col-sm-3 col-tab-5">
+                                                    	<div class="col-lg-5 col-sm-4 col-tab-6">
                                                     		<h5 class="product-title"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
                                                 		</div>
                                                 		<div class="col-sm-2 col-tab-2 text-right">
@@ -97,7 +97,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		<div class="col-sm-2 visible-lg visible-md visible-sm subtotal">
                                                 			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount']) ?></h5>
                                                 		</div>
-                                                		<div class="col-sm-2 col-tab-2 text-right">
+                                                		<div class="col-sm-1 col-tab-1 text-right">
                                                 		
                                                 			<div class="overlay" style="display: none;"></div>
                             								<div class="loading-text" style="display: none;"></div>
