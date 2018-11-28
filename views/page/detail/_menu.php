@@ -9,7 +9,7 @@ use yii\helpers\Html;
     <div class="col-xs-12">
         <div class="box bg-white">
             <div class="box-title" id="title-menu">
-                <h4 class="mt-0 mb-0 inline-block">Menu</h4>
+                <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Product')?></h4>
             </div>
 
             <hr class="divider-w">
