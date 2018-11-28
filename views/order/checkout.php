@@ -12,6 +12,14 @@ $this->title = 'Checkout'; ?>
 	<section class="module-extra-small bg-main">
 		<div class="container detail checkout-order">
 		
+			<div class="row mb-20">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Order List'), ['order/order-list']) ?>
+
+                </div>
+            </div>
+		
 			<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
             
@@ -25,9 +33,6 @@ $this->title = 'Checkout'; ?>
             					<hr class="divider-w">
             					
             					<div class="box-content">
-            					
-            						<div class="overlay" style="display: none;"></div>
-    								<div class="loading-img" style="display: none;"></div>
             					
                 					<?= Html::beginForm(['order/checkout', 'id' => $modelTransactionSession['id']], 'post') ?>
                 					
@@ -62,7 +67,7 @@ $this->title = 'Checkout'; ?>
                                                         <table class="table table-responsive table-striped table-border checkout-table">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th class="font-alt"><?= Yii::t('app', 'Total') ?></th>
+                                                                    <th class="font-alt">Total</th>
                                                                     <td><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
                                                                 </tr>
                                                             </tbody>

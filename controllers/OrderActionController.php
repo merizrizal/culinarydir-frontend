@@ -8,7 +8,6 @@ use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 
-
 /**
  * OrderAction controller
  */
@@ -53,9 +52,9 @@ class OrderActionController extends base\BaseController
         } else {
             
             $modelTransactionSession = new TransactionSession();
-            $modelTransactionSession->total_price = $post['price'];
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
+            $modelTransactionSession->total_price = $post['price'];
         }
         
         if ($modelTransactionSession->business_id == $post['business_id']) {
@@ -121,6 +120,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
         
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
@@ -132,15 +132,17 @@ class OrderActionController extends base\BaseController
         $jumlahPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
         
-        if ($modelTransactionItem->save()) {
+        if (($flag = $modelTransactionItem->save())) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
             $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $jumlahPrior);
+            
+            $flag = $modelTransactionSession->save();
         }
         
         $return = [];
         
-        if ($modelTransactionSession->save()) {
+        if ($flag) {
             
             $transaction->commit();
             
