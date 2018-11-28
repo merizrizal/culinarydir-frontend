@@ -43,24 +43,22 @@ class OrderActionController extends base\BaseController
         
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
-        
         $return = [];
         
-        if (!empty($modelTransactionSession)) {
-            
-            $modelTransactionSession->total_price += $post['price'];
-        } else {
+        if (empty($modelTransactionSession)) {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['price'];
         }
-        
+            
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
-            if (($flag = $modelTransactionSession->save())) {
+            $modelTransactionSession->total_price += $post['price'];
             
+            if (($flag = $modelTransactionSession->save())) {
+                
                 $modelTransactionItem = TransactionItem::find()
                     ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
                     ->andWhere(['business_product_id' => $post['menu_id']])
@@ -80,35 +78,30 @@ class OrderActionController extends base\BaseController
                 
                 $flag = $modelTransactionItem->save();
             }
-        } else {
             
-            $transaction->rollBack();
+            if ($flag) {
+                
+                $transaction->commit();
+                
+                $return['message']['type'] = 'success';
+                $return['message']['icon'] = 'fa fa-check';
+                $return['message']['title'] = 'Penambahan menu sukses';
+                $return['message']['text'] = '<product> telah ditambahkan ke dalam daftar';
+            } else {
+                
+                $transaction->rollBack();
+                
+                $return['message']['type'] = 'danger';
+                $return['message']['icon'] = 'fa fa-warning';
+                $return['message']['title'] = 'Penambahan menu gagal';
+                $return['message']['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
+            }
+        } else {
             
             $return['message']['type'] = 'danger';
             $return['message']['icon'] = 'fa fa-warning';
             $return['message']['title'] = 'Penambahan menu gagal';
             $return['message']['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
-        
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return $return;
-        }
-        
-        if ($flag) {
-            
-            $transaction->commit();
-            
-            $return['message']['type'] = 'success';
-            $return['message']['icon'] = 'fa fa-check';
-            $return['message']['title'] = 'Penambahan menu sukses';
-            $return['message']['text'] = '<product> telah ditambahkan ke dalam daftar';
-        } else {
-            
-            $transaction->rollBack();
-            
-            $return['message']['type'] = 'danger';
-            $return['message']['icon'] = 'fa fa-warning';
-            $return['message']['title'] = 'Penambahan menu gagal';
-            $return['message']['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
