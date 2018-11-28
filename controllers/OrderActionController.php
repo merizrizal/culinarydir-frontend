@@ -38,7 +38,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
@@ -53,9 +53,9 @@ class OrderActionController extends base\BaseController
         } else {
             
             $modelTransactionSession = new TransactionSession();
-            $modelTransactionSession->total_price = $post['price'];
-            $modelTransactionSession->user_ordered = Yii::$app->user->identity->id;
+            $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
+            $modelTransactionSession->total_price = $post['price'];
         }
         
         if ($modelTransactionSession->business_id == $post['business_id']) {
@@ -89,9 +89,6 @@ class OrderActionController extends base\BaseController
             $return['message']['icon'] = 'fa fa-warning';
             $return['message']['title'] = 'Penambahan menu gagal';
             $return['message']['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
-            
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return $return;
         }
         
         if ($flag) {

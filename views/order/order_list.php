@@ -82,7 +82,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                 		<div class="col-sm-2 visible-lg visible-md visible-sm subtotal">
                                                 			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['businessProduct']['price'] * $dataTransactionItem['amount']) ?></h5>
                                                 		</div>
-                                                		<div class="col-md-2 col-sm-2 col-tab-2 text-right">
+                                                		<div class="col-sm-2 col-tab-2 text-right">
                                                 		
                                                 			<div class="overlay" style="display: none;"></div>
                             								<div class="loading-text" style="display: none;"></div>
@@ -171,7 +171,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                         endforeach;
                                     endif; ?>
                                     
-                                    <div class=<?= $noDataClass ?> id ="no-data">
+                                    <div class="<?= $noDataClass ?>" id="no-data">
                                             
                                     	<?= Yii::t('app', 'Your order list is empty') ?>
                                     	

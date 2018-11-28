@@ -36,7 +36,7 @@ class OrderController extends base\BaseController
                 'transactionItems',
                 'transactionItems.businessProduct'
             ])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
             
@@ -54,7 +54,7 @@ class OrderController extends base\BaseController
                 'transactionItems.businessProduct'
             ])
             ->andWhere(['transaction_session.id' => $id])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->id])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
