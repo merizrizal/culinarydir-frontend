@@ -62,7 +62,7 @@ $this->title = 'Checkout'; ?>
                                                 <?php
                                                 endforeach; ?>
                                                 
-                                                <div class="row mt-10">
+                                                <div class="row mt-70">
                                                 	<div class="col-sm-5 col-sm-offset-7">
                                                         <table class="table table-responsive table-striped table-border checkout-table">
                                                             <tbody>
