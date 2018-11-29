@@ -66,7 +66,7 @@ class SiteController extends base\BaseController
     {
         if (!Yii::$app->user->isGuest) {
             
-            return $this->goHome();
+            return $this->goBack();
         }
 
         $get = Yii::$app->request->get();
@@ -232,7 +232,7 @@ class SiteController extends base\BaseController
     {
         if (!Yii::$app->user->isGuest) {
             
-            return $this->goHome();
+            return $this->goBack();
         }
 
         $post = Yii::$app->request->post();
