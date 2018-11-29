@@ -42,8 +42,6 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         
-        $return = [];
-        
         if (!empty($modelTransactionSession)) {
             
             $modelTransactionSession->total_price += $post['price'];
@@ -54,6 +52,8 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['price'];
         }
+        
+        $return = [];
             
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
@@ -177,13 +177,14 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession = $modelTransactionItem->transactionSession;
             $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
             
-            $flag = $modelTransactionSession->save();
+            if (($flag = $modelTransactionSession->save())) {
             
-            if (($flag = $modelTransactionItem->delete())) {
-                
-                if ($modelTransactionSession->total_price == 0) {
+                if (($flag = $modelTransactionItem->delete())) {
                     
-                    $flag = $modelTransactionSession->delete();
+                    if ($modelTransactionSession->total_price == 0) {
+                        
+                        $flag = $modelTransactionSession->delete();
+                    }
                 }
             }
         }
