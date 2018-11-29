@@ -204,10 +204,10 @@ $this->title = Yii::t('app', 'Order List'); ?>
                     						<?php
                     						if (!empty($modelTransactionSession)) {
                     						    
-                						        echo Html::a(Yii::t('app', 'Go to Checkout'), ['order/checkout', 'id' => $modelTransactionSession['id']], ['class' => 'btn btn-lg btn-block btn-round btn-d checkout-btn']);
+                						        echo Html::a(Yii::t('app', 'Go to Checkout'), ['order/checkout', 'id' => $modelTransactionSession['id']], ['class' => 'btn btn-block btn-round btn-d checkout-btn']);
                     						} else {
                     						    
-                    						    echo Html::a(Yii::t('app', 'Go to Checkout'), null, ['class' => 'btn btn-lg btn-block btn-round btn-d checkout-btn', 'disabled' => 'disabled']);
+                    						    echo Html::a(Yii::t('app', 'Go to Checkout'), null, ['class' => 'btn btn-block btn-round btn-d checkout-btn', 'disabled' => 'disabled']);
                     						} ?>
                                             
                                         </div>

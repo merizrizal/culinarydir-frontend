@@ -36,7 +36,7 @@ $this->title = 'Checkout'; ?>
             					
                 					<?= Html::beginForm(['order/checkout', 'id' => $modelTransactionSession['id']], 'post') ?>
                 					
-                						<?= Html::hiddenInput('transaction_id', $modelTransactionSession['id'])?>
+                						<?= Html::hiddenInput('transaction_id', $modelTransactionSession['id']) ?>
                 					
                 						<div class="row">
                 							<div class="col-xs-12">
