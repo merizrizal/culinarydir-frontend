@@ -7,6 +7,7 @@ use core\models\Business;
 use core\models\BusinessPromo;
 use core\models\ProductCategory;
 use core\models\RatingComponent;
+use core\models\TransactionSession;
 use core\models\UserReport;
 use core\models\UserPostMain;
 use frontend\models\Post;
@@ -185,6 +186,11 @@ class PageController extends base\BaseHistoryUrlController
             ->where(['is_active' => true])
             ->orderBy(['order' => SORT_ASC])
             ->asArray()->all();
+        
+        $modelTransactionSession = TransactionSession::find()
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['transaction_session.is_closed' => false])
+            ->one();
 
         $modelUserReport = new UserReport();
 
@@ -239,6 +245,7 @@ class PageController extends base\BaseHistoryUrlController
             'modelPostPhoto' => $modelPostPhoto,
             'modelRatingComponent' => $modelRatingComponent,
             'modelUserReport' => $modelUserReport,
+            'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => Yii::$app->request->getQueryParams(),
         ]);
     }

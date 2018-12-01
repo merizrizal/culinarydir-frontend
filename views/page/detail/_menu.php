@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $modelBusinessProduct core\models\BusinessProduct */ ?>
+/* @var $modelBusinessProduct core\models\BusinessProduct */
+/* @var $modelTransactionSession core\models\TransactionSession */ ?>
 
 <div class="row">
     <div class="col-xs-12">
@@ -20,8 +21,10 @@ use yii\helpers\Html;
 					
 						<div class="overlay" style="display: none;"></div>
     					<div class="loading-img" style="display: none;"></div>
-
-                        <?php
+    					
+    					<?php
+    					echo Html::hiddenInput('session_id', $modelTransactionSession['id'], ['class' => 'session-id']);
+    					
                         if (!empty($modelBusinessProduct)):
                     
                             foreach ($modelBusinessProduct as $dataBusinessProduct): ?>
@@ -97,6 +100,8 @@ $jscript = '
                 thisObj.parents(".box-content").find(".loading-img").hide();
 
                 messageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.type);
+
+                stickyMessageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), "info");
             },
             error: function (xhr, ajaxOptions, thrownError) {
 

@@ -14,6 +14,7 @@ use sycomponent\Tools;
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $modelPost frontend\models\Post */
 /* @var $modelPostPhoto frontend\models\Post */
+/* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
@@ -809,6 +810,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                 <?= $this->render('detail/_menu.php', [
                                                     'modelBusinessProduct' => $modelBusiness['businessProducts'],
+                                                    'modelTransactionSession' => $modelTransactionSession,
                                                 ]) ?>
 
                                             </div>
@@ -923,6 +925,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnifi
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
 frontend\components\GrowlCustom::widget();
+frontend\components\StickyGrowl::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
