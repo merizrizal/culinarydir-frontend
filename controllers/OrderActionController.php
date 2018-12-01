@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use core\models\Business;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 
@@ -45,13 +46,19 @@ class OrderActionController extends base\BaseController
         if (!empty($modelTransactionSession)) {
             
             $modelTransactionSession->total_price += $post['price'];
+            $modelTransactionSession->total_amount++;
         } else {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['price'];
+            $modelTransactionSession->total_amount = 1;
         }
+        
+        $modelBusinessSession = Business::find()
+            ->andWhere(['business.id' => $modelTransactionSession->business_id])
+            ->one();
         
         $return = [];
             
@@ -90,6 +97,9 @@ class OrderActionController extends base\BaseController
                 $return['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $return['title'] = 'Penambahan menu sukses';
                 $return['text'] = '<product> telah ditambahkan ke dalam daftar';
+                $return['total_price'] = $modelTransactionSession->total_price;
+                $return['total_amount'] = $modelTransactionSession->total_amount;
+                $return['place_name'] = !empty($modelBusinessSession) ? $modelBusinessSession['name'] : '';
             } else {
                 
                 $transaction->rollBack();
@@ -132,6 +142,7 @@ class OrderActionController extends base\BaseController
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
             $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $jumlahPrior);
+            $modelTransactionSession->total_amount += ($post['amount'] - $jumlahPrior);
             
             $flag = $modelTransactionSession->save();
         }
@@ -176,6 +187,7 @@ class OrderActionController extends base\BaseController
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
             $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
+            $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
             
             if (($flag = $modelTransactionSession->save())) {
             

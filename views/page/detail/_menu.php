@@ -4,7 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessProduct core\models\BusinessProduct */
-/* @var $modelTransactionSession core\models\TransactionSession */ ?>
+/* @var $modelTransactionSession core\models\TransactionSession */
+/* @var $businessName core\models\Business */ ?>
 
 <div class="row">
     <div class="col-xs-12">
@@ -24,6 +25,9 @@ use yii\helpers\Html;
     					
     					<?php
     					echo Html::hiddenInput('session_id', $modelTransactionSession['id'], ['class' => 'session-id']);
+    					echo Html::hiddenInput('total_price', $modelTransactionSession['total_price'], ['class' => 'total-price']);
+    					echo Html::hiddenInput('total_amount', $modelTransactionSession['total_amount'], ['class' => 'total-amount']);
+    					echo Html::hiddenInput('business_name', $businessName, ['class' => 'place-name']);
     					
                         if (!empty($modelBusinessProduct)):
                     
@@ -76,6 +80,13 @@ use yii\helpers\Html;
 
 <?php
 $jscript = '
+    var cart = null;
+
+    if ($(".session-id").val() != "") {
+
+        cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", $(".total-amount").val() + " menu | Total : " + $(".total-price").val(), $(".place-name").val(), "info");
+    }
+
     $(".add-to-cart").on("click", function() {
 
         var thisObj = $(this);
@@ -101,7 +112,13 @@ $jscript = '
 
                 messageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.type);
 
-                stickyMessageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), "info");
+                if (cart != null) {
+
+                    cart.update("title", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>");
+                } else {
+
+                    cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", response.place_name, "info");
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
