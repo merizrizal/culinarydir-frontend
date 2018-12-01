@@ -81,9 +81,18 @@ $linkPager = LinkPager::widget([
                                             <?php
                                             $images = [];
                                             
-                                            if (count($dataBusiness['businessImages']) > 0) {                                                
-
+                                            if (count($dataBusiness['businessImages']) > 0) {
+                                                
+                                                $orderedBusinessImage = [];
+                                                
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
+                                                    
+                                                    $orderedBusinessImage[$dataBusinessImage['order']] = $dataBusinessImage;
+                                                }
+                                                
+                                                ksort($orderedBusinessImage);
+
+                                                foreach ($orderedBusinessImage as $dataBusinessImage) {
 
                                                     $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
 

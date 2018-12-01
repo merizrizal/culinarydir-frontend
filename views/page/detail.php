@@ -148,7 +148,16 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                         if (!empty($dataBusinessImage['Ambience']) && count($dataBusinessImage['Ambience']) > 0) {
                                                             
+                                                            $orderedBusinessImage = [];
+                                                            
                                                             foreach ($dataBusinessImage['Ambience'] as $businessImage) {
+                                                                
+                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
+                                                            }
+                                                            
+                                                            ksort($orderedBusinessImage);
+                                                            
+                                                            foreach ($orderedBusinessImage as $businessImage) {
                                                                 
                                                                 $img = $noImg;
                                                                 
@@ -196,8 +205,17 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         $images = [];
                                                         
                                                         if (!empty($dataBusinessImage['Menu']) && count($dataBusinessImage['Menu']) > 0) {
-                                                        
+                                                            
+                                                            $orderedBusinessImage = [];
+                                                            
                                                             foreach ($dataBusinessImage['Menu'] as $businessImage) {
+                                                                
+                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
+                                                            }
+                                                            
+                                                            ksort($orderedBusinessImage);
+                                                        
+                                                            foreach ($orderedBusinessImage as $businessImage) {
                                                                     
                                                                 $img = $noImg;
                                                                 
