@@ -80,9 +80,9 @@ $linkPager = LinkPager::widget([
                                 <div class="short-desc">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12">
-                                            <h4 class="font-alt m-0">
+                                            <h5 class="m-0">
                                                 <?= Html::a($dataUserLove['business']['name'], ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
-                                            </h4>
+                                            </h5>
                                         </div>
                                     </div>
                                     <div class="row">

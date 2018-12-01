@@ -80,9 +80,18 @@ $linkPager = LinkPager::widget([
                                         $image = '';
                                         $href = '';
                                         
-                                        if (count($dataBusiness['businessImages']) > 0) {                                            
-
+                                        if (count($dataBusiness['businessImages']) > 0) {
+                                            
+                                            $orderedBusinessImage = [];
+                                            
                                             foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
+                                                
+                                                $orderedBusinessImage[$dataBusinessImage['order']] = $dataBusinessImage;
+                                            }
+                                            
+                                            ksort($orderedBusinessImage);
+
+                                            foreach ($orderedBusinessImage as $dataBusinessImage) {
 
                                                 $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 446, 251);
 
@@ -154,7 +163,7 @@ $linkPager = LinkPager::widget([
                                         <div class="short-desc">
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
-                                                    <h4 class="font-alt m-0"><?= $dataBusiness['name'] ?></h4>
+                                                    <h4 class="m-0"><?= $dataBusiness['name'] ?></h4>
                                                 </div>
                                             </div>
 
@@ -260,8 +269,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
-
 $jscript = '
     function initMap() {
 
@@ -346,7 +353,7 @@ $jscript = '
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h5 class=\"font-alt m-0\">" + value.businessName + "</h5>" +
+                                                "<h5 class=\"m-0\">" + value.businessName + "</h5>" +
                                             "</div>" +
                                         "</div>" +
                                         "<div class=\"row\">" +

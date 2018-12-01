@@ -148,7 +148,16 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                         if (!empty($dataBusinessImage['Ambience']) && count($dataBusinessImage['Ambience']) > 0) {
                                                             
+                                                            $orderedBusinessImage = [];
+                                                            
                                                             foreach ($dataBusinessImage['Ambience'] as $businessImage) {
+                                                                
+                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
+                                                            }
+                                                            
+                                                            ksort($orderedBusinessImage);
+                                                            
+                                                            foreach ($orderedBusinessImage as $businessImage) {
                                                                 
                                                                 $img = $noImg;
                                                                 
@@ -196,8 +205,17 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         $images = [];
                                                         
                                                         if (!empty($dataBusinessImage['Menu']) && count($dataBusinessImage['Menu']) > 0) {
-                                                        
+                                                            
+                                                            $orderedBusinessImage = [];
+                                                            
                                                             foreach ($dataBusinessImage['Menu'] as $businessImage) {
+                                                                
+                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
+                                                            }
+                                                            
+                                                            ksort($orderedBusinessImage);
+                                                        
+                                                            foreach ($orderedBusinessImage as $businessImage) {
                                                                     
                                                                 $img = $noImg;
                                                                 
@@ -247,8 +265,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                     <div class="box bg-white">
                                         <div class="box-title">
                                             <div class="row">
-                                                <div class="col-sm-7 col-tab-7 col-xs-12">
-                                                    <h4 class="font-alt mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
+                                                <div class="col-sm-7 col-tab-12 col-xs-12">
+                                                    <h4 class="mb-0 business-name"><?= $modelBusiness['name']; ?></h4>
                                                 </div>
 
 												<div class="visible-tab col-tab-12 clearfix"></div>
@@ -579,7 +597,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             <div class="box-title">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-xs-12">
-                                                        <h4 class="font-alt m-0"><?= Yii::t('app', 'Special & Discount') ?> !!</h4>
+                                                        <h4 class="m-0"><?= Yii::t('app', 'Special & Discount') ?> !!</h4>
                                                     </div>
                                                 </div>
                                             </div>

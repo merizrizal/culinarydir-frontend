@@ -109,7 +109,7 @@ $this->registerMetaTag([
                                 <div class="box-title">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12">
-                                            <h4 class="font-alt m-0"><?= $modelBusinessPromo['title']; ?></h4>
+                                            <h4 class="m-0"><?= $modelBusinessPromo['title']; ?></h4>
                                         </div>
                                     </div>
                                 </div>

@@ -9,6 +9,8 @@
             <div class="box-title" id="title-map">
                 <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Map') ?></h4>
             </div>
+            
+            <hr class="divider-w">
 
             <div class="box-content">
                 <div id="see-map-content" style="height: 400px; width: 100%;"></div>
@@ -18,7 +20,7 @@
 </div>
 
 <?php
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDORji7AXzhxgYhuKOGJg6_KYrnTPYPOn8', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     var coordinate = {lat: ' . $coordinate[0] . ', lng: ' . $coordinate[1] . '};

@@ -109,7 +109,7 @@ $linkPager = LinkPager::widget([
                                         <div class="short-desc">
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
-                                                    <h4 class="font-alt m-0"><?= $dataBusinessPromo['title'] ?></h4>
+                                                    <h4 class="m-0"><?= $dataBusinessPromo['title'] ?></h4>
                                                 </div>
                                             </div>
 
@@ -204,8 +204,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC84sFxZL4KCPIFl8ezsta45Rm8WPRIM7Y', ['depends' => 'yii\web\YiiAsset']);
-
 $jscript = '
     function initMap() {
 
@@ -290,7 +288,7 @@ $jscript = '
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h5 class=\"font-alt m-0\">" + value.businessPromoTitle + "</h5>" +
+                                                "<h5 class=\"m-0\">" + value.businessPromoTitle + "</h5>" +
                                             "</div>" +
                                         "</div>" +
                                         "<div class=\"row\">" +

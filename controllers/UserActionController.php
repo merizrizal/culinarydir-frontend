@@ -38,8 +38,8 @@ class UserActionController extends base\BaseController
     public function actionDeletePhoto($id)
     {
         $modelUserPostMain = UserPostMain::find()
-                ->andWhere(['id' => $id])
-                ->one();
+            ->andWhere(['id' => $id])
+            ->one();
 
         $result = [];
 
@@ -101,6 +101,7 @@ class UserActionController extends base\BaseController
                 $modelUserPostMainPhoto->is_publish = false;
 
                 if (!($flag = $modelUserPostMainPhoto->save())) {
+                    
                     break;
                 }
             }
@@ -117,6 +118,7 @@ class UserActionController extends base\BaseController
                 $modelUserPostLove->is_active = false;
                 
                 if (!($flag = $modelUserPostLove->save())) {
+                    
                     break;
                 }
             }
@@ -139,6 +141,7 @@ class UserActionController extends base\BaseController
                 $modelUserVote->vote_value = 0;
                 
                 if (!($flag = $modelUserVote->save())) {
+                    
                     break;
                 }
             }
@@ -171,6 +174,7 @@ class UserActionController extends base\BaseController
                 $modelBusinessDetailVote->vote_value = !empty($modelBusinessDetail->voters) ? $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters : 0;
                 
                 if (!($flag = $modelBusinessDetailVote->save())) {
+                    
                     break;
                 }
             }

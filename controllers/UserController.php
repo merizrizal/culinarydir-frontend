@@ -50,7 +50,7 @@ class UserController extends base\BaseHistoryUrlController
 
     public function actionUserProfile()
     {
-        if (!empty(Yii::$app->user->id) && Yii::$app->user->getIdentity()->username == Yii::$app->request->get('user')) {
+        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->username == Yii::$app->request->get('user')) {
 
             return $this->redirect(ArrayHelper::merge(['user/index'], Yii::$app->request->getQueryParams()));
         } else {
@@ -61,6 +61,7 @@ class UserController extends base\BaseHistoryUrlController
                 ->asArray()->one();
             
             if (empty($modelUser)) {
+                
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
 
@@ -144,7 +145,7 @@ class UserController extends base\BaseHistoryUrlController
     public function actionChangePassword()
     {
         try {
-            $modelChangePassword = new ChangePassword(Yii::$app->user->id);
+            $modelChangePassword = new ChangePassword(Yii::$app->user->getIdentity()->id);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }

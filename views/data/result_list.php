@@ -81,9 +81,18 @@ $linkPager = LinkPager::widget([
                                             <?php
                                             $images = [];
                                             
-                                            if (count($dataBusiness['businessImages']) > 0) {                                                
-
+                                            if (count($dataBusiness['businessImages']) > 0) {
+                                                
+                                                $orderedBusinessImage = [];
+                                                
                                                 foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
+                                                    
+                                                    $orderedBusinessImage[$dataBusinessImage['order']] = $dataBusinessImage;
+                                                }
+                                                
+                                                ksort($orderedBusinessImage);
+
+                                                foreach ($orderedBusinessImage as $dataBusinessImage) {
 
                                                     $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
 
@@ -155,7 +164,7 @@ $linkPager = LinkPager::widget([
                                             <div class="short-desc">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-xs-12 col">
-                                                        <h4 class="font-alt m-0">
+                                                        <h4 class="m-0">
 
                                                             <?= Html::a($dataBusiness['name'], ['page/detail', 'id' => $dataBusiness['id']]); ?>
 

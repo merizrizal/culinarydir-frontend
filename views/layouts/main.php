@@ -50,11 +50,18 @@ AppAsset::register($this); ?>
         echo $appComponent->navigation();
         echo $appComponent->header(); ?>
 
-            <?= $content ?>
+        	<?= $content ?>
 
-        <div class="main">
-            <?= $appComponent->appFooter() ?>
-        </div>
+		<?php
+        if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app'): ?>
+
+            <div class="main">
+                <?= $appComponent->appFooter() ?>
+            </div>
+            
+        <?php 
+        endif; ?>
+            
         <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up fa-2x"></i></a></div>
     </main>
 
