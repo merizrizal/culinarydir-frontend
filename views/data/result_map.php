@@ -163,7 +163,7 @@ $linkPager = LinkPager::widget([
                                         <div class="short-desc">
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
-                                                    <h4 class="font-alt m-0"><?= $dataBusiness['name'] ?></h4>
+                                                    <h4 class="m-0"><?= $dataBusiness['name'] ?></h4>
                                                 </div>
                                             </div>
 
@@ -353,7 +353,7 @@ $jscript = '
                                     "<div class=\"short-desc\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-sm-12 col-xs-12\">" +
-                                                "<h5 class=\"font-alt m-0\">" + value.businessName + "</h5>" +
+                                                "<h5 class=\"m-0\">" + value.businessName + "</h5>" +
                                             "</div>" +
                                         "</div>" +
                                         "<div class=\"row\">" +

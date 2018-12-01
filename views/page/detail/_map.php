@@ -9,6 +9,8 @@
             <div class="box-title" id="title-map">
                 <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Map') ?></h4>
             </div>
+            
+            <hr class="divider-w">
 
             <div class="box-content">
                 <div id="see-map-content" style="height: 400px; width: 100%;"></div>

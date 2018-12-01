@@ -164,7 +164,7 @@ $linkPager = LinkPager::widget([
                                             <div class="short-desc">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-xs-12 col">
-                                                        <h4 class="font-alt m-0">
+                                                        <h4 class="m-0">
 
                                                             <?= Html::a($dataBusiness['name'], ['page/detail', 'id' => $dataBusiness['id']]); ?>
 
