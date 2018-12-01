@@ -143,13 +143,11 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                             		<br>
                                             		
                                             		<div class="row">
-                                            			<div class="col-xs-12 text-right">
+                                            			<div class="col-xs-6">
                                                 			<h5 class="product-title"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
                                                 		</div>
-                                            		</div>
-                                            		
-                                            		<div class="row">
-                                            			<div class="col-xs-offset-6 col-xs-6">
+                                                		
+                                            			<div class="col-xs-6">
                                             			
                                             				<div class="overlay" style="display: none;"></div>
                             								<div class="loading-text" style="display: none;"></div>
