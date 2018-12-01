@@ -75,7 +75,7 @@ class OrderController extends base\BaseController
                     $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                     
                     $itemCount = count($modelTransactionSession['transactionItems']) - 1;
-                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',%0ASaya ' . Yii::$app->user->getIdentity()->full_name . ' ingin memesan:%0A%0A';
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',%0ASaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:%0A%0A';
                     
                     foreach ($modelTransactionSession['transactionItems'] as $itemIndex => $dataTransactionItem) {
                         
