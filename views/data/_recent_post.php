@@ -95,7 +95,7 @@ use common\components\Helper;
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
-                            <h5 class="font-alt m-0">
+                            <h5 class="m-0">
 
                                 <?= Html::a($model['business']['name'], ['page/detail', 'id' => $model['business']['id']]); ?>
 
