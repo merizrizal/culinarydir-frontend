@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -44,9 +45,9 @@ $this->title = 'Checkout'; ?>
                 								<?php                								
                 								foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
                 								
-                    								<div class="row mt-10">
+                    								<div class="row mb-10">
                                                         <div class="col-md-9 col-xs-7">
-                                                            <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
+                                                            <h5 class="m-0"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
                                                         </div>
                                                         <div class="col-md-3 col-xs-5 text-right">
                                                             <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
@@ -95,8 +96,8 @@ $this->title = 'Checkout'; ?>
 
 </div>
 
-<?php 
-frontend\components\GrowlCustom::widget();
+<?php
+GrowlCustom::widget();
 
 $jscript = '';
 
@@ -105,4 +106,4 @@ if (!empty(($message = Yii::$app->session->getFlash('message')))) {
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . $message['title'] . '" , "' . $message['message'] . '", "danger");';
 }
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

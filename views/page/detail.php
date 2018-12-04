@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use frontend\components\AddressType;
 use sycomponent\Tools;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -926,8 +927,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
-frontend\components\GrowlCustom::widget();
-frontend\components\StickyGrowl::widget();
+GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
@@ -1195,5 +1195,5 @@ $jscript = '
     });    
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse() . GrowlCustom::stickyResponse()); ?>
 

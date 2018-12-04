@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use frontend\components\AppComponent;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
@@ -87,7 +88,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
 <?= $appComponent->searchJsComponent(); ?>
 
 <?php
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
 $jscript = '
@@ -160,4 +161,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

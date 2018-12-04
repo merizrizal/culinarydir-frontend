@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use sycomponent\Tools;
 use common\components\Helper;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
@@ -281,7 +282,7 @@ $this->registerMetaTag([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 frontend\components\FacebookShare::widget();
 
 $jscript = '
@@ -407,4 +408,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

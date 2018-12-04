@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\authclient\widgets\AuthChoice;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\LoginForm */
@@ -147,7 +148,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
@@ -160,4 +161,4 @@ if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "Reset Berhasil", "' . $message . '", "success");';
 }
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

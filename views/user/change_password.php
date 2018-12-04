@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelChangePassword frontend\models\ChangePassword */
@@ -79,7 +80,7 @@ $this->registerMetaTag([
 </div>
 
 <?php 
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 
 $jscript = '';
 
@@ -88,4 +89,4 @@ if (!empty(($message = Yii::$app->session->getFlash('message')))) {
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Change Password Successful') . '" , "' . $message['message'] . '", "success");';
 }
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

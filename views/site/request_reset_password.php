@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\RequestResetPassword */
@@ -76,7 +77,7 @@ $this->registerMetaTag([
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 
 $jscript = '';
 
@@ -88,4 +89,4 @@ if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
     $jscript = 'messageResponse("aicon aicon-icon-info", "Reset Gagal", "' . $message . '", "danger");';
 }
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

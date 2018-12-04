@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\touchspin\TouchSpin;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -222,7 +223,7 @@ $this->title = Yii::t('app', 'Order List'); ?>
 </div>
 
 <?php
-frontend\components\GrowlCustom::widget();
+GrowlCustom::widget();
 
 $jscript = '
     $(".amount").on("change", function() {
@@ -358,4 +359,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

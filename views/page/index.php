@@ -1,7 +1,9 @@
 <?php
+
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
 use frontend\components\AppComponent;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
@@ -163,9 +165,9 @@ $appComponent = new AppComponent(); ?>
 </div>
 
 <?php
+GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 frontend\components\FacebookShare::widget();
-frontend\components\GrowlCustom::widget();
 
 $jscript = '
     $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {
@@ -201,4 +203,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>

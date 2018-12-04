@@ -404,7 +404,6 @@ $linkPager = LinkPager::widget([
 	</div>
 </div>
 
-
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
