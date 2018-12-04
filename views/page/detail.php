@@ -15,7 +15,6 @@ use sycomponent\Tools;
 /* @var $modelPost frontend\models\Post */
 /* @var $modelPostPhoto frontend\models\Post */
 /* @var $modelTransactionSession core\models\TransactionSession */
-/* @var $businessName core\models\Business */
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
@@ -812,7 +811,6 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 <?= $this->render('detail/_menu.php', [
                                                     'modelBusinessProduct' => $modelBusiness['businessProducts'],
                                                     'modelTransactionSession' => $modelTransactionSession,
-                                                    'businessName' => $businessName,
                                                 ]) ?>
 
                                             </div>

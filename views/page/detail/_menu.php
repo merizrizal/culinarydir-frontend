@@ -4,8 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessProduct core\models\BusinessProduct */
-/* @var $modelTransactionSession core\models\TransactionSession */
-/* @var $businessName core\models\Business */ ?>
+/* @var $modelTransactionSession core\models\TransactionSession */ ?>
 
 <div class="row">
     <div class="col-xs-12">
@@ -25,9 +24,9 @@ use yii\helpers\Html;
     					
     					<?php
     					echo Html::hiddenInput('session_id', $modelTransactionSession['id'], ['class' => 'session-id']);
-    					echo Html::hiddenInput('total_price', $modelTransactionSession['total_price'], ['class' => 'total-price']);
+    					echo Html::hiddenInput('total_price', Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']), ['class' => 'total-price']);
     					echo Html::hiddenInput('total_amount', $modelTransactionSession['total_amount'], ['class' => 'total-amount']);
-    					echo Html::hiddenInput('business_name', $businessName, ['class' => 'place-name']);
+    					echo Html::hiddenInput('business_name', $modelTransactionSession['business']['name'], ['class' => 'place-name']);
     					
                         if (!empty($modelBusinessProduct)):
                     
@@ -84,7 +83,12 @@ $jscript = '
 
     if ($(".session-id").val() != "") {
 
-        cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", $(".total-amount").val() + " menu | Total : " + $(".total-price").val(), $(".place-name").val(), "info");
+        cart = stickyGrowl(
+            "aicon aicon-icon-online-ordering aicon-1x",
+            $(".total-amount").val() + " menu" + (($(".total-amount").val() > 1) ? "s" : "") + " | Total : " + $(".total-price").val(),
+            $(".place-name").val(),
+            "info"
+        );
     }
 
     $(".add-to-cart").on("click", function() {
@@ -114,10 +118,15 @@ $jscript = '
                 
                     if (cart != null) {
     
-                        cart.update("title", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>");
+                        cart.update("title", "<b>" + response.total_amount + " menu" + ((response.total_amount > 1) ? "s" : "") + " | Total : " + response.total_price + "</b>");
                     } else {
     
-                        cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", response.place_name, "info");
+                        cart = stickyGrowl(
+                            "aicon aicon-icon-online-ordering aicon-1x", 
+                            "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", 
+                            response.place_name, 
+                            "info"
+                        );
                     }
                 }
 

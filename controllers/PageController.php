@@ -188,16 +188,10 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->all();
         
         $modelTransactionSession = TransactionSession::find()
+            ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
-            ->one();
-        
-        if (!empty($modelTransactionSession)) {
-            
-            $modelBusinessSession = Business::find()
-                ->andWhere(['business.id' => $modelTransactionSession->business_id])
-                ->one();
-        }
+            ->asArray()->one();
 
         $modelUserReport = new UserReport();
 
@@ -253,7 +247,6 @@ class PageController extends base\BaseHistoryUrlController
             'modelRatingComponent' => $modelRatingComponent,
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
-            'businessName' => !empty($modelTransactionSession) ? $modelBusinessSession['name'] : '',
             'queryParams' => Yii::$app->request->getQueryParams(),
         ]);
     }
