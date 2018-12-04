@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
+use yii\web\View;
 use kartik\file\FileInput;
 use core\models\City;
 use frontend\components\GrowlCustom;
@@ -187,8 +188,6 @@ $this->registerMetaTag([
 </div>
 
 <?php
-GrowlCustom::widget();
-
 $csscript = '
     .img-profile {
         position: relative;
@@ -209,6 +208,10 @@ $csscript = '
 
 $this->registerCss($csscript);
 
+GrowlCustom::widget();
+
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
@@ -222,4 +225,4 @@ if (!empty(($message = Yii::$app->session->getFlash('message')))) {
     $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Update Profile Successful') . '", "' . $message['message'] . '", "success");';
 }
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

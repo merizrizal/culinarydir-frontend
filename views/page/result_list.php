@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
 
@@ -91,6 +92,8 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
 GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '
     $(".result-list-search").hide();    
 
@@ -161,4 +164,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
 use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
@@ -99,6 +100,8 @@ $this->title = 'Checkout'; ?>
 <?php
 GrowlCustom::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '';
 
 if (!empty(($message = Yii::$app->session->getFlash('message')))) {
@@ -106,4 +109,4 @@ if (!empty(($message = Yii::$app->session->getFlash('message')))) {
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . $message['title'] . '" , "' . $message['message'] . '", "danger");';
 }
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

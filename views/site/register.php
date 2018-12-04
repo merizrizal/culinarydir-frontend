@@ -4,8 +4,9 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
-use core\models\City;
 use yii\authclient\widgets\AuthChoice;
+use yii\web\View;
+use core\models\City;
 use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
@@ -221,6 +222,8 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
 <?php
 GrowlCustom::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
@@ -234,4 +237,4 @@ if (!empty(($getFlashMessage = Yii::$app->session->getFlash('message')))) {
     $jscript .= 'messageResponse("' . $getFlashMessage['icon'] . '", "' . $getFlashMessage['title'] . '", "' . $getFlashMessage['message'] . '", "' . $getFlashMessage['type'] . '");';
 }
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

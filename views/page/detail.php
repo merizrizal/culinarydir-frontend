@@ -3,9 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
+use yii\web\View;
 use frontend\components\AddressType;
-use sycomponent\Tools;
 use frontend\components\GrowlCustom;
+use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -930,6 +931,8 @@ frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
+$this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse(), View::POS_HEAD);
+
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
@@ -1193,5 +1196,5 @@ $jscript = '
     });    
 ';
 
-$this->registerJs($jscript . GrowlCustom::messageResponse() . GrowlCustom::stickyResponse()); ?>
+$this->registerJs($jscript); ?>
 

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
 use sycomponent\Tools;
 use frontend\components\GrowlCustom;
 
@@ -179,4 +180,4 @@ frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
-$this->registerJs(GrowlCustom::messageResponse()); ?>
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD); ?>

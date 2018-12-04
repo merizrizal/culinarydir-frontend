@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
 use common\components\Helper;
@@ -375,6 +376,8 @@ frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
@@ -541,4 +544,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

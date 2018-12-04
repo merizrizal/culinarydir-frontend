@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
+use yii\web\View;
 use sycomponent\Tools;
 use frontend\components\GrowlCustom;
 
@@ -147,12 +148,12 @@ $this->registerMetaTag([
                                 </a>
                             </li>
                             <li role="presentation" class="visible-lg visible-md visible-sm visible-tab">
-                                <a href="#view-saved-search" aria-controls="view-saved-search" role="tab" data-toggle="tab">
+                                <a href="#view-order-history" aria-controls="view-order-history" role="tab" data-toggle="tab">
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <li><i class="aicon aicon-savedsearch aicon-1-5x"></i><span class="badge total-saved-search">0</span></li>
-                                                <li><?= Yii::t('app', 'Saved Search') ?></li>
+                                                <li><i class="aicon aicon-savedsearch aicon-1-5x"></i><span class="badge total-order-history">0</span></li>
+                                                <li><?= Yii::t('app', 'Order History') ?></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -183,8 +184,8 @@ $this->registerMetaTag([
                                 </a>
                                 <ul class="dropdown-menu pull-right">
                                     <li role="presentation">
-                                        <a href="#view-saved-search" aria-controls="view-saved-search" role="tab" data-toggle="tab">
-                                        	<h6><i class="aicon aicon-savedsearch"></i> <?= Yii::t('app', 'Saved Search') ?> (<span class="total-saved-search">0</span>)</h6>
+                                        <a href="#view-order-history" aria-controls="view-order-history" role="tab" data-toggle="tab">
+                                        	<h6><i class="aicon aicon-savedsearch"></i> <?= Yii::t('app', 'Order History') ?> (<span class="total-order-history">0</span>)</h6>
                                     	</a>
                                     </li>
                                     <li role="presentation">
@@ -212,8 +213,8 @@ $this->registerMetaTag([
                                 ]) ?>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade p-0" id="view-saved-search">
-                                <?= $this->render('user/_saved_search') ?>
+                            <div role="tabpanel" class="tab-pane fade p-0" id="view-order-history">
+                                <?= $this->render('user/_order_history') ?>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">
@@ -240,6 +241,8 @@ frontend\components\FacebookShare::widget();
 frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
@@ -255,6 +258,4 @@ $this->params['beforeEndBody'][] = function() {
         echo Yii::t('app', 'Are you sure want to delete this?');
 
     Modal::end();
-};
-
-$this->registerJs(GrowlCustom::messageResponse()); ?>
+}; ?>
