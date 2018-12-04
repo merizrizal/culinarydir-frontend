@@ -39,6 +39,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
+            ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
@@ -55,10 +56,6 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->total_price = $post['price'];
             $modelTransactionSession->total_amount = 1;
         }
-        
-        $modelBusinessSession = Business::find()
-            ->andWhere(['business.id' => $modelTransactionSession->business_id])
-            ->one();
         
         $return = [];
             
@@ -98,9 +95,9 @@ class OrderActionController extends base\BaseController
                 $return['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $return['title'] = 'Penambahan menu sukses';
                 $return['text'] = '<product> telah ditambahkan ke dalam daftar';
-                $return['total_price'] = $modelTransactionSession->total_price;
+                $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                 $return['total_amount'] = $modelTransactionSession->total_amount;
-                $return['place_name'] = !empty($modelBusinessSession) ? $modelBusinessSession['name'] : '';
+                $return['place_name'] = $modelTransactionSession['business']['name'];
             } else {
                 
                 $transaction->rollBack();
@@ -137,14 +134,14 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_item.id' => $id])
             ->one();
         
-        $jumlahPrior = $modelTransactionItem->amount;
+        $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
         
         if (($flag = $modelTransactionItem->save())) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $jumlahPrior);
-            $modelTransactionSession->total_amount += ($post['amount'] - $jumlahPrior);
+            $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $amountPrior);
+            $modelTransactionSession->total_amount += ($post['amount'] - $amountPrior);
             
             $flag = $modelTransactionSession->save();
         }
