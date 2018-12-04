@@ -5,7 +5,6 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use core\models\Business;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 
@@ -188,14 +187,14 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
             $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
             
-            if (($flag = $modelTransactionItem->delete())) {
-                
-                if ($modelTransactionSession->total_price == 0) {
+            if (($flag = $modelTransactionSession->save())) {
+            
+                if (($flag = $modelTransactionItem->delete())) {
                     
-                    $flag = $modelTransactionSession->delete();
-                } else {
-                    
-                    $flag = $modelTransactionSession->save();
+                    if ($modelTransactionSession->total_price == 0) {
+                        
+                        $flag = $modelTransactionSession->delete();
+                    }
                 }
             }
         }
