@@ -48,10 +48,10 @@ $this->title = 'Checkout'; ?>
                 								
                     								<div class="row mb-10">
                                                         <div class="col-md-9 col-xs-7">
-                                                            <h5 class="m-0"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
+                                                            <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                         </div>
                                                         <div class="col-md-3 col-xs-5 text-right">
-                                                            <h5 class="m-0"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
+                                                            <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                         </div>
                                                         <div class="col-md-9 col-xs-7">
                                                             <p class="mb-0"><?= $dataTransactionItem['note'] ?></p>
