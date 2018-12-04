@@ -109,16 +109,19 @@ $jscript = '
                 
                 thisObj.parents(".box-content").find(".overlay").hide();
                 thisObj.parents(".box-content").find(".loading-img").hide();
+                
+                if (response.success) {
+                
+                    if (cart != null) {
+    
+                        cart.update("title", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>");
+                    } else {
+    
+                        cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", response.place_name, "info");
+                    }
+                }
 
                 messageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.type);
-
-                if (cart != null) {
-
-                    cart.update("title", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>");
-                } else {
-
-                    cart = stickyGrowl("aicon aicon-icon-online-ordering aicon-1x", "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", response.place_name, "info");
-                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
 

@@ -188,7 +188,7 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->all();
         
         $modelTransactionSession = TransactionSession::find()
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
         

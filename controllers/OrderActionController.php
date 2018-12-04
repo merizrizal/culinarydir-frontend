@@ -93,6 +93,7 @@ class OrderActionController extends base\BaseController
                 
                 $transaction->commit();
                 
+                $return['success'] = true;
                 $return['type'] = 'success';
                 $return['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $return['title'] = 'Penambahan menu sukses';
@@ -104,6 +105,7 @@ class OrderActionController extends base\BaseController
                 
                 $transaction->rollBack();
                 
+                $return['success'] = false;
                 $return['type'] = 'danger';
                 $return['icon'] = 'aicon aicon-icon-info';
                 $return['title'] = 'Penambahan menu gagal';

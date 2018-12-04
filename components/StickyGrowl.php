@@ -21,7 +21,7 @@ class StickyGrowl extends Widget
                         icon: icon,
                         title: title,
                         message: message,
-                        url: "' . Yii::$app->urlManager->createAbsoluteUrl(['order/order-list']) . '"
+                        url: "' . Yii::$app->urlManager->createUrl(['order/order-list']) . '"
                     },{
                         element: "body",
                         position: null,
