@@ -50,13 +50,13 @@ $this->title = 'Checkout'; ?>
                                                             <h5 class="m-0"><?= $dataTransactionItem['businessProduct']['name'] ?></h5>
                                                         </div>
                                                         <div class="col-md-3 col-xs-5 text-right">
-                                                            <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                            <h5 class="m-0"><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></h5>
                                                         </div>
                                                         <div class="col-md-9 col-xs-7">
                                                             <p class="mb-0"><?= $dataTransactionItem['note'] ?></p>
                                                         </div>
                                                         <div class="col-md-3 col-xs-5 text-right">
-                                                        	<strong><?= Yii::t('app', 'Amount') ?> :</strong> <?= $dataTransactionItem['amount'] ?>
+                                                        	<p class="m-0"><strong><?= Yii::t('app', 'Amount') ?> :</strong> <?= $dataTransactionItem['amount'] ?></p>
                                                     	</div>
                                                     </div>
                                                     
