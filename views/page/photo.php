@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
 use sycomponent\Tools;
 use common\components\Helper;
 use frontend\components\GrowlCustom;
@@ -285,6 +286,8 @@ $this->registerMetaTag([
 GrowlCustom::widget();
 frontend\components\FacebookShare::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '
     var photoId = $(".user-post-main-id");
 
@@ -408,4 +411,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

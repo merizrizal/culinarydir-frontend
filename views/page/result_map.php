@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
 
@@ -105,6 +106,8 @@ $appComponent = new AppComponent(); ?>
 GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDORji7AXzhxgYhuKOGJg6_KYrnTPYPOn8', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
@@ -141,4 +144,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript . GrowlCustom::messageResponse()); ?>
+$this->registerJs($jscript); ?>

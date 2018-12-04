@@ -88,7 +88,7 @@ class GrowlCustom extends Widget
                             exit: "animated fadeOutUp"
                         },
                         template:
-                            "<div data-notify=\"container\" class=\"col-xs-11 col-sm-4 col-md-3 alert alert-{0}\" role=\"alert\">" +
+                            "<div data-notify=\"container\" class=\"col-xs-11 col-sm-5 col-lg-3 alert alert-{0}\" role=\"alert\">" +
                                 "<button type=\"button\" aria-hidden=\"true\" class=\"close\" data-notify=\"dismiss\">×</button>" +
                                 "<span data-notify=\"icon\"></span> " +
                                 "<span data-notify=\"title\"><b>{1}</b></span><br>" +
