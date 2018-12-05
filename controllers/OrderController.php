@@ -84,7 +84,7 @@ class OrderController extends base\BaseController
                         $messageOrder .= ($itemCount !== $itemIndex) ? '%0A%0A' : '';
                     }
                     
-                    $messageOrder .= '%0A%0A' . 'Total: ' . $modelTransactionSession['total_price'];
+                    $messageOrder .= '%0A%0A' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
                     
                     $messageOrder = str_replace(' ', '%20', $messageOrder);
                     
