@@ -152,7 +152,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <li><i class="aicon aicon-savedsearch aicon-1-5x"></i><span class="badge total-order-history">0</span></li>
+                                                <li><i class="aicon aicon-history aicon-1-5x"></i><span class="badge total-order-history">0</span></li>
                                                 <li><?= Yii::t('app', 'Order History') ?></li>
                                             </ul>
                                         </li>
@@ -185,7 +185,7 @@ $this->registerMetaTag([
                                 <ul class="dropdown-menu pull-right">
                                     <li role="presentation">
                                         <a href="#view-order-history" aria-controls="view-order-history" role="tab" data-toggle="tab">
-                                        	<h6><i class="aicon aicon-savedsearch"></i> <?= Yii::t('app', 'Order History') ?> (<span class="total-order-history">0</span>)</h6>
+                                        	<h6><i class="aicon aicon-history"></i> <?= Yii::t('app', 'Order History') ?> (<span class="total-order-history">0</span>)</h6>
                                     	</a>
                                     </li>
                                     <li role="presentation">
