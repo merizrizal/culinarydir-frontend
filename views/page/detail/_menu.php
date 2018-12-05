@@ -85,7 +85,7 @@ $jscript = '
 
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
-            $(".total-amount").val() + " menu" + (($(".total-amount").val() > 1) ? "s" : "") + " | Total : " + $(".total-price").val(),
+            $(".total-amount").val() + " menu" + " | total : " + $(".total-price").val(),
             $(".place-name").val(),
             "info"
         );
@@ -118,12 +118,12 @@ $jscript = '
                 
                     if (cart != null) {
     
-                        cart.update("title", "<b>" + response.total_amount + " menu" + ((response.total_amount > 1) ? "s" : "") + " | Total : " + response.total_price + "</b>");
+                        cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     } else {
     
                         cart = stickyGrowl(
                             "aicon aicon-icon-online-ordering aicon-1x", 
-                            "<b>" + response.total_amount + " menu | Total : " + response.total_price + "</b>", 
+                            "<b>" + response.total_amount + " menu | total : " + response.total_price + "</b>", 
                             response.place_name, 
                             "info"
                         );
