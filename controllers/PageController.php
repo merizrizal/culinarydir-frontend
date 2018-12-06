@@ -364,6 +364,36 @@ class PageController extends base\BaseHistoryUrlController
             'modelUserPostMain' => $modelUserPostMain
         ]);
     }
+    
+    public function actionMenu($id)
+    {
+        $modelBusiness = Business::find()
+            ->joinWith([
+                'businessProducts' => function ($query) {
+                
+                    $query->andOnCondition(['business_product.not_active' => false]);
+                },
+            ])
+            ->andWhere(['business.id' => $id])
+            ->asArray()->one();
+        
+        $modelTransactionSession = TransactionSession::find()
+            ->joinWith([
+                'transactionItems' => function($query) {
+                
+                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                },
+                'business'
+            ])
+            ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['transaction_session.is_closed' => false])
+            ->asArray()->one();
+        
+        return $this->render('menu', [
+            'modelBusiness' => $modelBusiness,
+            'modelTransactionSession' => $modelTransactionSession
+        ]);
+    }
 
     private function getResult($fileRender)
     {

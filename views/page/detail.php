@@ -451,7 +451,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-shortcut">
+                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -502,7 +502,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-shortcut xs">
+                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -996,26 +996,6 @@ $jscript = '
             });
         } else {
             $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".online-order-shortcut").on("click", function() {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-menu" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-menu" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-menu" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
         }
 
         return false;
