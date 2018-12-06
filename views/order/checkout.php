@@ -47,25 +47,22 @@ $this->title = 'Checkout'; ?>
                 								foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
                 								
                     								<div class="row mb-10">
-                                                        <div class="col-md-9 col-xs-7">
+                                                        <div class="col-xs-7">
                                                             <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                         </div>
-                                                        <div class="col-md-3 col-xs-5 text-right">
-                                                            <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                        <div class="col-xs-5">
+                                                            <strong style="white-space: pre"><?= $dataTransactionItem['amount'] . '  x  '. Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                         </div>
-                                                        <div class="col-md-9 col-xs-7">
+                                                        <div class="col-xs-12">
                                                             <p class="mb-0"><?= $dataTransactionItem['note'] ?></p>
                                                         </div>
-                                                        <div class="col-md-3 col-xs-5 text-right">
-                                                        	<p class="m-0"><strong><?= Yii::t('app', 'Amount') ?> :</strong> <?= $dataTransactionItem['amount'] ?></p>
-                                                    	</div>
                                                     </div>
                                                     
                                                 <?php
                                                 endforeach; ?>
                                                 
                                                 <div class="row mt-70">
-                                                	<div class="col-sm-5 col-sm-offset-7">
+                                                	<div class="col-sm-5 col-sm-offset-7 col-xs-12">
                                                         <table class="table table-responsive table-striped table-border checkout-table">
                                                             <tbody>
                                                                 <tr>
