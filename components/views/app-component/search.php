@@ -40,10 +40,10 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="<?= empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#favorite<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods') ?></a>
+            <a href="#favorite<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods?') ?></a>
         </li>
         <li role="presentation" class="<?= !empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#special<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts') ?></a>
+            <a href="#special<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts?') ?></a>
         </li>
     </ul>
 
