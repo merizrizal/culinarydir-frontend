@@ -16,6 +16,14 @@ $this->title = Yii::t('app', 'Product'); ?>
     <section class="module-extra-small bg-main">
         <div class="container detail">
         
+        	<div class="row mb-20">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelBusiness['id']]); ?>
+
+                </div>
+            </div>
+        
         	<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
             
@@ -69,6 +77,9 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                     } ?>
                     								
                     								<div class="business-menu mb-20">
+                                                        
+                                                        <?= Html::hiddenInput('product_id', $itemId, ['class' => 'item-id']); ?>
+                                                        
                                                         <div class="row">
                                                             <div class="col-sm-8 col-xs-7">
                                                                 <strong class="menu-name"><?= $dataBusinessProduct['name'] ?></strong>
@@ -80,7 +91,7 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                 		
                                                     			<div class="overlay" style="display: none;"></div>
                                                     		
-                                                    			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item', 'id' => $itemId], ['class' => 'remove-item']); ?>
+                                                    			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
                                                     			
                                                     		</div>
                                                         </div>
@@ -110,7 +121,7 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                     			<?= Html::textInput('item_notes', $itemNotes, [
                                                                     'class' => 'form-control item-notes',
                                                                     'placeholder' => Yii::t('app', 'Note'),
-                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $itemId])
+                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                 ]); ?>
                                                     			
                                                     		</div>
@@ -124,7 +135,7 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                                     'value' => $amountItem,
                                                                     'options' => [
                                                                         'class' => 'amount-item text-right input-sm',
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty', 'id' => $itemId])
+                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                     ],
                                                                     'pluginOptions' => [
                                                                         'style' => 'width: 30%',
@@ -220,10 +231,11 @@ $jscript = '
                     thisObj.parent().parent().addClass("hidden");
                     thisObj.parents(".business-menu").find(".input-order").removeClass("hidden");
                     thisObj.parents(".business-menu").find(".remove-item").parent().removeClass("hidden");
-                    thisObj.parents(".business-menu").find(".remove-item").attr("href", response.remove_item);
-                }
+                    thisObj.parents(".business-menu").find(".item-id").val(response.item_id);
+                } else {
 
-                messageResponse(response.icon, response.title, response.text.replace("<product>", thisObj.parents(".business-menu").find(".menu-name").html()), response.type);
+                    messageResponse(response.icon, response.title, response.text, response.type);
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
@@ -241,6 +253,7 @@ $jscript = '
             type: "POST",
             url: thisObj.data("url"),
             data: {
+                "id": $(this).parents(".business-menu").find(".item-id").val(),
                 "amount": parseInt(thisObj.val())
             },
             beforeSend: function(xhr) {
@@ -277,6 +290,7 @@ $jscript = '
             type: "POST",
             url: thisObj.data("url"),
             data: {
+                "id": $(this).parents(".business-menu").find(".item-id").val(),
                 "note": thisObj.val()
             },
             beforeSend: function(xhr) {
@@ -312,6 +326,9 @@ $jscript = '
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
+            data: { 
+                "id": $(this).parents(".business-menu").find(".item-id").val()
+            },
             beforeSend: function(xhr) {
 
                 thisObj.siblings(".overlay").show();
@@ -331,7 +348,7 @@ $jscript = '
                     thisObj.parent().addClass("hidden");
                     thisObj.parents(".business-menu").find(".input-order").addClass("hidden");
                     thisObj.parents(".business-menu").find(".add-item").parent().parent().removeClass("hidden");
-                    thisObj.attr("href", response.remove_item);
+                    thisObj.parents(".business-menu").find(".item-id").val("");
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
