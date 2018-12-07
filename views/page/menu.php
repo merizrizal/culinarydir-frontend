@@ -28,7 +28,7 @@ $this->title = Yii::t('app', 'Product'); ?>
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
             
             		<div class="row">
-            			<div class="col-sm-12 col-xs-12">        					
+            			<div class="col-sm-12 col-xs-12">
             				<div class="box bg-white">
             					<div class="box-title">
             						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') ?></h4>

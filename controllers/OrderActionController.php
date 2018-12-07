@@ -132,12 +132,13 @@ class OrderActionController extends base\BaseController
         
         $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
+        $totalAmount = $post['amount'] - $amountPrior;
         
         if (($flag = $modelTransactionItem->save())) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $amountPrior);
-            $modelTransactionSession->total_amount += ($post['amount'] - $amountPrior);
+            $modelTransactionSession->total_amount += $totalAmount;
+            $modelTransactionSession->total_price += $modelTransactionItem->price * $totalAmount;
             
             $flag = $modelTransactionSession->save();
         }
@@ -156,8 +157,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Perubahan jumlah menu gagal';
-            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah menu, silahkan ulangi kembali';
+            $return['title'] = 'Perubahan jumlah pesanan gagal';
+            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah pesanan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -235,8 +236,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Input keterangan gagal';
-            $return['text'] = 'Harap input kembali keterangan untuk menu ini.';
+            $return['title'] = 'Input keterangan pesanan gagal';
+            $return['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
