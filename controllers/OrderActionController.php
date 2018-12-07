@@ -92,8 +92,8 @@ class OrderActionController extends base\BaseController
                 $return['success'] = true;
                 $return['type'] = 'success';
                 $return['icon'] = 'aicon aicon-icon-tick-in-circle';
-                $return['title'] = 'Penambahan menu sukses';
-                $return['text'] = '<product> telah ditambahkan ke dalam daftar';
+                $return['title'] = 'Penambahan pesanan sukses';
+                $return['text'] = '<product> telah ditambahkan ke dalam daftar pesanan';
                 $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                 $return['total_amount'] = $modelTransactionSession->total_amount;
                 $return['place_name'] = $modelTransactionSession['business']['name'];
@@ -104,15 +104,15 @@ class OrderActionController extends base\BaseController
                 $return['success'] = false;
                 $return['type'] = 'danger';
                 $return['icon'] = 'aicon aicon-icon-info';
-                $return['title'] = 'Penambahan menu gagal';
-                $return['text'] = 'Terjadi kesalahan saat memesan menu, silahkan ulangi kembali';
+                $return['title'] = 'Penambahan pesanan gagal';
+                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan ulangi kembali';
             }
         } else {
             
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Penambahan menu gagal';
-            $return['text'] = 'Mohon maaf anda tidak dapat memesan menu dari dua tempat secara bersamaan';
+            $return['title'] = 'Penambahan pesanan gagal';
+            $return['text'] = 'Mohon maaf anda tidak dapat memesan dari dua tempat secara bersamaan';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -135,12 +135,13 @@ class OrderActionController extends base\BaseController
         
         $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
+        $totalAmount = $post['amount'] - $amountPrior;
         
         if (($flag = $modelTransactionItem->save())) {
             
             $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price += $modelTransactionItem->price * ($post['amount'] - $amountPrior);
-            $modelTransactionSession->total_amount += ($post['amount'] - $amountPrior);
+            $modelTransactionSession->total_amount += $totalAmount;
+            $modelTransactionSession->total_price += $modelTransactionItem->price * $totalAmount;
             
             $flag = $modelTransactionSession->save();
         }
@@ -161,8 +162,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Perubahan jumlah menu gagal';
-            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah menu, silahkan ulangi kembali';
+            $return['title'] = 'Perubahan jumlah pesanan gagal';
+            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah pesanan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -211,8 +212,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Penghapusan produk gagal';
-            $return['text'] = 'Terjadi kesalahan saat proses penghapusan, silahkan ulangi kembali';
+            $return['title'] = 'Penghapusan pesanan gagal';
+            $return['text'] = 'Terjadi kesalahan saat menghapus pesanan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -239,8 +240,8 @@ class OrderActionController extends base\BaseController
             $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Input keterangan gagal';
-            $return['text'] = 'Harap input kembali keterangan untuk menu ini.';
+            $return['title'] = 'Input keterangan pesanan gagal';
+            $return['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
