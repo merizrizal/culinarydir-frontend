@@ -228,10 +228,12 @@ $jscript = '
                         );
                     }
 
+                    var parentClass = thisObj.parents(".business-menu");
+
                     thisObj.parent().parent().addClass("hidden");
-                    thisObj.parents(".business-menu").find(".input-order").removeClass("hidden");
-                    thisObj.parents(".business-menu").find(".remove-item").parent().removeClass("hidden");
-                    thisObj.parents(".business-menu").find(".item-id").val(response.item_id);
+                    parentClass.find(".input-order").removeClass("hidden");
+                    parentClass.find(".remove-item").parent().removeClass("hidden");
+                    parentClass.find(".item-id").val(response.item_id);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -239,7 +241,7 @@ $jscript = '
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
     });
@@ -273,7 +275,7 @@ $jscript = '
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                 thisObj.parent().siblings(".overlay").hide();
                 thisObj.parent().siblings(".loading-text").hide();
@@ -310,7 +312,7 @@ $jscript = '
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                 thisObj.siblings(".overlay").hide();
                 thisObj.siblings(".loading-text").hide();
@@ -344,11 +346,15 @@ $jscript = '
                     } else {
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     }
+
+                    var parentClass = thisObj.parents(".business-menu");
     
                     thisObj.parent().addClass("hidden");
-                    thisObj.parents(".business-menu").find(".input-order").addClass("hidden");
-                    thisObj.parents(".business-menu").find(".add-item").parent().parent().removeClass("hidden");
-                    thisObj.parents(".business-menu").find(".item-id").val("");
+                    parentClass.find(".input-order").addClass("hidden");
+                    parentClass.find(".add-item").parent().parent().removeClass("hidden");
+                    parentClass.find(".item-id").val("");
+                    parentClass.find(".item-notes").val("");
+                    parentClass.find(".amount-item").val(1);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -359,7 +365,7 @@ $jscript = '
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                 thisObj.siblings(".overlay").hide();
                 thisObj.children().removeClass("fa-spinner fa-spin").addClass("fa-times");

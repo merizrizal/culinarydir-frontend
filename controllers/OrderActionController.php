@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
+use yii\web\NotFoundHttpException;
 
 /**
  * OrderAction controller
@@ -130,6 +131,11 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_item.id' => !empty($post['id']) ? $post['id'] : null])
             ->one();
         
+        if (empty($modelTransactionItem)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
         $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
         $totalAmount = $post['amount'] - $amountPrior;
@@ -177,19 +183,21 @@ class OrderActionController extends base\BaseController
             ->andWhere(['transaction_item.id' => !empty(Yii::$app->request->post('id')) ? Yii::$app->request->post('id') : null])
             ->one();
         
-        if (!empty($modelTransactionItem)) {
+        if (empty($modelTransactionItem)) {
             
-            $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
-            $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
             
-            if ($modelTransactionSession->total_price == 0) {
-                
-                $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
-            } else {
-                
-                $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
-            }
+        $modelTransactionSession = $modelTransactionItem->transactionSession;
+        $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
+        $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
+        
+        if ($modelTransactionSession->total_price == 0) {
+            
+            $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
+        } else {
+            
+            $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
         }
         
         $return = [];
@@ -223,7 +231,12 @@ class OrderActionController extends base\BaseController
         $modelTransactionItem = TransactionItem::find()
             ->andWhere(['transaction_item.id' => !empty($post['id']) ? $post['id'] : null])
             ->one();
+           
+        if (empty($modelTransactionItem)) {
             
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
         $modelTransactionItem->note = !empty($post['note']) ? $post['note'] : null;
         
         $return = [];
