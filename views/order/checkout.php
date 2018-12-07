@@ -17,7 +17,7 @@ $this->title = 'Checkout'; ?>
 			<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Order List'), ['order/order-list']) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]) ?>
 
                 </div>
             </div>
@@ -29,7 +29,7 @@ $this->title = 'Checkout'; ?>
             			<div class="col-sm-12 col-xs-12">        					
             				<div class="box bg-white">
             					<div class="box-title">
-            						<h4 class="font-alt text-center"><?= Yii::t('app', 'Order Detail') ?></h4>
+            						<h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
             					</div>
             					
             					<hr class="divider-w">
@@ -51,9 +51,9 @@ $this->title = 'Checkout'; ?>
                                                             <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                         </div>
                                                         <div class="col-xs-5">
-                                                            <strong style="white-space: pre"><?= $dataTransactionItem['amount'] . '  x  '. Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                            <strong style="white-space: pre"><?= $dataTransactionItem['amount'] . '  x  ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                         </div>
-                                                        <div class="col-xs-12">
+                                                        <div class="col-xs-7">
                                                             <p class="mb-0"><?= $dataTransactionItem['note'] ?></p>
                                                         </div>
                                                     </div>

@@ -38,26 +38,25 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
-            ->joinWith(['business'])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['transaction_session.is_closed' => false])
+            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['is_closed' => false])
             ->one();
-        
+            
         if (!empty($modelTransactionSession)) {
             
-            $modelTransactionSession->total_price += $post['price'];
+            $modelTransactionSession->total_price += $post['menu_price'];
             $modelTransactionSession->total_amount++;
         } else {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
-            $modelTransactionSession->total_price = $post['price'];
+            $modelTransactionSession->total_price = $post['menu_price'];
             $modelTransactionSession->total_amount = 1;
         }
         
         $return = [];
-            
+        
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
             $transaction = Yii::$app->db->beginTransaction();
@@ -78,7 +77,7 @@ class OrderActionController extends base\BaseController
                     $modelTransactionItem = new TransactionItem();
                     $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
                     $modelTransactionItem->business_product_id = $post['menu_id'];
-                    $modelTransactionItem->price = $post['price'];
+                    $modelTransactionItem->price = $post['menu_price'];
                     $modelTransactionItem->amount = 1;
                 }
                 
@@ -96,7 +95,8 @@ class OrderActionController extends base\BaseController
                 $return['text'] = '<product> telah ditambahkan ke dalam daftar pesanan';
                 $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                 $return['total_amount'] = $modelTransactionSession->total_amount;
-                $return['place_name'] = $modelTransactionSession['business']['name'];
+                $return['business_name'] = $post['business_name'];
+                $return['remove_item'] = Yii::$app->urlManager->createUrl(['order-action/remove-item', 'id' => $modelTransactionItem->id]);
             } else {
                 
                 $transaction->rollBack();
@@ -105,7 +105,7 @@ class OrderActionController extends base\BaseController
                 $return['type'] = 'danger';
                 $return['icon'] = 'aicon aicon-icon-info';
                 $return['title'] = 'Penambahan pesanan gagal';
-                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan ulangi kembali';
+                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan pesan kembali';
             }
         } else {
             
@@ -153,8 +153,6 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
             
             $return['success'] = true;
-            $return['subtotal'] = Yii::$app->formatter->asCurrency($modelTransactionItem->amount * $modelTransactionItem->price);
-            $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
         } else {
             
             $transaction->rollBack();
@@ -205,6 +203,8 @@ class OrderActionController extends base\BaseController
             
             $return['success'] = true;
             $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $return['total_amount'] = $modelTransactionSession->total_amount;
+            $return['remove_item'] = Yii::$app->urlManager->createUrl(['order-action/remove-item']);
         } else {
             
             $transaction->rollBack();
