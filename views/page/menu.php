@@ -110,7 +110,7 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                     			<?= Html::textInput('item_notes', $itemNotes, [
                                                                     'class' => 'form-control item-notes',
                                                                     'placeholder' => Yii::t('app', 'Note'),
-                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes', 'id' => $itemId])
                                                                 ]); ?>
                                                     			
                                                     		</div>
@@ -124,11 +124,11 @@ $this->title = Yii::t('app', 'Product'); ?>
                                                                     'value' => $amountItem,
                                                                     'options' => [
                                                                         'class' => 'amount-item text-right input-sm',
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty', 'id' => $itemId])
                                                                     ],
                                                                     'pluginOptions' => [
                                                                         'style' => 'width: 30%',
-                                                                        'min' => 0,
+                                                                        'min' => 1,
                                                                         'max' => 50,
                                                                         'step' => 1,
                                                                         'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
@@ -228,6 +228,78 @@ $jscript = '
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+            }
+        });
+    });
+
+    $(".amount-item").on("change", function() {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: thisObj.data("url"),
+            data: {
+                "amount": parseInt(thisObj.val())
+            },
+            beforeSend: function(xhr) {
+
+                thisObj.parent().siblings(".overlay").show();
+                thisObj.parent().siblings(".loading-text").show();
+            },
+            success: function(response) {
+
+                if (!response.success) {
+
+                    messageResponse(response.icon, response.title, response.text, response.type);
+                }
+
+                thisObj.parent().siblings(".overlay").hide();
+                thisObj.parent().siblings(".loading-text").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+
+                thisObj.parent().siblings(".overlay").hide();
+                thisObj.parent().siblings(".loading-text").hide();
+            }
+        });
+    });
+
+    $(".item-notes").on("change", function() {
+        
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: thisObj.data("url"),
+            data: {
+                "note": thisObj.val()
+            },
+            beforeSend: function(xhr) {
+
+                thisObj.siblings(".overlay").show();
+                thisObj.siblings(".loading-text").show();
+            },
+            success: function(response) {
+
+                if (!response.success) {
+
+                    messageResponse(response.icon, response.title, response.text, response.type);
+                }
+
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-text").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                messageResponse("fa fa-warning", xhr.status, xhr.responseText, "danger");
+
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-text").hide();
             }
         });
     });
