@@ -29,26 +29,7 @@ class OrderController extends base\BaseController
             ]);
     }
     
-    public function actionOrderList()
-    {
-        $modelTransactionSession = TransactionSession::find()
-            ->joinWith([
-                'transactionItems' => function($query) {
-                    
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
-                },
-                'transactionItems.businessProduct'
-            ])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['transaction_session.is_closed' => false])
-            ->asArray()->one();
-            
-        return $this->render('order_list', [
-            'modelTransactionSession'=> $modelTransactionSession,
-        ]);
-    }
-    
-    public function actionCheckout($id)
+    public function actionCheckout()
     {
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
@@ -59,7 +40,6 @@ class OrderController extends base\BaseController
                 },
                 'transactionItems.businessProduct'
             ])
-            ->andWhere(['transaction_session.id' => $id])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
