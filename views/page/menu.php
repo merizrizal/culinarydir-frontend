@@ -265,7 +265,10 @@ $jscript = '
             },
             success: function(response) {
 
-                if (!response.success) {
+                if (response.success) {
+
+                    cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
+                } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
                 }

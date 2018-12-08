@@ -156,6 +156,8 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
             
             $return['success'] = true;
+            $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $return['total_amount'] = $modelTransactionSession->total_amount;
         } else {
             
             $transaction->rollBack();
