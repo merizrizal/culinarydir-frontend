@@ -77,11 +77,11 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                     } ?>
                                                     
                                                     <div class="business-menu-group">
+                                                    
+                                                    	<?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
+                                                    
                             							<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
-                            								
-                            								<?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
-                                                        
-                                                            <div class="row">
+                            								<div class="row">
                                                                 <div class="col-sm-8 col-tab-8">
                                                                     <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                                 </div>
@@ -154,10 +154,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                             </div>
                             							</div>
                             							<div class="business-menu mb-20 visible-xs">
-                            							
-                            								<?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
-                                                        
-                                                            <div class="row mb-10">
+                            								<div class="row mb-10">
                                                                 <div class="col-xs-7">
                                                                     <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                                 </div>
@@ -171,6 +168,11 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                         			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
                                                         			
                                                         		</div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
+                                                                </div>
                                                             </div>
                                                             <div class="row <?= $addOrderClass ?>">
                                                             	<div class="col-xs-offset-7 col-xs-5">
@@ -303,13 +305,13 @@ $jscript = '
                         );
                     }
 
-                    var parentClass = thisObj.parents(".business-menu");
+                    var parentClass = thisObj.parents(".business-menu-group");
 
-                    thisObj.parent().parent().addClass("hidden");
+                    parentClass.find(".add-item").parent().parent().addClass("hidden");
                     parentClass.find(".input-order").removeClass("hidden");
                     parentClass.find(".remove-item").parent().removeClass("hidden");
-                    parentClass.find(".transaction-item-id").val(response.item_id);
                     parentClass.find(".product-price").addClass("hidden");
+                    parentClass.find(".transaction-item-id").val(response.item_id);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -325,14 +327,15 @@ $jscript = '
     $(".transaction-item-amount").on("change", function() {
 
         var thisObj = $(this);
+        var amount = parseInt(thisObj.val());
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": $(this).parents(".business-menu").find(".transaction-item-id").val(),
-                "amount": parseInt(thisObj.val())
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
+                "amount": amount
             },
             beforeSend: function(xhr) {
 
@@ -344,6 +347,8 @@ $jscript = '
                 if (response.success) {
 
                     cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
+
+                    thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -365,14 +370,15 @@ $jscript = '
     $(".transaction-item-notes").on("change", function() {
         
         var thisObj = $(this);
+        var notes = thisObj.val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": $(this).parents(".business-menu").find(".transaction-item-id").val(),
-                "note": thisObj.val()
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
+                "note": notes
             },
             beforeSend: function(xhr) {
 
@@ -385,6 +391,8 @@ $jscript = '
 
                     messageResponse(response.icon, response.title, response.text, response.type);
                 }
+
+                thisObj.parents(".business-menu-group").find(".transaction-item-notes").val(notes);
 
                 thisObj.siblings(".overlay").hide();
                 thisObj.siblings(".loading-text").hide();
@@ -407,8 +415,8 @@ $jscript = '
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
-            data: {
-                "id": $(this).parents(".business-menu").find(".transaction-item-id").val()
+            data: { 
+                "id": $(this).parents(".business-menu-group").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
 
@@ -426,9 +434,9 @@ $jscript = '
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     }
 
-                    var parentClass = thisObj.parents(".business-menu");
+                    var parentClass = thisObj.parents(".business-menu-group");
     
-                    thisObj.parent().addClass("hidden");
+                    parentClass.find(".remove-item").parent().addClass("hidden");
                     parentClass.find(".input-order").addClass("hidden");
                     parentClass.find(".add-item").parent().parent().removeClass("hidden");
                     parentClass.find(".product-price").removeClass("hidden");
