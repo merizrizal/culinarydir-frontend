@@ -219,11 +219,11 @@ $jscript = '
     
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     } else {
-    
+
                         cart = stickyGrowl(
-                            "aicon aicon-icon-online-ordering aicon-1x", 
-                            "<b>" + response.total_amount + " menu | total : " + response.total_price + "</b>", 
-                            response.business_name, 
+                            "aicon aicon-icon-online-ordering aicon-1x",
+                            "<b>" + response.total_amount + " menu | total : " + response.total_price + "</b>",
+                            response.business_name,
                             "info"
                         );
                     }
@@ -331,7 +331,7 @@ $jscript = '
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
-            data: { 
+            data: {
                 "id": $(this).parents(".business-menu").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
