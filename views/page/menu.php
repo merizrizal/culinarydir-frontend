@@ -9,7 +9,7 @@ use frontend\components\GrowlCustom;
 /* @var $modelBusiness core\models\Business */
 /* @var $modelTransactionSession core\models\TransactionSession */
 
-$this->title = Yii::t('app', 'Product'); ?>
+$this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 
 <div class="main">
 
@@ -31,7 +31,7 @@ $this->title = Yii::t('app', 'Product'); ?>
             			<div class="col-sm-12 col-xs-12">
             				<div class="box bg-white">
             					<div class="box-title">
-            						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') ?></h4>
+            						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
             					</div>
             					
             					<hr class="divider-w">
