@@ -168,8 +168,8 @@ $this->title = Yii::t('app', 'Order List'); ?>
                                                                     'step' => 1,
                                                                     'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
                                                                     'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                    'buttondown_class' => "btn btn-default btn-xs",
-                                                                    'buttonup_class' => "btn btn-default btn-xs"
+                                                                    'buttondown_class' => "btn btn-default",
+                                                                    'buttonup_class' => "btn btn-default"
                                                                 ],
                                                             ]); ?>
                                                             
