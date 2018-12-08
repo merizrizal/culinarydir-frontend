@@ -121,9 +121,6 @@ class OrderActionController extends base\BaseController
     {
         $post = Yii::$app->request->post();
         
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
-        
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
                 'transactionSession'
@@ -135,6 +132,9 @@ class OrderActionController extends base\BaseController
             
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
         
         $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
@@ -173,9 +173,6 @@ class OrderActionController extends base\BaseController
     
     public function actionRemoveItem()
     {
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
-        
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
                 'transactionSession'
@@ -187,6 +184,9 @@ class OrderActionController extends base\BaseController
             
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
             
         $modelTransactionSession = $modelTransactionItem->transactionSession;
         $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
