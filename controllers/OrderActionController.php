@@ -45,14 +45,14 @@ class OrderActionController extends base\BaseController
             
         if (!empty($modelTransactionSession)) {
             
-            $modelTransactionSession->total_price += $post['menu_price'];
+            $modelTransactionSession->total_price += $post['product_price'];
             $modelTransactionSession->total_amount++;
         } else {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
-            $modelTransactionSession->total_price = $post['menu_price'];
+            $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
         }
         
@@ -67,7 +67,7 @@ class OrderActionController extends base\BaseController
                 
                 $modelTransactionItem = TransactionItem::find()
                     ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
-                    ->andWhere(['business_product_id' => $post['menu_id']])
+                    ->andWhere(['business_product_id' => $post['product_id']])
                     ->one();
                 
                 if (!empty($modelTransactionItem)) {
@@ -77,8 +77,8 @@ class OrderActionController extends base\BaseController
                     
                     $modelTransactionItem = new TransactionItem();
                     $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionItem->business_product_id = $post['menu_id'];
-                    $modelTransactionItem->price = $post['menu_price'];
+                    $modelTransactionItem->business_product_id = $post['product_id'];
+                    $modelTransactionItem->price = $post['product_price'];
                     $modelTransactionItem->amount = 1;
                 }
                 

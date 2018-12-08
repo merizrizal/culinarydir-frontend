@@ -46,7 +46,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 											
 											if (!empty($modelTransactionSession)) {
 											    
-											    echo Html::hiddenInput('session_id', $modelTransactionSession['id'], ['class' => 'session-id']);
+											    echo Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'transaction-session-id']);
 											}
 											
                                             if (!empty($modelBusiness['businessProducts'])):
@@ -55,9 +55,9 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                 
                                                     $existOrderClass = 'hidden';
                                                     $addOrderClass = '';
-                                                    $itemId = null;
-                                                    $itemNotes = null;
-                                                    $amountItem = 1;
+                                                    $transactionItemId = null;
+                                                    $transactionItemNotes = null;
+                                                    $transactionItemAmount = 1;
                                             
                                                     if (!empty($modelTransactionSession['transactionItems'])) {
                                                         
@@ -67,9 +67,9 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                 
                                                                 $existOrderClass = '';
                                                                 $addOrderClass = 'hidden';
-                                                                $itemId = $dataTransactionItem['id'];
-                                                                $itemNotes = $dataTransactionItem['note'];
-                                                                $amountItem = $dataTransactionItem['amount'];
+                                                                $transactionItemId = $dataTransactionItem['id'];
+                                                                $transactionItemNotes = $dataTransactionItem['note'];
+                                                                $transactionItemAmount = $dataTransactionItem['amount'];
                                                                 
                                                                 break;
                                                             }
@@ -78,11 +78,11 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                     								
                     								<div class="business-menu mb-20">
                                                         
-                                                        <?= Html::hiddenInput('product_id', $itemId, ['class' => 'item-id']); ?>
+                                                        <?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
                                                         
                                                         <div class="row">
                                                             <div class="col-sm-8 col-xs-7">
-                                                                <strong class="menu-name"><?= $dataBusinessProduct['name'] ?></strong>
+                                                                <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                             </div>
                                                             <div class="col-sm-2 col-xs-3">
                                                                 <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
@@ -106,8 +106,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                         		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
                                                         		    'class' => 'btn btn-d btn-round btn-xs add-item',
                                                         		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
-                                                        		    'data-menuid' => $dataBusinessProduct['id'],
-                                                        		    'data-menuprice' => $dataBusinessProduct['price']
+                                                        		    'data-product-id' => $dataBusinessProduct['id'],
+                                                        		    'data-product-price' => $dataBusinessProduct['price']
                                                         		]) ?>
                                                             	
                                                         	</div>
@@ -118,8 +118,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                     			<div class="overlay" style="display: none;"></div>
                                                     			<div class="loading-text" style="display: none;"></div>
                                                     			
-                                                    			<?= Html::textInput('item_notes', $itemNotes, [
-                                                                    'class' => 'form-control item-notes',
+                                                    			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
+                                                                    'class' => 'form-control transaction-item-notes',
                                                                     'placeholder' => Yii::t('app', 'Note'),
                                                                     'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                 ]); ?>
@@ -131,10 +131,10 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                     			<div class="loading-text" style="display: none;"></div>
                                                     
                                                                 <?= TouchSpin::widget([
-                                                                    'name' => 'amount_item',
-                                                                    'value' => $amountItem,
+                                                                    'name' => 'transaction_item_amount',
+                                                                    'value' => $transactionItemAmount,
                                                                     'options' => [
-                                                                        'class' => 'amount-item text-right input-sm',
+                                                                        'class' => 'transaction-item-amount text-right input-sm',
                                                                         'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                     ],
                                                                     'pluginOptions' => [
@@ -187,7 +187,7 @@ $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->forma
 $jscript = '
     var cart = null;
 
-    if ($(".session-id").length) {
+    if ($(".transaction-session-id").length) {
 
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
@@ -208,8 +208,8 @@ $jscript = '
             data: {
                 "business_id": $(".business-id").val(),
                 "business_name": $(".business-name").val(),
-                "menu_id": thisObj.data("menuid"),
-                "menu_price": thisObj.data("menuprice")
+                "product_id": thisObj.data("product-id"),
+                "product_price": thisObj.data("product-price")
             },
             success: function(response) {
                 
@@ -233,7 +233,7 @@ $jscript = '
                     thisObj.parent().parent().addClass("hidden");
                     parentClass.find(".input-order").removeClass("hidden");
                     parentClass.find(".remove-item").parent().removeClass("hidden");
-                    parentClass.find(".item-id").val(response.item_id);
+                    parentClass.find(".transaction-item-id").val(response.item_id);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -246,7 +246,7 @@ $jscript = '
         });
     });
 
-    $(".amount-item").on("change", function() {
+    $(".transaction-item-amount").on("change", function() {
 
         var thisObj = $(this);
 
@@ -255,7 +255,7 @@ $jscript = '
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": $(this).parents(".business-menu").find(".item-id").val(),
+                "id": $(this).parents(".business-menu").find(".transaction-item-id").val(),
                 "amount": parseInt(thisObj.val())
             },
             beforeSend: function(xhr) {
@@ -286,7 +286,7 @@ $jscript = '
         });
     });
 
-    $(".item-notes").on("change", function() {
+    $(".transaction-item-notes").on("change", function() {
         
         var thisObj = $(this);
 
@@ -295,7 +295,7 @@ $jscript = '
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": $(this).parents(".business-menu").find(".item-id").val(),
+                "id": $(this).parents(".business-menu").find(".transaction-item-id").val(),
                 "note": thisObj.val()
             },
             beforeSend: function(xhr) {
@@ -332,7 +332,7 @@ $jscript = '
             type: "POST",
             url: thisObj.attr("href"),
             data: { 
-                "id": $(this).parents(".business-menu").find(".item-id").val()
+                "id": $(this).parents(".business-menu").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
 
@@ -355,9 +355,9 @@ $jscript = '
                     thisObj.parent().addClass("hidden");
                     parentClass.find(".input-order").addClass("hidden");
                     parentClass.find(".add-item").parent().parent().removeClass("hidden");
-                    parentClass.find(".item-id").val("");
-                    parentClass.find(".item-notes").val("");
-                    parentClass.find(".amount-item").val(1);
+                    parentClass.find(".transaction-item-id").val("");
+                    parentClass.find(".transaction-item-notes").val("");
+                    parentClass.find(".transaction-item-amount").val(1);
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
