@@ -93,7 +93,6 @@ class OrderActionController extends base\BaseController
                 $return['item_id'] = $modelTransactionItem->id;
                 $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                 $return['total_amount'] = $modelTransactionSession->total_amount;
-                $return['business_name'] = $post['business_name'];
             } else {
                 
                 $transaction->rollBack();
