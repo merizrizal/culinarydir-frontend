@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
+use yii\web\NotFoundHttpException;
 
 /**
  * OrderAction controller
@@ -38,26 +39,25 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
-            ->joinWith(['business'])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['transaction_session.is_closed' => false])
+            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['is_closed' => false])
             ->one();
-        
+            
         if (!empty($modelTransactionSession)) {
             
-            $modelTransactionSession->total_price += $post['price'];
+            $modelTransactionSession->total_price += $post['product_price'];
             $modelTransactionSession->total_amount++;
         } else {
             
             $modelTransactionSession = new TransactionSession();
             $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
-            $modelTransactionSession->total_price = $post['price'];
+            $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
         }
         
         $return = [];
-            
+        
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
             $transaction = Yii::$app->db->beginTransaction();
@@ -67,7 +67,7 @@ class OrderActionController extends base\BaseController
                 
                 $modelTransactionItem = TransactionItem::find()
                     ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
-                    ->andWhere(['business_product_id' => $post['menu_id']])
+                    ->andWhere(['business_product_id' => $post['product_id']])
                     ->one();
                 
                 if (!empty($modelTransactionItem)) {
@@ -77,8 +77,8 @@ class OrderActionController extends base\BaseController
                     
                     $modelTransactionItem = new TransactionItem();
                     $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionItem->business_product_id = $post['menu_id'];
-                    $modelTransactionItem->price = $post['price'];
+                    $modelTransactionItem->business_product_id = $post['product_id'];
+                    $modelTransactionItem->price = $post['product_price'];
                     $modelTransactionItem->amount = 1;
                 }
                 
@@ -90,13 +90,9 @@ class OrderActionController extends base\BaseController
                 $transaction->commit();
                 
                 $return['success'] = true;
-                $return['type'] = 'success';
-                $return['icon'] = 'aicon aicon-icon-tick-in-circle';
-                $return['title'] = 'Penambahan pesanan sukses';
-                $return['text'] = '<product> telah ditambahkan ke dalam daftar pesanan';
+                $return['item_id'] = $modelTransactionItem->id;
                 $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                 $return['total_amount'] = $modelTransactionSession->total_amount;
-                $return['place_name'] = $modelTransactionSession['business']['name'];
             } else {
                 
                 $transaction->rollBack();
@@ -105,10 +101,11 @@ class OrderActionController extends base\BaseController
                 $return['type'] = 'danger';
                 $return['icon'] = 'aicon aicon-icon-info';
                 $return['title'] = 'Penambahan pesanan gagal';
-                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan ulangi kembali';
+                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan pesan kembali';
             }
         } else {
-            
+
+            $return['success'] = false;
             $return['type'] = 'danger';
             $return['icon'] = 'aicon aicon-icon-info';
             $return['title'] = 'Penambahan pesanan gagal';
@@ -119,19 +116,24 @@ class OrderActionController extends base\BaseController
         return $return;
     }
     
-    public function actionChangeQty($id)
+    public function actionChangeQty()
     {
         $post = Yii::$app->request->post();
-        
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
         
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
                 'transactionSession'
             ])
-            ->andWhere(['transaction_item.id' => $id])
+            ->andWhere(['transaction_item.id' => !empty($post['id']) ? $post['id'] : null])
             ->one();
+        
+        if (empty($modelTransactionItem)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
         
         $amountPrior = $modelTransactionItem->amount;
         $modelTransactionItem->amount = $post['amount'];
@@ -153,8 +155,8 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
             
             $return['success'] = true;
-            $return['subtotal'] = Yii::$app->formatter->asCurrency($modelTransactionItem->amount * $modelTransactionItem->price);
             $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $return['total_amount'] = $modelTransactionSession->total_amount;
         } else {
             
             $transaction->rollBack();
@@ -170,31 +172,33 @@ class OrderActionController extends base\BaseController
         return $return;
     }
     
-    public function actionRemoveItem($id)
+    public function actionRemoveItem()
     {
-        $transaction = Yii::$app->db->beginTransaction();
-        $flag = false;
-        
         $modelTransactionItem = TransactionItem::find()
             ->joinWith([
                 'transactionSession'
             ])
-            ->andWhere(['transaction_item.id' => $id])
+            ->andWhere(['transaction_item.id' => !empty(Yii::$app->request->post('id')) ? Yii::$app->request->post('id') : null])
             ->one();
         
-        if (!empty($modelTransactionItem)) {
+        if (empty($modelTransactionItem)) {
             
-            $modelTransactionSession = $modelTransactionItem->transactionSession;
-            $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
-            $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        $flag = false;
             
-            if ($modelTransactionSession->total_price == 0) {
-                
-                $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
-            } else {
-                
-                $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
-            }
+        $modelTransactionSession = $modelTransactionItem->transactionSession;
+        $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
+        $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
+        
+        if ($modelTransactionSession->total_price == 0) {
+            
+            $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
+        } else {
+            
+            $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
         }
         
         $return = [];
@@ -205,6 +209,7 @@ class OrderActionController extends base\BaseController
             
             $return['success'] = true;
             $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $return['total_amount'] = $modelTransactionSession->total_amount;
         } else {
             
             $transaction->rollBack();
@@ -220,14 +225,19 @@ class OrderActionController extends base\BaseController
         return $return;
     }
     
-    public function actionSaveNotes($id)
+    public function actionSaveNotes()
     {
         $post = Yii::$app->request->post();
         
         $modelTransactionItem = TransactionItem::find()
-            ->andWhere(['transaction_item.id' => $id])
+            ->andWhere(['transaction_item.id' => !empty($post['id']) ? $post['id'] : null])
             ->one();
+           
+        if (empty($modelTransactionItem)) {
             
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
         $modelTransactionItem->note = !empty($post['note']) ? $post['note'] : null;
         
         $return = [];

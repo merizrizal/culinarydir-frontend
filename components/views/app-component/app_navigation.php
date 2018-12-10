@@ -30,9 +30,9 @@ use yii\helpers\Html; ?>
                 
                 <li>
             	
-            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i>', ['order/order-list'], ['class' => 'icon hidden-xs']) ?>
-            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-tab']) ?>
-                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/order-list'], ['class' => 'icon visible-xs']) ?>
+            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i>', ['order/checkout'], ['class' => 'icon hidden-xs']) ?>
+            		<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/checkout'], ['class' => 'icon visible-tab']) ?>
+                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-2x"></i> ' . Yii::t('app', 'Order List'), ['order/checkout'], ['class' => 'icon visible-xs']) ?>
             	
             	</li>
 
