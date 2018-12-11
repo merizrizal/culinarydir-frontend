@@ -451,7 +451,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-shortcut">
+                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -502,7 +502,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" class="online-order-shortcut xs">
+                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
                                                                 <ul class="text-center">
                                                                     <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
                                                                     <li><?= Yii::t('app', 'Online Order') ?></li>
@@ -720,18 +720,6 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 </a>
                                             </li>
                                             <li role="presentation" class="visible-lg visible-md visible-sm visible-tab">
-                                                <a href="#view-menu" aria-controls="view-menu" role="tab" data-toggle="tab">
-                                                    <ul class="link-icon list-inline">
-                                                        <li>
-                                                            <ul class="text-center">
-                                                                <li><i class="aicon aicon-icon-budicon aicon-1-5x"></i></li>
-                                                                <li>Menu</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </a>
-                                            </li>
-                                            <li role="presentation" class="visible-lg visible-md visible-sm visible-tab">
                                                 <a href="#view-map" aria-controls="view-map" role="tab" data-toggle="tab">
                                                     <ul class="link-icon list-inline">
                                                         <li>
@@ -758,11 +746,6 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     <li role="presentation">
                                                         <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab">
                                                         	<h6><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6>
-                                                        </a>
-                                                    </li>
-                                                    <li role="presentation">
-                                                        <a href="#view-menu" aria-controls="view-menu-xs" role="tab" data-toggle="tab">
-                                                        	<h6><i class="aicon aicon-icon-budicon"></i> Menu</h6>
                                                         </a>
                                                     </li>
                                                     <li role="presentation">
@@ -804,15 +787,6 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     'modelBusiness' => $modelBusiness,
                                                     'modelPostPhoto' => $modelPostPhoto,
                                                     'queryParams' => $queryParams,
-                                                ]) ?>
-
-                                            </div>
-
-                                            <div role="tabpanel" class="tab-pane fade p-0" id="view-menu">
-
-                                                <?= $this->render('detail/_menu.php', [
-                                                    'modelBusinessProduct' => $modelBusiness['businessProducts'],
-                                                    'modelTransactionSession' => $modelTransactionSession,
                                                 ]) ?>
 
                                             </div>
@@ -996,26 +970,6 @@ $jscript = '
             });
         } else {
             $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".online-order-shortcut").on("click", function() {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-menu" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-menu" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-menu" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-menu").offset().top }, "slow");
         }
 
         return false;

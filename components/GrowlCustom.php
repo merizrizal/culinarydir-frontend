@@ -69,7 +69,7 @@ class GrowlCustom extends Widget
                         icon: icon,
                         title: title,
                         message: message,
-                        url: "' . Yii::$app->urlManager->createUrl(['order/order-list']) . '"
+                        url: "' . Yii::$app->urlManager->createUrl(['order/checkout']) . '"
                     },{
                         element: "body",
                         position: null,
