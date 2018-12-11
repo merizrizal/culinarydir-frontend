@@ -130,7 +130,7 @@ $this->title = 'Checkout'; ?>
                                                                     <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
                                                                 </div>
                                                             </div>
-                                                            <div class="row input-order">
+                                                            <div class="row">
                                                             	<div class="col-xs-12 mb-10">
                                                         		
                                                         			<div class="overlay" style="display: none;"></div>
