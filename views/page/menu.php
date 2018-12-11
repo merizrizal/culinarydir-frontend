@@ -235,7 +235,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                 endforeach;
                                             else: ?>
                             
-                                            	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?> </p>
+                                            	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
                             
                                             <?php
                                             endif; ?>
