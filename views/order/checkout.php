@@ -17,8 +17,15 @@ $this->title = 'Checkout'; ?>
 		
 			<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]) ?>
+                
+                	<?php
+					if (!empty($modelTransactionSession)) {
+					    
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]);
+					} else {
+					  
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']);
+					} ?>
 
                 </div>
             </div>
@@ -44,145 +51,148 @@ $this->title = 'Checkout'; ?>
                 						<div class="row">
                 							<div class="col-xs-12">
                 								
-                								<?php                								
-                								foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
-                                                    
-                                                    <div class="business-menu-group">
-                                                    
-                                                    	<?= Html::hiddenInput('transaction_item_id', $dataTransactionItem['id'], ['class' => 'transaction-item-id']); ?>
-                                                    
-                            							<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
-                            								<div class="row">
-                                                                <div class="col-sm-8 col-tab-8">
-                                                                    <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
-                                                                </div>
-                                                                <div class="col-sm-3 col-tab-3">
-                                                                    <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
-                                                                </div>
-                                                                <div class="col-sm-1 col-tab-1 text-right">
-                                                    		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        		
-                                                        			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                        			
-                                                        		</div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-tab-12">
-                                                                    <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                            	<div class="col-sm-8 col-tab-8">
-                                                        		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
-                                                        			
-                                                        			<?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
-                                                                        'class' => 'form-control transaction-item-notes',
-                                                                        'placeholder' => Yii::t('app', 'Note'),
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                    ]); ?>
-                                                        			
-                                                        		</div>
-                                                            	<div class="col-lg-2 col-sm-3 col-tab-3">
-                                                        	
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
+                								<?php
+                								if (($hiddenClass = !empty($modelTransactionSession))):
+                								
+                    								foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
                                                         
-                                                                    <?= TouchSpin::widget([
-                                                                        'name' => 'transaction_item_amount',
-                                                                        'value' => $dataTransactionItem['amount'],
-                                                                        'options' => [
-                                                                            'class' => 'transaction-item-amount text-right input-sm',
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                        ],
-                                                                        'pluginOptions' => [
-                                                                            'style' => 'width: 30%',
-                                                                            'min' => 1,
-                                                                            'max' => 50,
-                                                                            'step' => 1,
-                                                                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                            'buttondown_class' => "btn btn-default text-center",
-                                                                            'buttonup_class' => "btn btn-default text-center"
-                                                                        ],
-                                                                    ]); ?>
-                                                                    
-                                                        		</div>
-                                                            </div>
-                            							</div>
-                            							<div class="business-menu mb-20 visible-xs">
-                            								<div class="row mb-10">
-                                                                <div class="col-xs-7">
-                                                                    <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
-                                                                </div>
-                                                                <div class="col-xs-5 text-right">
-                                                    		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        		
-                                                        			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                        			
-                                                        		</div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-xs-12">
-                                                                    <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row input-order">
-                                                            	<div class="col-xs-12 mb-10">
-                                                        		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
-                                                        			
-                                                        			<?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
-                                                                        'class' => 'form-control transaction-item-notes',
-                                                                        'placeholder' => Yii::t('app', 'Note'),
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                    ]); ?>
-                                                        			
-                                                        		</div>
-                                                                <div class="col-xs-7">
-                                                                    <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
-                                                                </div>
-                                                            	<div class="col-xs-5">
-                                                        	
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
+                                                        <div class="business-menu-group">
                                                         
-                                                                    <?= TouchSpin::widget([
-                                                                        'name' => 'transaction_item_amount',
-                                                                        'value' => $dataTransactionItem['amount'],
-                                                                        'options' => [
-                                                                            'class' => 'transaction-item-amount text-right input-sm',
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                        ],
-                                                                        'pluginOptions' => [
-                                                                            'style' => 'width: 30%',
-                                                                            'min' => 1,
-                                                                            'max' => 50,
-                                                                            'step' => 1,
-                                                                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                            'buttondown_class' => "btn btn-default text-center",
-                                                                            'buttonup_class' => "btn btn-default text-center"
-                                                                        ],
-                                                                    ]); ?>
-                                                                    
-                                                        		</div>
-                                                            </div>
+                                                        	<?= Html::hiddenInput('transaction_item_id', $dataTransactionItem['id'], ['class' => 'transaction-item-id']); ?>
+                                                        
+                                							<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
+                                								<div class="row">
+                                                                    <div class="col-sm-8 col-tab-8">
+                                                                        <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-tab-3">
+                                                                        <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                                    </div>
+                                                                    <div class="col-sm-1 col-tab-1 text-right">
+                                                        		
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            		
+                                                            			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
+                                                            			
+                                                            		</div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 col-tab-12">
+                                                                        <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                	<div class="col-sm-8 col-tab-8">
+                                                            		
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            			<div class="loading-text" style="display: none;"></div>
+                                                            			
+                                                            			<?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
+                                                                            'class' => 'form-control transaction-item-notes',
+                                                                            'placeholder' => Yii::t('app', 'Note'),
+                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                        ]); ?>
+                                                            			
+                                                            		</div>
+                                                                	<div class="col-lg-2 col-sm-3 col-tab-3">
+                                                            	
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            			<div class="loading-text" style="display: none;"></div>
+                                                            
+                                                                        <?= TouchSpin::widget([
+                                                                            'name' => 'transaction_item_amount',
+                                                                            'value' => $dataTransactionItem['amount'],
+                                                                            'options' => [
+                                                                                'class' => 'transaction-item-amount text-right input-sm',
+                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                            ],
+                                                                            'pluginOptions' => [
+                                                                                'style' => 'width: 30%',
+                                                                                'min' => 1,
+                                                                                'max' => 50,
+                                                                                'step' => 1,
+                                                                                'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                'buttondown_class' => "btn btn-default text-center",
+                                                                                'buttonup_class' => "btn btn-default text-center"
+                                                                            ],
+                                                                        ]); ?>
+                                                                        
+                                                            		</div>
+                                                                </div>
+                                							</div>
+                                							<div class="business-menu mb-20 visible-xs">
+                                								<div class="row mb-10">
+                                                                    <div class="col-xs-7">
+                                                                        <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
+                                                                    </div>
+                                                                    <div class="col-xs-5 text-right">
+                                                        		
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            		
+                                                            			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
+                                                            			
+                                                            		</div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row input-order">
+                                                                	<div class="col-xs-12 mb-10">
+                                                            		
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            			<div class="loading-text" style="display: none;"></div>
+                                                            			
+                                                            			<?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
+                                                                            'class' => 'form-control transaction-item-notes',
+                                                                            'placeholder' => Yii::t('app', 'Note'),
+                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                        ]); ?>
+                                                            			
+                                                            		</div>
+                                                                    <div class="col-xs-7">
+                                                                        <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                                    </div>
+                                                                	<div class="col-xs-5">
+                                                            	
+                                                            			<div class="overlay" style="display: none;"></div>
+                                                            			<div class="loading-text" style="display: none;"></div>
+                                                            
+                                                                        <?= TouchSpin::widget([
+                                                                            'name' => 'transaction_item_amount',
+                                                                            'value' => $dataTransactionItem['amount'],
+                                                                            'options' => [
+                                                                                'class' => 'transaction-item-amount text-right input-sm',
+                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                            ],
+                                                                            'pluginOptions' => [
+                                                                                'style' => 'width: 30%',
+                                                                                'min' => 1,
+                                                                                'max' => 50,
+                                                                                'step' => 1,
+                                                                                'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                'buttondown_class' => "btn btn-default text-center",
+                                                                                'buttonup_class' => "btn btn-default text-center"
+                                                                            ],
+                                                                        ]); ?>
+                                                                        
+                                                            		</div>
+                                                                </div>
+                                							</div>
                             							</div>
-                        							</div>
-                                                    
-                                                <?php
-                                                endforeach; ?>
+                                                        
+                                                    <?php
+                                                    endforeach;
+                                                endif; ?>
                                                 
-                                            	<div id="no-data">
+                                                <div class="<?= $hiddenClass ? 'hidden' : '' ?>" id="no-data">
                                                         
                                                 	<?= Yii::t('app', 'Your order list is empty') ?>
                                                 	
-                                                </div>   	
+                                                </div>
                                                 
                                                 <div class="row mt-70">
                                                 	<div class="col-sm-5 col-sm-offset-7 col-xs-12">
@@ -190,12 +200,12 @@ $this->title = 'Checkout'; ?>
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="font-alt">Total</th>
-                                                                    <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
+                                                                    <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                 
-                                                        <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit']) ?>
+                                                        <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit', 'disabled' => empty($modelTransactionSession)]) ?>
     
                                                     </div>
                                                 </div>
@@ -223,8 +233,6 @@ GrowlCustom::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
-    $("#no-data").hide();
-
     $(".transaction-item-amount").on("change", function() {
 
         var thisObj = $(this);
@@ -332,7 +340,7 @@ $jscript = '
 
                     if (!$(".business-menu-group").length) {
                         
-                        $("#no-data").show();
+                        $("#no-data").removeClass("hidden");
                         $(".btn-submit").prop("disabled", true);
                     }
 

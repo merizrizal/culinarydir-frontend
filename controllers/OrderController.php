@@ -43,11 +43,6 @@ class OrderController extends base\BaseController
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
-                
-        if (empty($modelTransactionSession)) {
-            
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
             
         if (Yii::$app->request->post()) {
             
