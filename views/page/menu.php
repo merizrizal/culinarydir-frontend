@@ -428,9 +428,11 @@ $jscript = '
                 if (response.success) {
 
                     if (!response.total_amount) {
+
                         cart.close();
                         cart = null;
                     } else {
+
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     }
 
