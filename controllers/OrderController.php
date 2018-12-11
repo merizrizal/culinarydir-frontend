@@ -5,7 +5,6 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
-use yii\web\NotFoundHttpException;
 
 /**
  * Order controller
