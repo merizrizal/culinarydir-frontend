@@ -21,7 +21,7 @@ $this->title = 'Checkout'; ?>
                 	<?php
 					if (!empty($modelTransactionSession)) {
 					    
-					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]);
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]);
 					} else {
 					  
 					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']);
