@@ -235,7 +235,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                 endforeach;
                                             else: ?>
                             
-                                            	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?> </p>
+                                            	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
                             
                                             <?php
                                             endif; ?>
@@ -428,9 +428,11 @@ $jscript = '
                 if (response.success) {
 
                     if (!response.total_amount) {
+
                         cart.close();
                         cart = null;
                     } else {
+
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
                     }
 

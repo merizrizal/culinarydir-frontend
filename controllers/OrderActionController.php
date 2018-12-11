@@ -193,12 +193,15 @@ class OrderActionController extends base\BaseController
         $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
         $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
         
-        if ($modelTransactionSession->total_price == 0) {
+        if (($flag = $modelTransactionItem->delete())) {
             
-            $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
-        } else {
-            
-            $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
+            if ($modelTransactionSession->total_price == 0) {
+                
+                $flag = $modelTransactionSession->delete();
+            } else {
+                
+                $flag = $modelTransactionSession->save();
+            }
         }
         
         $return = [];
