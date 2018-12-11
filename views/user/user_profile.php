@@ -74,10 +74,9 @@ $this->registerMetaTag([
                 	    $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);
                 	}
                 	
-                	$userNameMail = '
+                	$userName = '
                         <h3>' .
-                            $modelUser['full_name'] . '<br>
-                            <small>' . $modelUser['email'] . '</small>
+                            $modelUser['full_name'] . '
                         </h3>
                     '; ?>
 
@@ -89,7 +88,7 @@ $this->registerMetaTag([
                                         <?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body user-profile-identity">
-                                        <?= $userNameMail ?>
+                                        <?= $userName ?>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +103,7 @@ $this->registerMetaTag([
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 text-center">
-                                    <?= $userNameMail ?>
+                                    <?= $userName ?>
                                 </div>
                             </div>
                         </div>
