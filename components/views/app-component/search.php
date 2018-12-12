@@ -14,6 +14,9 @@ use core\models\Facility;
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
+$keywordType = !empty($keyword['type']) ? $keyword['type'] : '';
+$isSearch = !empty($id) ? '-' . $id : '';
+
 $productId = null;
 $productLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
 $styleProductLabel = null;
@@ -39,23 +42,26 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 <div class="search-box">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="<?= empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#favorite<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods?') ?></a>
+        <li role="presentation" class="<?= $keywordType == 0 ? 'active' : '' ?>">
+            <a href="#favorite<?= $isSearch ?>" aria-controls="favorite" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Favourite Foods?') ?></a>
         </li>
-        <li role="presentation" class="<?= !empty($keyword['special']) ? 'active' : '' ?>">
-            <a href="#special<?= !empty($id) ? '-' . $id : '' ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts?') ?></a>
+        <li role="presentation" class="<?= $keywordType == 1 ? 'active' : '' ?>">
+            <a href="#special<?= $isSearch ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts?') ?></a>
+        </li>
+        <li role="presentation" class="<?= $keywordType == 2 ? 'active' : '' ?>">
+            <a href="#order<?= $isSearch ?>" aria-controls="order" role="tab" data-toggle="tab"><?= Yii::t('app', 'Cari Order Online?') ?></a>
         </li>
     </ul>
 
     <!-- Tab Favorite -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade <?= empty($keyword['special']) ? 'in active' : '' ?>" id="favorite<?= !empty($id) ? '-' . $id : '' ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 0 ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-favorite'
             ]) ?>
 
-                <?= Html::hiddenInput('special', 0) ?>
+                <?= Html::hiddenInput('type', 0) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -279,13 +285,13 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
         </div>
 
-        <div role="tabpanel" class="tab-pane fade <?= !empty($keyword['special']) ? 'in active' : '' ?>" id="special<?= !empty($id) ? '-' . $id : '' ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 1 ? 'in active' : '' ?>" id="special<?= $isSearch ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-special'
             ]) ?>
 
-                <?= Html::hiddenInput('special', 1) ?>
+                <?= Html::hiddenInput('type', 1) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -385,6 +391,73 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                     <?= Html::hiddenInput('coordinate_map', $coordinate, ['class' => 'coordinate-map'])?>
                                     <?= Html::hiddenInput('radius_map', $radius, ['class' => 'radius-map'])?>
                                     <?= Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 col-xs-12 col">
+                        <div class="form-group">
+
+                            <?= $btnSubmitLgXs ?>
+                            <?= $btnSubmitTab ?>
+                            <?= $btnSubmitMdSm ?>
+
+                        </div>
+                        <div class="btn-clear-container">
+
+                            <?= $btnClearLgXs ?>
+                            <?= $btnClearTab ?>
+                            <?= $btnClearMdSm ?>
+
+                        </div>
+                    </div>
+                </div>
+
+            <?= Html::endForm() ?>
+
+        </div>
+        
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 2 ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
+
+            <?= Html::beginForm(['page/result-order'], 'get', [
+                'id' => 'search-order'
+            ]) ?>
+
+                <?= Html::hiddenInput('type', 2) ?>
+
+                <div class="row">
+                    <div class="col-sm-10 col-xs-12 col">
+                        <div class="row">
+                            <div class="col-sm-3 col-tab-6 col-xs-12 col">
+                                <div class="form-group">
+
+                                    <?= Html::dropDownList('city_id', !empty($keyword['city']) ? $keyword['city'] : null,
+                                        ArrayHelper::map(
+                                            City::find()->orderBy('name')->asArray()->all(),
+                                            'id',
+                                            function($data) {
+                                                
+                                                return $data['name'];
+                                            }
+                                        ),
+                                        [
+                                            'prompt' => '',
+                                            'class' => 'form-control city-id',
+                                            'style' => 'width: 100%'
+                                        ]) ?>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-9 col-tab-6 col-xs-12 col">
+                                <div class="form-group">
+
+                                    <?= Html::textInput('name', !empty($keyword['name']) ? $keyword['name'] : null, [
+                                        'class' => 'form-control input-name',
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
+                                    ]) ?>
 
                                 </div>
                             </div>

@@ -107,7 +107,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), [
                         'page/result-list',
-                        'special' => !empty($flashKeyword['special']) ? $flashKeyword['special'] : 0,
+                        'type' => !empty($flashKeyword['type']) ? $flashKeyword['type'] : 0,
                         'city_id' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
                         'name' => !empty($flashKeyword['name']) ? $flashKeyword['name'] : '',
                         'product_category' => !empty($flashKeyword['product']['id']) ? $flashKeyword['product']['id'] : '',
