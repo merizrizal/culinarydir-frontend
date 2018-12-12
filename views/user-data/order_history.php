@@ -60,7 +60,7 @@ $linkPager = LinkPager::widget([
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
         
-            foreach($modelTransactionSession as $dataTransactionSession): 
+            foreach ($modelTransactionSession as $dataTransactionSession):
             
                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 88, 88);
                 
@@ -78,6 +78,7 @@ $linkPager = LinkPager::widget([
                                 <div class="widget-posts-image image-order-history">
                                     <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
                                 </div>
+                                
                             	<small><?= Yii::$app->formatter->asDate($dataTransactionSession['updated_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['updated_at'], 'short') ?></small>
                             	<br>
                                 <?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
