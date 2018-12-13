@@ -421,7 +421,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
         
         <div role="tabpanel" class="tab-pane fade <?= $keywordType == 2 ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
 
-            <?= Html::beginForm(['page/result-order'], 'get', [
+            <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-order'
             ]) ?>
 

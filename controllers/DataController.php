@@ -75,11 +75,6 @@ class DataController extends base\BaseController
     {
         return $this->getResult('result_map');
     }
-    
-    public function actionResultOrder()
-    {
-        return $this->getResult('result_order');
-    }
 
     public function actionPostReview()
     {
@@ -309,7 +304,7 @@ class DataController extends base\BaseController
         $get = Yii::$app->request->get();
         $paramsView = [];
         
-        if ($get['type'] == 0) {
+        if ($get['type'] == 0 || $get['type'] == 2) {
             
             $modelBusiness = Business::find()
                 ->joinWith([
@@ -341,11 +336,21 @@ class DataController extends base\BaseController
                             'user_love.is_active' => true
                         ]);
                     },
+                    'membershipType.membershipTypeProductServices.productService',
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
-                ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]]);
+            
+            if ($get['type'] == 0) {
+                
+                $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
                 ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
+            }
+            
+            if ($get['type'] == 2) {
+                
+                $modelBusiness = $modelBusiness->andFilterWhere(['product_service.code_name' => 'order-online']);
+            }
                 
             if (!empty($get['price_min']) || !empty($get['price_max'])) {
                 
@@ -458,50 +463,6 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusinessPromo'] = $modelBusinessPromo;
-        } elseif ($get['type'] == 2) {
-            
-            $modelBusiness = Business::find()
-                ->joinWith([
-                    'businessCategories' => function($query) {
-                    
-                        $query->andOnCondition(['business_category.is_active' => true]);
-                    },
-                    'businessCategories.category',
-                    'businessImages' => function($query) {
-                    
-                        $query->andOnCondition(['type' => 'Profile']);
-                    },
-                    'businessLocation',
-                    'businessProductCategories' => function($query) {
-                    
-                        $query->andOnCondition(['business_product_category.is_active' => true]);
-                    },
-                    'businessProductCategories.productCategory',
-                    'businessDetail',
-                    'membershipType.membershipTypeProductServices.productService'
-                ])
-                ->andFilterWhere(['product_service.code_name' => 'P004'])
-                ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
-                ->orderBy(['business.id' => SORT_DESC])
-                ->distinct()
-                ->asArray();
-                
-            $provider = new ActiveDataProvider([
-                'query' => $modelBusiness,
-            ]);
-                
-            $modelBusiness = $provider->getModels();
-            $pagination = $provider->getPagination();
-            
-            $pageSize = $pagination->pageSize;
-            $totalCount = $pagination->totalCount;
-            $offset = $pagination->offset;
-            
-            $startItem = !empty($modelBusiness) ? $offset + 1 : 0;
-            $endItem = min(($offset + $pageSize), $totalCount);
-            
-            $paramsView['modelBusiness'] = $modelBusiness;
         }
         
         $paramsView = ArrayHelper::merge($paramsView, [

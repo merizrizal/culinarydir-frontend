@@ -80,11 +80,6 @@ class PageController extends base\BaseHistoryUrlController
     {
         return $this->getResult('result_map');
     }
-    
-    public function actionResultOrder()
-    {
-        return $this->getResult('result_order');
-    }
 
     public function actionDetail($id)
     {
@@ -401,7 +396,7 @@ class PageController extends base\BaseHistoryUrlController
     }
 
     private function getResult($fileRender)
-    {            
+    {
         $filter = Yii::$app->request->get();
 
         $keyword = [];
