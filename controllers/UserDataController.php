@@ -9,6 +9,7 @@ use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use core\models\TransactionSession;
+use yii\web\NotFoundHttpException;
 
 /**
  * User Data Controller
@@ -337,8 +338,7 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function($query) {
                 
-                    $query->andOnCondition([
-                        'business_image.is_primary' => true]);
+                    $query->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation'
             ])
@@ -367,6 +367,36 @@ class UserDataController extends base\BaseController
            'startItem' => $startItem,
            'endItem' => $endItem,
            'totalCount' => $totalCount,
+        ]);
+    }
+    
+    public function actionDetailOrderHistory($id)
+    {
+        $modelTransactionSession = TransactionSession::find()
+            ->joinWith([
+                'business',
+                'business.businessImages' => function($query) {
+                
+                    $query->andOnCondition(['business_image.is_primary' => true]);
+                },
+                'business.businessLocation',
+                'transactionItems' => function($query) {
+                
+                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                },
+                'transactionItems.businessProduct'
+            ])
+            ->andWhere(['transaction_session.id' => $id])
+            ->asArray()
+            ->one();
+                
+        if (empty($modelTransactionSession)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+                
+        return $this->render('detail_order_history', [
+            'modelTransactionSession' => $modelTransactionSession    
         ]);
     }
 }

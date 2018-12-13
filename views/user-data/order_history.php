@@ -92,8 +92,11 @@ $linkPager = LinkPager::widget([
                             </div>
                         </div>
                         <div class="row mb-10">
-                        	<div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
-                        		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <strong><?= $dataTransactionSession['is_closed'] ? Yii::t('app', 'Done') : Yii::t('app', 'Not Done') ?></strong>
+                        	<div class="col-md-10 col-sm-10 col-tab-10 col-xs-8">
+                        		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle" style="color: <?= $dataTransactionSession['is_closed'] ? 'green' : 'red' ?>"></i>
+                        	</div>
+                        	<div class="col-md-2 col-sm-2 col-tab-2 col-xs-4 text-center">
+                        		<?= Html::a('Detail <i class="fa fa-angle-double-right"></i>', ['user-data/detail-order-history', 'id' => $dataTransactionSession['id']]) ?>
                         	</div>
                         </div>
                 	</div>
