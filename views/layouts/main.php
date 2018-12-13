@@ -59,7 +59,12 @@ AppAsset::register($this); ?>
                 <?= $appComponent->appFooter() ?>
             </div>
             
-        <?php 
+        <?php
+        else: ?>
+            
+            <br><br><br><br><br><br>
+            
+        <?php
         endif; ?>
             
         <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up fa-2x"></i></a></div>
