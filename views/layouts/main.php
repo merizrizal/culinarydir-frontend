@@ -62,7 +62,7 @@ AppAsset::register($this); ?>
         <?php
         else: ?>
             
-            <br><br><br><br><br><br>
+            <br><br><br><br>
             
         <?php
         endif; ?>
