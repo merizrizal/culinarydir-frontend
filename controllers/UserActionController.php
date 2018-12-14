@@ -6,9 +6,11 @@ use core\models\UserPostMain;
 use core\models\UserVote;
 use core\models\BusinessDetail;
 use core\models\BusinessDetailVote;
+use core\models\UserPostLove;
+use core\models\TransactionSession;
+use core\models\TransactionItem;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use core\models\UserPostLove;
 
 /**
  * User Action Controller
@@ -30,6 +32,7 @@ class UserActionController extends base\BaseController
                     'actions' => [
                         'delete-photo' => ['POST'],
                         'delete-user-post' => ['POST'],
+                        'reorder' => ['POST']
                     ],
                 ],
             ]);
@@ -205,5 +208,88 @@ class UserActionController extends base\BaseController
         
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
+    }
+    
+    public function actionReorder()
+    {
+        $return = [];
+        
+        $modelTransactionSession = TransactionSession::find()
+            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['is_closed' => false])
+            ->one();
+        
+        if (!empty($modelTransactionSession)) {
+            
+            if ($modelTransactionSession->id == Yii::$app->request->post('id')) {
+                
+                return $this->redirect(['order/checkout']);
+            }
+            
+            $return['success'] = false;
+            $return['type'] = 'danger';
+            $return['icon'] = 'aicon aicon-icon-info';
+            $return['title'] = 'Pesan Ulang Gagal';
+            $return['text'] = 'Silahkan selesaikan pesanan anda terlebih dahulu.';
+        } else {
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            
+            $flag = false;
+        
+            $oldModelTransactionSession = TransactionSession::find()
+                ->andWhere(['id' => Yii::$app->request->post('id')])
+                ->one();
+            
+            $newModelTransactionSession = new TransactionSession();
+            $newModelTransactionSession->user_ordered = $oldModelTransactionSession->user_ordered;
+            $newModelTransactionSession->business_id = $oldModelTransactionSession->business_id;
+            $newModelTransactionSession->note = !empty($oldModelTransactionSession->note) ? $oldModelTransactionSession->note : null;
+            $newModelTransactionSession->total_price = $oldModelTransactionSession->total_price;
+            $newModelTransactionSession->total_amount = $oldModelTransactionSession->total_amount;
+            $newModelTransactionSession->is_closed = false;
+            
+            if (($flag = $newModelTransactionSession->save())) {
+                
+                $oldModelTransactionItem = TransactionItem::find()
+                    ->andWhere(['transaction_session_id' => Yii::$app->request->post('id')])
+                    ->orderBy(['id' => SORT_ASC])
+                    ->all();
+                
+                foreach ($oldModelTransactionItem as $dataTransactionItem) {
+                    
+                    $newModelTransactionItem = new TransactionItem();
+                    $newModelTransactionItem->transaction_session_id = $newModelTransactionSession->id;
+                    $newModelTransactionItem->business_product_id = $dataTransactionItem->business_product_id;
+                    $newModelTransactionItem->note = !empty($dataTransactionItem->note) ? $dataTransactionItem->note : null;
+                    $newModelTransactionItem->price = $dataTransactionItem->price;
+                    $newModelTransactionItem->amount = $dataTransactionItem->amount;
+                    
+                    if (!($flag = $newModelTransactionItem->save())) {
+                        
+                        break;
+                    }
+                }
+            }
+            
+            if ($flag) {
+                
+                $transaction->commit();
+                
+                return $this->redirect(['order/checkout']);
+            } else {
+                
+                $transaction->rollBack();
+                
+                $return['success'] = false;
+                $return['type'] = 'danger';
+                $return['icon'] = 'aicon aicon-icon-info';
+                $return['title'] = 'Pesan Ulang Gagal';
+                $return['text'] = 'Silahkan ulangi kembali proses pemesanan anda.';
+            }
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $return;
     }
 }

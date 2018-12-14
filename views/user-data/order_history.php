@@ -57,8 +57,6 @@ $linkPager = LinkPager::widget([
 		
         <?php
         if (!empty($modelTransactionSession)):
-            
-            Yii::$app->formatter->timeZone = 'Asia/Jakarta';
         
             foreach ($modelTransactionSession as $dataTransactionSession):
             
@@ -71,44 +69,39 @@ $linkPager = LinkPager::widget([
                 
                 $img = Html::img($img, ['class' => 'img-rounded']); ?>
         
-                <div class="row">
-                	<div class="col-xs-12">
-                		<div class="row mt-10 mb-10">
-                            <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
-                                <div class="widget-posts-image image-order-history">
-                                    <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
-                                </div>
-                                
-                            	<small><?= Yii::$app->formatter->asDate($dataTransactionSession['updated_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['updated_at'], 'short') ?></small>
-                            	<br>
-                                <?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
-                                <br>
-                                <small>
-                                    <?= AddressType::widget([
-                                        'addressType' => $dataTransactionSession['business']['businessLocation']['address_type'],
-                                        'address' => $dataTransactionSession['business']['businessLocation']['address']
-                                    ]); ?>
-                                </small>
+            	<div class="col-xs-12">
+            		<div class="row mt-10 mb-10">
+                        <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
+                            <div class="widget-posts-image image-order-history">
+                                <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
                             </div>
+                            
+                        	<small><?= Yii::$app->formatter->asDate($dataTransactionSession['updated_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['updated_at'], 'short') ?></small>
+                        	<br>
+                            <?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
+                            <br>
+                            <small>
+                                <?= AddressType::widget([
+                                    'addressType' => $dataTransactionSession['business']['businessLocation']['address_type'],
+                                    'address' => $dataTransactionSession['business']['businessLocation']['address']
+                                ]); ?>
+                            </small>
                         </div>
-                        <div class="row mb-10">
-                        	<div class="col-md-10 col-sm-10 col-tab-10 col-xs-8">
-                        		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle" style="color: <?= $dataTransactionSession['is_closed'] ? 'green' : 'red' ?>"></i>
-                        	</div>
-                        	<div class="col-md-2 col-sm-2 col-tab-2 col-xs-4 text-center">
-                        		<?= Html::a('Detail <i class="fa fa-angle-double-right"></i>', ['user-data/detail-order-history', 'id' => $dataTransactionSession['id']]) ?>
-                        	</div>
-                        </div>
-                	</div>
-                </div>
+                    </div>
+                    <div class="row mb-10">
+                    	<div class="col-md-10 col-sm-10 col-tab-10 col-xs-8">
+                    		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
+                    	</div>
+                    	<div class="col-md-2 col-sm-2 col-tab-2 col-xs-4 text-center">
+                    		<?= Html::a('Detail <i class="fa fa-angle-double-right"></i>', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]) ?>
+                    	</div>
+                    </div>
+            	</div>
                 
                 <hr class="divider-w">
         
         	<?php
             endforeach;
-            
-            Yii::$app->formatter->timeZone = 'UTC';
-        
         else: ?>
             
             <div class="row">
@@ -160,7 +153,7 @@ $jscript = '
     });
 
     $("#pjax-order-history-container").off("pjax:error");
-    $("#pjax-order-history-container").on("pjax:error", function (event) {
+    $("#pjax-order-history-container").on("pjax:error", function(event) {
 
         event.preventDefault();
     });

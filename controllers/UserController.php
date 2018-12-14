@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use core\models\TransactionSession;
 use core\models\UserPerson;
 use core\models\User;
 use frontend\models\ChangePassword;
@@ -159,6 +160,38 @@ class UserController extends base\BaseHistoryUrlController
 
         return $this->render('change_password', [
             'modelChangePassword' => $modelChangePassword,
+        ]);
+    }
+    
+    public function actionDetailOrderHistory($id)
+    {
+        $modelTransactionSession = TransactionSession::find()
+            ->joinWith([
+                'business',
+                'business.businessImages' => function($query) {
+                
+                    $query->andOnCondition(['business_image.is_primary' => true]);
+                },
+                'business.businessLocation',
+                'transactionItems' => function($query) {
+                
+                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                },
+                'transactionItems.businessProduct'
+            ])
+            ->andWhere(['transaction_session.id' => $id])
+            ->asArray()
+            ->one();
+                
+        if (empty($modelTransactionSession)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
+        return $this->render('detail_order_history', [
+            'modelTransactionSession' => $modelTransactionSession
         ]);
     }
 }

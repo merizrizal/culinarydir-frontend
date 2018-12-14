@@ -9,7 +9,6 @@ use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use core\models\TransactionSession;
-use yii\web\NotFoundHttpException;
 
 /**
  * User Data Controller
@@ -331,7 +330,20 @@ class UserDataController extends base\BaseController
     
     public function actionOrderHistory()
     {
-        $this->layout = 'ajax';
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'order-history',
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
         
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
@@ -361,42 +373,14 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelTransactionSession) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
         
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
         return $this->render('order_history', [
            'modelTransactionSession' => $modelTransactionSession,
            'pagination' => $pagination,
            'startItem' => $startItem,
            'endItem' => $endItem,
            'totalCount' => $totalCount,
-        ]);
-    }
-    
-    public function actionDetailOrderHistory($id)
-    {
-        $modelTransactionSession = TransactionSession::find()
-            ->joinWith([
-                'business',
-                'business.businessImages' => function($query) {
-                
-                    $query->andOnCondition(['business_image.is_primary' => true]);
-                },
-                'business.businessLocation',
-                'transactionItems' => function($query) {
-                
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
-                },
-                'transactionItems.businessProduct'
-            ])
-            ->andWhere(['transaction_session.id' => $id])
-            ->asArray()
-            ->one();
-                
-        if (empty($modelTransactionSession)) {
-            
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-                
-        return $this->render('detail_order_history', [
-            'modelTransactionSession' => $modelTransactionSession    
         ]);
     }
 }

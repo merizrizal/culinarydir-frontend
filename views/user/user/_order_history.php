@@ -1,6 +1,8 @@
 <?php
 
-/* @var $this yii\web\View */ ?>
+/* @var $this yii\web\View */
+/* @var $username string */
+/* @var $queryParams array */ ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -17,7 +19,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/order-history']) . '",
+        url: "' . Yii::$app->urlManager->createUrl(['user-data/order-history']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'order-history' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
         success: function(response) {
 
             $(".order-history").html(response);

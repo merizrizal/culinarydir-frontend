@@ -123,10 +123,10 @@ $this->title = 'Checkout'; ?>
                                 							</div>
                                 							<div class="business-menu mb-20 visible-xs">
                                 								<div class="row mb-10">
-                                                                    <div class="col-xs-7">
+                                                                    <div class="col-xs-10">
                                                                         <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                                     </div>
-                                                                    <div class="col-xs-5 text-right">
+                                                                    <div class="col-xs-2 text-right">
                                                         		
                                                             			<div class="overlay" style="display: none;"></div>
                                                             		
