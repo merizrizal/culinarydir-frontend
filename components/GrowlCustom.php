@@ -34,7 +34,10 @@ class GrowlCustom extends Widget
                         from: "bottom",
                         align: "left"
                     },
-                    offset: 0,
+                    offset: {
+                        x: 0,
+                        y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                    },
                     spacing: 0,
                     z_index: 1031,
                     delay: 5000,
@@ -81,7 +84,10 @@ class GrowlCustom extends Widget
                             from: "bottom",
                             align: "right"
                         },
-                        offset: 0,
+                        offset: {
+                            x: 0,
+                            y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                        },
                         spacing: 0,
                         z_index: 1031,
                         delay: 0,

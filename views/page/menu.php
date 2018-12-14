@@ -243,6 +243,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 										</div>
 									</div>
             					</div>
+            					<br><br><br>
             				</div>
         				</div>
     				</div>
