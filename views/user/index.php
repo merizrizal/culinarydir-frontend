@@ -82,7 +82,13 @@ $this->registerMetaTag([
                         </h3>
                     ';
                 	
-                    $btnUpdateProfile = Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-round btn-d']); ?>
+                    $btnProfile = '
+                        <div class="btn-group" role="group">' . 
+                            Html::a('<i class="aicon aicon-pencil2"></i>', ['user/update-profile'], ['class' => 'btn btn-standard btn-default btn-round-4']) .
+                            Html::a('<i class="aicon aicon-document-edit"></i>', ['user/change-password'], ['class' => 'btn btn-standard btn-default btn-round-4']) .
+                            Html::a('<i class="aicon aicon-switch"></i>', ['site/logout'], ['class' => 'btn btn-standard btn-default btn-round-4', 'data-method' => 'post']) . '
+                        </div>
+                    '; ?>
 
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
                         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-tab-8 col-xs-offset-2">
@@ -93,7 +99,7 @@ $this->registerMetaTag([
                                     </div>
                                     <div class="widget-posts-body">
                                         <?= $userName ?>
-                                        <?= $btnUpdateProfile ?>
+                                        <?= $btnProfile ?>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +115,7 @@ $this->registerMetaTag([
                             <div class="row">
                                 <div class="col-xs-12 text-center">
                                     <?= $userName ?>
-                                    <?= $btnUpdateProfile ?>
+                                    <?= $btnProfile ?>
                                 </div>
                             </div>
                         </div>
