@@ -107,15 +107,6 @@ $linkPager = LinkPager::widget([
             	
         	<?php
             endforeach;
-        else: ?>
-            
-            <div class="row">
-            	<div class="col-xs-12">
-            		<p><?= Yii::t('app', 'You don\'t Have Any Order Histories Right Now') ?></p>
-            	</div>
-            </div>
-            
-        <?php
         endif; ?>
         
     </div>
