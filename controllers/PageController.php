@@ -369,10 +369,12 @@ class PageController extends base\BaseHistoryUrlController
     {
         $modelBusiness = Business::find()
             ->joinWith([
-                'businessProducts' => function ($query) {
+                'businessProductCategories',
+                'businessProductCategories.businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false]);
                 },
+                'businessProductCategories.productCategory'
             ])
             ->andWhere(['business.id' => $id])
             ->asArray()->one();
