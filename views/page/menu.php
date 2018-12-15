@@ -14,7 +14,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 <div class="main">
 
     <section class="module-extra-small bg-main">
-        <div class="container detail">
+        <div class="container detail menu-list">
         
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
@@ -34,7 +34,121 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
             					</div>
             					
-            					<hr class="divider-w">
+            					<div class="view menu-header">
+                					<div class="row">
+            							<div class="col-xs-12">
+            								<div class="view">
+                                                <ul class="nav nav-tabs mb-10" role="tablist">
+                                                	
+                                                	<?php
+                                                	foreach ($modelBusiness['businessProductCategories'] as $dataProductCategory): ?>
+                                                        
+                                                        <li role="presentation">
+                                                            <a href="view-<?= $dataProductCategory['id'] ?>" aria-controls="view-<?= $dataProductCategory['id'] ?>" role="tab" data-toggle="tab"><?= $dataProductCategory['productCategory']['name'] ?></a>
+                                                        </li>
+                                                        
+                                                    <?php
+                                                    endforeach; ?>
+                                                    
+                                                </ul>
+                                                
+                                                <div class="tab-content p-10">
+                                                        
+                                                    <?php
+                                                    foreach ($modelBusiness['businessProductCategories'] as $i => $dataProductCategory): ?>
+                                                    
+                                                    	<div role="tabpanel" class="tab-pane fade <?= $i == 0 ? 'in active' : '' ?> p-0" id="view-<?= $dataProductCategory['id'] ?>">
+                                                        
+                                                            <?php
+                                                            foreach ($dataProductCategory['businessProducts'] as $dataBusinessProduct): ?>
+                                                            
+                                                            	<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
+                                    								<div class="row">
+                                                                        <div class="col-sm-8 col-tab-8">
+                                                                            <strong><?= $dataBusinessProduct['name'] ?></strong>
+                                                                        </div>
+                                                                        <div class="col-sm-3 col-tab-3">
+                                                                            <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                        </div>
+                                                                        <div class="col-sm-1 col-tab-1 text-right">
+                                                            		
+                                                                			<div class="overlay" style="display: none;"></div>
+                                                                		
+                                                                			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
+                                                                			
+                                                                		</div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 col-tab-12">
+                                                                            <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                    	<div class="col-xs-offset-8 col-xs-4">
+                                                                    	
+                                                                    		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
+                                                                    		    'class' => 'btn btn-d btn-round btn-xs add-item',
+                                                                    		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
+                                                                    		    'data-product-id' => $dataBusinessProduct['id'],
+                                                                    		    'data-product-price' => $dataBusinessProduct['price']
+                                                                    		]) ?>
+                                                                        	
+                                                                    	</div>
+                                                                    </div>
+                                                                    <div class="row input-order">
+                                                                    	<div class="col-sm-8 col-tab-8">
+                                                                		
+                                                                			<div class="overlay" style="display: none;"></div>
+                                                                			<div class="loading-text" style="display: none;"></div>
+                                                                			
+                                                                			<?= Html::textInput('transaction_item_notes', null, [
+                                                                                'class' => 'form-control transaction-item-notes',
+                                                                                'placeholder' => Yii::t('app', 'Note'),
+                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                            ]); ?>
+                                                                			
+                                                                		</div>
+                                                                    	<div class="col-lg-2 col-sm-3 col-tab-3">
+                                                                	
+                                                                			<div class="overlay" style="display: none;"></div>
+                                                                			<div class="loading-text" style="display: none;"></div>
+                                                                
+                                                                            <?= TouchSpin::widget([
+                                                                                'name' => 'transaction_item_amount',
+                                                                                'value' => 0,
+                                                                                'options' => [
+                                                                                    'class' => 'transaction-item-amount text-right input-sm',
+                                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                ],
+                                                                                'pluginOptions' => [
+                                                                                    'style' => 'width: 30%',
+                                                                                    'min' => 1,
+                                                                                    'max' => 50,
+                                                                                    'step' => 1,
+                                                                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                    'buttondown_class' => "btn btn-default text-center",
+                                                                                    'buttonup_class' => "btn btn-default text-center"
+                                                                                ],
+                                                                            ]); ?>
+                                                                            
+                                                                		</div>
+                                                                    </div>
+                                    							</div>
+                                                            
+                                                            <?php
+                                                            endforeach; ?>
+                                                        
+                                                        </div>
+                                                        
+                                                    <?php
+                                                    endforeach; ?>
+                                                    
+                                                </div>
+                                            </div>
+            							</div>
+            						</div>
+        						</div>
             					
             					<div class="box-content">
             						<div class="row">
@@ -264,6 +378,46 @@ $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse()
 $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
 
 $jscript = '
+    var didScroll;
+    var lastScrollTop = 0;
+    var navbarHeight = $(".menu-header").outerHeight();
+
+    $(window).scroll(function (event) {
+        didScroll = true;
+    });
+
+    setInterval(function () {
+
+        if (didScroll) {
+
+            hasScrolled();
+            didScroll = false;
+        }
+    }, 250);
+
+    function hasScrolled() {
+        var st = $(".menu-header").scrollTop();
+
+        if (Math.abs(lastScrollTop - st) <= 25)
+
+            return;
+
+        if (st > lastScrollTop && st > navbarHeight) {
+            
+            $(".menu-header").addClass("navbar-up");
+        } else {
+            
+            if (st + $(window).height() < $(document).height()) {
+
+                $(".menu-header").removeClass("navbar-up");
+            }
+        }
+
+        lastScrollTop = st;
+    }
+
+    hasScrolled();
+
     var cart = null;
 
     if ($(".transaction-session-id").length) {
