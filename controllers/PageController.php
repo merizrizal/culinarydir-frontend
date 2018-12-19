@@ -106,7 +106,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessProductCategories',
                 'businessProductCategories.productCategory' => function ($query) {
                 
-                    $query>andOnCondition(['business_product_category.is_active' => true])
+                    $query->andOnCondition(['business_product_category.is_active' => true])
                         ->andOnCondition(['product_category.is_active' => true]);
                 },
                 'businessDetail',
