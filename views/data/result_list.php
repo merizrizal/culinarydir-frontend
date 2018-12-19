@@ -225,13 +225,16 @@ $linkPager = LinkPager::widget([
                                                                     $businessProductCategoryPopover = '';
 
                                                                     foreach ($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory) {
+                                                                        
+                                                                        if ($dataBusinessProductCategory['productCategory']['is_active']) {
 
-                                                                        if ($key < $businessProductCategoryLimit) {
-
-                                                                            $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        } else {
-
-                                                                            $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            if ($key < $businessProductCategoryLimit) {
+    
+                                                                                $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            } else {
+    
+                                                                                $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            }
                                                                         }
                                                                     }
 
