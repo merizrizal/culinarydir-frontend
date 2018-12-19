@@ -47,11 +47,14 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                             	if (!empty($modelBusiness['businessProductCategories'])) {
                                     	           
                                             	    foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
-                                            	    
-                                            	        echo '<li>' . Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
-                                            	            'class' => 'menu-shortcut',
-                                            	            'data-id' => $dataBusinessProductCategory['productCategory']['id']
-                                            	        ]) . '</li>';
+                                            	       
+                                            	        if (!empty($dataBusinessProductCategory['businessProducts'])) {
+                                            	        
+                                                	        echo '<li>' . Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
+                                                	            'class' => 'menu-shortcut',
+                                                	            'data-id' => $dataBusinessProductCategory['productCategory']['id']
+                                                	        ]) . '</li>';
+                                            	        }
                                             	    }
                                             	} ?>
                                             	
@@ -307,8 +310,6 @@ $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse()
 $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
 
 $jscript = '
-    var navbarHeight = $(".nav-tabs").outerHeight();
-
     $(window).scroll(function() {
 
         var st = $(this).scrollTop();
