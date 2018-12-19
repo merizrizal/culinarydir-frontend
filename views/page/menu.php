@@ -273,7 +273,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                     							</div>
                                 
                                                             <?php
-                                                            endforeach; ?>	
+                                                            endforeach; ?>
                                                     	
                                                     	</div>
                                                     </div>
@@ -325,6 +325,7 @@ $jscript = '
                 
                     $(".nav-tabs").removeClass("nav-tabs-up");
                 } else {
+
                     $(".nav-tabs").addClass("nav-tabs-up");
                 }
             }, 250);
@@ -539,7 +540,7 @@ $jscript = '
 
     $(".menu-shortcut").on("click", function() {
 
-        $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top }, "slow");
+        $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top - 50 }, "slow");
 
         return false;
     });
