@@ -217,11 +217,11 @@ class UserActionController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['is_closed' => false])
-            ->one();
+            ->asArray()->one();
         
         if (!empty($modelTransactionSession)) {
             
-            if ($modelTransactionSession->id == Yii::$app->request->post('id')) {
+            if ($modelTransactionSession['id'] == Yii::$app->request->post('id')) {
                 
                 return $this->redirect(['order/checkout']);
             }
@@ -237,26 +237,22 @@ class UserActionController extends base\BaseController
             
             $flag = false;
         
-            $oldModelTransactionSession = TransactionSession::find()
-                ->andWhere(['id' => Yii::$app->request->post('id')])
+            $oldModelTransaction = TransactionSession::find()
+                ->joinWith(['transactionItems'])
+                ->andWhere(['transaction_session.id' => Yii::$app->request->post('id')])
                 ->one();
             
             $newModelTransactionSession = new TransactionSession();
-            $newModelTransactionSession->user_ordered = $oldModelTransactionSession->user_ordered;
-            $newModelTransactionSession->business_id = $oldModelTransactionSession->business_id;
-            $newModelTransactionSession->note = !empty($oldModelTransactionSession->note) ? $oldModelTransactionSession->note : null;
-            $newModelTransactionSession->total_price = $oldModelTransactionSession->total_price;
-            $newModelTransactionSession->total_amount = $oldModelTransactionSession->total_amount;
+            $newModelTransactionSession->user_ordered = $oldModelTransaction->user_ordered;
+            $newModelTransactionSession->business_id = $oldModelTransaction->business_id;
+            $newModelTransactionSession->note = !empty($oldModelTransaction->note) ? $oldModelTransaction->note : null;
+            $newModelTransactionSession->total_price = $oldModelTransaction->total_price;
+            $newModelTransactionSession->total_amount = $oldModelTransaction->total_amount;
             $newModelTransactionSession->is_closed = false;
             
             if (($flag = $newModelTransactionSession->save())) {
                 
-                $oldModelTransactionItem = TransactionItem::find()
-                    ->andWhere(['transaction_session_id' => Yii::$app->request->post('id')])
-                    ->orderBy(['id' => SORT_ASC])
-                    ->all();
-                
-                foreach ($oldModelTransactionItem as $dataTransactionItem) {
+                foreach ($oldModelTransaction->transactionItems as $dataTransactionItem) {
                     
                     $newModelTransactionItem = new TransactionItem();
                     $newModelTransactionItem->transaction_session_id = $newModelTransactionSession->id;

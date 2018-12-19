@@ -350,7 +350,10 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function($query) {
                 
-                    $query->andOnCondition(['business_image.is_primary' => true]);
+                    $query->andOnCondition([
+                        'business_image.type' => 'Profile',
+                        'business_image.is_primary' => true
+                    ]);
                 },
                 'business.businessLocation'
             ])

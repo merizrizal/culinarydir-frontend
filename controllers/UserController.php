@@ -180,8 +180,7 @@ class UserController extends base\BaseHistoryUrlController
                 'transactionItems.businessProduct'
             ])
             ->andWhere(['transaction_session.id' => $id])
-            ->asArray()
-            ->one();
+            ->asArray()->one();
                 
         if (empty($modelTransactionSession)) {
             

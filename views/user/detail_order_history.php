@@ -1,10 +1,10 @@
 <?php
 
+use yii\web\View;
+use yii\helpers\Html;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 use sycomponent\Tools;
-use yii\helpers\Html;
-use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -81,7 +81,7 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                             			<div class="row">
                                                             <div class="col-sm-9 col-tab-8 col-xs-12">
                                                             
-                                                                <?= $dataTransactionItem['businessProduct']['name'] ?>
+                                                                <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                             
                                                             </div>
                                                             <div class="col-sm-3 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
@@ -109,12 +109,12 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     <hr class="divider-w mb-10">
                                     
                                     <div class="row">
-                                    	<div class="col-sm-8 col-tab-8 col-xs-7">
+                                    	<div class="col-sm-8 col-tab-8 col-xs-12">
                                     		Total : <?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $modelTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                                     	</div>
-                                    	<div class="col-sm-4 col-tab-4 col-xs-5 text-right">
+                                    	<div class="col-sm-4 col-tab-4 col-xs-12 text-right">
                                     	
-                                    		<?= Html::a(Yii::t('app', 'Reorder'), ['user-action/reorder'], ['class' => 'btn btn-d btn-round btn-reorder']) ?>
+                                    		<?= Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn btn-d btn-block btn-round btn-reorder']) ?>
                                     		<?= Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'session-id']) ?>
                                     	
                                     	</div>
