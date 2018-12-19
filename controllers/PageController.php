@@ -124,7 +124,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'businessPromos' => function ($query) {
 
-                    $query->andOnCondition(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+                    $query->andOnCondition(['>=', 'business_promo.date_end', Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
                 'userLoves' => function ($query) {

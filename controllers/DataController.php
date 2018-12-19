@@ -326,7 +326,10 @@ class DataController extends base\BaseController
                         
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
-                    'businessProductCategories.productCategory',
+                    'businessProductCategories.productCategory' => function ($query) {
+                    
+                        $query->andOnCondition(['product_category.is_active' => true]);
+                    },
                     'businessDetail',
                     'userLoves' => function($query) {
                         
