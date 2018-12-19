@@ -107,7 +107,10 @@ class PageController extends base\BaseHistoryUrlController
 
                     $query->andOnCondition(['business_product_category.is_active' => true]);
                 },
-                'businessProductCategories.productCategory',
+                'businessProductCategories.productCategory' => function ($query) {
+                
+                    $query->andOnCondition(['product_category.is_active' => true]);
+                },
                 'businessDetail',
                 'businessHours' => function ($query) {
 
