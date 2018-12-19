@@ -344,7 +344,7 @@ class DataController extends base\BaseController
             if ($get['type'] == 0) {
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
+                    ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
             }
             
             if ($get['type'] == 2) {
@@ -404,7 +404,7 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } elseif ($get['type'] == 1) {
+        } else if ($get['type'] == 1) {
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             
