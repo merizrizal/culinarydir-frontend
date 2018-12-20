@@ -50,10 +50,13 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                             	       
                                             	        if (!empty($dataBusinessProductCategory['businessProducts'])) {
                                             	        
-                                                	        echo '<li>' . Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
-                                                	            'class' => 'menu-shortcut',
-                                                	            'data-id' => $dataBusinessProductCategory['productCategory']['id']
-                                                	        ]) . '</li>';
+                                                	        echo 
+                                                    	        '<li>' . 
+                                                	            Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
+                                                	               'class' => 'menu-shortcut',
+                                                	               'data-id' => $dataBusinessProductCategory['productCategory']['id']
+                                                	            ]) . 
+                                            	               '</li>';
                                             	        }
                                             	    }
                                             	} ?>
