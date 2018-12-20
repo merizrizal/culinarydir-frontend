@@ -358,7 +358,7 @@ class UserDataController extends base\BaseController
                 'business.businessLocation'
             ])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->orderBy(['updated_at' => SORT_DESC])
+            ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
                 

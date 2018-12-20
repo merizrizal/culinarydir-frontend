@@ -69,7 +69,13 @@ $linkPager = LinkPager::widget([
                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataTransactionSession['business']['businessImages'][0]['image'], 88, 88);
                 }
                 
-                $img = Html::img($img, ['class' => 'img-rounded']); ?>
+                $img = Html::img($img, ['class' => 'img-rounded']);
+                
+                $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]);
+                $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                    'class' => 'btn-reorder',
+                    'data-id' => $dataTransactionSession['id']
+                ]); ?>
         
             	<div class="col-xs-12">
             		<div class="row mt-10 mb-10">
@@ -97,15 +103,16 @@ $linkPager = LinkPager::widget([
                     	<div class="col-sm-9 col-tab-8 col-xs-12">
                     		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                     	</div>
-                    	<div class="col-sm-3 col-tab-4 col-xs-12">
+                    	<div class="col-sm-3 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
                     		<ul class="list-inline list-review mt-0 mb-0">
-                                <li><?= Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]) ?></li>
-                                <li>
-                                    <?= Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
-                                        'class' => 'btn-reorder',
-                                        'data-id' => $dataTransactionSession['id']
-                                    ]); ?>
-                                </li>
+                                <li><?= $btnDetail ?></li>
+                                <li><?= $btnReorder ?></li>
+                            </ul>
+                    	</div>
+                    	<div class="col-sm-3 col-tab-4 visible-xs">
+                    		<ul class="list-inline list-review mt-10 mb-0">
+                                <li><?= $btnDetail ?></li>
+                                <li><?= $btnReorder ?></li>
                             </ul>
                     	</div>
                     	

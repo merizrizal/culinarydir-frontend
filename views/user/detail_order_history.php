@@ -39,9 +39,9 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                             $img = Html::img($img, ['class' => 'img-rounded']);
                             
                             $btnReorder = Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
-                                    'class' => 'btn btn-d btn-block btn-round btn-reorder',
-                                    'data-id' => $modelTransactionSession['id']
-                                ]); ?>
+                                'class' => 'btn btn-d btn-block btn-round btn-reorder',
+                                'data-id' => $modelTransactionSession['id']
+                            ]); ?>
                     
                             <div class="row">
                             	<div class="col-xs-12">
@@ -117,12 +117,12 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     	</div>
                                     	<div class="col-sm-4 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
                                     	
-                                    		<?= $btnReorder; ?>
+                                    		<?= $btnReorder ?>
                                     	
                                     	</div>
                                     	<div class="col-xs-12 mt-10 visible-xs">
                                     	
-                                    		<?= $btnReorder; ?>
+                                    		<?= $btnReorder ?>
                                     	
                                     	</div>
                                     </div>
