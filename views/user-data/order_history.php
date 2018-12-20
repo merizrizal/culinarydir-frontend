@@ -75,23 +75,21 @@ $linkPager = LinkPager::widget([
             		<div class="row mt-10 mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                            
                                 <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
-                            
                             </div>
-                        	<small><?= Yii::$app->formatter->asDate($dataTransactionSession['updated_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['updated_at'], 'short') ?></small>
+                        	<small>
+                        		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
+                    		</small>
                         	<br>
                         	
                             <?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
                             
                             <br>
                             <small>
-                            
                                 <?= AddressType::widget([
                                     'addressType' => $dataTransactionSession['business']['businessLocation']['address_type'],
                                     'address' => $dataTransactionSession['business']['businessLocation']['address']
                                 ]); ?>
-                            
                             </small>
                         </div>
                     </div>
@@ -102,11 +100,14 @@ $linkPager = LinkPager::widget([
                     	<div class="col-sm-3 col-tab-4 col-xs-12">
                     		<ul class="list-inline list-review mt-0 mb-0">
                                 <li><?= Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]) ?></li>
-                                <li><?= Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn-reorder']); ?></li>
+                                <li>
+                                    <?= Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                                        'class' => 'btn-reorder',
+                                        'data-id' => $dataTransactionSession['id']
+                                    ]); ?>
+                                </li>
                             </ul>
                     	</div>
-                    	
-                    	<?= Html::hiddenInput('transaction_session_id', $dataTransactionSession['id'], ['class' => 'session-id']) ?>
                     	
                     </div>
                     
@@ -151,7 +152,7 @@ $jscript = '
             type: "POST",
             url: $(this).attr("href"),
             data: {
-                "id": $(this).parent().parent().parent().siblings(".session-id").val(),
+                "id": $(this).data("id"),
             },
             success: function(response) {
 

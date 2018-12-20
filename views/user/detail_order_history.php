@@ -37,30 +37,32 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                             }
                             
                             $img = Html::img($img, ['class' => 'img-rounded']);
-                            $btnReorder = Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn btn-d btn-block btn-round btn-reorder']); ?>
+                            
+                            $btnReorder = Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                                    'class' => 'btn btn-d btn-block btn-round btn-reorder',
+                                    'data-id' => $modelTransactionSession['id']
+                                ]); ?>
                     
                             <div class="row">
                             	<div class="col-xs-12">
                             		<div class="row mt-10 mb-10">
                                         <div class="col-sm-6 col-tab-7 col-xs-12">
                                             <div class="widget-posts-image image-order-history">
-                                            
                                                 <?= Html::a($img, ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
-                                            
                                             </div>
-                                        	<small><?= Yii::$app->formatter->asDate($modelTransactionSession['updated_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['updated_at'], 'short') ?></small>
+                                        	<small>
+                                        		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
+                                    		</small>
                                         	<br>
                                         	
                                             <?= Html::a($modelTransactionSession['business']['name'], ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
                                             
                                             <br>
                                             <small>
-                                            
                                                 <?= AddressType::widget([
                                                     'addressType' => $modelTransactionSession['business']['businessLocation']['address_type'],
                                                     'address' => $modelTransactionSession['business']['businessLocation']['address']
                                                 ]); ?>
-                                            
                                             </small>
                                         </div>
                                     </div>
@@ -123,9 +125,6 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     		<?= $btnReorder; ?>
                                     	
                                     	</div>
-                                    	
-                                    	<?= Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'session-id']) ?>
-                                    	
                                     </div>
                             	</div>
                             </div>
@@ -150,7 +149,7 @@ $jscript = '
             type: "POST",
             url: $(this).attr("href"),
             data: {
-                "id": $(".session-id").val(),
+                "id": $(this).data("id"),
             },
             success: function(response) {
 
