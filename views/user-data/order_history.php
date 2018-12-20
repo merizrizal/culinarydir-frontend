@@ -78,13 +78,17 @@ $linkPager = LinkPager::widget([
                 ]); ?>
         
             	<div class="col-xs-12">
-            		<div class="row mt-10 mb-10">
+            		<div class="row">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
+                            
                                 <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
+                            
                             </div>
                         	<small>
+                        	
                         		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
+                    		
                     		</small>
                         	<br>
                         	
@@ -92,10 +96,12 @@ $linkPager = LinkPager::widget([
                             
                             <br>
                             <small>
+                            
                                 <?= AddressType::widget([
                                     'addressType' => $dataTransactionSession['business']['businessLocation']['address_type'],
                                     'address' => $dataTransactionSession['business']['businessLocation']['address']
                                 ]); ?>
+                            
                             </small>
                         </div>
                     </div>
@@ -109,16 +115,15 @@ $linkPager = LinkPager::widget([
                                 <li><?= $btnReorder ?></li>
                             </ul>
                     	</div>
-                    	<div class="col-sm-3 col-tab-4 visible-xs">
+                    	<div class="col-xs-12 visible-xs">
                     		<ul class="list-inline list-review mt-10 mb-0">
                                 <li><?= $btnDetail ?></li>
                                 <li><?= $btnReorder ?></li>
                             </ul>
                     	</div>
-                    	
                     </div>
                     
-                    <hr class="divider-w">
+                    <hr class="divider-w mt-10 mb-10">
             	</div>
             	
         	<?php
