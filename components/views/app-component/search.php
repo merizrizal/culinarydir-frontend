@@ -49,7 +49,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
             <a href="#special<?= $isSearch ?>" aria-controls="special" role="tab" data-toggle="tab"><?= Yii::t('app', 'Find Specials & Discounts?') ?></a>
         </li>
         <li role="presentation" class="<?= $keywordType == 2 ? 'active' : '' ?>">
-            <a href="#order<?= $isSearch ?>" aria-controls="order" role="tab" data-toggle="tab"><?= Yii::t('app', 'Cari Order Online?') ?></a>
+            <a href="#order<?= $isSearch ?>" aria-controls="order" role="tab" data-toggle="tab"><?= Yii::t('app', 'Want to Order Online?') ?></a>
         </li>
     </ul>
 
