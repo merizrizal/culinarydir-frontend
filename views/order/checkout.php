@@ -190,7 +190,7 @@ $this->title = 'Checkout'; ?>
                                                 
                                                 <div class="<?= $hiddenClass ? 'hidden' : '' ?>" id="no-data">
                                                         
-                                                	<?= Yii::t('app', 'Your order list is empty') ?>
+                                                	<?= Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') ?>
                                                 	
                                                 </div>
                                                 
