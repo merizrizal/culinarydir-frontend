@@ -115,7 +115,6 @@ $linkPager = LinkPager::widget([
                                 <li><?= $btnReorder ?></li>
                             </ul>
                     	</div>
-                    	
                     </div>
                     
                     <hr class="divider-w">

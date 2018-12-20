@@ -17,9 +17,7 @@ $this->title = Yii::t('app', 'Order Details'); ?>
         	
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
-                
                 	<?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Profile'), ['user/index']); ?>
-
                 </div>
             </div>
         	
@@ -83,9 +81,7 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                         			<div class="col-xs-12">
                                             			<div class="row">
                                                             <div class="col-sm-9 col-tab-8 col-xs-12">
-                                                            
                                                                 <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
-                                                            
                                                             </div>
                                                             <div class="col-sm-3 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
                                                                 <strong><?= $amountPrice ?></strong>
@@ -116,14 +112,10 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     		Total : <?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $modelTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                                     	</div>
                                     	<div class="col-sm-4 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
-                                    	
                                     		<?= $btnReorder ?>
-                                    	
                                     	</div>
                                     	<div class="col-xs-12 mt-10 visible-xs">
-                                    	
                                     		<?= $btnReorder ?>
-                                    	
                                     	</div>
                                     </div>
                             	</div>
