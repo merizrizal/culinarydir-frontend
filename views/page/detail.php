@@ -385,11 +385,14 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                     <li class="tag">
 
                                                                         <?php
-                                                                        foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory): ?>
+                                                                        foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory): 
+                                                                        
+                                                                            if ($dataBusinessProductCategory['productCategory']['is_active']): ?>
 
-                                                                            <strong class="text-red">#</strong><?= $dataBusinessProductCategory['productCategory']['name']; ?>
+                                                                            	<strong class="text-red">#</strong><?= $dataBusinessProductCategory['productCategory']['name']; ?>
 
-                                                                        <?php
+                                                                        	<?php
+                                                                        	endif;
                                                                         endforeach; ?>
 
                                                                     </li>

@@ -223,15 +223,21 @@ $linkPager = LinkPager::widget([
                                                                     $businessProductCategoryLimit = 3;
                                                                     $businessProductCategoryList = '';
                                                                     $businessProductCategoryPopover = '';
+                                                                    $incBusinessProductCategory = 0;
 
-                                                                    foreach ($dataBusiness['businessProductCategories'] as $key => $dataBusinessProductCategory) {
+                                                                    foreach ($dataBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+                                                                        
+                                                                        if ($dataBusinessProductCategory['productCategory']['is_active']) {
 
-                                                                        if ($key < $businessProductCategoryLimit) {
-
-                                                                            $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        } else {
-
-                                                                            $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            if ($incBusinessProductCategory < $businessProductCategoryLimit) {
+    
+                                                                                $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            } else {
+    
+                                                                                $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            }
+                                                                            
+                                                                            $incBusinessProductCategory++;
                                                                         }
                                                                     }
 

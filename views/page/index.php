@@ -56,7 +56,7 @@ $appComponent = new AppComponent(); ?>
             <div class="container">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
-                        <div class="titan-title-tagline mb-10" style="background-color: rgba(0, 0, 0, 0.5)">300+ tempat kuliner dan terus bertambah</div>
+                        <div class="titan-title-tagline mb-10" style="background-color: rgba(0, 0, 0, 0.5)">400+ tempat kuliner dan terus bertambah</div>
                     </div>
                 </div>
                 <div class="row">
@@ -91,7 +91,7 @@ $appComponent = new AppComponent(); ?>
     <div class="container">
         <div class="row">
             <div class="col-tab-12 text-center">
-                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">300+ tempat kuliner dan terus bertambah</div>
+                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">400+ tempat kuliner dan terus bertambah</div>
             </div>
         </div>
         <div class="row">
@@ -110,7 +110,7 @@ $appComponent = new AppComponent(); ?>
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">300+ tempat kuliner dan terus bertambah</div>
+                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">400+ tempat kuliner dan terus bertambah</div>
             </div>
         </div>
         <div class="row">

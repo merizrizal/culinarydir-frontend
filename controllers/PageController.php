@@ -107,7 +107,10 @@ class PageController extends base\BaseHistoryUrlController
 
                     $query->andOnCondition(['business_product_category.is_active' => true]);
                 },
-                'businessProductCategories.productCategory',
+                'businessProductCategories.productCategory' => function ($query) {
+                
+                    $query->andOnCondition(['product_category.is_active' => true]);
+                },
                 'businessDetail',
                 'businessHours' => function ($query) {
 
@@ -121,7 +124,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'businessPromos' => function ($query) {
 
-                    $query->andOnCondition(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+                    $query->andOnCondition(['>=', 'business_promo.date_end', Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
                 'userLoves' => function ($query) {
