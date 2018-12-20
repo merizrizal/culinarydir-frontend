@@ -36,7 +36,8 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelTransactionSession['business']['businessImages'][0]['image'], 88, 88);
                             }
                             
-                            $img = Html::img($img, ['class' => 'img-rounded']); ?>
+                            $img = Html::img($img, ['class' => 'img-rounded']);
+                            $btnReorder = Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn btn-d btn-block btn-round btn-reorder']); ?>
                     
                             <div class="row">
                             	<div class="col-xs-12">
@@ -112,12 +113,19 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     	<div class="col-sm-8 col-tab-8 col-xs-12">
                                     		Total : <?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $modelTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                                     	</div>
-                                    	<div class="col-sm-4 col-tab-4 col-xs-12 text-right">
+                                    	<div class="col-sm-4 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
                                     	
-                                    		<?= Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn btn-d btn-block btn-round btn-reorder']) ?>
-                                    		<?= Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'session-id']) ?>
+                                    		<?= $btnReorder; ?>
                                     	
                                     	</div>
+                                    	<div class="col-xs-12 mt-10 visible-xs">
+                                    	
+                                    		<?= $btnReorder; ?>
+                                    	
+                                    	</div>
+                                    	
+                                    	<?= Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'session-id']) ?>
+                                    	
                                     </div>
                             	</div>
                             </div>

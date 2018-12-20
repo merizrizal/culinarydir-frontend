@@ -96,10 +96,10 @@ $linkPager = LinkPager::widget([
                         </div>
                     </div>
                     <div class="row mb-10">
-                    	<div class="col-sm-9 col-tab-6 col-xs-12">
+                    	<div class="col-sm-9 col-tab-8 col-xs-12">
                     		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                     	</div>
-                    	<div class="col-sm-3 col-tab-6 col-xs-12 text-right">
+                    	<div class="col-sm-3 col-tab-4 col-xs-12">
                     		<ul class="list-inline list-review mt-0 mb-0">
                                 <li><?= Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]) ?></li>
                                 <li><?= Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], ['class' => 'btn-reorder']); ?></li>
