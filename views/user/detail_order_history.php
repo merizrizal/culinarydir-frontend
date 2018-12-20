@@ -34,12 +34,7 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelTransactionSession['business']['businessImages'][0]['image'], 88, 88);
                             }
                             
-                            $img = Html::img($img, ['class' => 'img-rounded']);
-                            
-                            $btnReorder = Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
-                                'class' => 'btn btn-d btn-block btn-round btn-reorder',
-                                'data-id' => $modelTransactionSession['id']
-                            ]); ?>
+                            $img = Html::img($img, ['class' => 'img-rounded']); ?>
                     
                             <div class="row">
                             	<div class="col-xs-12">
@@ -52,15 +47,15 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                         		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
                                     		</small>
                                         	<br>
-                                        	
-                                            <?= Html::a($modelTransactionSession['business']['name'], ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
-                                            
+                                        		<?= Html::a($modelTransactionSession['business']['name'], ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
                                             <br>
                                             <small>
+                                            
                                                 <?= AddressType::widget([
                                                     'addressType' => $modelTransactionSession['business']['businessLocation']['address_type'],
                                                     'address' => $modelTransactionSession['business']['businessLocation']['address']
                                                 ]); ?>
+                                            
                                             </small>
                                         </div>
                                     </div>
@@ -108,14 +103,16 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                     <hr class="divider-w mb-10">
                                     
                                     <div class="row">
-                                    	<div class="col-sm-8 col-tab-8 col-xs-12">
+                                    	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
                                     		Total : <?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $modelTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                                     	</div>
-                                    	<div class="col-sm-4 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
-                                    		<?= $btnReorder ?>
-                                    	</div>
-                                    	<div class="col-xs-12 mt-10 visible-xs">
-                                    		<?= $btnReorder ?>
+                                    	<div class="col-sm-4 col-tab-4 col-xs-12">
+                                    	
+                                    		<?= Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                                                'class' => 'btn btn-d btn-block btn-round btn-reorder',
+                                                'data-id' => $modelTransactionSession['id']
+                                            ]); ?>
+                                    	
                                     	</div>
                                     </div>
                             	</div>

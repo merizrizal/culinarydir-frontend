@@ -81,19 +81,13 @@ $linkPager = LinkPager::widget([
             		<div class="row">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                            
                                 <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
-                            
                             </div>
                         	<small>
-                        	
                         		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
-                    		
                     		</small>
                         	<br>
-                        	
-                            <?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
-                            
+                            	<?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
                             <br>
                             <small>
                             
