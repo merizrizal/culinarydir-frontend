@@ -78,7 +78,7 @@ $linkPager = LinkPager::widget([
                 ]); ?>
         
             	<div class="col-xs-12">
-            		<div class="row">
+            		<div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
                                 <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
