@@ -345,44 +345,42 @@ class DataController extends base\BaseController
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
                     ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
-            }
             
-            if ($get['type'] == 2) {
+                if (!empty($get['price_min']) || !empty($get['price_max'])) {
+                    
+                    if ($get['price_min'] == 0 && $get['price_max'] != 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
+                    } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
+                    } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere([
+                            'or',
+                            ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
+                            ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
+                        ]);
+                    }
+                }
+                
+                if (!empty($get['facility_id'])) {
+                    
+                    $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
+                }
+                
+                if (!empty($get['coordinate_map'])) {
+                    
+                    $coordinate = explode(', ', $get['coordinate_map']);
+                    $latitude = $coordinate[0];
+                    $longitude = $coordinate[1];
+                    $radius = $get['radius_map'];
+                    
+                    $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
+                }
+            } else {
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['product_service.code_name' => 'order-online']);
-            }
-                
-            if (!empty($get['price_min']) || !empty($get['price_max'])) {
-                
-                if ($get['price_min'] == 0 && $get['price_max'] != 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
-                } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
-                } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere([
-                        'or',
-                        ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
-                        ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
-                    ]);
-                }
-            }
-                
-            if (!empty($get['facility_id'])) {
-                
-                $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
-            }
-                
-            if (!empty($get['coordinate_map'])) {
-                
-                $coordinate = explode(', ', $get['coordinate_map']);
-                $latitude = $coordinate[0];
-                $longitude = $coordinate[1];
-                $radius = $get['radius_map'];
-                
-                $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
             }
                 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
