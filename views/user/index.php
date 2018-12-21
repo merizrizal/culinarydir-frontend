@@ -218,9 +218,12 @@ $this->registerMetaTag([
                                     'queryParams' => $queryParams,
                                 ]) ?>
                             </div>
-
+							
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-order-history">
-                                <?= $this->render('user/_order_history') ?>
+                                <?= $this->render('user/_order_history', [
+                                    'username' => $modelUser['username'],
+                                    'queryParams' => $queryParams,
+                                ]) ?>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">

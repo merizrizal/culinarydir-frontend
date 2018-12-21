@@ -8,6 +8,7 @@ use core\models\UserPostMain;
 use core\models\BusinessPromo;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use core\models\TransactionSession;
 
 /**
  * User Data Controller
@@ -324,6 +325,65 @@ class UserDataController extends base\BaseController
             'startItem' => $startItem,
             'endItem' => $endItem,
             'totalCount' => $totalCount,
+        ]);
+    }
+    
+    public function actionOrderHistory()
+    {
+        if (!Yii::$app->request->isAjax) {
+            
+            $queryParams = Yii::$app->request->getQueryParams();
+            
+            $this->redirect(['user/user-profile',
+                'user' => $queryParams['username'],
+                'redirect' => 'order-history',
+                'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
+                'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
+            ]);
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
+        $modelTransactionSession = TransactionSession::find()
+            ->joinWith([
+                'business',
+                'business.businessImages' => function($query) {
+                
+                    $query->andOnCondition([
+                        'business_image.type' => 'Profile',
+                        'business_image.is_primary' => true
+                    ]);
+                },
+                'business.businessLocation'
+            ])
+            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->distinct()
+            ->asArray();
+                
+        $provider = new ActiveDataProvider([
+            'query' => $modelTransactionSession,
+        ]);
+        
+        $modelTransactionSession = $provider->getModels();
+        $pagination = $provider->getPagination();
+        
+        $perpage = $pagination->pageSize;
+        $totalCount = $pagination->totalCount;
+        $offset = $pagination->offset;
+        
+        $startItem = !empty($modelTransactionSession) ? $offset + 1 : 0;
+        $endItem = min(($offset + $perpage), $totalCount);
+        
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
+        return $this->render('order_history', [
+           'modelTransactionSession' => $modelTransactionSession,
+           'pagination' => $pagination,
+           'startItem' => $startItem,
+           'endItem' => $endItem,
+           'totalCount' => $totalCount,
         ]);
     }
 }
