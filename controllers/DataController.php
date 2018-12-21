@@ -369,7 +369,10 @@ class DataController extends base\BaseController
                 
                 if (!empty($get['facility_id'])) {
                     
-                    $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
+                    foreach ($get['facility_id'] as $facilityId) {
+                    
+                        $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $facilityId]);
+                    }
                 }
                 
                 if (!empty($get['coordinate_map'])) {
