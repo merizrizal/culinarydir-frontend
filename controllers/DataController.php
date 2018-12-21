@@ -303,27 +303,28 @@ class DataController extends base\BaseController
 
         $get = Yii::$app->request->get();
         $paramsView = [];
-
-        if (!$get['special']) {
-
+        
+        if ($get['type'] == 0 || $get['type'] == 2) {
+            
             $modelBusiness = Business::find()
                 ->joinWith([
                     'businessCategories' => function($query) {
-                        
+                    
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'businessCategories.category',
                     'businessFacilities' => function($query) {
+                        
                         $query->andOnCondition(['business_facility.is_active' => true]);
                     },
                     'businessFacilities.facility',
                     'businessImages' => function($query) {
-                        
+                    
                         $query->andOnCondition(['type' => 'Profile']);
                     },
                     'businessLocation',
                     'businessProductCategories' => function($query) {
-                        
+                    
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
                     'businessProductCategories.productCategory' => function ($query) {
@@ -332,72 +333,80 @@ class DataController extends base\BaseController
                     },
                     'businessDetail',
                     'userLoves' => function($query) {
-                        
+                    
                         $query->andOnCondition([
                             'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
                             'user_love.is_active' => true
                         ]);
                     },
+                    'membershipType.membershipTypeProductServices.productService',
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
-                ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
-
-            if (!empty($get['price_min']) || !empty($get['price_max'])) {
-
-                if ($get['price_min'] == 0 && $get['price_max'] != 0) {
-
-                    $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
-                } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
-
-                    $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
-                } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere([
-                        'or', 
-                        ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
-                        ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
-                    ]);
-                }
-            }
-
-            if (!empty($get['facility_id'])) {
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]]);
+            
+            if ($get['type'] == 0) {
                 
-                $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
+                $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
+                    ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
+            
+                if (!empty($get['price_min']) || !empty($get['price_max'])) {
+                    
+                    if ($get['price_min'] == 0 && $get['price_max'] != 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
+                    } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
+                    } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
+                        
+                        $modelBusiness = $modelBusiness->andFilterWhere([
+                            'or',
+                            ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
+                            ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
+                        ]);
+                    }
+                }
+                
+                if (!empty($get['facility_id'])) {
+                    
+                    $modelBusiness = $modelBusiness->andFilterWhere(['business_facility.facility_id' => $get['facility_id']]);
+                }
+                
+                if (!empty($get['coordinate_map'])) {
+                    
+                    $coordinate = explode(', ', $get['coordinate_map']);
+                    $latitude = $coordinate[0];
+                    $longitude = $coordinate[1];
+                    $radius = $get['radius_map'];
+                    
+                    $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
+                }
+            } else {
+                
+                $modelBusiness = $modelBusiness->andFilterWhere(['product_service.code_name' => 'order-online']);
             }
-
-            if (!empty($get['coordinate_map'])) {
-
-                $coordinate = explode(', ', $get['coordinate_map']);
-                $latitude = $coordinate[0];
-                $longitude = $coordinate[1];
-                $radius = $get['radius_map'];
-
-                $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
-            }
-
+                
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
                 ->distinct()
                 ->asArray();
-
+                
             $provider = new ActiveDataProvider([
                 'query' => $modelBusiness,
             ]);
-
+            
             $modelBusiness = $provider->getModels();
             $pagination = $provider->getPagination();
-
+            
             $pageSize = $pagination->pageSize;
             $totalCount = $pagination->totalCount;
             $offset = $pagination->offset;
-
+            
             $startItem = !empty($modelBusiness) ? $offset + 1 : 0;
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else {
-
+        } else if ($get['type'] == 1) {
+            
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             
             $fileRender .= '_special';
@@ -406,13 +415,13 @@ class DataController extends base\BaseController
                 ->joinWith([
                     'business',
                     'business.businessCategories' => function($query) {
-                        
+                    
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'business.businessCategories.category',
                     'business.businessLocation',
                     'business.businessProductCategories' => function($query) {
-                        
+                    
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
                     'business.businessProductCategories.productCategory',
@@ -423,34 +432,34 @@ class DataController extends base\BaseController
                 ->andFilterWhere(['business_category.category_id' => $get['category_id']])
                 ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
                 ->andFilterWhere(['business_promo.not_active' => false]);
-
+                
             Yii::$app->formatter->timeZone = 'UTC';
-
+                
             if (!empty($get['coordinate_map'])) {
-
+                
                 $coordinate = explode(', ', $get['coordinate_map']);
                 $latitude = $coordinate[0];
                 $longitude = $coordinate[1];
                 $radius = $get['radius_map'];
-
+                
                 $modelBusinessPromo = $modelBusinessPromo->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
             }
-
+                
             $modelBusinessPromo = $modelBusinessPromo->orderBy(['business_promo.id' => SORT_DESC])
                 ->distinct()
                 ->asArray();
-
+                
             $provider = new ActiveDataProvider([
                 'query' => $modelBusinessPromo,
             ]);
-
+                
             $modelBusinessPromo = $provider->getModels();
             $pagination = $provider->getPagination();
-
+                
             $pageSize = $pagination->pageSize;
             $totalCount = $pagination->totalCount;
             $offset = $pagination->offset;
-
+            
             $startItem = !empty($modelBusinessPromo) ? $offset + 1 : 0;
             $endItem = min(($offset + $pageSize), $totalCount);
             

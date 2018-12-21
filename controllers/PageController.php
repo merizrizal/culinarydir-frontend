@@ -374,7 +374,8 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'businessProducts' => function ($query) {
                 
-                    $query->andOnCondition(['business_product.not_active' => false]);
+                    $query->andOnCondition(['business_product.not_active' => false])
+                        ->orderBy(['order' => SORT_ASC]);
                 },
             ])
             ->andWhere(['business.id' => $id])
@@ -391,7 +392,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
-        
+            
         return $this->render('menu', [
             'modelBusiness' => $modelBusiness,
             'modelTransactionSession' => $modelTransactionSession
@@ -404,9 +405,9 @@ class PageController extends base\BaseHistoryUrlController
 
         $keyword = [];
 
-        if (!empty($filter['special'])) {
+        if (!empty($filter['type'])) {
 
-            $keyword['special'] = $filter['special'];
+            $keyword['type'] = $filter['type'];
         }
 
         if (!empty($filter['city_id'])) {
