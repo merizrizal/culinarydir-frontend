@@ -9,7 +9,7 @@ use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
-/* @var $filter array */
+/* @var $params array */
 
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
@@ -67,7 +67,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-7">
 
                     <?php
-                    $urlResultMap = ArrayHelper::merge(['result-map'], $filter); ?>
+                    $urlResultMap = ArrayHelper::merge(['result-map'], $params); ?>
 
                     <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) ?>
                     <?= Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>

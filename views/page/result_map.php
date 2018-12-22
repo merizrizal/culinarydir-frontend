@@ -9,7 +9,7 @@ use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
-/* @var $filter array */
+/* @var $params array */
 
 dosamigos\gallery\GalleryAsset::register($this);
 dosamigos\gallery\DosamigosAsset::register($this);
@@ -49,7 +49,7 @@ $appComponent = new AppComponent(); ?>
         <div class="row">
 
             <?php
-            $urlResultList = ArrayHelper::merge(['result-list'], $filter); 
+            $urlResultList = ArrayHelper::merge(['result-list'], $params); 
             $btnResultList = Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default btn-list']);
             $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), '', ['class' => 'btn btn-round btn-d btn-map']); ?>
 
