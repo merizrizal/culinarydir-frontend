@@ -369,7 +369,10 @@ class PageController extends base\BaseHistoryUrlController
     {
         $modelBusiness = Business::find()
             ->joinWith([
-                'businessProductCategories',
+                'businessProductCategories' => function ($query) {
+                    
+                    $query->andOnCondition(['business_product_category.is_active' => true]);    
+                },
                 'businessProductCategories.businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false]);
@@ -381,7 +384,7 @@ class PageController extends base\BaseHistoryUrlController
         
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
-                'transactionItems' => function($query) {
+                'transactionItems' => function ($query) {
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
