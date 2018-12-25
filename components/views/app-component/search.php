@@ -15,34 +15,54 @@ kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
 $isSearch = !empty($id) ? '-' . $id : '';
-$keywordType = !empty($keyword['type']) ? $keyword['type'] : '';
-$keywordCity = !empty($keyword['city']) ? $keyword['city'] : null;
-$keywordName = !empty($keyword['name']) ? $keyword['name'] : null;
-$keywordProductCategory = !empty($keyword['product']['id']) ? $keyword['product']['id'] : null;
-$keywordCategory = !empty($keyword['category']) ? $keyword['category'] : null;
-$keywordCoordinate = !empty($keyword['coordinate']) ? $keyword['coordinate'] : null;
-$keywordRadius = !empty($keyword['radius']) ? $keyword['radius'] : null;
+$keywordType = $keyword['type'];
+$keywordCity = $keyword['city'];
+$keywordName = $keyword['name'];
+$keywordProductId = $keyword['product']['id'];
+$keywordProductName = $keyword['product']['name'];
+$keywordCategory = $keyword['category'];
+$keywordCoordinate = $keyword['map']['coordinate'];
+$keywordRadius = $keyword['map']['radius'];
+$keywordFacility = $keyword['facility'];
+$keywordPriceMin = $keyword['price']['min'];
+$keywordPriceMax = $keyword['price']['max'];
+
+$spanClear = '<span class="search-field-box-clear">×</span>';
+
+$styleProductLabel = !empty($keywordProductId) ? 'color: #555555;' : null;
+$stylePriceLabel = $keywordPriceMin !== null && $keywordPriceMax !== null ? 'color: #555555;' : null;
+$styleRadiusLabel = !empty($keywordCoordinate) && !empty($keywordRadius) ? 'color: #555555;' : null;
 
 $productLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-$styleProductLabel = null;
-
-$priceMin = !empty($keyword['price_min']) ? $keyword['price_min'] : 0;
-$priceMax = !empty($keyword['price_max']) ? $keyword['price_max'] : 0;
 $priceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-$stylePriceLabel = null;
-
 $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-$styleRadiusLabel = null;
+
+if (!empty($keywordProductId)) {
+    
+    $productLabel = '<span class="search-field-box-placeholder">' . $keywordProductName . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+}
+
+if ($keywordPriceMin !== null && $keywordPriceMax !== null) {
+    
+    $priceMinLabel = $keywordPriceMin == 0 ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMin);
+    $priceMaxLabel = $keywordPriceMax == 0 ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMax);
+    $priceLabel = '<span class="search-field-box-placeholder">' . $priceMinLabel . ' - ' . $priceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+}
+
+if (!empty($keywordCoordinate) && !empty($keywordRadius)) {
+
+    $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keywordRadius) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+}
 
 $layoutListNav = '
-    <li role="presentation" class="' . ($keywordType == 0 ? 'active' : '') . '">
-        <a href="#favorite' . $isSearch . '" aria-controls="favorite" role="tab" data-toggle="tab">' . Yii::t('app', 'Find Favourite Foods?') . '</a>
-    </li>
     <li role="presentation" class="' . ($keywordType == 1 ? 'active' : '') . '">
-        <a href="#special' . $isSearch . '" aria-controls="special" role="tab" data-toggle="tab">' . Yii::t('app', 'Find Specials & Discounts?') . '</a>
+        <a href="#favorite' . $isSearch . '" aria-controls="favorite" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Favourite Foods?') . '</strong></a>
     </li>
     <li role="presentation" class="' . ($keywordType == 2 ? 'active' : '') . '">
-        <a href="#order' . $isSearch . '" aria-controls="order" role="tab" data-toggle="tab">' . Yii::t('app', 'Want to Order Online?') . '</a>
+        <a href="#special' . $isSearch . '" aria-controls="special" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Specials & Discounts?') . '</strong></a>
+    </li>
+    <li role="presentation" class="' . ($keywordType == 3 ? 'active' : '') . '">
+        <a href="#order' . $isSearch . '" aria-controls="order" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Want to Order Online?') . '</strong></a>
     </li>
 ';
 
@@ -76,13 +96,13 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
     <!-- Tab Favorite -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 0 ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 1 ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-favorite'
             ]) ?>
 
-                <?= Html::hiddenInput('type', 0) ?>
+                <?= Html::hiddenInput('tp', 1) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -90,7 +110,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::dropDownList('city_id', $keywordCity,
+                                    <?= Html::dropDownList('cty', $keywordCity,
                                         ArrayHelper::map(
                                             City::find()->orderBy('name')->asArray()->all(),
                                             'id',
@@ -111,7 +131,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-9 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::textInput('name', $keywordName, [
+                                    <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
                                         'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
@@ -123,20 +143,11 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                         <div class="row">
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
-
-                                    <?php
-                                    if (!empty($keywordProductCategory)):
-                                    
-                                        $productLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                        $styleProductLabel = 'color: #555555;'; ?>
-
-                                        <span class="search-field-box-clear">×</span>
-
-                                    <?php
-                                    endif; ?>
-
-                                    <?= Html::hiddenInput('product_category', $keywordProductCategory, ['class' => 'product-category-id']) ?>
-                                    <?= Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+                                
+                                	<?php
+                                	echo !empty($keywordProductId) ? $spanClear : null;
+                                	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
+                                	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
 
                                 </div>
                             </div>
@@ -144,7 +155,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::dropDownList('category_id', $keywordCategory,
+                                    <?= Html::dropDownList('ctg', $keywordCategory,
                                         ArrayHelper::map(
                                             Category::find()->orderBy('name')->asArray()->all(),
                                             'id',
@@ -166,21 +177,10 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 <div class="form-group">
 
                                     <?php
-                                    if (!empty($keyword['price_min']) || !empty($keyword['price_max'])):
-
-                                        $priceMinLabel = ($priceMin == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($priceMin);
-                                        $priceMaxLabel = ($priceMax == 0) ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($priceMax);
-                                        $priceLabel = '<span class="search-field-box-placeholder">' . $priceMinLabel . ' - ' . $priceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                        $stylePriceLabel = 'color: #555555;'; ?>
-
-                                        <span class="search-field-box-clear">×</span>
-
-                                    <?php
-                                    endif; ?>
-
-                                    <?= Html::hiddenInput('price_min', $priceMin, ['class' => 'price-min'])?>
-                                    <?= Html::hiddenInput('price_max', $priceMax, ['class' => 'price-max'])?>
-                                    <?= Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+                                    echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
+                                    echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
+                                    echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
+                                    echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
 
                                 </div>
                             </div>
@@ -189,19 +189,10 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 <div class="form-group">
 
                                     <?php
-                                    if (!empty($keywordCoordinate) && !empty($keywordRadius)):
-                                    
-                                        $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keywordRadius) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                        $styleRadiusLabel = 'color: #555555;'; ?>
-
-                                        <span class="search-field-box-clear">×</span>
-
-                                    <?php
-                                    endif; ?>
-
-                                    <?= Html::hiddenInput('coordinate_map', $keywordCoordinate, ['class' => 'coordinate-map'])?>
-                                    <?= Html::hiddenInput('radius_map', $keywordRadius, ['class' => 'radius-map'])?>
-                                    <?= Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+                                    echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
+                                    echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
+                                    echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
+                                    echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
 
                                 </div>
                             </div>
@@ -216,18 +207,18 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                             $colDivider = ceil(count($modelFacility) / 3);
 
-                            $column = '<div class="col-lg-4 col-md-4 col-sm-4 col-tab-4 col-xs-12 col">'; ?>
+                            $column = '<div class="col-sm-4 col-tab-6 col-xs-12 col">'; ?>
 
                             <div class="row mb-10">
-                                <div class="col-lg-12 col-xs-12 col">
+                                <div class="col-xs-12 col">
                                     <a class="search-label more-option" data-toggle="collapse" href=".facility-collapse">More Options
                                         <span class="fa fa-chevron-circle-down"></span>
                                     </a>
-                                    <div class="facility-collapse collapse <?= !empty($keyword['facility']) ? 'in' : '' ?>">
+                                    <div class="facility-collapse collapse <?= !empty($keywordFacility) ? 'in' : '' ?>">
                                     	<div class="form-group">
                                         	<div class="row mt-10">                                            
 
-                                                <?= Html::checkboxList('facility_id', !empty($keyword['facility']) ? $keyword['facility'] : null,
+                                                <?= Html::checkboxList('fct', $keywordFacility,
                                                     ArrayHelper::map(
                                                         $modelFacility,
                                                         'id',
@@ -241,7 +232,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                                             $checkboxes = '
                                                                 <div class="row">
-                                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-tab-12 col">
+                                                                    <div class="col-xs-12 col">
                                                                         <label>' .
                                                                             Html::checkbox($name, $checked, [
                                                                                 'value' => $value,
@@ -303,13 +294,13 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
         </div>
 
-        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 1 ? 'in active' : '' ?>" id="special<?= $isSearch ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 2 ? 'in active' : '' ?>" id="special<?= $isSearch ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-special'
             ]) ?>
 
-                <?= Html::hiddenInput('type', 1) ?>
+                <?= Html::hiddenInput('tp', 2) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -317,7 +308,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::dropDownList('city_id', $keywordCity,
+                                    <?= Html::dropDownList('cty', $keywordCity,
                                         ArrayHelper::map(
                                             City::find()->orderBy('name')->asArray()->all(),
                                             'id',
@@ -338,7 +329,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-9 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::textInput('name', $keywordName, [
+                                    <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
                                         'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
@@ -351,19 +342,10 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-sm-offset-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?php
-                                    if (!empty($keywordProductCategory)):
-
-                                        $productLabel = '<span class="search-field-box-placeholder">' . $keyword['product']['name'] . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                        $styleProductLabel = 'color: #555555;'; ?>
-
-                                        <span class="search-field-box-clear">×</span>
-
-                                    <?php
-                                    endif; ?>
-
-                                    <?= Html::hiddenInput('product_category', $keywordProductCategory, ['class' => 'product-category-id']) ?>
-                                    <?= Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]) ?>
+									<?php
+									echo !empty($keywordProductId) ? $spanClear : null;
+									echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
+									echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
 
                                 </div>
                             </div>
@@ -371,7 +353,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::dropDownList('category_id', $keywordCategory,
+                                    <?= Html::dropDownList('ctg', $keywordCategory,
                                         ArrayHelper::map(
                                             Category::find()->orderBy('name')->asArray()->all(),
                                             'id',
@@ -393,19 +375,10 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 <div class="form-group">
 
                                     <?php
-                                    if (!empty($keywordCoordinate) && !empty($keywordRadius)):
-                                    
-                                        $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keywordRadius) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-                                        $styleRadiusLabel = 'color: #555555;'; ?>
-
-                                        <span class="search-field-box-clear">×</span>
-
-                                    <?php
-                                    endif; ?>
-
-                                    <?= Html::hiddenInput('coordinate_map', $keywordCoordinate, ['class' => 'coordinate-map'])?>
-                                    <?= Html::hiddenInput('radius_map', $keywordRadius, ['class' => 'radius-map'])?>
-                                    <?= Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]) ?>
+                                    echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
+                                    echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
+                                    echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
+                                    echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
 
                                 </div>
                             </div>
@@ -434,13 +407,13 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
         </div>
         
-        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 2 ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 3 ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
 
             <?= Html::beginForm(['page/result-list'], 'get', [
                 'id' => 'search-order'
             ]) ?>
 
-                <?= Html::hiddenInput('type', 2) ?>
+                <?= Html::hiddenInput('tp', 3) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -448,7 +421,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-3 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::dropDownList('city_id', $keywordCity,
+                                    <?= Html::dropDownList('cty', $keywordCity,
                                         ArrayHelper::map(
                                             City::find()->orderBy('name')->asArray()->all(),
                                             'id',
@@ -469,7 +442,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                             <div class="col-sm-9 col-tab-6 col-xs-12 col">
                                 <div class="form-group">
 
-                                    <?= Html::textInput('name', $keywordName, [
+                                    <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
                                         'placeholder' => 'Nama Tempat / Makanan / Alamat'
                                     ]) ?>
@@ -512,13 +485,13 @@ $jscript = '
     $(".city-id").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'City') . '",
-        minimumResultsForSearch: -1
+        minimumResultsForSearch: Infinity
     });
 
     $(".category-id").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Business Category') . '",
-        minimumResultsForSearch: -1,
+        minimumResultsForSearch: Infinity,
         allowClear: true
     });
 

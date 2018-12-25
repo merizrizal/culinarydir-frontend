@@ -304,7 +304,7 @@ class DataController extends base\BaseController
         $get = Yii::$app->request->get();
         $paramsView = [];
         
-        if ($get['type'] == 0 || $get['type'] == 2) {
+        if ($get['tp'] == 1 || $get['tp'] == 3) {
             
             $modelBusiness = Business::find()
                 ->joinWith([
@@ -336,37 +336,37 @@ class DataController extends base\BaseController
                     },
                     'membershipType.membershipTypeProductServices.productService',
                 ])
-                ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]]);
+                ->andFilterWhere(['business_location.city_id' => $get['cty']])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]]);
             
-            if ($get['type'] == 0) {
+            if ($get['tp'] == 1) {
                 
-                $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                    ->andFilterWhere(['business_category.category_id' => $get['category_id']]);
+                $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
+                    ->andFilterWhere(['business_category.category_id' => $get['ctg']]);
             
-                if (!empty($get['price_min']) || !empty($get['price_max'])) {
+                if (!empty($get['pmn']) || !empty($get['pmx'])) {
                     
-                    if ($get['price_min'] == 0 && $get['price_max'] != 0) {
+                    if ($get['pmn'] == 0 && $get['pmx'] != 0) {
                         
-                        $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['price_max']]);
-                    } else if ($get['price_min'] != 0 && $get['price_max'] == 0) {
+                        $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['pmx']]);
+                    } else if ($get['pmn'] != 0 && $get['pmx'] == 0) {
                         
-                        $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['price_min']]);
-                    } else if ($get['price_min'] != 0 && $get['price_max'] != 0) {
+                        $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['pmn']]);
+                    } else if ($get['pmn'] != 0 && $get['pmx'] != 0) {
                         
                         $modelBusiness = $modelBusiness->andFilterWhere([
                             'or',
-                            ['between', 'business_detail.price_min', $get['price_min'], $get['price_max']],
-                            ['between', 'business_detail.price_max', $get['price_min'], $get['price_max']]
+                            ['between', 'business_detail.price_min', $get['pmn'], $get['pmx']],
+                            ['between', 'business_detail.price_max', $get['pmn'], $get['pmx']]
                         ]);
                     }
                 }
                 
-                if (!empty($get['facility_id'])) {
-                    
+                if (!empty($get['fct'])) {
+
                     $facilityCondition = '';
                     
-                    foreach ($get['facility_id'] as $facilityId) {
+                    foreach ($get['fct'] as $facilityId) {
                         
                         $facilityCondition .= 'business_facility.facility_id = ' . $facilityId . ' OR ';
                     }
@@ -378,15 +378,15 @@ class DataController extends base\BaseController
                                 AND business_facility.is_active = TRUE
                                 AND (' . trim($facilityCondition, 'OR ') . '))';
                     
-                    $modelBusiness = $modelBusiness->andFilterWhere([$facilityCondition => count($get['facility_id'])]);
+                    $modelBusiness = $modelBusiness->andFilterWhere([$facilityCondition => count($get['fct'])]);
                 }
                 
-                if (!empty($get['coordinate_map'])) {
+                if (!empty($get['cmp'])) {
                     
-                    $coordinate = explode(', ', $get['coordinate_map']);
+                    $coordinate = explode(', ', $get['cmp']);
                     $latitude = $coordinate[0];
                     $longitude = $coordinate[1];
-                    $radius = $get['radius_map'];
+                    $radius = $get['rmp'];
                     
                     $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
                 }
@@ -414,7 +414,7 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else if ($get['type'] == 1) {
+        } else if ($get['tp'] == 2) {
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             
@@ -435,21 +435,21 @@ class DataController extends base\BaseController
                     },
                     'business.businessProductCategories.productCategory',
                 ])
-                ->andFilterWhere(['business_location.city_id' => $get['city_id']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['name']], ['ilike', 'product_category.name', $get['name']], ['ilike', 'business_location.address', $get['name']]])
-                ->andFilterWhere(['business_product_category.product_category_id' => $get['product_category']])
-                ->andFilterWhere(['business_category.category_id' => $get['category_id']])
+                ->andFilterWhere(['business_location.city_id' => $get['cty']])
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
+                ->andFilterWhere(['business_category.category_id' => $get['ctg']])
                 ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
                 ->andFilterWhere(['business_promo.not_active' => false]);
                 
             Yii::$app->formatter->timeZone = 'UTC';
                 
-            if (!empty($get['coordinate_map'])) {
+            if (!empty($get['cmp'])) {
                 
-                $coordinate = explode(', ', $get['coordinate_map']);
+                $coordinate = explode(', ', $get['cmp']);
                 $latitude = $coordinate[0];
                 $longitude = $coordinate[1];
-                $radius = $get['radius_map'];
+                $radius = $get['rmp'];
                 
                 $modelBusinessPromo = $modelBusinessPromo->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
             }
