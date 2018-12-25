@@ -385,7 +385,7 @@ class PageController extends base\BaseHistoryUrlController
         
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
-                'transactionItems' => function($query) {
+                'transactionItems' => function ($query) {
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },

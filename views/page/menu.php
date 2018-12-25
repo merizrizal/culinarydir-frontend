@@ -12,21 +12,16 @@ use frontend\components\GrowlCustom;
 $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 
 <div class="main">
-
     <section class="module-extra-small bg-main">
         <div class="container detail menu-list">
-        
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelBusiness['id']]); ?>
-
                 </div>
             </div>
         
         	<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-            
             		<div class="row">
             			<div class="col-sm-12 col-xs-12">
             				<div class="box bg-white">
@@ -278,7 +273,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                     							</div>
                                 
                                                             <?php
-                                                            endforeach; ?>	
+                                                            endforeach; ?>
                                                     	
                                                     	</div>
                                                     </div>
@@ -298,13 +293,10 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             				</div>
         				</div>
     				</div>
-        
         		</div>
     		</div>
-    		
         </div>
     </section>
-    
 </div>
 
 <?php
@@ -330,6 +322,7 @@ $jscript = '
                 
                     $(".nav-tabs").removeClass("nav-tabs-up");
                 } else {
+
                     $(".nav-tabs").addClass("nav-tabs-up");
                 }
             }, 250);
@@ -544,7 +537,7 @@ $jscript = '
 
     $(".menu-shortcut").on("click", function() {
 
-        $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top }, "slow");
+        $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top - 50 }, "slow");
 
         return false;
     });
