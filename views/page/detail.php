@@ -107,16 +107,16 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), [
                         'page/result-list',
-                        'type' => !empty($flashKeyword['type']) ? $flashKeyword['type'] : 0,
-                        'city_id' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
-                        'name' => !empty($flashKeyword['name']) ? $flashKeyword['name'] : '',
-                        'product_category' => !empty($flashKeyword['product']['id']) ? $flashKeyword['product']['id'] : '',
-                        'category_id' => !empty($flashKeyword['category']) ? $flashKeyword['category'] : '',
-                        'price_min' => !empty($flashKeyword['price_min']) ? $flashKeyword['price_min'] : '',
-                        'price_max' => !empty($flashKeyword['price_max']) ? $flashKeyword['price_max'] : '',
-                        'coordinate_map' => !empty($flashKeyword['coordinate']) ? $flashKeyword['coordinate'] : '',
-                        'radius_map' => !empty($flashKeyword['radius']) ? $flashKeyword['radius'] : '',
-                        'facility_id' => !empty($flashKeyword['facility']) ? $flashKeyword['facility'] : ''
+                        'tp' => !empty($flashKeyword['type']) ? $flashKeyword['type'] : 0,
+                        'cty' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
+                        'nm' => !empty($flashKeyword['name']) ? $flashKeyword['name'] : '',
+                        'pct' => !empty($flashKeyword['product']['id']) ? $flashKeyword['product']['id'] : '',
+                        'ctg' => !empty($flashKeyword['category']) ? $flashKeyword['category'] : '',
+                        'pmn' => !empty($flashKeyword['price_min']) ? $flashKeyword['price_min'] : '',
+                        'pmx' => !empty($flashKeyword['price_max']) ? $flashKeyword['price_max'] : '',
+                        'cmp' => !empty($flashKeyword['coordinate']) ? $flashKeyword['coordinate'] : '',
+                        'rmp' => !empty($flashKeyword['radius']) ? $flashKeyword['radius'] : '',
+                        'fct' => !empty($flashKeyword['facility']) ? $flashKeyword['facility'] : ''
                     ]) ?>
 
                 </div>
