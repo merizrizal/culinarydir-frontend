@@ -7,7 +7,7 @@ use core\models\Category;
 use core\models\Facility;
 
 /* @var $this yii\web\View */
-/* @var $keyword frontend\controllers\PageController */
+/* @var $keyword array */
 /* @var $id string */
 /* @var $showFacilityFilter bool */
 
