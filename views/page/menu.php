@@ -44,30 +44,25 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                             <?php
                                             $isEmptyMenu = true;
                                             
-                                            $businessProductCategory = '';
-                                            
-                                            if (!empty($modelBusiness['businessProductCategories'])) {
-                                        	    
-                                                $businessProductCategory .= '<ul class="dropdown-menu product-category-shortcut">';
+                                            $businessProductCategory = '<ul class="dropdown-menu product-category-shortcut">';
                                 	           
-                                        	    foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
-                                        	       
-                                        	        if (!empty($dataBusinessProductCategory['businessProducts'])) {
-                                        	            
-                                        	            $isEmptyMenu = false;
-                                        	        
-                                        	            $businessProductCategory .= '
-                                                            <li>' . 
-                                                                Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
-                                                	               'class' => 'menu-shortcut',
-                                                	               'data-id' => $dataBusinessProductCategory['productCategory']['id']
-                                                                ]) . '
-                                                            </li>';
-                                        	        }
-                                        	    }
-                                        	    
-                                        	    $businessProductCategory .= '</ul>';
-                                        	} 
+                                    	    foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+                                    	       
+                                    	        if (!empty($dataBusinessProductCategory['businessProducts'])) {
+                                    	            
+                                    	            $isEmptyMenu = false;
+                                    	        
+                                    	            $businessProductCategory .= '
+                                                        <li>' . 
+                                                            Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
+                                            	               'class' => 'menu-shortcut',
+                                            	               'data-id' => $dataBusinessProductCategory['productCategory']['id']
+                                                            ]) . '
+                                                        </li>';
+                                    	        }
+                                    	    }
+                                    	    
+                                    	    $businessProductCategory .= '</ul>';
                                         	
                                         	echo !$isEmptyMenu ? $businessProductCategory : ''; ?>
                                             	
