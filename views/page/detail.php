@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use yii\web\View;
@@ -19,6 +20,8 @@ use sycomponent\Tools;
 /* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
+
+// echo '<pre>'; print_r(Yii::$app->session->get('keyword')); exit();
 
 $this->title = $modelBusiness['name'];
 
@@ -103,21 +106,9 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
                     <?php
-                    $flashKeyword = Yii::$app->session->getFlash('keyword'); ?>
-
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), [
-                        'page/result-list',
-                        'tp' => !empty($flashKeyword['type']) ? $flashKeyword['type'] : 0,
-                        'cty' => !empty($flashKeyword['city']) ? $flashKeyword['city'] : '',
-                        'nm' => !empty($flashKeyword['name']) ? $flashKeyword['name'] : '',
-                        'pct' => !empty($flashKeyword['product']['id']) ? $flashKeyword['product']['id'] : '',
-                        'ctg' => !empty($flashKeyword['category']) ? $flashKeyword['category'] : '',
-                        'pmn' => !empty($flashKeyword['price_min']) ? $flashKeyword['price_min'] : '',
-                        'pmx' => !empty($flashKeyword['price_max']) ? $flashKeyword['price_max'] : '',
-                        'cmp' => !empty($flashKeyword['coordinate']) ? $flashKeyword['coordinate'] : '',
-                        'rmp' => !empty($flashKeyword['radius']) ? $flashKeyword['radius'] : '',
-                        'fct' => !empty($flashKeyword['facility']) ? $flashKeyword['facility'] : ''
-                    ]) ?>
+                    $sessionKeyword = Yii::$app->session->get('keyword');
+                    $urlBack = !empty($sessionKeyword) ? ArrayHelper::merge(['result-list'], $sessionKeyword) : ['index'];
+                    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), $urlBack); ?>
 
                 </div>
             </div>
