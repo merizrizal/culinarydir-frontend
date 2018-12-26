@@ -18,24 +18,46 @@ class RatingColor extends Widget
 
                     var vote_value = parseFloat($(this).find(containerRating).html());
 
+                    var elementContainer = $(this).find(containerRating);
+
+                    if (elementContainer.hasClass("label-info")) {
+
+                        elementContainer.removeClass("label-info");
+                    } else if (elementContainer.hasClass("label-success")) {
+                    
+                        elementContainer.removeClass("label-success");
+                    } else if (elementContainer.hasClass("label-gold")) {
+                    
+                        elementContainer.removeClass("label-gold");
+                    } else if (elementContainer.hasClass("label-warning")) {
+                    
+                        elementContainer.removeClass("label-warning");
+                    } else if (elementContainer.hasClass("label-danger")) {
+                    
+                        elementContainer.removeClass("label-danger");
+                    } else if (elementContainer.hasClass("label-default")) {
+                    
+                        elementContainer.removeClass("label-default");
+                    }
+
                     if (vote_value == 5) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-info");
+                        elementContainer.addClass("label-info");
                     } else if (vote_value < 5 && vote_value >= 4 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-success");
+                        elementContainer.addClass("label-success");
                     } else if (vote_value < 4 && vote_value >= 3 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-gold");
+                        elementContainer.addClass("label-gold");
                     } else if (vote_value < 3 && vote_value >= 2 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-warning");
+                        elementContainer.addClass("label-warning");
                     } else if (vote_value < 2 && vote_value >= 1 ) {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-danger");
+                        elementContainer.addClass("label-danger");
                     } else {
 
-                        $(this).find(containerRating).removeClass("label-success").addClass("label-default");
+                        elementContainer.addClass("label-default");
                     }
                 });
             }

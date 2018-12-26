@@ -138,7 +138,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 <div class="widget star-rating">
                     
                                                     <?= StarRating::widget([
-                                                        'id' => 'rating-' . $modelUserPostMain['id'],
+                                                        'id' => 'my-overall-rating',
                                                         'name' => 'rating_' . $modelUserPostMain['id'],
                                                         'value' => $overallValue,
                                                         'pluginOptions' => [
@@ -152,7 +152,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="rating rating-<?= $modelUserPostMain['id']; ?>">
+                                                <div class="rating my-rating">
                                                     <h4 class="mt-0 mb-0">
                                                     	<?= Html::a(number_format($overallValue, 1), '#', ['class' => 'label label-success my-rating-popover']); ?>
                                                     </h4>
@@ -1028,6 +1028,8 @@ $jscript = '
                     });
 
                     $(".temp-overall-rating").val(tempOverall / parseInt($(".rating-component-id").length));
+
+                    $("#my-overall-rating").rating("update", $(".temp-overall-rating").val());
 
                     getBusinessRating($("#business_id").val());
                     getUserPhoto($("#business_id").val());

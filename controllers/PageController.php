@@ -437,7 +437,7 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['price']['min'] = $keyword['type'] == 1 && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
         $keyword['price']['max'] = $keyword['type'] == 1 && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
         
-        Yii::$app->session->setFlash('keyword', $keyword);
+        Yii::$app->session->set('keyword', $get);
 
         return $this->render($fileRender, [
             'keyword' => $keyword,
