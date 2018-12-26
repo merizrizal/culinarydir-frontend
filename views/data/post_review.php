@@ -212,9 +212,9 @@ $linkPager = LinkPager::widget([
                                 <?php
                                 if (!empty($dataUserPostMain['userPostMains'])):
         
-                                    foreach ($dataUserPostMain['userPostMains'] as $dataUserPostMainChild): ?>
+                                    foreach ($dataUserPostMain['userPostMains'] as $i => $dataUserPostMainChild): ?>
         
-                                        <li class="work-item gallery-photo-review">
+                                        <li class="work-item gallery-photo-review <?= $i > 4 ? 'hidden' : '' ?>">
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
@@ -224,7 +224,22 @@ $linkPager = LinkPager::widget([
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">
-                                                            <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                        
+                                                        	<?php
+                                                        	if ($i == 4):
+                                                        	
+                                                        	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']); ?>
+                                                    	   		
+                                                	   			<a class="btn btn-d btn-small btn-xs btn-circle show-image hidden" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                    	   	   
+                                                    	   	<?php
+                                                        	else: ?>
+                                                        	
+                                                            	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                            	
+                                                        	<?php
+                                                        	endif; ?>
+                                                        	
                                                         </div>
                                                     </div>
                                                 </div>
@@ -393,7 +408,6 @@ $linkPager = LinkPager::widget([
 <?php
 $jscript = '    
     $(".user-comment-review").hide();
-    $(".user-photo-review").hide();
 
     ratingColor($(".rating"), "a");
 
