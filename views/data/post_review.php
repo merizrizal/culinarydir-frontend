@@ -244,9 +244,9 @@ $linkPager = LinkPager::widget([
                     $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
                     $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
                     
-                    $loveSpanCount = '<span class="total-likes-review">#</span>';
-                    $commentSpanCount = '<span class="total-comments-review">#</span>';
-                    $photoSpanCount = '<span class="total-photos-review">#</span>';
+                    $loveSpanCount = '<span class="total-likes-review">' . $loveCount . '</span>';
+                    $commentSpanCount = '<span class="total-comments-review">' . $commentCount . '</span>';
+                    $photoSpanCount = '<span class="total-photos-review">' . $photoCount . '</span>';
                     
                     $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
         
@@ -274,26 +274,22 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'user-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'user-comments-review-trigger visible-xs']); ?>
-                                </li>
-                                <li>
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'user-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'user-photos-review-trigger visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-xs']); ?>
                                 </li>
                                 <li class="visible-xs-inline-block">
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
