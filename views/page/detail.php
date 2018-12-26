@@ -902,45 +902,6 @@ $jscript = '
         return false;
     });
 
-    $(".write-review-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".post-photo-shortcut").on("click", function(event) {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
     $(".love-place").on("click", function() {
 
         $.ajax({
