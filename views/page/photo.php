@@ -149,12 +149,10 @@ $this->registerMetaTag([
                                 					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
                                 					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0; 
                                 					
-                                					$loveSpanCount = '<span class="total-likes-photo">#</span>';
-                                					$commentSpanCount = '<span class="total-comments-photo">#</span>';
+                                					$loveSpanCount = '<span class="total-likes-photo">' . $loveCount . '</span>';
+                                					$commentSpanCount = '<span class="total-comments-photo">' . $commentCount . '</span>';
                                 					
-                                					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
-                                					
-                                					$shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
+                                					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
     												
                                                     <div class="row visible-xs">
                                                         <div class="col-xs-3">
@@ -167,7 +165,7 @@ $this->registerMetaTag([
                                                         <div class="col-xs-9 text-right">
                                                             <ul class="list-inline mt-0 mb-0">
                                                                 <li>
-                                                                    <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                                                    <small><?= $commentSpanCount . ' Comment' ?></small>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -177,26 +175,32 @@ $this->registerMetaTag([
                                                         <div class="col-sm-7 col-tab-7 col-xs-12">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'likes-photo-trigger ' . $selected . ' visible-xs']); ?>
+                                                                
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
+                                                                        'class' => 'btn btn-default btn-standard btn-xs likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
+                                                                    ]); ?>
+                                                                    
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs likes-photo-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    
                                                                 </li>
                                                                 <li>
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]), '', ['class' => 'comments-photo-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'comments-photo-trigger visible-xs']); ?>
+                                                                
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
+                                                                        'class' => 'btn btn-default btn-standard btn-xs comments-photo-trigger visible-lg visible-md visible-sm visible-tab'
+                                                                    ]); ?>
+                                                                    
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs comments-photo-trigger visible-xs']); ?>
+                                                                    
                                                                 </li>
                                                                 <li class="visible-xs-inline-block">
-                                                                
-                                                                    <?= $shareBtn ?>
-                                                                    
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-    
-                                                                    <?= $shareBtn ?>
-    
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                     	</div>

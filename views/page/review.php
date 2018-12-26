@@ -7,8 +7,9 @@ use kartik\rating\StarRating;
 use common\components\Helper;
 use frontend\components\GrowlCustom;
 
-/* @var $this yii\web\View */
+/* @var $this yii\web\View *
 /* @var $modelUserPostMain core\models\UserPostMain */
+/* @var $dataUserVoteReview array */
 
 $this->title = 'Review ' . $modelUserPostMain['business']['name'];
 
@@ -88,14 +89,16 @@ kartik\popover\PopoverXAsset::register($this); ?>
 										if (!empty($modelUserPostMain['user']['image'])) {
 										    
 										    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
-										} ?>
+										}
+										
+										$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
 
                                         <div class="review-container">
 
                                             <?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
 
                                             <div class="row mb-10">
-                                                <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
+                                                <div class="col-md-4 col-sm-5 col-tab-7 col-xs-12">
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
         													
@@ -110,10 +113,10 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 col-tab-5 col-xs-3">
+                                                <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
 													<div class="rating">
                                                     	<h3 class="mt-0 mb-0">
-                                                    		<?= Html::a(number_format(!empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0, 1), '#', ['id' => 'user-rating-popover', 'class' => 'label label-success']); ?>
+                                                    		<?= Html::a(number_format($overallValue, 1), '#', ['id' => 'user-rating-popover', 'class' => 'label label-success']); ?>
                                                         </h3>
                                                     </div>
                                                     <div id="user-container-popover" class="popover popover-x popover-default popover-rating">
@@ -178,14 +181,40 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-xs-12 visible-xs">
+                                                	<ul class="list-inline mt-0 mb-0">
+                                                        <li>
+                                                            <div class="widget star-rating">
+                                
+                                                                <?= StarRating::widget([
+                                                                    'id' => 'rating-' . $modelUserPostMain['id'],
+                                                                    'name' => 'rating_' . $modelUserPostMain['id'],
+                                                                    'value' => $overallValue,
+                                                                    'pluginOptions' => [
+                                                                        'displayOnly' => true,
+                                                                        'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                                        'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                        'showCaption' => false,
+                                                                    ]
+                                                                ]); ?>
+                                
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="rating rating-<?= $modelUserPostMain['id']; ?>">
+                                                                <h4 class="mt-0 mb-0">
+                                                                	<?= Html::a(number_format($overallValue, 1), '#', ['id' => 'user-rating-popover', 'class' => 'label label-success']); ?>
+                                                                </h4>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12">
                                                     <p class="review-description">
-
                                                         <?= $modelUserPostMain['text']; ?>
-
                                                     </p>
                                              	</div>
                                           	</div>
@@ -203,9 +232,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                     <div class="gallery-item post-gallery">
                                                                         <div class="gallery-image">
                                                                             <div class="work-image">
-
                                                                                 <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
-
                                                                             </div>
                                                                             <div class="work-caption">
                                                                                 <div class="work-descr">
@@ -229,13 +256,11 @@ kartik\popover\PopoverXAsset::register($this); ?>
                         					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
                         					$photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                         					
-                        					$loveSpanCount = '<span class="total-likes-review">#</span>'; 
-                        					$commentSpanCount = '<span class="total-comments-review">#</span>';
-                        					$photoSpanCount = '<span class="total-photos-review">#</span>';
+                        					$loveSpanCount = '<span class="total-likes-review">' . $loveCount . '</span>'; 
+                        					$commentSpanCount = '<span class="total-comments-review">' . $commentCount . '</span>';
+                        					$photoSpanCount = '<span class="total-photos-review">' . $photoCount . '</span>';
                         					
-                        					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
-                        					
-                        					$shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
+                        					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
                                 					
                                             <div class="row visible-xs">
                                                 <div class="col-xs-3">
@@ -248,10 +273,10 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                 <div class="col-xs-9 text-right">
                                                     <ul class="list-inline mt-0 mb-0">
                                                         <li>
-                                                            <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]) ?></small>
+                                                            <small><?= $commentSpanCount . ' Comment' ?></small>
                                                         </li>
                                                         <li>
-                                                            <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Photo} =1{' . $photoSpanCount .' Photo} other{' . $photoSpanCount .' Photos}}', ['value' => $photoCount]) ?></small>
+                                                            <small><?= $photoSpanCount . ' Photo' ?></small>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -261,30 +286,22 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                 <div class="col-sm-7 col-tab-7 col-xs-12">
                                                     <ul class="list-inline list-review mt-0 mb-0">
                                                         <li>
-                                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount .' Like} =1{' . $loveSpanCount .' Like} other{' . $loveSpanCount .' Likes}}', ['value' => $loveCount]), ['action/submit-likes'] , ['class' => 'likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'] , ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                            <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                                         </li>
                                                         <li>
-                                                            <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount .' Comment} =1{' . $commentSpanCount .' Comment} other{' . $commentSpanCount .' Comments}}', ['value' => $commentCount]), '', ['class' => 'comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                            <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'comments-review-trigger visible-xs']); ?>
-                                                        </li>
-                                                        <li>
-                                                            <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount .' Photo} =1{' . $photoSpanCount .' Photo} other{' . $photoSpanCount .' Photos}}', ['value' => $photoCount]), '', ['class' => 'photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                            <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'photos-review-trigger visible-xs']); ?>
+                                                            <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                            <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 comments-review-trigger visible-xs']); ?>
                                                         </li>
                                                         <li class="visible-xs-inline-block">
-                                                        
-                                                            <?= $shareBtn ?>
-                                                            
+                                                            <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                                     <ul class="list-inline list-review mt-0 mb-0">
                                                         <li>
-
-                                                            <?= $shareBtn ?>
-
+                                                            <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
                                                         </li>
                                                     </ul>
                                             	</div>
@@ -503,16 +520,6 @@ $jscript = '
                 }
             });
         }
-    });
-
-    $(".photos-review-trigger").on("click", function() {
-
-        if ($("#user-photos-review-container").find(".gallery-photo-review").length) {
-
-            $("#user-photos-review-container").toggle(500);
-        }
-
-        return false;
     });
 
     $(".post-gallery").magnificPopup({

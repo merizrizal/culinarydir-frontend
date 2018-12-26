@@ -179,9 +179,9 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <?php
                                             if (!empty($modelUserPostMain['userPostMains'])):
     
-                                                foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild): ?>
+                                                foreach ($modelUserPostMain['userPostMains'] as $i => $modelUserPostMainChild): ?>
     
-                                                    <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
+                                                    <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review <?= $i > 4 ? 'hidden' : '' ?>">
                                                         <div class="gallery-item review-post-gallery">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
@@ -191,7 +191,22 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                 </div>
                                                                 <div class="work-caption">
                                                                     <div class="work-descr">
-                                                                        <a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                    	
+                                                                    	<?php
+                                                                    	if ($i == 4):
+                                                                    	
+                                                                    	    echo Html::a('+' . (count($modelUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']); ?>
+                                                                	   		
+                                                            	   			<a class="btn btn-d btn-small btn-xs btn-circle show-image hidden" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                	   	   
+                                                                	   	<?php
+                                                                    	else: ?>
+                                                                    	
+                                                                        	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                        	
+                                                                    	<?php
+                                                                    	endif; ?>
+                                                                    	
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -211,15 +226,11 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                         	    $commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
                         	    $photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
                         	    
-                        	    $loveSpanCount = '<span class="my-total-likes-review">#</span>';
-                        	    $commentSpanCount = '<span class="my-total-comments-review">#</span>';
-                        	    $photoSpanCount = '<span class="my-total-photos-review">#</span>';
+                        	    $loveSpanCount = '<span class="my-total-likes-review">' . $loveCount . '</span>';
+                        	    $commentSpanCount = '<span class="my-total-comments-review">' . $commentCount . '</span>';
+                        	    $photoSpanCount = '<span class="my-total-photos-review">' . $photoCount . '</span>';
                         	    
-                        	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : '';
-                        	    
-                        	    $shareBtn = Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-my-review-trigger']);
-                        	    $editBtn = Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']); 
-                        	    $deleteBtn = Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']); ?>
+                        	    $selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
     
                                 <div class="row visible-xs">
                                     <div class="col-xs-3">
@@ -232,51 +243,70 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-xs-9 text-right">
                                         <ul class="list-inline mt-0 mb-0">
                                             <li>
-                                                <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]) ?></small>
+                                                <small><?= $commentSpanCount . ' Comment'?></small>
                                             </li>
                                             <li>
-                                                <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]) ?></small>
+                                                <small><?= $photoSpanCount . ' Photo' ?></small>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
     
                                 <div class="row">
-                                    <div class="col-sm-7 col-tab-7 col-xs-12">
+                                    <div class="col-sm-7 col-tab-6 col-xs-12">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                             <li>
-                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . Yii::t('app', '{value, plural, =0{' . $loveSpanCount . ' Like} =1{' . $loveSpanCount . ' Like} other{' . $loveSpanCount . ' Likes}}', ['value' => $loveCount]), ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'my-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                            
+                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
+                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
+                                                ]); ?>
+                                                
+                                                <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], [
+                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-xs'
+                                                ]); ?>
+                                                
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-comments"></i> ' . Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]), '', ['class' => 'my-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'my-comments-review-trigger visible-xs']); ?>
-                                            </li>
-                                            <li>
-                                                <?= Html::a('<i class="fa fa-camera-retro"></i> ' . Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]), '', ['class' => 'my-photos-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                                <?= Html::a('<i class="fa fa-camera-retro"></i> Photo', '', ['class' => 'my-photos-review-trigger visible-xs']); ?>
-                                            </li>
-                                            <li class="visible-xs-inline-block">
-                                                <?= $shareBtn ?>
-                                            </li>
-                                            <li class="visible-xs-inline-block">
-                                                <?= $editBtn ?>
+                                            
+                                                <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
+                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-lg visible-md visible-sm visible-tab'
+                                                ]); ?>
+                                                
+                                                <?= Html::a('<i class="fa fa-comments"></i> Comment', '', [
+                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-xs'
+                                                ]); ?>
+                                                
                                             </li>
                                             <li class="visible-xs-inline-block">
-                                                <?= $deleteBtn ?>
+                                            	<div class="btn-group">
+                                                	<a class="btn btn-default btn-standard btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h aicon-1-5x"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu pull-right review-btn">
+                                                        <li>
+                                                        	<?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-my-review-trigger']); ?>
+                                                        </li>
+                                                        <li>
+                                                           	<?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']) ?>
+                                                        </li>
+                                                        <li>
+                                                           	<?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']) ?>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
+                                    <div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                     		<li>
-                                                <?= $shareBtn ?>
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= $editBtn ?>
+                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 edit-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= $deleteBtn ?>
+                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 delete-my-review-trigger']) ?>
                                             </li>
                                         </ul>
                                     </div>
@@ -328,9 +358,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                 <br>
                                                                                 <p class="comment-description">
-    
                                                                                     <?= $dataUserPostComment['text']; ?>
-    
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -662,7 +690,6 @@ $jscript = '
     $("#close-review-container").hide();
 
     $("#my-comments-review-container").hide();
-    $("#my-photos-review-container").hide();
 
     $.ajax({
         cache: false,
@@ -811,6 +838,8 @@ $jscript = '
             type: "Review"
         });
 
+        $(this).parent().parent().siblings("a").dropdown("toggle");
+
         return false;
     });
 
@@ -827,6 +856,8 @@ $jscript = '
         });
 
         cancelWrite = false;
+
+        $(this).parent().parent().siblings("a").dropdown("toggle");
 
         return false;
     });
@@ -908,6 +939,8 @@ $jscript = '
         });
 
         $("#modal-confirmation").modal("show");
+
+        $(this).parent().parent().siblings("a").dropdown("toggle");
 
         return false;
     });
@@ -1143,16 +1176,6 @@ $jscript = '
             });
         }
     });
-
-    $(".my-photos-review-trigger").on("click", function() {
-
-        if ($("#my-photos-review-container").find(".gallery-photo-review").length) {
-
-            $("#my-photos-review-container").toggle(500);
-        }
-
-        return false;
-    });    
 
     $("#form-photos-review-container").on("click", ".delete-image", function() {
         

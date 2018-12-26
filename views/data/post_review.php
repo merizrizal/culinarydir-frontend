@@ -261,10 +261,10 @@ $linkPager = LinkPager::widget([
                         <div class="col-xs-9 text-right">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
-                                    <small><?= Yii::t('app', '{value, plural, =0{' . $commentSpanCount . ' Comment} =1{' . $commentSpanCount . ' Comment} other{' . $commentSpanCount . ' Comments}}', ['value' => $commentCount]) ?></small>
+                                    <small><?= $commentSpanCount . ' Comment'?></small>
                                 </li>
                                 <li>
-                                    <small><?= Yii::t('app', '{value, plural, =0{' . $photoSpanCount . ' Photo} =1{' . $photoSpanCount . ' Photo} other{' . $photoSpanCount . ' Photos}}', ['value' => $photoCount]) ?></small>
+                                    <small><?= $photoSpanCount . ' Photo' ?></small>
                                 </li>
                             </ul>
                         </div>
