@@ -138,7 +138,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 <div class="widget star-rating">
                     
                                                     <?= StarRating::widget([
-                                                        'id' => 'my-overall-rating',
+                                                        'id' => 'rating-' . $modelUserPostMain['id'],
                                                         'name' => 'rating_' . $modelUserPostMain['id'],
                                                         'value' => $overallValue,
                                                         'pluginOptions' => [
@@ -152,7 +152,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="rating my-rating">
+                                                <div class="rating rating-<?= $modelUserPostMain['id']; ?>">
                                                     <h4 class="mt-0 mb-0">
                                                     	<?= Html::a(number_format($overallValue, 1), '#', ['class' => 'label label-success my-rating-popover']); ?>
                                                     </h4>
@@ -280,7 +280,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <li class="visible-xs-inline-block">
                                             	<div class="btn-group">
                                                 	<a class="btn btn-default btn-standard btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fa fa-ellipsis-h aicon-1-5x"></i>
+                                                        <i class="fa fa-ellipsis-h"></i>
                                                     </a>
                                                     <ul class="dropdown-menu pull-right review-btn">
                                                         <li>
@@ -523,6 +523,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             if (!empty($modelUserPostMain['userPostMains'])):
 
                                                 foreach ($modelUserPostMain['userPostMains'] as $modelUserPostMainChild):
+                                                
                                                     echo Html::hiddenInput('user_post_main_child_id', $modelUserPostMainChild['id'], ['class' => 'user-post-main-child-id']); ?>
 
                                                     <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
@@ -1028,8 +1029,6 @@ $jscript = '
                     });
 
                     $(".temp-overall-rating").val(tempOverall / parseInt($(".rating-component-id").length));
-
-                    $("#my-overall-rating").rating("update", $(".temp-overall-rating").val());
 
                     getBusinessRating($("#business_id").val());
                     getUserPhoto($("#business_id").val());
