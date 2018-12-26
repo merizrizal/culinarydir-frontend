@@ -406,104 +406,53 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </div>
 
                                             <div class="row mt-10 mb-10 visible-lg visible-md visible-sm visible-tab">
-                                                <div class="col-lg-4 col-md-5 col-sm-5 col-tab-6 widget pull-right">
-                                                    <ul class="link-icon list-inline text-center">
-                                                    	<li>
-                                                            <a href="" class="write-review-shortcut">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Review') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" class="post-photo-shortcut">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" class="report-business-trigger">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Report') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                  	</ul>
+                                                <div class="col-lg-2 col-sm-3 col-tab-3 col">
+                                                
+                                                    <?= Html::a('<i class="aicon aicon-warning aicon-1-2x"></i> ' .  Yii::t('app', 'Report'), '', [
+                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
+                                                    ]) ?>
+                                                    
                                                 </div>
-                                                <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 widget">
-                                                    <ul class="link-icon list-inline">
-                                                       <li>
-                                                            <a href="" class="message-feature">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
-                                                                    <li>Message</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                <div class="col-lg-2 col-sm-3 col-tab-3 col">
+                                                
+                                                    <?= Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
+                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
+                                                    ]) ?>
+                                                    
+                                                </div>
+                                                <div class="col-lg-4 col-offset-lg-4 col-sm-5 col-offset-sm-6 col-tab-5 col-offset-tab-6 pull-right">
+                                                
+                                                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), ['page/menu', 'id' => $modelBusiness['id']], [
+                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4'
+                                                    ]) ?>
+                                                    
                                                 </div>
                                             </div>
 
                                             <div class="row mt-10 mb-10 visible-xs">
-                                                <div class="col-xs-12 widget">
-                                                	<ul class="link-icon list-inline text-center">
-                                                    	<li>
-                                                            <a href="" class="write-review-shortcut">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-document-edit aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Review') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" class="post-photo-shortcut xs">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-camera aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Photo') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="" class="report-business-trigger">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-warning aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Report') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                <div class="col-xs-6 col">
+                                                
+                                                	<?= Html::a('<i class="aicon aicon-warning aicon-1-2x"></i> ' .  Yii::t('app', 'Report'), '', [
+                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
+                                                	]) ?>
+                                                	
+                                            	</div>
+                                            	<div class="col-xs-6 col">
+                                            	
+                                                	<?= Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
+                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
+                                                	]) ?>
+                                                	
                                                 </div>
-                                                <div class="col-xs-12 widget">
-                                                    <ul class="link-icon list-inline text-center">
-                                                        <li>
-                                                            <a href="" class="message-feature">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-envelope aicon-1-2x"></i></li>
-                                                                    <li>Message</li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="<?= Yii::$app->urlManager->createUrl(['page/menu', 'id' => $modelBusiness['id']]) ?>">
-                                                                <ul class="text-center">
-                                                                    <li><i class="aicon aicon-icon-online-ordering aicon-1-2x"></i></li>
-                                                                    <li><?= Yii::t('app', 'Online Order') ?></li>
-                                                                </ul>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                
+                                                <div class="clearfix mb-10"></div>
+                                                
+                                                <div class="col-xs-12">
+                                                
+                                                	<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), ['page/menu', 'id' => $modelBusiness['id']], [
+                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4'
+                                                	]) ?>
+                                                	
                                                 </div>
                                             </div>
                                         </div>
@@ -528,7 +477,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         <li>
                                                             <div class="btn-group" role="group">
 
-                                                                <?= Html::a('<i class="aicon aicon-icon-been-there"></i> Been Here', ['action/submit-user-visit'], [
+                                                                <?= Html::a('<i class="aicon aicon-icon-been-there"></i> Visit', ['action/submit-user-visit'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 been-here ' . $selectedVisit . '',
                                                                 ]) ?>
 
@@ -541,7 +490,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         <li>
                                                             <div class="btn-group" role="group">
 
-                                                                <?= Html::a('<i class="fa fa-heart"></i> Loves', ['action/submit-user-love'], [
+                                                                <?= Html::a('<i class="fa fa-heart"></i> Love', ['action/submit-user-love'], [
                                                                     'class' => 'btn btn-default btn-standard btn-round-4 love-place ' . $selectedLove . '',
                                                                 ]) ?>
 
@@ -553,28 +502,42 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                         </li>
                                                         <li>
                                                             <div class="btn-group" role="group">
-
                                                                 <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-round-4 share-feature']) ?>
-
                                                             </div>
                                                         </li>
                                                     </ul>
 
                                                     <ul class="list-inline list-default mt-0 mb-0 visible-xs">
                                                         <li>
+                                                            <div class="btn-group" role="group">
 
-                                                            <?= Html::a('<i class="aicon aicon-icon-been-there"></i> <span class="been-here-count">' . $visitValue . '</span> Been Here', ['action/submit-user-visit'], ['class' => 'been-here ' . $selectedVisit]); ?>
+                                                                <?= Html::a('<i class="aicon aicon-icon-been-there"></i> Visit', ['action/submit-user-visit'], [
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 btn-xs been-here ' . $selectedVisit . '',
+                                                                ]) ?>
 
+                                                                <?= Html::a($visitValue, ['action/submit-user-visit'], [
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 btn-xs been-here ' . $selectedVisit . ' been-here-count',
+                                                                ]) ?>
+
+                                                            </div>
                                                         </li>
                                                         <li>
+                                                            <div class="btn-group" role="group">
 
-                                                            <?= Html::a('<i class="fa fa-heart"></i> <span class="love-place-count">' . $loveValue . '</span> Loves', ['action/submit-user-love'], ['class' => 'love-place ' . $selectedLove]); ?>
+                                                                <?= Html::a('<i class="fa fa-heart"></i> Love', ['action/submit-user-love'], [
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 btn-xs love-place ' . $selectedLove . '',
+                                                                ]) ?>
 
+                                                                <?= Html::a($loveValue, ['action/submit-user-love'], [
+                                                                    'class' => 'btn btn-default btn-standard btn-round-4 btn-xs love-place ' . $selectedLove . ' love-place-count',
+                                                                ]) ?>
+
+                                                            </div>
                                                         </li>
                                                         <li>
-
-                                                            <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-feature']); ?>
-
+                                                            <div class="btn-group" role="group">
+                                                                <?= Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-default btn-standard btn-round-4 btn-xs share-feature']) ?>
+                                                            </div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -679,7 +642,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                         <ul class="nav nav-tabs widget mb-10" role="tablist">
                                             <li role="presentation" class="active">
                                                 <a href="#view-review" aria-controls="view-review" role="tab" data-toggle="tab">
-                                                    <ul class="link-icon list-inline">
+                                                    <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-document-edit aicon-1-5x"></i><span class="badge total-review"></span></li>
@@ -691,7 +654,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </li>
                                             <li role="presentation">
                                                 <a href="#view-about" aria-controls="view-about" role="tab" data-toggle="tab">
-                                                    <ul class="link-icon list-inline">
+                                                    <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-icon-restaurant aicon-1-5x"></i></li>
@@ -703,7 +666,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </li>
                                             <li role="presentation" class="visible-lg visible-md visible-sm visible-tab">
                                                 <a href="#view-photo" aria-controls="view-photo" role="tab" data-toggle="tab">
-                                                    <ul class="link-icon list-inline">
+                                                    <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-camera aicon-1-5x"></i><span class="badge total-photo"></span></li>
@@ -715,7 +678,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </li>
                                             <li role="presentation" class="visible-lg visible-md visible-sm visible-tab">
                                                 <a href="#view-map" aria-controls="view-map" role="tab" data-toggle="tab">
-                                                    <ul class="link-icon list-inline">
+                                                    <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="aicon aicon-icon-thin-location-line aicon-1-5x"></i></li>
@@ -727,7 +690,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                             </li>
                                             <li role="presentation" class="dropdown visible-xs">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                                    <ul class="link-icon list-inline">
+                                                    <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
                                                                 <li><i class="fa fa-ellipsis-h aicon-1-5x"></i></li>
@@ -809,9 +772,9 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
 </div>
 
-<?= Html::img($ogImage, ['id' => 'img-for-share-link']) ?>
-
 <?php
+echo Html::img($ogImage, ['id' => 'img-for-share-link']);
+
 $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
     Modal::begin([
@@ -925,45 +888,6 @@ $jscript = '
         } else {
 
             $("html, body").animate({ scrollTop: $("#title-map").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".write-review-shortcut").on("click", function(event) {
-
-        if (!$("a[aria-controls=\"view-review\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-review\"]").tab("show");
-
-            $("a[aria-controls=\"view-review\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-
-            $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
-        }
-
-        return false;
-    });
-
-    $(".post-photo-shortcut").on("click", function(event) {
-
-        var xs = $(this).hasClass("xs") ? "-xs" : "";
-
-        if (!$("a[aria-controls=\"view-photo" + xs + "\"]").parent().hasClass("active")) {
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").tab("show");
-
-            $("a[aria-controls=\"view-photo" + xs + "\"]").on("shown.bs.tab", function (e) {
-
-                $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
-                $(this).off("shown.bs.tab");
-            });
-        } else {
-            $("html, body").animate({ scrollTop: $("#title-post-photo").offset().top }, "slow");
         }
 
         return false;
