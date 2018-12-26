@@ -21,8 +21,6 @@ use sycomponent\Tools;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
-// echo '<pre>'; print_r(Yii::$app->session->get('keyword')); exit();
-
 $this->title = $modelBusiness['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
