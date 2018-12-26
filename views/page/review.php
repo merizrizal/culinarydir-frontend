@@ -542,7 +542,7 @@ $jscript = '
         facebookShare({
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
-            ogDescription: "' . $ogDescription . '",
+            ogDescription: "' . addslashes($ogDescription) . '",
             ogImage: "' . $ogImage . '",
             type: "Review"
         });
