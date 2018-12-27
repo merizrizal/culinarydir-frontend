@@ -72,11 +72,11 @@ $linkPager = LinkPager::widget([
                 $img = Html::img($img, ['class' => 'img-rounded']);
                 
                 $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']], [
-                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4'
+                    'class' => 'btn btn-default btn-small btn-round-4'
                 ]);
                 
                 $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
-                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 btn-reorder',
+                    'class' => 'btn btn-default btn-small btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
                 ]); ?>
         
