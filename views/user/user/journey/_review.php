@@ -171,6 +171,8 @@ $jscript = '
             type: "Review"
         });
 
+        $(this).parent().parent().siblings("a").dropdown("toggle");
+
         return false;
     });
 
