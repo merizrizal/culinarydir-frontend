@@ -193,15 +193,16 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                     <div class="work-descr">
                                                                     	
                                                                     	<?php
-                                                                    	if ($i == 4):
+                                                                    	$hiddenPhotos = count($modelUserPostMain['userPostMains']) - ($i + 1);
                                                                     	
-                                                                    	    echo Html::a('+' . (count($modelUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                                	   		
+                                                                    	if ($i == 4 && $hiddenPhotos != 0) {
+                                                                    	
+                                                                    	    echo Html::a('+' . $hiddenPhotos, ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
                                                                     	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
-                                                                    	else:
+                                                                    	} else {
                                                                     	
                                                                         	echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
-                                                                    	endif; ?>
+                                                                    	} ?>
                                                                     	
                                                                     </div>
                                                                 </div>
@@ -522,7 +523,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 
                                                     echo Html::hiddenInput('user_post_main_child_id', $modelUserPostMainChild['id'], ['class' => 'user-post-main-child-id']); ?>
 
-                                                    <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review">
+                                                    <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review text-center">
                                                         <div class="gallery-item review-post-gallery">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
@@ -530,15 +531,11 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                     <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
 
                                                                 </div>
-                                                                <div class="work-caption">
-                                                                    <div class="work-descr">
-                                                                    
-                                                                        <?= Html::a('<i class="fa fa-trash"></i>', ['user-action/delete-photo', 'id' => $modelUserPostMainChild['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle delete-image']) ?>
-                                                                        
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
+                                                        
+                                                        <?= Html::checkbox('ImageReviewDelete[]', false, ['label' => '<i class="fa fa-trash"></i>', 'value' => $modelUserPostMainChild['id']]) ?>
+                                                        
                                                     </li>
 
                                                 <?php
@@ -997,36 +994,54 @@ $jscript = '
                         lessText: "See less",
                     });
 
-                    var countLi = $("#review-uploaded-photo > li").length;
+                    $.each(response.deletedPhotoId, function(i, deletedPhotoId) {
+                    
+                        $("#review-uploaded-photo").find("li#image-" + deletedPhotoId).remove();
+                        $("#form-review-uploaded-photo").find("li#image-" + deletedPhotoId).remove();
+    
+                        $(".my-total-photos-review").html(parseInt($(".my-total-photos-review").html()) - 1);
+                    });
 
                     $.each(response.userPostMainPhoto, function(i, userPostMainPhoto) {
 
                         var cloneImageReviewContainer = $("#container-temp-uploaded-photo").find("li").clone();
                         var cloneImageFormContainer = $("#container-temp-uploaded-photo").find("li").clone();
-                        
-                        if ((countLi + i) > 4) {
-
-                            cloneImageReviewContainer.addClass("hidden");
-                        }
 
                         cloneImageReviewContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-
-                        if ((countLi + i) == 4) {
-                            
-                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle\" href=\"' . Yii::$app->urlManager->createUrl(['page/review', 'id' => '']) . '" + response.userPostMain.id + "\">+" + (countLi + response.userPostMainPhoto.length - (countLi + i)) + "</a>");
-                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").append("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image hidden\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
-                        } else {
-    
-                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
-                        }
+                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
-
+                        
+                        cloneImageFormContainer.addClass("text-center");
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-                        cloneImageFormContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle delete-image\" href=\"" + response.deleteUrlPhoto + "?id=" + userPostMainPhoto.id + "\"><i class=\"fa fa-trash\"></i></a>");
+                        cloneImageFormContainer.append("<label><input type=\"checkbox\" name=\"ImageReviewDelete[]\" value=\"" + userPostMainPhoto.id + "\"> <i class=\"fa fa-trash\"></i></label>");
                         cloneImageFormContainer.appendTo($("#form-review-uploaded-photo"));
-                    });                    
+                    });
+
+                    var countLi = $("#review-uploaded-photo > li").length;
+
+                    $("#review-uploaded-photo > li").each(function (i) {
+
+                        if (i > 4) {
+
+                            $(this).addClass("hidden");
+                        } else {
+
+                            $(this).removeClass("hidden");
+                        }
+
+                        var hiddenPhotos = countLi - (i + 1);
+
+                        if (i == 4 && hiddenPhotos != 0) {
+                            
+                            $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image hidden\" href=\"" + $(this).find("a.show-image").attr("href") + "\"><i class=\"fa fa-search\"></i></a>");
+                            $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").append("<a class=\"btn btn-d btn-small btn-xs btn-circle\" href=\"' . Yii::$app->urlManager->createUrl(['page/review', 'id' => '']) . '" + response.userPostMain.id + "\">+" + hiddenPhotos + "</a>");
+                        } else {
+
+                            $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + $(this).find("a.show-image").attr("href") + "\"><i class=\"fa fa-search\"></i></a>");
+                        }
+                    });
 
                     var tempOverall = 0;
 
@@ -1189,51 +1204,6 @@ $jscript = '
                 }
             });
         }
-    });
-
-    $("#form-photos-review-container").on("click", ".delete-image", function() {
-        
-        $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
-
-        $("#modal-confirmation").find("#btn-delete").on("click", function() {
-
-            $("#modal-confirmation").find("#btn-delete").off("click");
-
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $(this).data("href"),
-                success: function(response) {
-    
-                    $("#modal-confirmation").modal("hide");
-    
-                    if (response.success) {
-    
-                        getUserPhoto($("#business_id").val());
-    
-                        $("#review-uploaded-photo").find("li#image-" + response.id).remove();
-                        $("#form-review-uploaded-photo").find("li#image-" + response.id).remove();
-    
-                        $(".my-total-photos-review").html(parseInt($(".my-total-photos-review").html()) - 1);
-
-                        initMagnificPopupMyReview();
-    
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    } else {
-    
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-    
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-                }
-            });
-        });
-
-        $("#modal-confirmation").modal("show");
-
-        return false;
     });
 
     $(".rating-component-id").each(function() {

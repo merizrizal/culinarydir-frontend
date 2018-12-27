@@ -49,6 +49,13 @@ class PageController extends base\BaseHistoryUrlController
 
                     $query->andOnCondition(['child.is_publish' => true]);
                 },
+                'userPostLoves' => function ($query) {
+                
+                    $query->andOnCondition([
+                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                        'user_post_love.is_active' => true
+                    ]);
+                },
                 'userVotes',
                 'userPostComments'
             ])

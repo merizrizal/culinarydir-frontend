@@ -265,7 +265,7 @@ class DataController extends base\BaseController
             ->joinWith([
                 'business',
                 'user',
-                'userPostMains child' => function($query) {
+                'userPostMains child' => function ($query) {
                 
                     $query->andOnCondition(['child.is_publish' => true]);
                 },

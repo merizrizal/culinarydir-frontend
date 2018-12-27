@@ -583,6 +583,7 @@ class ActionController extends base\BaseController
 
     private function updateReview($post, $modelUserPostMain = [])
     {
+        
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
@@ -652,6 +653,11 @@ class ActionController extends base\BaseController
 
                     break;
                 }
+            }
+            
+            if ($flag && !empty($post['ImageReviewDelete'])) {
+                
+                $flag = UserPostMain::deleteAll(['id' => $post['ImageReviewDelete']]);
             }
         }
 
@@ -741,8 +747,8 @@ class ActionController extends base\BaseController
             ]);
             $result['commentCount'] = count($modelUserPostMain->userPostComments);
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
-            $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
+            $result['deletedPhotoId'] = !empty($post['ImageReviewDelete']) ? $post['ImageReviewDelete'] : null;
         } else {
 
             $transaction->rollBack();

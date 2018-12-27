@@ -16,11 +16,10 @@ use common\components\Helper;
                 <div class="head">
                     <div class="row">
                         <div class="col-xs-12">
-                        
                         	<div class="widget">
                         		<div class="widget-posts-image">
                         		
-                        			<?php 
+                        			<?php
                                 	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png'; 
                                 	
                                 	if (!empty($model['user']['image'])) {
@@ -33,17 +32,9 @@ use common\components\Helper;
                         		</div>
                         		
                         		<div class="widget-posts-body">
-                        		
-                        			<div class="full-name">
-        
-                                        <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
-        
-                                    </div>
-                                    <div class="post-date">
-        
-                                        <small><?= Helper::asRelativeTime($model['created_at'], 'medium'); ?></small>
-        
-                                    </div>
+                                    <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
+                                    <br>
+                                    <small><?= Helper::asRelativeTime($model['created_at'], 'medium'); ?></small>
                         		</div>
                         	</div>
                     	</div>
@@ -69,26 +60,28 @@ use common\components\Helper;
                 
                 <?php 
                 $loveCount = !empty($model['love_value']) ? $model['love_value'] : 0;
-                $commentCount = !empty($model['userPostComments']) ? count($model['userPostComments']) : 0; ?>
+                $commentCount = !empty($model['userPostComments']) ? count($model['userPostComments']) : 0;
+                
+                $selected = !empty($model['userPostLoves'][0]) ? 'selected' : ''; ?>
                 
                 <div class="post-header">
                     <div class="row">
                         <div class="col-xs-12 col">
                             <ul class="list-inline mt-0 mb-10">
                                 <li>
-
-                                    <small><i class="fa fa-thumbs-up"></i> <?= Yii::t('app', '{value, plural, =0{# Like} =1{# Like} other{# Likes}}', ['value' => $loveCount ]) ?></small>
-
+                                
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span> Like', ['action/submit-likes'], [
+                                        'class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-' . $model['id'] . '-trigger ' . $selected,
+                                    ]) ?>
+                                    
                                 </li>
                                 <li>
-
-                                    <small><i class="fa fa-comments"></i> <?= Yii::t('app', '{value, plural, =0{# Comment} =1{# Comment} other{# Comments}}', ['value' => $commentCount]) ?></small>
-
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4']) ?>
                                 </li>
                                 <li>
-
-                                    <small><?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-feature-' . $model['id'] . '-trigger']); ?></small>
-
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-feature-' . $model['id'] . '-trigger visible-md visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-feature-' . $model['id'] . '-trigger visible-xs']); ?>
                                 </li>
                             </ul>
                         </div>
@@ -96,9 +89,7 @@ use common\components\Helper;
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <h5 class="m-0">
-
                                 <?= Html::a($model['business']['name'], ['page/detail', 'id' => $model['business']['id']]); ?>
-
                             </h5>
                         </div>
                     </div>
@@ -174,6 +165,46 @@ $jscript = '
             ogDescription: description,
             ogImage: image,
             type: "Review"
+        });
+
+        return false;
+    });
+
+    $(".user-likes-review-' . $model['id'] . '-trigger").on("click", function() {
+
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "user_post_main_id": ' . $model['id'] . '
+            },
+            url: thisObj.attr("href"),
+            success: function(response) {
+
+                if (response.success) {
+
+                    var loveValue = parseInt(thisObj.find(".total-likes-review").html());
+
+                    if (response.is_active) {
+                        
+                        thisObj.addClass("selected");
+                        thisObj.find(".total-likes-review").html(loveValue + 1);
+                    } else {
+                        
+                        thisObj.removeClass("selected");
+                        thisObj.find(".total-likes-review").html(loveValue - 1);
+                    }
+                } else {
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
         });
 
         return false;

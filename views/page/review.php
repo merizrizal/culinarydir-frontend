@@ -219,7 +219,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                              	</div>
                                           	</div>
 
-                                            <div class="row" id="user-photos-review-container">
+                                            <div class="row">
                                                 <div class="col-sm-12 col-xs-12">
                                                     <ul class="works-grid works-grid-gut works-grid-5">
 
