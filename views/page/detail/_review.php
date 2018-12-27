@@ -1043,6 +1043,8 @@ $jscript = '
                         }
                     });
 
+                    initCustomicheck();
+
                     var tempOverall = 0;
 
                     $(".rating-component-id").each(function() {
