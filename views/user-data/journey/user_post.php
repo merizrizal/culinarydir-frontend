@@ -226,9 +226,11 @@ $linkPager = LinkPager::widget([
                                                         <div class="work-descr">
                                                         
                                                         	<?php
-                                                        	if ($i == 4) {
+                                                        	$hiddenPhotos = count($dataUserPostMain['userPostMains']) - ($i + 1);
+                                                        	
+                                                        	if ($i == 4 && $hiddenPhotos != 0) {
                                                         	    
-                                                        	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                        	    echo Html::a('+' . $hiddenPhotos, ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
                                                         	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image hidden"]);
                                                         	} else { 
                                                         	    
