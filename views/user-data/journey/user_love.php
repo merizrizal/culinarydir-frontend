@@ -59,7 +59,7 @@ $linkPager = LinkPager::widget([
             foreach ($modelUserLove as $dataUserLove): ?>
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
-                    <div class="box user">
+                    <div class="box user-love">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
 
@@ -86,7 +86,7 @@ $linkPager = LinkPager::widget([
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-9 col-md-10 col-sm-10 col-tab-9 col-xs-9">
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-tab-9 col-xs-9">
                                             <small class="m-0 mb-10">
                                                 <?= $dataUserLove['business']['businessLocation']['village']['name'] . ', ' . $dataUserLove['business']['businessLocation']['city']['name'] ?>
                                             </small>
@@ -95,15 +95,8 @@ $linkPager = LinkPager::widget([
                                         <?php
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserLove['user_id']): ?>
 
-                                            <div class="col-lg-3 col-md-2 col-sm-2 col-tab-3 col-xs-3">
-
-                                                <div class="widget">
-                                                    <ul class="heart-rating">
-                                                        <li>
-                                                            <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place', 'data-business-id' => $dataUserLove['business']['id']]) ?>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-tab-3 col-xs-3">
+                                                <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place', 'data-business-id' => $dataUserLove['business']['id']]) ?>
                                             </div>
 
                                         <?php
