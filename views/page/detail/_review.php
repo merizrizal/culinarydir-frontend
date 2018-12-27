@@ -69,7 +69,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
     									<div class="my-rating">
                                         	<h3 class="mt-0 mb-0">
-                                                <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                                <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success pt-10']); ?>
                                         	</h3>
                      					</div>
                                         <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
@@ -255,28 +255,28 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <li>
                                             
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
                                                 ]); ?>
                                                 
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-xs'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-likes-review-trigger ' . $selected . ' visible-xs'
                                                 ]); ?>
                                                 
                                             </li>
                                             <li>
                                             
                                                 <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-lg visible-md visible-sm visible-tab'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-comments-review-trigger visible-lg visible-md visible-sm visible-tab'
                                                 ]); ?>
                                                 
                                                 <?= Html::a('<i class="fa fa-comments"></i> Comment', '', [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-xs'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-comments-review-trigger visible-xs'
                                                 ]); ?>
                                                 
                                             </li>
                                             <li class="visible-xs-inline-block">
                                             	<div class="btn-group">
-                                                	<a class="btn btn-default btn-standard btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                                	<a class="btn btn-default btn-standard btn-small btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fa fa-ellipsis-h"></i>
                                                     </a>
                                                     <ul class="dropdown-menu pull-right review-btn">
@@ -297,13 +297,13 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                     		<li>
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 edit-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 edit-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 delete-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 delete-my-review-trigger']) ?>
                                             </li>
                                         </ul>
                                     </div>
@@ -524,7 +524,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                     echo Html::hiddenInput('user_post_main_child_id', $modelUserPostMainChild['id'], ['class' => 'user-post-main-child-id']); ?>
 
                                                     <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review text-center">
-                                                        <div class="gallery-item review-post-gallery">
+                                                        <div class="gallery-item review-post-gallery mb-10">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
 
@@ -815,7 +815,7 @@ $jscript = '
     $(".share-my-review-trigger").on("click", function(event) {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(".my-user-post-main-id").val();
-        var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
+        var title = "Rating " + $("#edit-review-container").find(".my-rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(".my-review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
 
@@ -1013,6 +1013,7 @@ $jscript = '
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
                         
                         cloneImageFormContainer.addClass("text-center");
+                        cloneImageFormContainer.find(".review-post-gallery").addClass("mb-10");
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
                         cloneImageFormContainer.append("<label><input type=\"checkbox\" name=\"ImageReviewDelete[]\" value=\"" + userPostMainPhoto.id + "\"> <i class=\"fa fa-trash\"></i></label>");
@@ -1354,7 +1355,7 @@ $jscript = '
     $(".review-section").on("click", ".share-review-trigger", function() {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".review-post").find(".user-post-main-id").val();
-        var title = "Rating " + $(this).parents(".review-post").find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
+        var title = "Rating " + $(this).parents(".review-post").find(".rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
 

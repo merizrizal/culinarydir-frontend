@@ -177,30 +177,30 @@ $this->registerMetaTag([
                                                                 <li>
                                                                 
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
-                                                                        'class' => 'btn btn-default btn-standard btn-xs likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
+                                                                        'class' => 'btn btn-default btn-standard btn-small likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
                                                                     ]); ?>
                                                                     
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs likes-photo-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-small likes-photo-trigger ' . $selected . ' visible-xs']); ?>
                                                                     
                                                                 </li>
                                                                 <li>
                                                                 
                                                                     <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
-                                                                        'class' => 'btn btn-default btn-standard btn-xs comments-photo-trigger visible-lg visible-md visible-sm visible-tab'
+                                                                        'class' => 'btn btn-default btn-standard btn-small comments-photo-trigger visible-lg visible-md visible-sm visible-tab'
                                                                     ]); ?>
                                                                     
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs comments-photo-trigger visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-small comments-photo-trigger visible-xs']); ?>
                                                                     
                                                                 </li>
                                                                 <li class="visible-xs-inline-block">
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs share-review-trigger']); ?>
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-small share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs share-review-trigger']); ?>
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                     	</div>
@@ -406,7 +406,7 @@ $jscript = '
         facebookShare({
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
-            ogDescription: "' . $ogDescription . '",
+            ogDescription: "' . addslashes($ogDescription) . '",
             ogImage: "' . $ogImage . '",
             type: "Foto"
         });

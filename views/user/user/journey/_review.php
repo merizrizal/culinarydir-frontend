@@ -159,7 +159,7 @@ $jscript = '
     $(".user-post-section").on("click", ".share-review-trigger", function() {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".user-post-item").find(".user-post-main-id").val();
-        var title = "Rating " + $(this).parents(".user-post-item").find(".rating").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-name").val();
+        var title = "Rating " + $(this).parents(".user-post-item").find(".rating > h3").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-review > a").text();
         var description = $(this).parents(".user-post-item").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
 
