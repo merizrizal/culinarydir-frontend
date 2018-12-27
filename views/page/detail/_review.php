@@ -255,28 +255,28 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                             <li>
                                             
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
                                                 ]); ?>
                                                 
                                                 <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-likes-review-trigger ' . $selected . ' visible-xs'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-likes-review-trigger ' . $selected . ' visible-xs'
                                                 ]); ?>
                                                 
                                             </li>
                                             <li>
                                             
                                                 <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-lg visible-md visible-sm visible-tab'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-comments-review-trigger visible-lg visible-md visible-sm visible-tab'
                                                 ]); ?>
                                                 
                                                 <?= Html::a('<i class="fa fa-comments"></i> Comment', '', [
-                                                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 my-comments-review-trigger visible-xs'
+                                                    'class' => 'btn btn-default btn-standard btn-small btn-round-4 my-comments-review-trigger visible-xs'
                                                 ]); ?>
                                                 
                                             </li>
                                             <li class="visible-xs-inline-block">
                                             	<div class="btn-group">
-                                                	<a class="btn btn-default btn-standard btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                                	<a class="btn btn-default btn-standard btn-small btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fa fa-ellipsis-h"></i>
                                                     </a>
                                                     <ul class="dropdown-menu pull-right review-btn">
@@ -297,13 +297,13 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                     		<li>
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 edit-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 edit-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 delete-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 delete-my-review-trigger']) ?>
                                             </li>
                                         </ul>
                                     </div>

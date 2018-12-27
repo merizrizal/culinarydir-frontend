@@ -147,9 +147,7 @@ $linkPager = LinkPager::widget([
                                                                     </div>
     
                                                                     <div class="col-xs-7">
-    
                                                                         <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
-    
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -198,9 +196,7 @@ $linkPager = LinkPager::widget([
                     <div class="row">
                         <div class="col-xs-12">
                             <p class="review-description">
-    
                                 <?= $dataUserPostMain['text'] ?>
-    
                             </p>
                         </div>
                     </div>
@@ -251,7 +247,7 @@ $linkPager = LinkPager::widget([
                         </div>
                     </div>
                             
-                    <?php 
+                    <?php
                     $loveCount = !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0;
                     $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
                     $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
@@ -286,12 +282,12 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                	<?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
+                                	<?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                					<?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-likes-review-trigger ' . $selected . ' visible-xs']); ?>        
                                 </li>
                                 <li>
-                                	<?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                					<?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-xs']); ?>
+                                	<?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                					<?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-comments-review-trigger visible-xs']); ?>
                                 </li>
                                 <li class="visible-xs-inline-block">
                                 	
@@ -299,7 +295,7 @@ $linkPager = LinkPager::widget([
                                     if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
                                 	
                                         <div class="btn-group">
-                                        	<a class="btn btn-default btn-standard btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                        	<a class="btn btn-default btn-standard btn-small btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-ellipsis-h"></i>
                                             </a>
                                             <ul class="dropdown-menu pull-right review-btn">
@@ -315,7 +311,7 @@ $linkPager = LinkPager::widget([
                                     <?php
                                     else:
                                     
-                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']);
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-review-trigger']);
                                     endif; ?>
                                     
                                 </li>                                
@@ -324,14 +320,14 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-review-trigger']); ?>
                                 </li>
 
                                 <?php
                                 if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
 
                                     <li>
-                                        <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-delete-review-trigger']); ?>
+                                        <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-delete-review-trigger']); ?>
                                     </li>
 
                                 <?php

@@ -284,22 +284,22 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-likes-review-trigger ' . $selected . ' visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-likes-review-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-likes-review-trigger ' . $selected . ' visible-xs']); ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 user-comments-review-trigger visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-comments-review-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 user-comments-review-trigger visible-xs']); ?>
                                 </li>
                                 <li class="visible-xs-inline-block">
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-xs btn-round-4 share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
