@@ -69,7 +69,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
     									<div class="my-rating">
                                         	<h3 class="mt-0 mb-0">
-                                                <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success']); ?>
+                                                <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'my-rating-popover', 'class' => 'label label-success pt-10']); ?>
                                         	</h3>
                      					</div>
                                         <div id="my-popover-container" class="popover popover-x popover-default popover-rating">
