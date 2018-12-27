@@ -524,7 +524,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                     echo Html::hiddenInput('user_post_main_child_id', $modelUserPostMainChild['id'], ['class' => 'user-post-main-child-id']); ?>
 
                                                     <li id="image-<?= $modelUserPostMainChild['id'] ?>" class="work-item gallery-photo-review text-center">
-                                                        <div class="gallery-item review-post-gallery">
+                                                        <div class="gallery-item review-post-gallery mb-10">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
 
@@ -1013,6 +1013,7 @@ $jscript = '
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
                         
                         cloneImageFormContainer.addClass("text-center");
+                        cloneImageFormContainer.find(".review-post-gallery").addClass("mb-10");
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
                         cloneImageFormContainer.append("<label><input type=\"checkbox\" name=\"ImageReviewDelete[]\" value=\"" + userPostMainPhoto.id + "\"> <i class=\"fa fa-trash\"></i></label>");
