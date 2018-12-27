@@ -71,17 +71,17 @@ use common\components\Helper;
                                 <li>
                                 
                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span> Like', ['action/submit-likes'], [
-                                        'class' => 'btn btn-default btn-standard btn-small btn-round-4 user-likes-review-' . $model['id'] . '-trigger ' . $selected,
+                                        'class' => 'btn btn-default btn-small btn-round-4 user-likes-review-' . $model['id'] . '-trigger ' . $selected,
                                     ]) ?>
                                     
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-standard btn-small btn-round-4']) ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-small btn-round-4']) ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-md visible-tab']); ?>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-standard btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-xs']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-md visible-tab']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-xs']); ?>
                                 </li>
                             </ul>
                         </div>
