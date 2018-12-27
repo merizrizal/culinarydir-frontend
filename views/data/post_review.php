@@ -1,11 +1,11 @@
 <?php
 
-use common\components\Helper;
-use kartik\rating\StarRating;
-use sycomponent\Tools;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
+use common\components\Helper;
+use sycomponent\Tools;
+use kartik\rating\StarRating;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -96,7 +96,7 @@ $linkPager = LinkPager::widget([
                     <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
         
                     <div class="row mb-10">
-                        <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
+                        <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image">
                                     <?= Html::a($img, ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
@@ -109,7 +109,7 @@ $linkPager = LinkPager::widget([
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
+                        <div class="col-sm-3 col-tab-5 visible-lg visible-md visible-sm visible-tab">
                             <div class="rating">
                             	<h3 class="mt-0 mb-0">
                                     <?= Html::a(number_format($overallValue, 1), '#', ['id' => 'user-rating-popover' . $dataUserPostMain['id'], 'class' => 'label label-success user-rating-popover pt-10']); ?>
@@ -119,7 +119,7 @@ $linkPager = LinkPager::widget([
                                 <div class="arrow"></div>
                                 <div class="popover-body popover-content">
                                     <div class="row">
-                                        <div class="col-sm-12 col-xs-12">
+                                        <div class="col-xs-12">
                                             <div class="widget star-rating">
                                                 <ul class="icon-list">
         
@@ -130,7 +130,7 @@ $linkPager = LinkPager::widget([
         
                                                             <li>
                                                                 <div class="row">
-                                                                    <div class="col-sm-5 col-xs-5">
+                                                                    <div class="col-xs-5">
         
                                                                         <?= StarRating::widget([
                                                                             'id' => 'user-' . $dataUserPostMain['id'] . '-' . $dataUserVote['ratingComponent']['name'] . '-rating',
@@ -146,7 +146,7 @@ $linkPager = LinkPager::widget([
         
                                                                     </div>
         
-                                                                    <div class="col-sm-7 col-xs-7">
+                                                                    <div class="col-xs-7">
         
                                                                         <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
         
@@ -196,7 +196,7 @@ $linkPager = LinkPager::widget([
                     </div>
         
                     <div class="row">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
                             <p class="review-description">
         
                                 <?= $dataUserPostMain['text']; ?>
@@ -206,7 +206,7 @@ $linkPager = LinkPager::widget([
                     </div>
         
                     <div class="row user-photo-review">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
                             <ul class="works-grid works-grid-gut works-grid-5">
         
                                 <?php
@@ -226,19 +226,14 @@ $linkPager = LinkPager::widget([
                                                         <div class="work-descr">
                                                         
                                                         	<?php
-                                                        	if ($i == 4):
-                                                        	
-                                                        	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']); ?>
-                                                    	   		
-                                                	   			<a class="btn btn-d btn-small btn-xs btn-circle show-image hidden" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
-                                                    	   	   
-                                                    	   	<?php
-                                                        	else: ?>
-                                                        	
-                                                            	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
-                                                            	
-                                                        	<?php
-                                                        	endif; ?>
+                                                        	if ($i == 4) {
+                                                        	    
+                                                        	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                        	} else {
+                                                        	    
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
+                                                        	} ?>
                                                         	
                                                         </div>
                                                     </div>
@@ -269,14 +264,14 @@ $linkPager = LinkPager::widget([
                         <div class="col-xs-3">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
-                                    <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span>' ?></small>
+                                    <small><?= '<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount ?></small>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-xs-9 text-right">
                             <ul class="list-inline mt-0 mb-0">
                                 <li>
-                                    <small><?= $commentSpanCount . ' Comment'?></small>
+                                    <small><?= $commentSpanCount . ' Comment' ?></small>
                                 </li>
                                 <li>
                                     <small><?= $photoSpanCount . ' Photo' ?></small>
@@ -314,13 +309,14 @@ $linkPager = LinkPager::widget([
         
                     <div class="row">
                         <div class="user-comment-review">
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
                                 <div class="input-group mt-10 mb-10">
                                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
         
                                     <?= Html::textInput('comment_input', null, [
                                         'class' => 'form-control input-comments-review',
-                                        'placeholder' => Yii::t('app', 'Write a Comment')]); ?>
+                                        'placeholder' => Yii::t('app', 'Write a Comment')
+                                    ]); ?>
         
                                 </div>
         
@@ -335,7 +331,7 @@ $linkPager = LinkPager::widget([
         
                                             <div class="comment-post">
                                                 <div class="row mb-10">
-                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-xs-12">
                                                         <div class="widget">
                                                             <div class="widget-comments-image">
     
@@ -358,9 +354,7 @@ $linkPager = LinkPager::widget([
                                                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                 <br>
                                                                 <p class="comment-description">
-    
                                                                     <?= $dataUserPostComment['text']; ?>
-    
                                                                 </p>
                                                             </div>
                                                         </div>
