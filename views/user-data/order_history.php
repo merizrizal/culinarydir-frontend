@@ -71,9 +71,12 @@ $linkPager = LinkPager::widget([
                 
                 $img = Html::img($img, ['class' => 'img-rounded']);
                 
-                $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']]);
+                $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']], [
+                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4'
+                ]);
+                
                 $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
-                    'class' => 'btn-reorder',
+                    'class' => 'btn btn-default btn-standard btn-xs btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
                 ]); ?>
         
@@ -100,10 +103,10 @@ $linkPager = LinkPager::widget([
                         </div>
                     </div>
                     <div class="row mb-10">
-                    	<div class="col-sm-9 col-tab-8 col-xs-12">
+                    	<div class="col-sm-7 col-tab-6 col-xs-12">
                     		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                     	</div>
-                    	<div class="col-sm-3 col-tab-4 text-right visible-lg visible-md visible-sm visible-tab">
+                    	<div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                     		<ul class="list-inline list-review mt-0 mb-0">
                                 <li><?= $btnDetail ?></li>
                                 <li><?= $btnReorder ?></li>
