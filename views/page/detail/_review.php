@@ -815,7 +815,7 @@ $jscript = '
     $(".share-my-review-trigger").on("click", function(event) {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(".my-user-post-main-id").val();
-        var title = "Rating " + $("#edit-review-container").find(".my-rating a").text().trim() + " untuk " + $(".business-name").text().trim();
+        var title = "Rating " + $("#edit-review-container").find(".my-rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(".my-review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
 
@@ -1355,7 +1355,7 @@ $jscript = '
     $(".review-section").on("click", ".share-review-trigger", function() {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".review-post").find(".user-post-main-id").val();
-        var title = "Rating " + $(this).parents(".review-post").find(".rating").text().trim() + " untuk " + $(".business-name").text().trim();
+        var title = "Rating " + $(this).parents(".review-post").find(".rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
 
