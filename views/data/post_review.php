@@ -205,8 +205,8 @@ $linkPager = LinkPager::widget([
                         </div>
                     </div>
         
-                    <div class="row user-photo-review">
-                        <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
                             <ul class="works-grid works-grid-gut works-grid-5">
         
                                 <?php

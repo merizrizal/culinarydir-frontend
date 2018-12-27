@@ -138,7 +138,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 <div class="widget star-rating">
                     
                                                     <?= StarRating::widget([
-                                                        'id' => 'rating-' . $modelUserPostMain['id'],
+                                                        'id' => 'my-overall-rating',
                                                         'name' => 'rating_' . $modelUserPostMain['id'],
                                                         'value' => $overallValue,
                                                         'pluginOptions' => [
@@ -152,7 +152,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="rating rating-<?= $modelUserPostMain['id']; ?>">
+                                                <div class="rating my-rating">
                                                     <h4 class="mt-0 mb-0">
                                                     	<?= Html::a(number_format($overallValue, 1), '#', ['class' => 'label label-success my-rating-popover']); ?>
                                                     </h4>
@@ -172,7 +172,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     </div>
                                 </div>
     
-                                <div class="row" id="my-photos-review-container">
+                                <div class="row">
                                     <div class="col-sm-12 col-xs-12">
                                         <ul class="works-grid works-grid-gut works-grid-5" id="review-uploaded-photo">
     
@@ -195,16 +195,12 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                     	<?php
                                                                     	if ($i == 4):
                                                                     	
-                                                                    	    echo Html::a('+' . (count($modelUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']); ?>
+                                                                    	    echo Html::a('+' . (count($modelUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
                                                                 	   		
-                                                            	   			<a class="btn btn-d btn-small btn-xs btn-circle show-image hidden" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
-                                                                	   	   
-                                                                	   	<?php
-                                                                    	else: ?>
+                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                                    	else:
                                                                     	
-                                                                        	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
-                                                                        	
-                                                                    	<?php
+                                                                        	echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
                                                                     	endif; ?>
                                                                     	
                                                                     </div>
@@ -1001,14 +997,29 @@ $jscript = '
                         lessText: "See less",
                     });
 
+                    var countLi = $("#review-uploaded-photo > li").length;
+
                     $.each(response.userPostMainPhoto, function(i, userPostMainPhoto) {
 
                         var cloneImageReviewContainer = $("#container-temp-uploaded-photo").find("li").clone();
                         var cloneImageFormContainer = $("#container-temp-uploaded-photo").find("li").clone();
+                        
+                        if ((countLi + i) > 4) {
+
+                            cloneImageReviewContainer.addClass("hidden");
+                        }
 
                         cloneImageReviewContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
+
+                        if ((countLi + i) == 4) {
+                            
+                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle\" href=\"' . Yii::$app->urlManager->createUrl(['page/review', 'id' => '']) . '" + response.userPostMain.id + "\">+" + (countLi + response.userPostMainPhoto.length - (countLi + i)) + "</a>");
+                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").append("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image hidden\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
+                        } else {
+    
+                            cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
+                        }
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
 
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
@@ -1029,6 +1040,8 @@ $jscript = '
                     });
 
                     $(".temp-overall-rating").val(tempOverall / parseInt($(".rating-component-id").length));
+
+                    $("#my-overall-rating").rating("update", $(".temp-overall-rating").val());
 
                     getBusinessRating($("#business_id").val());
                     getUserPhoto($("#business_id").val());
@@ -1364,16 +1377,6 @@ $jscript = '
                 }
             });
         }
-    });
-
-    $(".review-section").on("click", ".user-photos-review-trigger", function() {
-
-        if ($(this).parents(".review-post").find(".user-photo-review").find(".gallery-photo-review").length) {
-            
-            $(this).parents(".review-post").find(".user-photo-review").toggle(500);
-        }
-
-        return false;
     });
 
     $(".review-section").on("click", ".share-review-trigger", function() {
