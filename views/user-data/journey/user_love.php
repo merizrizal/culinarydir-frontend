@@ -58,17 +58,17 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelUserLove as $dataUserLove): ?>
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
+                <div class="col-lg-4 col-sm-6 col-tab-6 col-xs-12 mb-10">
                     <div class="box user-love">
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 565, 350);
 
                                 if (!empty($dataUserLove['business']['businessImages'][0]['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 335, 203);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 565, 350);
                                 }
 
                                 echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
@@ -76,17 +76,17 @@ $linkPager = LinkPager::widget([
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
                                 <div class="short-desc">
                                     <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12">
+                                        <div class="col-xs-12">
                                             <h5 class="m-0">
                                                 <?= Html::a($dataUserLove['business']['name'], ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
                                             </h5>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-9 col-md-9 col-sm-9 col-tab-9 col-xs-9">
+                                        <div class="col-xs-9">
                                             <small class="m-0 mb-10">
                                                 <?= $dataUserLove['business']['businessLocation']['village']['name'] . ', ' . $dataUserLove['business']['businessLocation']['city']['name'] ?>
                                             </small>
@@ -95,7 +95,7 @@ $linkPager = LinkPager::widget([
                                         <?php
                                         if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserLove['user_id']): ?>
 
-                                            <div class="col-lg-3 col-md-3 col-sm-3 col-tab-3 col-xs-3">
+                                            <div class="col-xs-3">
                                                 <?= Html::a('<h2 class="mt-0 mb-0 text-red fas fa-heart"></h2>', ['action/submit-user-love'], ['class' => 'unlove-place', 'data-business-id' => $dataUserLove['business']['id']]) ?>
                                             </div>
 
@@ -135,14 +135,6 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$csscript = '
-    .widget .icon-list li a::before {
-        content: none;
-    }
-';
-
-$this->registerCss($csscript);
-
 $jscript = '
     $("#pjax-user-love-container").off("pjax:send");
     $("#pjax-user-love-container").on("pjax:send", function() {

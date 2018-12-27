@@ -58,17 +58,17 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelBusinessPromo as $dataBusinessPromo): ?>
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
+                <div class="col-lg-4 col-sm-6 col-tab-6 col-xs-12 mb-10">
                     <div class="box user">
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 565, 350);
 
                                 if (!empty($dataBusinessPromo['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 335, 203);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 565, 350);
 
                                 }
                                 
@@ -77,14 +77,17 @@ $linkPager = LinkPager::widget([
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
                                 <div class="short-desc">
                                     <div class="row">
-                                        <div class="col-sm-12 col-xs-12">
+                                        <div class="col-xs-12">
                                             <h5 class="m-0">
                                                 <?= Html::a($dataBusinessPromo['business']['name'], ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']); ?>
                                             </h5>
-
+										</div>
+                                    </div>
+                                    <div class="row">
+                                    	<div class="col-xs-12">
                                             <small class="m-0">
                                                 <?= $dataBusinessPromo['title']; ?>
                                             </small>

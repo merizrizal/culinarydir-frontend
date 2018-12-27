@@ -58,17 +58,17 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelUserVisit as $dataUserVisit): ?>
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-tab-6 col-xs-12 mb-10">
+                <div class="col-lg-4 col-sm-6 col-tab-6 col-xs-12 mb-10">
                     <div class="box user">
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 335, 203);
+                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 565, 350);
 
                                 if (!empty($dataUserVisit['business']['businessImages'][0]['image'])) {
 
-                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 335, 203);
+                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 565, 350);
                                 }
 
                                 echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>
@@ -76,14 +76,17 @@ $linkPager = LinkPager::widget([
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
                                 <div class="short-desc">
                                     <div class="row">
-                                        <div class="col-sm-12 col-xs-12">
+                                        <div class="col-xs-12">
                                             <h5 class="m-0">
                                                 <?= Html::a($dataUserVisit['business']['name'], ['page/detail', 'id' => $dataUserVisit['business']['id']]); ?>
                                             </h5>
-
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    	<div class="col-xs-12">
                                             <small class="m-0">
                                                 <?= $dataUserVisit['business']['businessLocation']['village']['name'] . ', ' . $dataUserVisit['business']['businessLocation']['city']['name'] ?>
                                             </small>

@@ -583,7 +583,6 @@ class ActionController extends base\BaseController
 
     private function updateReview($post, $modelUserPostMain = [])
     {
-        
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
         
