@@ -349,10 +349,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
 																				<?php
                                                                                 $days = Yii::$app->params['days'];
-                                                                                
-                                                                                Yii::$app->formatter->timeZone = 'Asia/Jakarta';
                                                                                 $now = Yii::$app->formatter->asTime(time());
-                                                                                Yii::$app->formatter->timeZone = 'UTC';
                                                                                 
                                                                                 $isOpen = false;
                                                                                 $listSchedule = '';
