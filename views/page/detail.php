@@ -383,7 +383,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 																						<?= $hour ?>
 																						<span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
 																						<div class="btn-group">
-                                                                                            <button type="button" class="btn btn-default btn-small btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                            <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                                 <span class="caret"></span>
                                                                                             </button>
                                                                                             <ul class="dropdown-menu list-schedule">
