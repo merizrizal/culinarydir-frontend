@@ -146,16 +146,6 @@ $jscript = '
         }
     });
     
-    $(".user-post-section").on("click", ".user-photos-review-trigger", function() {
-
-        if ($(this).parents(".user-post-item").find(".user-photo-review").find(".gallery-photo-review").length) {       
-
-            $(this).parents(".user-post-item").find(".user-photo-review").toggle(500);
-        }
-        
-        return false;
-    });
-    
     $(".user-post-section").on("click", ".share-review-trigger", function() {
 
         var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".user-post-item").find(".user-post-main-id").val();
@@ -170,6 +160,8 @@ $jscript = '
             ogImage: image,
             type: "Review"
         });
+
+        $(this).parent().parent().siblings("a").dropdown("toggle");
 
         return false;
     });
@@ -226,6 +218,8 @@ $jscript = '
         });
 
         $("#modal-confirmation").modal("show");
+
+        $(this).parent().parent().siblings("a").dropdown("toggle");
 
         return false;
     });
