@@ -356,35 +356,37 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                                 
                                                                                 $isOpen = false;
                                                                                 $listSchedule = '';
+                                                                                $hour = null;
                                                                                 
                                                                                 foreach ($modelBusiness['businessHours'] as $dataBusinessHour) {
 
                                                                                     $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00'));
                                                                                 
+                                                                                    $businessHour = $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'));
                                                                                     $listSchedule .= '
                                                                                         <li>
                                                                                             <div class="col-xs-5">
                                                                                                 <strong>' . Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . '</strong>
                                                                                             </div>' .
-                                                                                            ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) .
+                                                                                            $businessHour .
                                                                                         '</li>';
                                                                                     
                                                                                     if (date('l') == $days[$dataBusinessHour['day'] - 1]) {
                                                                                         
                                                                                         $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
+                                                                                        $hour = $businessHour;
                                                                                     }
                                                                                 } ?>
                                                                                 
                                                                                 <tr>
 																					<td><?= Yii::t('app', 'Today') ?></td>
 																					<td>&nbsp; : &nbsp;</td>
-																					<td><span class="<?= $isOpen ? 'text-success' : 'text-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span></td>
-																				</tr>
-                                                                                <tr>
-																					<td colspan="3">
+																					<td>
+																						<?= $hour ?>
+																						<span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
 																						<div class="btn-group">
                                                                                             <button type="button" class="btn btn-default btn-small btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                <?= Yii::t('app', 'See more') ?> <span class="caret"></span>
+                                                                                                <span class="caret"></span>
                                                                                             </button>
                                                                                             <ul class="dropdown-menu list-schedule">
                                                                                                 <?= $listSchedule ?>
