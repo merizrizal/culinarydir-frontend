@@ -18,17 +18,14 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
         
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelBusiness['id']]); ?>
-
                 </div>
             </div>
         
         	<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-            
             		<div class="row">
-            			<div class="col-sm-12 col-xs-12">
+            			<div class="col-xs-12">
             				<div class="box bg-white">
             					<div class="box-title">
             						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
@@ -233,11 +230,9 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                     
                                                 <?php
                                                 endforeach;
-                                            else: ?>
+                                            else:
                             
-                                            	<p><?= Yii::t('app', 'Currently there is no menu available') . '.' ?></p>
-                            
-                                            <?php
+                                            	echo '<p>' . Yii::t('app', 'Currently there is no menu available') . '.</p>';
                                             endif; ?>
 											
 										</div>
@@ -247,7 +242,6 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             				</div>
         				</div>
     				</div>
-        
         		</div>
     		</div>
     		
