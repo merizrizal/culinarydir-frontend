@@ -315,8 +315,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' : '';
                                                                         echo $modelBusiness['businessLocation']['address_info'];
                                                                         
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab']);
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut xs font-12 visible-xs']); ?>
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab', 'style' => 'width: 70px']);
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut xs font-12 visible-xs', 'style' => 'width: 70px']); ?>
 
                                                                     </li>
                                                                     <li>
@@ -349,51 +349,77 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
 																				<?php
                                                                                 $days = Yii::$app->params['days'];
+                                                                                
+                                                                                Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+                                                                                $now = Yii::$app->formatter->asTime(time());
+                                                                                Yii::$app->formatter->timeZone = 'UTC';
+                                                                                
+                                                                                $isOpen = false;
+                                                                                $listSchedule = '';
+                                                                                
+                                                                                foreach ($modelBusiness['businessHours'] as $dataBusinessHour) {
 
-                                                                                foreach ($modelBusiness['businessHours'] as $dataBusinessHour):
-
-                                                                                    $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00')); ?>
-
-                                                                                    <tr>
-                                                                                        <td><?= Yii::t('app', $days[$dataBusinessHour['day'] - 1]) ?></td>
-                                                                                        <td>&nbsp; : &nbsp;</td>
-                                                                                        <td><?= $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm')) ?></td>
-                                                                                    </tr>
-
-                                                                                <?php
-                                                                                endforeach; ?>
-
+                                                                                    $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00'));
+                                                                                
+                                                                                    $listSchedule .= '
+                                                                                        <li>
+                                                                                            <div class="col-xs-5">
+                                                                                                <strong>' . Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . '</strong>
+                                                                                            </div>' .
+                                                                                            ($is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'))) .
+                                                                                        '</li>';
+                                                                                    
+                                                                                    if (date('l') == $days[$dataBusinessHour['day'] - 1]) {
+                                                                                        
+                                                                                        $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
+                                                                                    }
+                                                                                } ?>
+                                                                                
+                                                                                <tr>
+																					<td><?= Yii::t('app', 'Today') ?></td>
+																					<td>&nbsp; : &nbsp;</td>
+																					<td><span class="<?= $isOpen ? 'text-success' : 'text-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span></td>
+																				</tr>
+                                                                                <tr>
+																					<td colspan="3">
+																						<div class="btn-group">
+                                                                                            <button type="button" class="btn btn-default btn-small btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                <?= Yii::t('app', 'See more') ?> <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu list-schedule">
+                                                                                                <?= $listSchedule ?>
+                                                                                            </ul>
+                                                                                        </div>
+																					</td>
+																				</tr>
                                                                             </table>
 
                                                                         <?php
                                                                         else:
-                                                                            echo '-';
+                                                                        
+                                                                            echo '<p style="margin-left: 18px">' . Yii::t('app', 'Data Not Available') . '</p>';
                                                                         endif;?>
 
                                                                     </li>
                                                                     <li class="tag">
 
                                                                         <?php
-                                                                        foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory): 
+                                                                        foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
                                                                         
-                                                                            if ($dataBusinessProductCategory['productCategory']['is_active']): ?>
-
-                                                                            	<strong class="text-red">#</strong><?= $dataBusinessProductCategory['productCategory']['name']; ?>
-
-                                                                        	<?php
-                                                                        	endif;
-                                                                        endforeach; ?>
+                                                                            if ($dataBusinessProductCategory['productCategory']['is_active']) {
+                                                                        
+                                                                                echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'];
+                                                                            }
+                                                                        } ?>
 
                                                                     </li>
                                                                     <li class="tag">
 
                                                                         <?php
-                                                                        foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility): ?>
-
-                                                                            <strong class="text-blue">#</strong><?= $dataBusinessFacility['facility']['name']; ?>
-
-                                                                        <?php
-                                                                        endforeach; ?>
+                                                                        foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
+                                                                        
+                                                                            echo '<strong class="text-blue">#</strong>' . $dataBusinessFacility['facility']['name'];
+                                                                        } ?>
 
                                                                     </li>
                                                                 </ul>
