@@ -218,9 +218,7 @@ $linkPager = LinkPager::widget([
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
-        
                                                         <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
-        
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">

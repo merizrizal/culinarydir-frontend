@@ -96,16 +96,16 @@ class DataController extends base\BaseController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'user',
-                'userPostMains child' => function($query) {
+                'userPostMains child' => function ($query) {
                     
                     $query->andOnCondition(['child.is_publish' => true]);
                 },
                 'userVotes',
-                'userVotes.ratingComponent rating_component' => function($query) {
+                'userVotes.ratingComponent rating_component' => function ($query) {
                     
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
-                'userPostLoves' => function($query) {
+                'userPostLoves' => function ($query) {
                     
                     $query->andOnCondition([
                         'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
