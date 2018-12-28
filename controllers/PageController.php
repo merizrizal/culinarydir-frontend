@@ -104,6 +104,8 @@ class PageController extends base\BaseHistoryUrlController
 
     public function actionDetail($id)
     {
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
         $modelBusiness = Business::find()
             ->joinWith([
                 'businessCategories' => function ($query) {
@@ -256,8 +258,6 @@ class PageController extends base\BaseHistoryUrlController
             
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
-        
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('detail', [
             'modelBusiness' => $modelBusiness,
