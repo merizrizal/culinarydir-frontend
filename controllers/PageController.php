@@ -138,6 +138,7 @@ class PageController extends base\BaseHistoryUrlController
                     $query->andOnCondition(['business_hour.is_open' => true])
                         ->orderBy(['business_hour.day' => SORT_ASC]);
                 },
+                'businessHours.businessHourAdditionals',
                 'businessDetailVotes',
                 'businessDetailVotes.ratingComponent rating_component' => function ($query) {
 
