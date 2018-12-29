@@ -315,8 +315,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' : '';
                                                                         echo $modelBusiness['businessLocation']['address_info'];
                                                                         
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab', 'style' => 'width: 70px']);
-                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'see-map-shortcut xs font-12 visible-xs', 'style' => 'width: 70px']); ?>
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'btn btn-standard see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab', 'style' => 'width: 70px']);
+                                                                        echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'btn btn-standard see-map-shortcut xs font-12 visible-xs', 'style' => 'width: 70px']); ?>
 
                                                                     </li>
                                                                     <li>
