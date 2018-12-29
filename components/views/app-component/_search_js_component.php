@@ -23,8 +23,6 @@ $this->params['beforeEndBody'][] = function() {
     ]);
 
         echo '
-            <div class="overlay" style="display: none"></div>
-            <div class="loading-img" style="display: none"></div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
 
@@ -32,7 +30,11 @@ $this->params['beforeEndBody'][] = function() {
 
                 </div>
             </div>
-            <div id="modal-content"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="overlay" style="display: none"></div>
+                <div class="loading-img" style="display: none"></div>
+                <div id="modal-content"></div>
+            </div>
         ';
 
     Modal::end();
