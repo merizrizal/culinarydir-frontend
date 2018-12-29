@@ -386,7 +386,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                                             <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                                 <span class="caret"></span>
                                                                                             </button>
-                                                                                            <ul class="dropdown-menu list-schedule">
+                                                                                            <ul class="dropdown-menu pull-right list-schedule">
                                                                                                 <?= $listSchedule ?>
                                                                                             </ul>
                                                                                         </div>
