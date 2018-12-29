@@ -340,86 +340,90 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
                                                                     <li class="icon-list-parent">
-                                                                        <i class="aicon aicon-clock"></i> <?= Yii::t('app', 'Operational Hours') ?>
+                                                                    
+                                                                    	<?php
+                                                                        if (!empty($modelBusiness['businessHours'])):
 
-                                                                        <?php
-                                                                        if (!empty($modelBusiness['businessHours'])): ?>
-                                                                        
-                                                                        	<table style="margin-left: 18px">
-
-																				<?php
-                                                                                $days = Yii::$app->params['days'];
-                                                                                $now = Yii::$app->formatter->asTime(time());
-                                                                                Yii::$app->formatter->timeZone = 'UTC';
+                                                                            $days = Yii::$app->params['days'];
+                                                                            $now = Yii::$app->formatter->asTime(time());
+                                                                            Yii::$app->formatter->timeZone = 'UTC';
+                                                                            
+                                                                            $isOpen = false;
+                                                                            $listSchedule = '';
+                                                                            $hour = null;
+                                                                            $hourAdditional = null;
+                                                                            
+                                                                            foreach ($modelBusiness['businessHours'] as $dataBusinessHour) {
                                                                                 
-                                                                                $isOpen = false;
-                                                                                $listSchedule = '';
-                                                                                $hour = null;
-                                                                                $hourAdditional = null;
+                                                                                $isOpenToday = false;
+                                                                                $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00'));
+                                                                            
+                                                                                $businessHour = $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'));
+                                                                                $businessHourAdditional = '';
                                                                                 
-                                                                                foreach ($modelBusiness['businessHours'] as $dataBusinessHour) {
+                                                                                if (!empty($dataBusinessHour['businessHourAdditionals'])) {
                                                                                     
-                                                                                    $isOpenToday = false;
-                                                                                    $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00'));
+                                                                                    foreach ($dataBusinessHour['businessHourAdditionals'] as $dataBusinessHourAdditional) {
+                                                                                        
+                                                                                        $businessHourAdditional .= '<div class="col-xs-offset-5 col-xs-7 p-0">' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm') . '</div>';
+                                                                                    }
+                                                                                }
                                                                                 
-                                                                                    $businessHour = $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'));
-                                                                                    $businessHourAdditional = '';
+                                                                                if (date('l') == $days[$dataBusinessHour['day'] - 1]) {
+                                                                                    
+                                                                                    $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
                                                                                     
                                                                                     if (!empty($dataBusinessHour['businessHourAdditionals'])) {
                                                                                         
                                                                                         foreach ($dataBusinessHour['businessHourAdditionals'] as $dataBusinessHourAdditional) {
                                                                                             
-                                                                                            $businessHourAdditional .= '<div class="col-xs-offset-5 col-xs-7 p-0">' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm') . '</div>';
-                                                                                        }
-                                                                                    }
-                                                                                    
-                                                                                    if (date('l') == $days[$dataBusinessHour['day'] - 1]) {
-                                                                                        
-                                                                                        $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
-                                                                                        
-                                                                                        if (!$isOpen && !empty($dataBusinessHour['businessHourAdditionals'])) {
+                                                                                            $hourAdditional .= '<br>' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm');
                                                                                             
-                                                                                            foreach ($dataBusinessHour['businessHourAdditionals'] as $dataBusinessHourAdditional) {
+                                                                                            if (!$isOpen) {
                                                                                                 
-                                                                                                $hourAdditional .= '<br>' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm');
-                                                                                                
-                                                                                                if (!$isOpen) {
-                                                                                                    
-                                                                                                    $isOpen = $now >= $dataBusinessHourAdditional['open_at'] && $now <= $dataBusinessHourAdditional['close_at'];
-                                                                                                }
+                                                                                                $isOpen = $now >= $dataBusinessHourAdditional['open_at'] && $now <= $dataBusinessHourAdditional['close_at'];
                                                                                             }
                                                                                         }
-                                                                                        
-                                                                                        $isOpenToday = true;
-                                                                                        $hour = $businessHour;
                                                                                     }
                                                                                     
-                                                                                    $listSchedule .= '
-                                                                                        <li>
-                                                                                            <div class="col-xs-5">' .
-                                                                                                ($isOpenToday ? '<strong>' . Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . '</strong>' : Yii::t('app', $days[$dataBusinessHour['day'] - 1])) .
-                                                                                            '</div>
-                                                                                            <div class="col-xs-7 p-0">' .
-                                                                                                ($isOpenToday ? '<strong>' . $businessHour . '</strong>' : $businessHour) .
-                                                                                            '</div>' .
-                                                                                            ($isOpenToday ? '<strong>' . $businessHourAdditional . '</strong>' : $businessHourAdditional) .
-                                                                                        '</li>';
-                                                                                } ?>
+                                                                                    $isOpenToday = true;
+                                                                                    $hour = $businessHour;
+                                                                                }
                                                                                 
+                                                                                $listSchedule .= '
+                                                                                    <li>
+                                                                                        <div class="col-xs-5">' .
+                                                                                            ($isOpenToday ? '<strong>' . Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . '</strong>' : Yii::t('app', $days[$dataBusinessHour['day'] - 1])) .
+                                                                                        '</div>
+                                                                                        <div class="col-xs-7 p-0">' .
+                                                                                            ($isOpenToday ? '<strong>' . $businessHour . '</strong>' : $businessHour) .
+                                                                                        '</div>' .
+                                                                                        ($isOpenToday ? '<strong>' . $businessHourAdditional . '</strong>' : $businessHourAdditional) .
+                                                                                    '</li>';
+                                                                            }
+                                                                            
+                                                                        endif; ?>
+                                                                    
+                                                                        <i class="aicon aicon-clock"></i> <?= Yii::t('app', 'Operational Hours') ?>
+                                                                        <span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
+																		<div class="btn-group">
+                                                                            <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <span class="caret"></span>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu list-schedule pull-right">
+                                                                                <?= $listSchedule ?>
+                                                                            </ul>
+                                                                        </div>
+
+                                                                        <?php
+                                                                        if (!empty($modelBusiness['businessHours'])): ?>
+                                                                            
+                                                                            <table style="margin-left: 18px">
                                                                                 <tr>
 																					<td valign="top"><?= Yii::t('app', 'Today') ?></td>
 																					<td valign="top">&nbsp; : &nbsp;</td>
 																					<td>
 																						<?= $hour . $hourAdditional ?>
-																						<span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
-																						<div class="btn-group">
-                                                                                            <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                <span class="caret"></span>
-                                                                                            </button>
-                                                                                            <ul class="dropdown-menu list-schedule pull-right">
-                                                                                                <?= $listSchedule ?>
-                                                                                            </ul>
-                                                                                        </div>
 																					</td>
 																				</tr>
                                                                             </table>
@@ -428,7 +432,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         else:
                                                                         
                                                                             echo '<p style="margin-left: 18px">' . Yii::t('app', 'Data Not Available') . '</p>';
-                                                                        endif;?>
+                                                                        endif; ?>
 
                                                                     </li>
                                                                     <li class="tag">
