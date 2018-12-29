@@ -214,9 +214,7 @@ $linkPager = LinkPager::widget([
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
-                                                    
                                                         <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
-                                                    
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">
@@ -324,14 +322,10 @@ $linkPager = LinkPager::widget([
                                 </li>
 
                                 <?php
-                                if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']): ?>
+                                if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMain['user_id']) {
 
-                                    <li>
-                                        <?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-default btn-small btn-round-4 user-delete-review-trigger']); ?>
-                                    </li>
-
-                                <?php
-                                endif; ?>
+                                    echo '<li>' . Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-default btn-small btn-round-4 user-delete-review-trigger']) . '</li>';
+                                } ?>
 
                             </ul>
                         </div>

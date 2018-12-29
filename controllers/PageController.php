@@ -105,7 +105,7 @@ class PageController extends base\BaseHistoryUrlController
     public function actionDetail($id)
     {
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
-
+        
         $modelBusiness = Business::find()
             ->joinWith([
                 'businessCategories' => function ($query) {
@@ -165,8 +165,6 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['business.id' => $id])
             ->asArray()->one();
-
-        Yii::$app->formatter->timeZone = 'UTC';
         
         if (empty($modelBusiness)) {
             

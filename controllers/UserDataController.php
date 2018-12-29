@@ -53,7 +53,7 @@ class UserDataController extends base\BaseController
         $modelUserVisit = UserVisit::find()
             ->joinWith([
                 'business',
-                'business.businessImages' => function($query) {
+                'business.businessImages' => function ($query) {
                     
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
@@ -112,7 +112,7 @@ class UserDataController extends base\BaseController
         $modelUserLove = UserLove::find()
             ->joinWith([
                 'business',
-                'business.businessImages' => function($query) {
+                'business.businessImages' => function ($query) {
                     
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
@@ -173,23 +173,23 @@ class UserDataController extends base\BaseController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
-                'business.businessImages' => function($query) {
+                'business.businessImages' => function ($query) {
                     
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
                         'business_image.is_primary' => true]);
                 },
                 'user',
-                'userPostMains child' => function($query) {
+                'userPostMains child' => function ($query) {
                     
                     $query->andOnCondition(['child.is_publish' => true]);
                 },
                 'userVotes',
-                'userVotes.ratingComponent rating_component' => function($query) {
+                'userVotes.ratingComponent rating_component' => function ($query) {
                     
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
-                'userPostLoves' => function($query) {
+                'userPostLoves' => function ($query) {
                     
                     $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
                 },
@@ -348,7 +348,7 @@ class UserDataController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
-                'business.businessImages' => function($query) {
+                'business.businessImages' => function ($query) {
                 
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',

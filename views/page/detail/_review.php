@@ -185,9 +185,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                         <div class="gallery-item review-post-gallery">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
-    
                                                                     <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
-    
                                                                 </div>
                                                                 <div class="work-caption">
                                                                     <div class="work-descr">
