@@ -106,7 +106,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                     <?php
                     $sessionKeyword = Yii::$app->session->get('keyword');
                     $urlBack = !empty($sessionKeyword) ? ArrayHelper::merge(['result-list'], $sessionKeyword) : ['index'];
-                    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), $urlBack); ?>
+                    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), $urlBack, ['class' => 'btn btn-standard p-0']); ?>
 
                 </div>
             </div>
