@@ -69,7 +69,8 @@ class PageController extends base\BaseHistoryUrlController
         $dataProviderUserPostMain = new ActiveDataProvider([
             'query' => $modelUserPostMain,
             'pagination' => [
-                'route' => 'data/recent-post'
+                'route' => 'data/recent-post',
+                'pageSize' => 9,
             ]
         ]);
         

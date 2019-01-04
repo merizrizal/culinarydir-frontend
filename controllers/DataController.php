@@ -283,6 +283,7 @@ class DataController extends base\BaseController
             'query' => $modelUserPostMain,
             'pagination' => [
                 'route' => 'data/recent-post',
+                'pageSize' => 9,
             ]
         ]);
         
