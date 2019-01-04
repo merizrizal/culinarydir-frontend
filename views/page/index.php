@@ -65,7 +65,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12">
                 <div class="p-10 mb-10" style="background: rgba(229, 38, 38, 0.9); border-radius: 5px;">
-                    <a href="https://play.google.com/store/apps/details?id=com.asikmakan.app" style="color:#fff;"><i class="aicon aicon-mobile"></i> Download app <strong>Asikmakan</strong> di <strong>Google Play Store</strong></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.asikmakan.app" style="color:#fff; padding:0" class="btn btn-standard"><i class="aicon aicon-mobile"></i> Download app <strong>Asikmakan</strong> di <strong>Google Play Store</strong></a>
                 </div>
             </div>
         </div>
