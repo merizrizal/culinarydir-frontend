@@ -49,17 +49,34 @@ $this->registerMetaTag([
     'content' => Yii::$app->urlManager->getHostInfo() . $background
 ]);
 
-$appComponent = new AppComponent(); ?>
+$appComponent = new AppComponent(); 
+
+$info = '
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-sm-12">
+            <div class="titan-title-tagline p-10 mb-10" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 5px;">650+ tempat kuliner dan terus bertambah</div>
+        </div>
+    </div>
+';
+
+if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
+    
+    $info .= '
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="p-10 mb-10" style="background: rgba(229, 38, 38, 0.9); border-radius: 5px;">
+                    <a href="https://play.google.com/store/apps/details?id=com.asikmakan.app" style="color:#fff;"><i class="aicon aicon-mobile"></i> Download app <strong>Asikmakan</strong> di <strong>Google Play Store</strong></a>
+                </div>
+            </div>
+        </div>
+    ';
+} ?>
 
 <section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-sm-12">
-                        <div class="titan-title-tagline mb-10" style="background-color: rgba(0, 0, 0, 0.5)">650+ tempat kuliner dan terus bertambah</div>
-                    </div>
-                </div>
+                <?= $info ?>
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-12">
 
@@ -92,11 +109,7 @@ $appComponent = new AppComponent(); ?>
 
 <section class="module-small visible-tab" data-background="<?= $background ?>">
     <div class="container">
-        <div class="row">
-            <div class="col-tab-12 text-center">
-                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">650+ tempat kuliner dan terus bertambah</div>
-            </div>
-        </div>
+        <?= $info ?>
         <div class="row">
             <div class="col-tab-12">
 
@@ -112,11 +125,7 @@ $appComponent = new AppComponent(); ?>
 
 <section class="module-small visible-xs" data-background="<?= $background ?>">
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <div class="titan-title-tagline mb-20" style="background-color: rgba(0, 0, 0, 0.5)">650+ tempat kuliner dan terus bertambah</div>
-            </div>
-        </div>
+        <?= $info ?>
         <div class="row">
             <div class="col-xs-12">
 
