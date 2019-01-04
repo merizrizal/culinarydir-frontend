@@ -64,7 +64,7 @@ $this->registerMetaTag([
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelUserPostMain['business']['id']]) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelUserPostMain['business']['id']], ['class' => 'btn btn-standard p-0']) ?>
 
                 </div>
             </div>
