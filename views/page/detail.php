@@ -1146,11 +1146,10 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
                 "@type": "AggregateRating",
                 "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
                 "bestRating": "5",
-                "ratingCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
+                "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
             }
                 
         }
         </script>
     ';
 }); ?>
-
