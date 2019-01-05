@@ -1149,11 +1149,11 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
                 "bestRating": "5",
                 "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
             },
-            "geo":{
+            "geo": {
                 "@type": "GeoCoordinates",
                 "latitude": ' . $coordinate[0] . ',
                 "longitude": ' . $coordinate[1] . '
-            },
+            }
                 
         }
         </script>
