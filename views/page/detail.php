@@ -340,6 +340,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
                                                                     <li class="icon-list-parent">
+                                                                    	<i class="aicon aicon-clock"></i> <?= Yii::t('app', 'Operational Hours') ?>
                                                                     
                                                                     	<?php
                                                                         if (!empty($modelBusiness['businessHours'])):
@@ -400,38 +401,36 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                                         '</div>' .
                                                                                         ($isOpenToday ? '<strong>' . $businessHourAdditional . '</strong>' : $businessHourAdditional) .
                                                                                     '</li>';
-                                                                            }
+                                                                            } ?>
                                                                             
-                                                                        endif; ?>
-                                                                    
-                                                                        <i class="aicon aicon-clock"></i> <?= Yii::t('app', 'Operational Hours') ?>
-                                                                        <span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
-																		<div class="btn-group">
-                                                                            <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                <span class="caret"></span>
-                                                                            </button>
-                                                                            <ul class="dropdown-menu list-schedule pull-right">
-                                                                                <?= $listSchedule ?>
-                                                                            </ul>
-                                                                        </div>
-
-                                                                        <?php
-                                                                        if (!empty($modelBusiness['businessHours'])): ?>
+                                                                            <span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
+    																		<div class="btn-group">
+                                                                                <button type="button" class="btn btn-default btn-small btn-xs btn-round-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                    <span class="caret"></span>
+                                                                                </button>
+                                                                                <ul class="dropdown-menu list-schedule pull-right">
+                                                                                    <?= $listSchedule ?>
+                                                                                </ul>
+                                                                            </div>
                                                                             
-                                                                            <table style="margin-left: 18px">
-                                                                                <tr>
-																					<td valign="top"><?= Yii::t('app', 'Today') ?></td>
-																					<td valign="top">&nbsp; : &nbsp;</td>
-																					<td>
-																						<?= $hour . $hourAdditional ?>
-																					</td>
-																				</tr>
-                                                                            </table>
-
-                                                                        <?php
+                                                                            <?php
+                                                                            if ($isOpen): ?>
+                                                                            
+                                                                                <table style="margin-left: 18px">
+                                                                                    <tr>
+    																					<td valign="top"><?= Yii::t('app', 'Today') ?></td>
+    																					<td valign="top">&nbsp; : &nbsp;</td>
+    																					<td>
+    																						<?= $hour . $hourAdditional ?>
+    																					</td>
+    																				</tr>
+                                                                                </table>
+                                                                                    
+                                                                            <?php
+                                                                            endif;
                                                                         else:
                                                                         
-                                                                            echo '<p style="margin-left: 18px">' . Yii::t('app', 'Data Not Available') . '</p>';
+                                                                            echo '<br><span style="margin-left: 18px">' . Yii::t('app', 'Data Not Available') . '</span>';
                                                                         endif; ?>
 
                                                                     </li>
