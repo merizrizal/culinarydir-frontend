@@ -31,6 +31,10 @@ $ogDescription = 'Kunjungi kami di ' . AddressType::widget([
     'address' => $modelBusiness['businessLocation']['address']
 ]) . '.';
 
+$ogPriceRange = '-';
+
+$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
+
 if (!empty($modelBusiness['about'])) {
     
     $ogDescription = preg_replace('/[\r\n]+/','' , strip_tags($modelBusiness['about'])) . '.';
@@ -40,6 +44,19 @@ foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
     
     $ogDescription .= ' ' . $dataBusinessCategory['category']['name'];
 }
+
+if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
+    
+    $ogPriceRange = Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
+} else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
+    
+    $ogPriceRange =  Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
+} else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
+    
+    $ogPriceRange =  Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
+}
+
+$ogDescription = $ogDescription . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '.';
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
 
@@ -51,14 +68,10 @@ foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
     $ogDescription .= ' ' . $dataBusinessFacility['facility']['name'] . ',';
 }
 
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
-
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
 }
-
-$ogPriceRange = '-';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -314,8 +327,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                             'address' => $modelBusiness['businessLocation']['address']
                                                                         ]);
                                                                         
-                                                                        echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' : '';
-                                                                        echo $modelBusiness['businessLocation']['address_info'];
+                                                                        echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' . $modelBusiness['businessLocation']['address_info'] : '';
                                                                         
                                                                         echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'btn btn-standard see-map-shortcut font-12 visible-lg visible-md visible-sm visible-tab', 'style' => 'width: 70px']);
                                                                         echo Html::a(Yii::t('app', 'See Map'), '', ['class' => 'btn btn-standard see-map-shortcut xs font-12 visible-xs', 'style' => 'width: 70px']); ?>
@@ -324,20 +336,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                     <li>
                                                                         <i class="aicon aicon-rupiah"></i>
 
-                                                                        <?php
-                                                                        if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
-                                                                            
-                                                                            $ogPriceRange = Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        } else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
-
-                                                                            $ogPriceRange =  Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
-                                                                        } else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
-                                                                            
-                                                                            $ogPriceRange =  Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
-                                                                        } 
-                                                                        
-                                                                        echo $ogPriceRange; ?>
-
+                                                                        <?= $ogPriceRange; ?>
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
                                                                     <li class="icon-list-parent">
