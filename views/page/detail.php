@@ -58,6 +58,8 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
 }
 
+$ogPriceRange = '-';
+
 $this->registerMetaTag([
     'name' => 'keywords',
     'content' => 'asik, makan, kuliner, bandung, jakarta'
@@ -325,17 +327,16 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         <?php
                                                                         if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
                                                                             
-                                                                            echo Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
+                                                                            $ogPriceRange = Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
                                                                         } else if (empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
 
-                                                                            echo Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
+                                                                            $ogPriceRange =  Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_max']);
                                                                         } else if (empty($modelBusiness['businessDetail']['price_max']) && !empty($modelBusiness['businessDetail']['price_min'])) {
                                                                             
-                                                                            echo Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
-                                                                        } else {
-                                                                            
-                                                                            echo '-';
-                                                                        } ?>
+                                                                            $ogPriceRange =  Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
+                                                                        } 
+                                                                        
+                                                                        echo $ogPriceRange; ?>
 
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
@@ -1125,5 +1126,31 @@ $jscript = '
     });    
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript);
+
+$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange) {
+    
+    echo '
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org/",
+            "@type": "Restaurant",
+            "name": "' . $modelBusiness['name'] . '",
+            "image": "' . $ogImage . '",
+            "address": "' . AddressType::widget([
+                'addressType' => $modelBusiness['businessLocation']['address_type'],
+                'address' => $modelBusiness['businessLocation']['address']
+            ]). '",
+            "priceRange": "' . $ogPriceRange . '",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
+                "bestRating": "5",
+                "ratingCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
+            }
+                
+        }
+        </script>
+    ';
+}); ?>
 
