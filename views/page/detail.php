@@ -1129,6 +1129,8 @@ $this->registerJs($jscript);
 
 $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange) {
     
+    $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
+    
     echo '
         <script type="application/ld+json">
         {
@@ -1146,7 +1148,12 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
                 "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
                 "bestRating": "5",
                 "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
-            }
+            },
+            "geo":{
+                "@type": "GeoCoordinates",
+                "latitude": ' . $coordinate[0] . ',
+                "longitude": ' . $coordinate[1] . '
+            },
                 
         }
         </script>
