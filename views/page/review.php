@@ -575,8 +575,6 @@ $this->registerJs($jscript);
 
 $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogProductCategory, $ogOverallValue, $ogTitle, $ogPerson, $ogDescription) {
     
-    $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
-    
     echo '
         <script type="application/ld+json">
         {
