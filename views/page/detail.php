@@ -1,13 +1,13 @@
 <?php
-
-use frontend\components\AddressType;
-use frontend\components\GrowlCustom;
-use sycomponent\Tools;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\web\View;
 use yii\widgets\ActiveForm;
+use sycomponent\Tools;
+use frontend\components\AddressType;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -62,8 +62,11 @@ if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusine
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+    
+    if ($dataBusinessProductCategory['productCategory']['is_active']) {
 
-    $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
+        $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
+    }
 }
 
 foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
@@ -72,6 +75,7 @@ foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
 }
 
 $ogDescription = $ogDescription . ' ' . trim($ogBusinessCategory, ',') . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '. ' . trim($ogProductCategory, ',') . '. ' . trim($ogFacility, ',');
+$ogDescription = StringHelper::truncate($ogDescription, 300);
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     

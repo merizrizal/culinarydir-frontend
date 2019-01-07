@@ -1,26 +1,46 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\web\View;
-use sycomponent\Tools;
 use kartik\rating\StarRating;
+use sycomponent\Tools;
 use common\components\Helper;
+use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 
-/* @var $this yii\web\View *
+/* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $dataUserVoteReview array */
 
 $this->title = 'Review ' . $modelUserPostMain['business']['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $modelUserPostMain['id']]);
-$ogTitle = !empty($modelUserPostMain['business']['name']) && !empty($dataUserVoteReview['overallValue']) ? 'Rating ' . number_format($dataUserVoteReview['overallValue'], 1) . ' untuk ' . $modelUserPostMain['business']['name'] : 'Review di Asikmakan';
-$ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com';
+$ogOverallValue = number_format($dataUserVoteReview['overallValue'], 1);
+$ogTitle = !empty($modelUserPostMain['business']['name']) && !empty($dataUserVoteReview['overallValue']) ? 'Rating ' . $ogOverallValue . ' untuk ' . $modelUserPostMain['business']['name'] : 'Review di Asikmakan';
+$ogPerson = $modelUserPostMain['user']['full_name'];
+
+$ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;
+$ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescription), 300);
+
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
-if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
+$ogProductCategory = '';
+
+if (!empty($modelBusiness['businessImages'][0]['image'])) {
+    
+    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
+} else if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['userPostMains'][0]['image'];
+}
+
+foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+    
+    if ($dataBusinessProductCategory['productCategory']['is_active']) {
+        
+        $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
+    }
 }
 
 $this->registerMetaTag([
@@ -30,7 +50,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => $ogDescription
 ]);
 
 $this->registerMetaTag([
@@ -551,4 +571,43 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); ?>
+$this->registerJs($jscript); 
+
+$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogProductCategory, $ogOverallValue, $ogTitle, $ogPerson, $ogDescription) {
+    
+    $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
+    
+    echo '
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org/",
+            "@type": "Review",
+            "itemReviewed": {
+                "@type": "Restaurant",
+                "name": "' . $modelBusiness['name'] . '",
+                "image": "' . $ogImage . '",
+                "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'id' => $modelBusiness['id']]) . '",
+                "servesCuisine": "' . trim($ogProductCategory, ',') . '",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "' . AddressType::widget([
+                        'addressType' => $modelBusiness['businessLocation']['address_type'],
+                        'address' => $modelBusiness['businessLocation']['address']
+                    ]). '",
+                    "AddressLocality": "' . $modelBusiness['businessLocation']['city']['name'] . '"
+                }
+            },
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "' . number_format($ogOverallValue, 1) . '"
+            },
+            "name": "' . $ogTitle . '",
+            "author": {
+                "@type": "Person",
+                "name": "' . $ogPerson . '"
+            },
+            "reviewBody": "' . $ogDescription . '"
+        }
+        </script>
+    ';
+}); ?>
