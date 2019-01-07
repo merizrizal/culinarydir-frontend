@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\web\View;
 use kartik\touchspin\TouchSpin;
 use frontend\components\GrowlCustom;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -44,9 +45,10 @@ $this->title = 'Checkout'; ?>
             					
             					<div class="box-content">
             					
-                					<?= Html::beginForm(['order/checkout'], 'post') ?>
+                					<?php
+                					echo Html::beginForm(['order/checkout'], 'post');
                 					
-                						<?= Html::hiddenInput('transaction_id', $modelTransactionSession['id']) ?>
+                						echo Html::hiddenInput('transaction_id', $modelTransactionSession['id']); ?>
                 					
                 						<div class="row">
                 							<div class="col-xs-12">
@@ -69,11 +71,8 @@ $this->title = 'Checkout'; ?>
                                                                         <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                                     </div>
                                                                     <div class="col-sm-1 col-tab-1 text-right">
-                                                        		
                                                             			<div class="overlay" style="display: none;"></div>
-                                                            		
                                                             			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                            			
                                                             		</div>
                                                                 </div>
                                                                 <div class="row">
@@ -127,11 +126,8 @@ $this->title = 'Checkout'; ?>
                                                                         <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                                     </div>
                                                                     <div class="col-xs-2 text-right">
-                                                        		
                                                             			<div class="overlay" style="display: none;"></div>
-                                                            		
                                                             			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                            			
                                                             		</div>
                                                                 </div>
                                                                 <div class="row">
@@ -184,14 +180,90 @@ $this->title = 'Checkout'; ?>
                                 							</div>
                             							</div>
                                                         
+                                                        <br>
+                                                        
                                                     <?php
                                                     endforeach;
+                                                    
+                                                    if (!empty($modelTransactionSession['business']['businessDeliveries'])): ?>
+                                                        
+                                                        <div class="row mb-30">
+                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
+                                                        	<div class="col-xs-12">
+                                                        	
+                                                        		<?= Html::radioList('delivery_method_id', false,
+                                                        		    ArrayHelper::map(
+                                                        		        $modelTransactionSession['business']['businessDeliveries'],
+                                                        		        'delivery_method_id',
+                                                        		        function ($data) {
+                                                        		            
+                                                        		            return '
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-4 col-xs-12">
+                                                                                        <label>' .
+                                                                                            Html::radio('delivery_method_id', false) . $data['deliveryMethod']['delivery_name'] .
+                                                                                        '</label>
+                                                    		                        </div>
+                                                                                    <div class="col-sm-8 col-xs-12">' .
+                                                                                        $data['note'] . '
+                                                                                    </div>
+                                                                                </div>';
+                                                        		        }
+                                                    		        ),
+                                                    		        [
+                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
+                                                    		                
+                                                        		            return $label;
+                                                    		            }
+                                                    		        ]) ?>
+                                                		        
+                                                        	</div>
+                                                    	</div>
+                                                        	
+                                                	<?php
+                                                    endif;
+                                                
+                                                    if (!empty($modelTransactionSession['business']['businessPayments'])): ?>
+                                                    	
+                                                    	<div class="row">
+                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
+                                                        	<div class="col-sm-12 col-xs-12">
+                                                        		
+                                                        		<?= Html::radioList('payment_method_id', false,
+                                                        		    ArrayHelper::map(
+                                                        		        $modelTransactionSession['business']['businessPayments'],
+                                                        		        'payment_method_id',
+                                                        		        function ($data) {
+                                                        		            
+                                                        		            return '
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-4 col-xs-12">
+                                                                                        <label>' .
+                                                                                        Html::radio('payment_method_id', false) . $data['paymentMethod']['payment_name'] .
+                                                        		                        '</label>
+                                                    		                        </div>
+                                                                                    <div class="col-sm-8 col-xs-12">' .
+                                                                                        $data['note'] . '
+                                                                                    </div>
+                                                                                </div>';
+                                                        		        }
+                                                    		        ),
+                                                    		        [
+                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
+                                                    		                
+                                                        		            return $label;
+                                                    		            }
+                                                    		        ]) ?>
+                                                		        
+                                                        	</div>
+                                                    	</div>
+                                                    	
+                                                	<?php
+                                                    endif;
                                                 endif; ?>
                                                 
                                                 <div class="<?= $hiddenClass ? 'hidden' : '' ?>" id="no-data">
-                                                        
                                                 	<?= Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') ?>
-                                                	
                                                 </div>
                                                 
                                                 <div class="row mt-70">
@@ -229,6 +301,10 @@ $this->title = 'Checkout'; ?>
 
 <?php
 GrowlCustom::widget();
+
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
+
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 

@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
+use core\models\TransactionSessionOrder;
 
 /**
  * Order controller
@@ -33,7 +34,17 @@ class OrderController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
-                'transactionItems' => function($query) {
+                'business.businessDeliveries.deliveryMethod',
+                'business.businessDeliveries' => function ($query) {
+                    
+                    $query->andOnCondition(['business_delivery.is_active' => true]);
+                },
+                'business.businessPayments.paymentMethod',
+                'business.businessPayments' => function ($query) {
+                
+                    $query->andOnCondition(['business_payment.is_active' => true]);
+                },
+                'transactionItems' => function ($query) {
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
@@ -43,11 +54,33 @@ class OrderController extends base\BaseController
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
             
-        if (Yii::$app->request->post()) {
+        if ($post = Yii::$app->request->post()) {
             
             $modelTransactionSession->is_closed = true;
             
             if ($modelTransactionSession->save()) {
+                
+                if (!empty($post['delivery_method_id']) && !empty($post['payment_method_id'])) {
+                    
+                    $modelTransactionSessionOrder = new TransactionSessionOrder();
+                    $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+                    $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
+                    $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
+                    
+                    if (!$modelTransactionSessionOrder->save()) {
+                        
+                        Yii::$app->session->setFlash('message', [
+                            'title' => 'Gagal Checkout',
+                            'message' => 'Harap memilih metode pengiriman dan pembayaran yang akan anda gunakan',
+                        ]);
+                        
+                        return $this->render('checkout', [
+                            'modelTransactionSession' => $modelTransactionSession
+                        ]);
+                    }
+                }
+                
+                print_r("aaaa"); exit;
                 
                 $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                 
