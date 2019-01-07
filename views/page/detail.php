@@ -1,13 +1,13 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
-use yii\bootstrap\Modal;
-use yii\web\View;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 use sycomponent\Tools;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\View;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
@@ -31,9 +31,14 @@ $ogDescription = 'Kunjungi kami di ' . AddressType::widget([
     'address' => $modelBusiness['businessLocation']['address']
 ]) . '.';
 
+$ogBusinessCategory = '';
 $ogPriceRange = '-';
+$ogProductCategory = '';
+$ogFacility = '';
 
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
+
+$ogBusinessHour = null;
 
 if (!empty($modelBusiness['about'])) {
     
@@ -42,7 +47,7 @@ if (!empty($modelBusiness['about'])) {
 
 foreach ($modelBusiness['businessCategories'] as $dataBusinessCategory) {
     
-    $ogDescription .= ' ' . $dataBusinessCategory['category']['name'];
+    $ogBusinessCategory .= $dataBusinessCategory['category']['name'] . ',';
 }
 
 if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusiness['businessDetail']['price_max'])) {
@@ -56,17 +61,17 @@ if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusine
     $ogPriceRange =  Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
 }
 
-$ogDescription = $ogDescription . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '.';
-
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
 
-    $ogDescription .= ' ' . $dataBusinessProductCategory['productCategory']['name'] . ',';
+    $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
 }
 
 foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
     
-    $ogDescription .= ' ' . $dataBusinessFacility['facility']['name'] . ',';
+    $ogFacility .= $dataBusinessFacility['facility']['name'] . ',';
 }
+
+$ogDescription = $ogDescription . ' ' . trim($ogBusinessCategory, ',') . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '. ' . trim($ogProductCategory, ',') . '. ' . trim($ogFacility, ',');
 
 if (!empty($modelBusiness['businessImages'][0]['image'])) {
     
@@ -354,29 +359,41 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                             $hour = null;
                                                                             $hourAdditional = null;
                                                                             
+                                                                            $ogBusinessHour = '"openingHoursSpecification": [';
+                                                                            
                                                                             foreach ($modelBusiness['businessHours'] as $dataBusinessHour) {
+                                                                                
+                                                                                $day = $days[$dataBusinessHour['day'] - 1];
+                                                                                
+                                                                                $openAt = Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm');
+                                                                                $closeAt = Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm');
                                                                                 
                                                                                 $isOpenToday = false;
                                                                                 $is24Hour = (($dataBusinessHour['open_at'] == '00:00:00') && ($dataBusinessHour['close_at'] == '24:00:00'));
                                                                             
-                                                                                $businessHour = $is24Hour ? Yii::t('app','24 Hours') : (Yii::$app->formatter->asTime($dataBusinessHour['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHour['close_at'], 'HH:mm'));
+                                                                                $businessHour = $is24Hour ? Yii::t('app','24 Hours') : ($openAt . ' - ' . $closeAt);
                                                                                 $businessHourAdditional = '';
+                                                                                
+                                                                                if (date('l') == $day) {
+                                                                                    
+                                                                                    $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
+                                                                                    
+                                                                                    $isOpenToday = true;
+                                                                                    $hour = $businessHour;
+                                                                                }
+                                                                                
+                                                                                $ogBusinessHour .= '{"@type": "OpeningHoursSpecification", "dayOfWeek": "' . $day . '", "opens": "' . $openAt . '", "closes": "' . $closeAt . '"},';
                                                                                 
                                                                                 if (!empty($dataBusinessHour['businessHourAdditionals'])) {
                                                                                     
                                                                                     foreach ($dataBusinessHour['businessHourAdditionals'] as $dataBusinessHourAdditional) {
                                                                                         
-                                                                                        $businessHourAdditional .= '<div class="col-xs-offset-5 col-xs-7 p-0">' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm') . '</div>';
-                                                                                    }
-                                                                                }
-                                                                                
-                                                                                if (date('l') == $days[$dataBusinessHour['day'] - 1]) {
-                                                                                    
-                                                                                    $isOpen = $now >= $dataBusinessHour['open_at'] && $now <= $dataBusinessHour['close_at'];
-                                                                                    
-                                                                                    if (!empty($dataBusinessHour['businessHourAdditionals'])) {
+                                                                                        $openAt = Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm');
+                                                                                        $closeAt = Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm');
                                                                                         
-                                                                                        foreach ($dataBusinessHour['businessHourAdditionals'] as $dataBusinessHourAdditional) {
+                                                                                        $businessHourAdditional .= '<div class="col-xs-offset-5 col-xs-7 p-0">' . $openAt . ' - ' . $closeAt . '</div>';
+                                                                                        
+                                                                                        if (date('l') == $day) {
                                                                                             
                                                                                             $hourAdditional .= '<br>' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['open_at'], 'HH:mm') . ' - ' . Yii::$app->formatter->asTime($dataBusinessHourAdditional['close_at'], 'HH:mm');
                                                                                             
@@ -385,23 +402,24 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                                                 $isOpen = $now >= $dataBusinessHourAdditional['open_at'] && $now <= $dataBusinessHourAdditional['close_at'];
                                                                                             }
                                                                                         }
+                                                                                        
+                                                                                        $ogBusinessHour .= '{"@type": "OpeningHoursSpecification", "dayOfWeek": "' . $day . '", "opens": "' . $openAt . '", "closes": "' . $closeAt . '"},';
                                                                                     }
-                                                                                    
-                                                                                    $isOpenToday = true;
-                                                                                    $hour = $businessHour;
                                                                                 }
                                                                                 
                                                                                 $listSchedule .= '
                                                                                     <li>
                                                                                         <div class="col-xs-5">' .
-                                                                                            ($isOpenToday ? '<strong>' . Yii::t('app', $days[$dataBusinessHour['day'] - 1]) . '</strong>' : Yii::t('app', $days[$dataBusinessHour['day'] - 1])) .
+                                                                                            ($isOpenToday ? '<strong>' . Yii::t('app', $day) . '</strong>' : Yii::t('app', $day)) .
                                                                                         '</div>
                                                                                         <div class="col-xs-7 p-0">' .
                                                                                             ($isOpenToday ? '<strong>' . $businessHour . '</strong>' : $businessHour) .
                                                                                         '</div>' .
                                                                                         ($isOpenToday ? '<strong>' . $businessHourAdditional . '</strong>' : $businessHourAdditional) .
                                                                                     '</li>';
-                                                                            } ?>
+                                                                            } 
+                                                                            
+                                                                            $ogBusinessHour = trim($ogBusinessHour, ',') .  '],'; ?>
                                                                             
                                                                             <span class="label <?= $isOpen ? 'label-success' : 'label-danger' ?>"><strong><?= $isOpen ? Yii::t('app', 'Open') : Yii::t('app', 'Closed') ?></strong></span>
     																		<div class="btn-group">
@@ -1127,7 +1145,7 @@ $jscript = '
 
 $this->registerJs($jscript);
 
-$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange) {
+$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange, $ogProductCategory, $ogBusinessHour) {
     
     $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
     
@@ -1138,17 +1156,24 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
             "@type": "Restaurant",
             "name": "' . $modelBusiness['name'] . '",
             "image": "' . $ogImage . '",
-            "address": "' . AddressType::widget([
-                'addressType' => $modelBusiness['businessLocation']['address_type'],
-                'address' => $modelBusiness['businessLocation']['address']
-            ]). '",
+            "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'id' => $modelBusiness['id']]) . '",
+            "servesCuisine": "' . trim($ogProductCategory, ',') . '",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "' . AddressType::widget([
+                    'addressType' => $modelBusiness['businessLocation']['address_type'],
+                    'address' => $modelBusiness['businessLocation']['address']
+                ]). '",
+                "AddressLocality": "' . $modelBusiness['businessLocation']['city']['name'] . '"
+            },
             "priceRange": "' . $ogPriceRange . '",
             "aggregateRating": {
                 "@type": "AggregateRating",
                 "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
                 "bestRating": "5",
                 "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
-            },
+            },' .
+            (!empty($ogBusinessHour) ? $ogBusinessHour : '') . '
             "geo": {
                 "@type": "GeoCoordinates",
                 "latitude": ' . $coordinate[0] . ',

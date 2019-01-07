@@ -121,6 +121,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessFacilities.facility',
                 'businessImages',
                 'businessLocation',
+                'businessLocation.city',
                 'businessProducts' => function ($query) {
 
                     $query->andOnCondition(['business_product.not_active' => false]);
