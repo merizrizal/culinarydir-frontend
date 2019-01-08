@@ -6,6 +6,8 @@ use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
+use core\models\DeliveryMethod;
+use core\models\PaymentMethod;
 
 /**
  * Order controller
@@ -53,50 +55,52 @@ class OrderController extends base\BaseController
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
             ->one();
+                
+        $modelTransactionSessionOrder = new TransactionSessionOrder();
             
         if ($post = Yii::$app->request->post()) {
             
-            $modelTransactionSession->is_closed = true;
+            $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+            $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
+            $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
             
-            if ($modelTransactionSession->save()) {
+            $modelDelivery = DeliveryMethod::findOne(['id' => $post['delivery_method_id']]);
+            $modelPayment = PaymentMethod::findOne(['id' => $post['payment_method_id']]);
+            
+            if ($modelTransactionSessionOrder->save()) {
+             
+                $modelTransactionSession->is_closed = true;
                 
-                if (!empty($post['delivery_method_id']) && !empty($post['payment_method_id'])) {
+                if ($modelTransactionSession->save()) {
                     
-                    $modelTransactionSessionOrder = new TransactionSessionOrder();
-                    $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
-                    $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
+                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                     
-                    if (!$modelTransactionSessionOrder->save()) {
+                    $itemCount = count($modelTransactionSession['transactionItems']) - 1;
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',%0Asaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:%0A%0A';
+                    
+                    foreach ($modelTransactionSession['transactionItems'] as $itemIndex => $dataTransactionItem) {
                         
-                        Yii::$app->session->setFlash('message', [
-                            'title' => 'Gagal Checkout',
-                            'message' => 'Harap memilih metode pengiriman dan pembayaran yang akan anda gunakan',
-                        ]);
-                        
-                        return $this->render('checkout', [
-                            'modelTransactionSession' => $modelTransactionSession
-                        ]);
+                        $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
+                        $messageOrder .= (!empty($dataTransactionItem['note'])) ? ' ' . $dataTransactionItem['note'] : '';
+                        $messageOrder .= ($itemCount !== $itemIndex) ? '%0A%0A' : '';
                     }
-                }
-                
-                $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
-                
-                $itemCount = count($modelTransactionSession['transactionItems']) - 1;
-                $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',%0Asaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:%0A%0A';
-                
-                foreach ($modelTransactionSession['transactionItems'] as $itemIndex => $dataTransactionItem) {
                     
-                    $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
-                    $messageOrder .= (!empty($dataTransactionItem['note'])) ? ' ' . $dataTransactionItem['note'] : '';
-                    $messageOrder .= ($itemCount !== $itemIndex) ? '%0A%0A' : '';
+                    $messageOrder .= '%0A%0A' . 'Pengiriman dengan ' . $modelDelivery['delivery_name'];
+                    
+                    $messageOrder .= '%0A%0A' . 'Pembayaran dengan ' . $modelPayment['payment_name'];
+                    
+                    $messageOrder .= '%0A%0A' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
+                    
+                    $messageOrder = str_replace(' ', '%20', $messageOrder);
+                    
+                    return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
+                } else {
+                    
+                    Yii::$app->session->setFlash('message', [
+                        'title' => 'Gagal Checkout',
+                        'message' => 'Terjadi kesalahan saat menyimpan data',
+                    ]);
                 }
-                
-                $messageOrder .= '%0A%0A' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
-                
-                $messageOrder = str_replace(' ', '%20', $messageOrder);
-                
-                return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
             } else {
                 
                 Yii::$app->session->setFlash('message', [
@@ -107,7 +111,8 @@ class OrderController extends base\BaseController
         }
         
         return $this->render('checkout', [
-            'modelTransactionSession' => $modelTransactionSession
+            'modelTransactionSession' => $modelTransactionSession,
+            'modelTransactionSessionOrder' => $modelTransactionSessionOrder
         ]);
     }
 }
