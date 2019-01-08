@@ -8,6 +8,9 @@ use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
 use core\models\DeliveryMethod;
 use core\models\PaymentMethod;
+use core\models\BusinessDelivery;
+use core\models\Business;
+use core\models\BusinessPayment;
 
 /**
  * Order controller
@@ -46,7 +49,7 @@ class OrderController extends base\BaseController
                 
                     $query->andOnCondition(['business_payment.is_active' => true]);
                 },
-                'transactionItems' => function($query) {
+                'transactionItems' => function ($query) {
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
@@ -64,8 +67,17 @@ class OrderController extends base\BaseController
             $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
             $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
             
-            $modelDelivery = DeliveryMethod::findOne(['id' => $post['delivery_method_id']]);
-            $modelPayment = PaymentMethod::findOne(['id' => $post['payment_method_id']]);
+            $modelBusinessDelivery = BusinessDelivery::find()
+                ->joinWith(['deliveryMethod'])
+                ->andWhere(['business_delivery.business_id' => $modelTransactionSession['business']['id']])
+                ->andWhere(['business_delivery.delivery_method_id' => $post['delivery_method_id']])
+                ->asArray()->one();
+            
+            $modelBusinessPayment = BusinessPayment::find()
+                ->joinWith(['paymentMethod'])
+                ->andWhere(['business_payment.business_id' => $modelTransactionSession['business']['id']])
+                ->andWhere(['business_payment.payment_method_id' => $post['payment_method_id']])
+                ->asArray()->one();
             
             $modelTransactionSession->is_closed = true;
             
@@ -85,9 +97,11 @@ class OrderController extends base\BaseController
                         $messageOrder .= ($itemCount !== $itemIndex) ? '\n\n' : '';
                     }
 
-                    $messageOrder .= '\n\n' . 'Pengiriman dengan ' . $modelDelivery['delivery_name'];
+                    $messageOrder .= '\n\n' . 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
+                    $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
             
-                    $messageOrder .= '\n\n' . 'Pembayaran dengan ' . $modelPayment['payment_name'];
+                    $messageOrder .= '\n\n' . 'Pembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
+                    $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
                     
                     $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
                     

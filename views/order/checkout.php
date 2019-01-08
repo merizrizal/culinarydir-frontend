@@ -206,14 +206,17 @@ $this->title = 'Checkout'; ?>
                                                         		        function ($data) {
                                                         		            
                                                         		            return '
-                                                                                <div class="row">
+                                                                                <div class="row mb-10">
                                                                                     <div class="col-sm-4 col-xs-12">
                                                                                         <label>' .
                                                                                             Html::radio('delivery_method_id', false, ['value' => $data['deliveryMethod']['id']]) . $data['deliveryMethod']['delivery_name'] .
                                                                                         '</label>
                                                     		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">' .
-                                                                                        $data['note'] . '
+                                                                                    <div class="col-sm-8 col-xs-12">
+                                                                                        <strong>' . $data['note'] . '</strong>
+                                                                                    </div>
+                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                        $data['description'] . '
                                                                                     </div>
                                                                                 </div>';
                                                         		        }
@@ -244,14 +247,17 @@ $this->title = 'Checkout'; ?>
                                                         		        function ($data) {
                                                         		            
                                                         		            return '
-                                                                                <div class="row">
+                                                                                <div class="row mb-10">
                                                                                     <div class="col-sm-4 col-xs-12">
                                                                                         <label>' .
                                                                                             Html::radio('payment_method_id', false, ['value' => $data['paymentMethod']['id']]) . $data['paymentMethod']['payment_name'] .
                                                         		                        '</label>
                                                     		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">' .
-                                                                                        $data['note'] . '
+                                                                                    <div class="col-sm-8 col-xs-12">
+                                                                                        <strong>' . $data['note'] . '</strong>
+                                                                                    </div>
+                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                        $data['description'] . '
                                                                                     </div>
                                                                                 </div>';
                                                         		        }
