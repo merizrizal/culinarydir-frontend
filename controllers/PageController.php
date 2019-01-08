@@ -121,6 +121,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessFacilities.facility',
                 'businessImages',
                 'businessLocation',
+                'businessLocation.city',
                 'businessProducts' => function ($query) {
 
                     $query->andOnCondition(['business_product.not_active' => false]);
@@ -297,6 +298,21 @@ class PageController extends base\BaseHistoryUrlController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
+                'business.businessImages',
+                'business.businessLocation',
+                'business.businessLocation.city',
+                'business.businessProducts' => function ($query) {
+                
+                    $query->andOnCondition(['business_product.not_active' => false]);
+                },
+                'business.businessProductCategories' => function ($query) {
+                
+                    $query->andOnCondition(['business_product_category.is_active' => true]);
+                },
+                'business.businessProductCategories.productCategory' => function ($query) {
+                
+                    $query->andOnCondition(['product_category.is_active' => true]);
+                },
                 'user',
                 'userPostMains child' => function ($query) {
 
@@ -354,7 +370,8 @@ class PageController extends base\BaseHistoryUrlController
 
         return $this->render('review', [
             'modelUserPostMain' => $modelUserPostMain,
-            'dataUserVoteReview' => $dataUserVoteReview
+            'dataUserVoteReview' => $dataUserVoteReview,
+            'modelBusiness' => $modelUserPostMain['business'],
         ]);
     }
 

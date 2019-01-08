@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\web\View;
 use sycomponent\Tools;
 use frontend\components\GrowlCustom;
@@ -19,6 +20,8 @@ if (!empty($modelUser['userPerson']['person']['about_me'])) {
     $ogDescription = $modelUser['userPerson']['person']['about_me'];
 }
 
+$ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescription), 300);
+
 if (!empty($modelUser['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/' . $modelUser['image'];
@@ -31,7 +34,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => $ogDescription
 ]);
 
 $this->registerMetaTag([
@@ -179,4 +182,18 @@ frontend\components\RatingColor::widget();
 frontend\components\Readmore::widget();
 frontend\components\FacebookShare::widget();
 
-$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD); ?>
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
+$this->on(View::EVENT_END_BODY, function() use ($modelUser, $ogDescription, $ogImage) {
+    
+    echo '
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org/",
+            "@type": "Person",
+            "name": "' . $modelUser['full_name'] . '",
+            "image": "' . $ogImage . '"
+        }
+        </script>
+    ';
+}); ?>
