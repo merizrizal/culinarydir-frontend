@@ -80,8 +80,6 @@ class OrderController extends base\BaseController
                     }
                 }
                 
-                print_r("aaaa"); exit;
-                
                 $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                 
                 $itemCount = count($modelTransactionSession['transactionItems']) - 1;
