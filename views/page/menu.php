@@ -151,7 +151,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                             </div>
                             							</div>
                             							<div class="business-menu mb-20 visible-xs">
-                            								<div class="row mb-10">
+                            								<div class="row">
                                                                 <div class="col-xs-7">
                                                                     <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                                 </div>

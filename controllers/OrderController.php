@@ -6,10 +6,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
-use core\models\DeliveryMethod;
-use core\models\PaymentMethod;
 use core\models\BusinessDelivery;
-use core\models\Business;
 use core\models\BusinessPayment;
 
 /**
@@ -78,8 +75,9 @@ class OrderController extends base\BaseController
                 ->andWhere(['business_payment.business_id' => $modelTransactionSession['business']['id']])
                 ->andWhere(['business_payment.payment_method_id' => $post['payment_method_id']])
                 ->asArray()->one();
-            
+                
             $modelTransactionSession->is_closed = true;
+            $modelTransactionSession->note = $post['TransactionSession']['note'];
             
             if ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()) {
                     
@@ -90,7 +88,7 @@ class OrderController extends base\BaseController
                 foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
                     
                     $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
-                    $messageOrder .= (!empty($dataTransactionItem['note']) ? ' ' . $dataTransactionItem['note'] : '') . '\n\n';
+                    $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
                 }
 
                 $messageOrder .= 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
@@ -100,6 +98,8 @@ class OrderController extends base\BaseController
                 $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
                 
                 $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
+                
+                $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\n' . 'Catatan: ' . $modelTransactionSession['note'] : '';
                 
                 $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
                 

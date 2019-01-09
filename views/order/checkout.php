@@ -129,7 +129,7 @@ $this->title = 'Checkout'; ?>
                                                                 </div>
                                 							</div>
                                 							<div class="business-menu mb-20 visible-xs">
-                                								<div class="row mb-10">
+                                								<div class="row">
                                                                     <div class="col-xs-10">
                                                                         <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                                     </div>
@@ -188,10 +188,15 @@ $this->title = 'Checkout'; ?>
                                 							</div>
                             							</div>
                                                         
-                                                        <br>
-                                                        
                                                     <?php
-                                                    endforeach;  ?>
+                                                    endforeach; ?>
+                                                    
+                                                    <div class="row mb-30">
+                                                    	<div class="col-xs-12">
+                                                    		<?= Yii::t('app', 'Note') ?>
+                                                    		<?= $form->field($modelTransactionSession, 'note')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Add Notes to Seller (Optional)')]) ?>
+                                                    	</div>
+                                                    </div>
                                                         
                                                     <div class="row mb-30">
                                                     	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
@@ -272,8 +277,8 @@ $this->title = 'Checkout'; ?>
                                                 	<?= Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') ?>
                                                 </div>
                                                 
-                                                <div class="row mt-70">
-                                                	<div class="col-sm-5 col-sm-offset-7 col-xs-12">
+                                                <div class="row mt-40">
+                                                	<div class="col-sm-offset-7 col-sm-5 col-xs-12">
                                                         <table class="table table-responsive table-striped table-border checkout-table">
                                                             <tbody>
                                                                 <tr>
