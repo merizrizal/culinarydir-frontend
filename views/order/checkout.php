@@ -191,89 +191,81 @@ $this->title = 'Checkout'; ?>
                                                         <br>
                                                         
                                                     <?php
-                                                    endforeach;
-                                                    
-                                                    if (!empty($modelTransactionSession['business']['businessDeliveries'])): ?>
+                                                    endforeach;  ?>
                                                         
-                                                        <div class="row mb-30">
-                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
-                                                        	<div class="col-xs-12">
-                                                        	
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'delivery_method_id')->radioList(
-                                                        		    ArrayHelper::map(
-                                                        		        $modelTransactionSession['business']['businessDeliveries'],
-                                                        		        'delivery_method_id',
-                                                        		        function ($data) {
-                                                        		            
-                                                        		            return '
-                                                                                <div class="row mb-10">
-                                                                                    <div class="col-sm-4 col-xs-12">
-                                                                                        <label>' .
-                                                                                            Html::radio('delivery_method_id', false, ['value' => $data['deliveryMethod']['id']]) . $data['deliveryMethod']['delivery_name'] .
-                                                                                        '</label>
-                                                    		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">
-                                                                                        <strong>' . $data['note'] . '</strong>
-                                                                                    </div>
-                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
-                                                                                        $data['description'] . '
-                                                                                    </div>
-                                                                                </div>';
-                                                        		        }
-                                                    		        ),
-                                                    		        [
-                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
-                                                    		                
-                                                        		            return $label;
-                                                    		            }
-                                                    		        ]) ?>
-                                                		        
-                                                        	</div>
-                                                    	</div>
-                                                        	
-                                                	<?php
-                                                    endif;
-                                                
-                                                    if (!empty($modelTransactionSession['business']['businessPayments'])): ?>
+                                                    <div class="row mb-30">
+                                                    	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
+                                                    	<div class="col-xs-12">
                                                     	
-                                                    	<div class="row">
-                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
-                                                        	<div class="col-xs-12">
-                                                        		
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'payment_method_id')->radioList(
-                                                        		    ArrayHelper::map(
-                                                        		        $modelTransactionSession['business']['businessPayments'],
-                                                        		        'payment_method_id',
-                                                        		        function ($data) {
-                                                        		            
-                                                        		            return '
-                                                                                <div class="row mb-10">
-                                                                                    <div class="col-sm-4 col-xs-12">
-                                                                                        <label>' .
-                                                                                            Html::radio('payment_method_id', false, ['value' => $data['paymentMethod']['id']]) . $data['paymentMethod']['payment_name'] .
-                                                        		                        '</label>
-                                                    		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">
-                                                                                        <strong>' . $data['note'] . '</strong>
-                                                                                    </div>
-                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
-                                                                                        $data['description'] . '
-                                                                                    </div>
-                                                                                </div>';
-                                                        		        }
-                                                    		        ),
-                                                    		        [
-                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
-                                                    		                
-                                                        		            return $label;
-                                                    		            }
-                                                    		        ]) ?>
-                                                		        
-                                                        	</div>
+                                                    		<?= $form->field($modelTransactionSessionOrder, 'delivery_method_id')->radioList(
+                                                    		    ArrayHelper::map(
+                                                    		        $modelTransactionSession['business']['businessDeliveries'],
+                                                    		        'delivery_method_id',
+                                                    		        function ($data) {
+                                                    		            
+                                                    		            return '
+                                                                            <div class="row mb-10">
+                                                                                <div class="col-sm-4 col-xs-12">
+                                                                                    <label>' .
+                                                                                        Html::radio('delivery_method_id', false, ['value' => $data['deliveryMethod']['id']]) . $data['deliveryMethod']['delivery_name'] .
+                                                                                    '</label>
+                                                		                        </div>
+                                                                                <div class="col-sm-8 col-xs-12">
+                                                                                    <strong>' . $data['note'] . '</strong>
+                                                                                </div>
+                                                                                <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                    $data['description'] . '
+                                                                                </div>
+                                                                            </div>';
+                                                    		        }
+                                                		        ),
+                                                		        [
+                                                		            'item' => function ($index, $label, $name, $checked, $value) {
+                                                		                
+                                                    		            return $label;
+                                                		            }
+                                                		        ]) ?>
+                                            		        
                                                     	</div>
+                                                	</div>
                                                     	
-                                                	<?php
-                                                    endif;
+                                                	<div class="row">
+                                                		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
+                                                    	<div class="col-xs-12">
+                                                    		
+                                                    		<?= $form->field($modelTransactionSessionOrder, 'payment_method_id')->radioList(
+                                                    		    ArrayHelper::map(
+                                                    		        $modelTransactionSession['business']['businessPayments'],
+                                                    		        'payment_method_id',
+                                                    		        function ($data) {
+                                                    		            
+                                                    		            return '
+                                                                            <div class="row mb-10">
+                                                                                <div class="col-sm-4 col-xs-12">
+                                                                                    <label>' .
+                                                                                        Html::radio('payment_method_id', false, ['value' => $data['paymentMethod']['id']]) . $data['paymentMethod']['payment_name'] .
+                                                    		                        '</label>
+                                                		                        </div>
+                                                                                <div class="col-sm-8 col-xs-12">
+                                                                                    <strong>' . $data['note'] . '</strong>
+                                                                                </div>
+                                                                                <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                    $data['description'] . '
+                                                                                </div>
+                                                                            </div>';
+                                                    		        }
+                                                		        ),
+                                                		        [
+                                                		            'item' => function ($index, $label, $name, $checked, $value) {
+                                                		                
+                                                    		            return $label;
+                                                		            }
+                                                		        ]) ?>
+                                            		        
+                                                    	</div>
+                                                	</div>
+                                                    	
+                                            	<?php
                                                 endif; ?>
                                                 
                                                 <div class="<?= $hiddenClass ? 'hidden' : '' ?>" id="no-data">

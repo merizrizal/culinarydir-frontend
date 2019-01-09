@@ -81,40 +81,29 @@ class OrderController extends base\BaseController
             
             $modelTransactionSession->is_closed = true;
             
-            if ($modelTransactionSessionOrder->save()) {
+            if ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()) {
+                    
+                $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                 
-                if ($modelTransactionSession->save()) {
+                $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
+                
+                foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
                     
-                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
-                    
-                    $itemCount = count($modelTransactionSession['transactionItems']) - 1;
-                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
-                    
-                    foreach ($modelTransactionSession['transactionItems'] as $itemIndex => $dataTransactionItem) {
-                        
-                        $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
-                        $messageOrder .= (!empty($dataTransactionItem['note'])) ? ' ' . $dataTransactionItem['note'] : '';
-                        $messageOrder .= ($itemCount !== $itemIndex) ? '\n\n' : '';
-                    }
-
-                    $messageOrder .= '\n\n' . 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
-                    $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
-            
-                    $messageOrder .= '\n\n' . 'Pembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
-                    $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
-                    
-                    $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
-                    
-                    $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
-                    
-                    return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
-                } else {
-                    
-                    Yii::$app->session->setFlash('message', [
-                        'title' => 'Gagal Checkout',
-                        'message' => 'Terjadi kesalahan saat menyimpan data',
-                    ]);
+                    $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
+                    $messageOrder .= (!empty($dataTransactionItem['note']) ? ' ' . $dataTransactionItem['note'] : '') . '\n\n';
                 }
+
+                $messageOrder .= 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
+                $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
+        
+                $messageOrder .= '\n\n' . 'Pembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
+                $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
+                
+                $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
+                
+                $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
+                
+                return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
             } else {
         
                 Yii::$app->session->setFlash('message', [
