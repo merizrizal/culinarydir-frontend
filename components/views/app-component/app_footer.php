@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="widget">
-                    <h5 class="widget-title font-alt">Related Links</h5>
+                    <h5 class="widget-title font-alt"><?= Yii::t('app', 'About Us') ?></h5>
                     <ul class="icon-list">
                         <li><a href="http://profile.asikmakan.com/tentang-kami">Tentang Kami</a></li>
                         <li><a href="http://profile.asikmakan.com/beriklan-dengan-kami">Beriklan Dengan Kami</a></li>
@@ -16,11 +16,11 @@
 
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="widget">
-                    <h5 class="widget-title font-alt">Help Centre</h5>
+                    <h5 class="widget-title font-alt"><?= Yii::t('app', 'Help Centre') ?></h5>
                     <ul class="icon-list">
                         <li><i class="aicon aicon-phone"></i> (+62) 881 450 0686</li>
                         <li><i class="aicon aicon-mail3"></i> customercare@asikmakan.com</li>
-                        <li><strong>Operational Hour:</strong></li>
+                        <li><strong><?= Yii::t('app', 'Operational Hours') ?>:</strong></li>
                         <li><i class="aicon aicon-icon-calendar-line"></i> Senin s/d Jumat</li>
                         <li><i class="aicon aicon-clock"></i> 09:30 - 17:00</li>
                     </ul>
