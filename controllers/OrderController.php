@@ -58,7 +58,7 @@ class OrderController extends base\BaseController
                 
         $modelTransactionSessionOrder = new TransactionSessionOrder();
                 
-        if ($post = Yii::$app->request->post()) {
+        if (!empty(($post = Yii::$app->request->post()))) {
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
             $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
@@ -94,12 +94,12 @@ class OrderController extends base\BaseController
                 $messageOrder .= 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
                 $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
         
-                $messageOrder .= '\n\n' . 'Pembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
+                $messageOrder .= '\n\nPembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
                 $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
                 
-                $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
+                $messageOrder .= '\n\nTotal: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
                 
-                $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\n' . 'Catatan: ' . $modelTransactionSession['note'] : '';
+                $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
                 $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
                 
