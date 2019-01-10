@@ -58,7 +58,7 @@ class OrderController extends base\BaseController
                 
         $modelTransactionSessionOrder = new TransactionSessionOrder();
                 
-        if (!empty(($post = Yii::$app->request->post()))) {
+        if (($post = Yii::$app->request->post())) {
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
             $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
