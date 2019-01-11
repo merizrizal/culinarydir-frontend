@@ -59,6 +59,7 @@ class OrderController extends base\BaseController
         if (($post = Yii::$app->request->post())) {
             
             $transaction = Yii::$app->db->beginTransaction();
+            $flag = false;
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
             $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
@@ -68,18 +69,28 @@ class OrderController extends base\BaseController
             $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
             
             if (($flag = $modelTransactionSessionOrder->save() && $modelTransactionSession->save())) {
-            
-                $modelBusinessDelivery = BusinessDelivery::find()
-                    ->joinWith(['deliveryMethod'])
-                    ->andWhere(['business_delivery.business_id' => $modelTransactionSession['business']['id']])
-                    ->andWhere(['business_delivery.delivery_method_id' => $post['delivery_method_id']])
-                    ->asArray()->one();
                 
-                $modelBusinessPayment = BusinessPayment::find()
-                    ->joinWith(['paymentMethod'])
-                    ->andWhere(['business_payment.business_id' => $modelTransactionSession['business']['id']])
-                    ->andWhere(['business_payment.payment_method_id' => $post['payment_method_id']])
-                    ->asArray()->one();
+                $dataDelivery = [];
+                
+                foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
+                    
+                    if ($dataBusinessDelivery['deliveryMethod']['id'] == $post['delivery_method_id']) {
+                        
+                        $dataDelivery = $dataBusinessDelivery;
+                        break;
+                    }
+                }
+                
+                $dataPayment = [];
+                
+                foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
+                    
+                    if ($dataBusinessPayment['paymentMethod']['id'] == $post['payment_method_id']) {
+                        
+                        $dataPayment = $dataBusinessPayment;
+                        break;
+                    }
+                }
                     
                 $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                 
@@ -93,11 +104,11 @@ class OrderController extends base\BaseController
                 
                 $messageOrder .= 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
 
-                $messageOrder .= '\n\nPengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
-                $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
+                $messageOrder .= '\n\nPengiriman dengan ' . $dataDelivery['deliveryMethod']['delivery_name'];
+                $messageOrder .= !empty($dataDelivery['note']) ? '\n' . $dataDelivery['note'] : '';
         
-                $messageOrder .= '\n\nPembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
-                $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
+                $messageOrder .= '\n\nPembayaran dengan ' . $dataPayment['paymentMethod']['payment_name'];
+                $messageOrder .= !empty($dataPayment['note']) ? '\n' . $dataPayment['note'] : '';
                 
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
