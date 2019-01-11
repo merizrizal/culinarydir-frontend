@@ -90,14 +90,14 @@ class OrderController extends base\BaseController
                     $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
                     $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
                 }
+                
+                $messageOrder .= 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
 
-                $messageOrder .= 'Pengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
+                $messageOrder .= '\n\nPengiriman dengan ' . $modelBusinessDelivery['deliveryMethod']['delivery_name'];
                 $messageOrder .= !empty($modelBusinessDelivery['note']) ? '\n' . $modelBusinessDelivery['note'] : '';
         
                 $messageOrder .= '\n\nPembayaran dengan ' . $modelBusinessPayment['paymentMethod']['payment_name'];
                 $messageOrder .= !empty($modelBusinessPayment['note']) ? '\n' . $modelBusinessPayment['note'] : '';
-                
-                $messageOrder .= '\n\nTotal: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
                 
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
