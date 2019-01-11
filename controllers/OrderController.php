@@ -36,12 +36,10 @@ class OrderController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
-                'business.businessDeliveries.deliveryMethod',
                 'business.businessDeliveries' => function ($query) {
                     
                     $query->andOnCondition(['business_delivery.is_active' => true]);
                 },
-                'business.businessPayments.paymentMethod',
                 'business.businessPayments' => function ($query) {
                 
                     $query->andOnCondition(['business_payment.is_active' => true]);
@@ -59,27 +57,29 @@ class OrderController extends base\BaseController
         $modelTransactionSessionOrder = new TransactionSessionOrder();
                 
         if (($post = Yii::$app->request->post())) {
+            
+            $transaction = Yii::$app->db->beginTransaction();
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
             $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
             $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
             
-            $modelBusinessDelivery = BusinessDelivery::find()
-                ->joinWith(['deliveryMethod'])
-                ->andWhere(['business_delivery.business_id' => $modelTransactionSession['business']['id']])
-                ->andWhere(['business_delivery.delivery_method_id' => $post['delivery_method_id']])
-                ->asArray()->one();
-            
-            $modelBusinessPayment = BusinessPayment::find()
-                ->joinWith(['paymentMethod'])
-                ->andWhere(['business_payment.business_id' => $modelTransactionSession['business']['id']])
-                ->andWhere(['business_payment.payment_method_id' => $post['payment_method_id']])
-                ->asArray()->one();
-                
             $modelTransactionSession->is_closed = true;
-            $modelTransactionSession->note = $post['TransactionSession']['note'];
+            $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
             
-            if ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()) {
+            if (($flag = $modelTransactionSessionOrder->save() && $modelTransactionSession->save())) {
+            
+                $modelBusinessDelivery = BusinessDelivery::find()
+                    ->joinWith(['deliveryMethod'])
+                    ->andWhere(['business_delivery.business_id' => $modelTransactionSession['business']['id']])
+                    ->andWhere(['business_delivery.delivery_method_id' => $post['delivery_method_id']])
+                    ->asArray()->one();
+                
+                $modelBusinessPayment = BusinessPayment::find()
+                    ->joinWith(['paymentMethod'])
+                    ->andWhere(['business_payment.business_id' => $modelTransactionSession['business']['id']])
+                    ->andWhere(['business_payment.payment_method_id' => $post['payment_method_id']])
+                    ->asArray()->one();
                     
                 $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                 
@@ -102,10 +102,17 @@ class OrderController extends base\BaseController
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
                 $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
+            }
+            
+            if ($flag) {
+                
+                $transaction->commit();
                 
                 return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
             } else {
-        
+                
+                $transaction->rollBack();
+                
                 Yii::$app->session->setFlash('message', [
                     'title' => 'Gagal Checkout',
                     'message' => 'Terjadi kesalahan saat menyimpan data',

@@ -60,7 +60,7 @@ $this->title = 'Checkout'; ?>
                 							<div class="col-xs-12 order-list">
                 								
                 								<?php
-                								if (($hiddenClass = !empty($modelTransactionSession))):
+                								if (!empty($modelTransactionSession)):
                 								
                     								foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
                                                         
@@ -189,8 +189,22 @@ $this->title = 'Checkout'; ?>
                                                     <?php
                                                     endforeach; ?>
                                                     
+                                                    <div class="row mt-40">
+                                                    	<div class="col-sm-offset-7 col-sm-5 col-xs-12">
+                                                    		<table class="table table-responsive table-striped table-border checkout-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th class="font-alt">Total</th>
+                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                    	</div>
+                                                    </div>
+                                                    
                                                     <div class="order-online-form">
-                                                        <div class="row mt-40 mb-30">
+                                                        <div class="row">
+                                                        	<hr>
                                                         	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
                                                         	
@@ -227,6 +241,7 @@ $this->title = 'Checkout'; ?>
                                                     	</div>
                                                         	
                                                     	<div class="row">
+                                                    		<hr>
                                                     		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
                                                         		
@@ -275,22 +290,27 @@ $this->title = 'Checkout'; ?>
                                             	<?php
                                             	else:
                                                     
-                                                	echo Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first');
+                                                	echo Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first'); ?>
+                                                	
+                                                	<div class="row mt-40">
+                                                    	<div class="col-sm-offset-7 col-sm-5 col-xs-12">
+                                                    		<table class="table table-responsive table-striped table-border checkout-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th class="font-alt">Total</th>
+                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                    	</div>
+                                                    </div>
+                                            	
+                                        	    <?php
                                                 endif; ?>
                                                 
-                                                <div class="row <?= $hiddenClass ? '' : 'mt-40' ?>">
+                                                <div class="row">
                                                 	<div class="col-sm-offset-7 col-sm-5 col-xs-12">
-                                                        <table class="table table-responsive table-striped table-border checkout-table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="font-alt">Total</th>
-                                                                    <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                
                                                         <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit', 'disabled' => empty($modelTransactionSession)]) ?>
-    
                                                     </div>
                                                 </div>
                 							</div>
@@ -432,7 +452,6 @@ $jscript = '
                         $(".order-online-form").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-submit").prop("disabled", true);
-                        $(".btn-submit").parent().parent().addClass("mt-40");
                     }
 
                     $(".total-price").html(response.total_price);
