@@ -60,8 +60,8 @@ class OrderController extends base\BaseController
             $flag = false;
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
-            $modelTransactionSessionOrder->delivery_method_id = $post['delivery_method_id'];
-            $modelTransactionSessionOrder->payment_method_id = $post['payment_method_id'];
+            $modelTransactionSessionOrder->business_delivery_id = $post['business_delivery_id'];
+            $modelTransactionSessionOrder->business_payment_id = $post['business_payment_id'];
             
             $modelTransactionSession->is_closed = true;
             $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
@@ -72,7 +72,7 @@ class OrderController extends base\BaseController
                 
                 foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
                     
-                    if ($dataBusinessDelivery['deliveryMethod']['id'] == $post['delivery_method_id']) {
+                    if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
                         
                         $dataDelivery = $dataBusinessDelivery;
                         break;
@@ -83,7 +83,7 @@ class OrderController extends base\BaseController
                 
                 foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
                     
-                    if ($dataBusinessPayment['paymentMethod']['id'] == $post['payment_method_id']) {
+                    if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
                         
                         $dataPayment = $dataBusinessPayment;
                         break;

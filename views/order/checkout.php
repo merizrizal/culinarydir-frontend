@@ -208,17 +208,17 @@ $this->title = 'Checkout'; ?>
                                                         	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
                                                         	
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'delivery_method_id')->radioList(
+                                                        		<?= $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radioList(
                                                         		    ArrayHelper::map(
                                                         		        $modelTransactionSession['business']['businessDeliveries'],
-                                                        		        'delivery_method_id',
+                                                        		        'id',
                                                         		        function ($data) {
                                                         		            
                                                         		            return '
                                                                                 <div class="row mb-10">
                                                                                     <div class="col-sm-4 col-xs-12">
                                                                                         <label>' .
-                                                                                            Html::radio('delivery_method_id', false, ['value' => $data['deliveryMethod']['id']]) . $data['deliveryMethod']['delivery_name'] .
+                                                                                            Html::radio('business_delivery_id', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
                                                                                         '</label>
                                                     		                        </div>
                                                                                     <div class="col-sm-8 col-xs-12">
@@ -245,17 +245,17 @@ $this->title = 'Checkout'; ?>
                                                     		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
                                                         		
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'payment_method_id')->radioList(
+                                                        		<?= $form->field($modelTransactionSessionOrder, 'business_payment_id')->radioList(
                                                         		    ArrayHelper::map(
                                                         		        $modelTransactionSession['business']['businessPayments'],
-                                                        		        'payment_method_id',
+                                                        		        'id',
                                                         		        function ($data) {
                                                         		            
                                                         		            return '
                                                                                 <div class="row mb-10">
                                                                                     <div class="col-sm-4 col-xs-12">
                                                                                         <label>' .
-                                                                                            Html::radio('payment_method_id', false, ['value' => $data['paymentMethod']['id']]) . $data['paymentMethod']['payment_name'] .
+                                                                                            Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
                                                         		                        '</label>
                                                     		                        </div>
                                                                                     <div class="col-sm-8 col-xs-12">
