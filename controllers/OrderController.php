@@ -63,7 +63,7 @@ class OrderController extends base\BaseController
                 
                 $messageOrder .= '\n\n' . 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
                 
-                $messageOrder = str_replace('%5Cn', '%0A', urlencode($messageOrder));
+                $messageOrder = str_replace('\n', '%0A', str_replace(' ', '%20', $messageOrder));
                 
                 return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
             } else {
