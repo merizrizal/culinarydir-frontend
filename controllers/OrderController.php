@@ -100,14 +100,9 @@ class OrderController extends base\BaseController
                     $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
                 }
                 
-                $messageOrder .= 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
-
-                $messageOrder .= '\n\nPengiriman dengan ' . $dataDelivery['deliveryMethod']['delivery_name'];
-                $messageOrder .= !empty($dataDelivery['note']) ? '\n' . $dataDelivery['note'] : '';
-        
-                $messageOrder .= '\n\nPembayaran dengan ' . $dataPayment['paymentMethod']['payment_name'];
-                $messageOrder .= !empty($dataPayment['note']) ? '\n' . $dataPayment['note'] : '';
-                
+                $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
+                $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
+                $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
                 $messageOrder = str_replace('\n', '%0A', str_replace(' ', '%20', $messageOrder));

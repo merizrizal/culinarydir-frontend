@@ -203,84 +203,96 @@ $this->title = 'Checkout'; ?>
                                                     </div>
                                                     
                                                     <div class="order-online-form">
-                                                        <div class="row">
-                                                        	<hr>
+                                                        <div class="row mt-30">
                                                         	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
                                                         	
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radioList(
-                                                        		    ArrayHelper::map(
-                                                        		        $modelTransactionSession['business']['businessDeliveries'],
-                                                        		        'id',
-                                                        		        function ($data) {
-                                                        		            
-                                                        		            return '
-                                                                                <div class="row mb-10">
-                                                                                    <div class="col-sm-4 col-xs-12">
-                                                                                        <label>' .
+                                                    			<?php 
+                                                    			if (!empty($modelTransactionSession['business']['businessDeliveries'])) {
+                                                    			    
+                                                    			    echo $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radioList(
+                                                    			        ArrayHelper::map(
+                                                    			            $modelTransactionSession['business']['businessDeliveries'],
+                                                    			            'id',
+                                                    			            function ($data) {
+                                                    			                
+                                                    			                return '
+                                                                                    <div class="row mb-10">
+                                                                                        <div class="col-sm-4 col-xs-12">
+                                                                                            <label>' .
                                                                                             Html::radio('business_delivery_id', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
-                                                                                        '</label>
-                                                    		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">
-                                                                                        <strong>' . $data['note'] . '</strong>
-                                                                                    </div>
-                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                            '</label>
+                                                        		                        </div>
+                                                                                        <div class="col-sm-8 col-xs-12">
+                                                                                            <strong>' . $data['note'] . '</strong>
+                                                                                        </div>
+                                                                                        <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
                                                                                         $data['description'] . '
-                                                                                    </div>
-                                                                                </div>';
-                                                        		        }
-                                                    		        ),
-                                                    		        [
-                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
-                                                    		                
-                                                        		            return $label;
-                                                    		            }
-                                                    		        ]) ?>
-                                                		        
+                                                                                        </div>
+                                                                                    </div>';
+                                                			                }
+                                                			            ),
+                                                			            [
+                                                			                'item' => function ($index, $label, $name, $checked, $value) {
+                                                    			                
+                                                    			                return $label;
+                                                			                }
+                                            			                ]);
+                                                    			} else {
+                                                    			    
+                                                    			    echo Yii::t('app', 'Currently there is no delivery method available in') . ' ' . $modelTransactionSession['business']['name'];
+                                                    			} ?>
+
                                                         	</div>
                                                     	</div>
                                                         	
-                                                    	<div class="row">
-                                                    		<hr>
+                                                    	<div class="row mt-30">
                                                     		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
                                                         	<div class="col-xs-12">
-                                                        		
-                                                        		<?= $form->field($modelTransactionSessionOrder, 'business_payment_id')->radioList(
-                                                        		    ArrayHelper::map(
-                                                        		        $modelTransactionSession['business']['businessPayments'],
-                                                        		        'id',
-                                                        		        function ($data) {
-                                                        		            
-                                                        		            return '
-                                                                                <div class="row mb-10">
-                                                                                    <div class="col-sm-4 col-xs-12">
-                                                                                        <label>' .
+                                                        	
+                                                        		<?php 
+                                                    			if (!empty($modelTransactionSession['business']['businessPayments'])) {
+                                                    			    
+                                                    			    echo $form->field($modelTransactionSessionOrder, 'business_payment_id')->radioList(
+                                                    			        ArrayHelper::map(
+                                                    			            $modelTransactionSession['business']['businessPayments'],
+                                                    			            'id',
+                                                    			            function ($data) {
+                                                    			                
+                                                    			                return '
+                                                                                    <div class="row mb-10">
+                                                                                        <div class="col-sm-4 col-xs-12">
+                                                                                            <label>' .
                                                                                             Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
-                                                        		                        '</label>
-                                                    		                        </div>
-                                                                                    <div class="col-sm-8 col-xs-12">
-                                                                                        <strong>' . $data['note'] . '</strong>
-                                                                                    </div>
-                                                                                    <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
+                                                                                            '</label>
+                                                        		                        </div>
+                                                                                        <div class="col-sm-8 col-xs-12">
+                                                                                            <strong>' . $data['note'] . '</strong>
+                                                                                        </div>
+                                                                                        <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
                                                                                         $data['description'] . '
-                                                                                    </div>
-                                                                                </div>';
-                                                        		        }
-                                                    		        ),
-                                                    		        [
-                                                    		            'item' => function ($index, $label, $name, $checked, $value) {
-                                                    		                
-                                                        		            return $label;
-                                                    		            }
-                                                    		        ]) ?>
-                                                		        
+                                                                                        </div>
+                                                                                    </div>';
+                                                    			            }
+                                                			            ),
+                                                			            [
+                                                			                'item' => function ($index, $label, $name, $checked, $value) {
+                                                    			                
+                                                    			                return $label;
+                                                			                }
+                                            			                ]);
+                                                    			} else {
+                                                    			    
+                                                    			    echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
+                                                    			} ?>
+                                                    			
                                                         	</div>
                                                     	</div>
                                                     	
-                                                    	<div class="row mt-10">
+                                                    	<div class="row mt-30">
                                                         	<div class="col-xs-12">
                                                         	
-                                                        		<?= Yii::t('app', 'Note') ?>
+                                                        		<strong><?= Yii::t('app', 'Order Information') ?></strong>
                                                         		<?= $form->field($modelTransactionSession, 'note')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Add Notes to Seller (Optional)')]) ?>
                                                         		
                                                         	</div>
