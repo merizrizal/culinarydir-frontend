@@ -67,6 +67,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'kuliner/di/bandung/<slug:\w+(-\w+)*>' => 'page/detail',
+                
                 '<controller:\w+>/<action:\w+>/<id:\w+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]

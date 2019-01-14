@@ -103,7 +103,7 @@ class PageController extends base\BaseHistoryUrlController
         return $this->getResult('result_map');
     }
 
-    public function actionDetail($id)
+    public function actionDetail($slug)
     {
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
         
@@ -166,7 +166,7 @@ class PageController extends base\BaseHistoryUrlController
                     ]);
                 }
             ])
-            ->andWhere(['business.id' => $id])
+            ->andWhere(['business.unique_name' => $slug])
             ->asArray()->one();
         
         if (empty($modelBusiness)) {
@@ -201,7 +201,7 @@ class PageController extends base\BaseHistoryUrlController
                 'userPostComments.user user_comment'
             ])
             ->andWhere(['user_post_main.parent_id' => null])
-            ->andWhere(['user_post_main.business_id' => $id])
+            ->andWhere(['user_post_main.business_id' => $modelBusiness['id']])
             ->andWhere(['user_post_main.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
