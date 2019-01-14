@@ -44,6 +44,8 @@ class PageController extends base\BaseHistoryUrlController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
 
@@ -103,7 +105,7 @@ class PageController extends base\BaseHistoryUrlController
         return $this->getResult('result_map');
     }
 
-    public function actionDetail($slug)
+    public function actionDetail($city, $uniqueName)
     {
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
         
@@ -166,7 +168,8 @@ class PageController extends base\BaseHistoryUrlController
                     ]);
                 }
             ])
-            ->andWhere(['business.unique_name' => $slug])
+            ->andWhere(['business.unique_name' => $uniqueName])
+            ->andWhere(['lower(city.name)' => $city])
             ->asArray()->one();
         
         if (empty($modelBusiness)) {

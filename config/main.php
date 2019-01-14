@@ -67,7 +67,15 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'kuliner/di/bandung/<slug:\w+(-\w+)*>' => 'page/detail',
+                'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'page/detail',
+                
+                'kuliner/di/<city:\w+(-\w+)*>' => 'page/result-list',
+                'data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-list',
+                
+                'map/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-map',
+                'map/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-map',
+                
+                '' => 'page/index',
                 
                 '<controller:\w+>/<action:\w+>/<id:\w+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

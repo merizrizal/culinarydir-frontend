@@ -68,11 +68,27 @@ class DataController extends base\BaseController
 
     public function actionResultList()
     {
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(str_replace('/data-kuliner/di/', '/kuliner/di/', Yii::$app->request->getUrl()));
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
         return $this->getResult('result_list');
     }
 
     public function actionResultMap()
     {
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(str_replace('/map/data-kuliner/di/', '/map/kuliner/di/', Yii::$app->request->getUrl()));
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
         return $this->getResult('result_map');
     }
 
@@ -264,10 +280,19 @@ class DataController extends base\BaseController
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
                 
                     $query->andOnCondition(['child.is_publish' => true]);
+                },
+                'userPostLoves' => function ($query) {
+                
+                    $query->andOnCondition([
+                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
+                        'user_post_love.is_active' => true
+                    ]);
                 },
                 'userVotes',
                 'userPostComments',
@@ -294,14 +319,6 @@ class DataController extends base\BaseController
 
     private function getResult($fileRender)
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $this->redirect(str_replace('/data/result-', '/page/result-', Yii::$app->request->getUrl()));
-        } else {
-            
-            $this->layout = 'ajax';
-        }
-
         $get = Yii::$app->request->get();
         $paramsView = [];
         
@@ -319,6 +336,7 @@ class DataController extends base\BaseController
                         $query->andOnCondition(['type' => 'Profile']);
                     },
                     'businessLocation',
+                    'businessLocation.city',
                     'businessProductCategories' => function($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
@@ -338,6 +356,7 @@ class DataController extends base\BaseController
                     'membershipType.membershipTypeProductServices.productService',
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
+                ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
                 ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]]);
             
             if ($get['tp'] == 1) {

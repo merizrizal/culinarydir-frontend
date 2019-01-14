@@ -89,7 +89,7 @@ use common\components\Helper;
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <h5 class="m-0">
-                                <?= Html::a($model['business']['name'], ['page/detail', 'id' => $model['business']['id']]); ?>
+                                <?= Html::a($model['business']['name'], ['page/detail', 'city' => strtolower($model['business']['businessLocation']['city']['name']), 'uniqueName' => $model['business']['unique_name']]); ?>
                             </h5>
                         </div>
                     </div>

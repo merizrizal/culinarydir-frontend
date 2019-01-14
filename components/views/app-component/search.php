@@ -16,7 +16,7 @@ kartik\select2\ThemeKrajeeAsset::register($this);
 
 $isSearch = !empty($id) ? '-' . $id : '';
 $keywordType = $keyword['type'];
-$keywordCity = $keyword['city'];
+$keywordCity = !empty($keyword['city']) ? $keyword['city'] : 1;
 $keywordName = $keyword['name'];
 $keywordProductId = $keyword['product']['id'];
 $keywordProductName = $keyword['product']['name'];
@@ -98,7 +98,7 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade <?= $keywordType == 1 ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
 
-            <?= Html::beginForm(['page/result-list'], 'get', [
+            <?= Html::beginForm(['page/result-list', 'city' => 'city_name'], 'get', [
                 'id' => 'search-favorite'
             ]) ?>
 
@@ -495,7 +495,10 @@ $jscript = '
         allowClear: true
     });
 
-    $(".city-id").val("1").trigger("change");
+    $("#search-favorite").on("submit", function() {
+
+        $(this).attr("action", $(this).attr("action").replace("city_name", $(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-")));
+    });
 
     $(".lbl-clear").on("click", function() {
 
