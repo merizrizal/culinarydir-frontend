@@ -101,8 +101,8 @@ class OrderController extends base\BaseController
                 }
                 
                 $messageOrder .= 'Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']);
-                $messageOrder .= !empty($dataDelivery['note']) ? '\n' . $dataDelivery['note'] : '';
-                $messageOrder .= !empty($dataPayment['note']) ? '\n' . $dataPayment['note'] : '';
+                $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
+                $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
                 $messageOrder = str_replace('\n', '%0A', str_replace(' ', '%20', $messageOrder));
