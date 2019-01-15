@@ -68,27 +68,11 @@ class DataController extends base\BaseController
 
     public function actionResultList()
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $this->redirect(str_replace('/data-kuliner/di/', '/kuliner/di/', Yii::$app->request->getUrl()));
-        } else {
-            
-            $this->layout = 'ajax';
-        }
-        
         return $this->getResult('result_list');
     }
 
     public function actionResultMap()
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $this->redirect(str_replace('/map/data-kuliner/di/', '/map/kuliner/di/', Yii::$app->request->getUrl()));
-        } else {
-            
-            $this->layout = 'ajax';
-        }
-        
         return $this->getResult('result_map');
     }
 
@@ -319,10 +303,18 @@ class DataController extends base\BaseController
 
     private function getResult($fileRender)
     {
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(str_replace('/data-kuliner/', '/kuliner/', Yii::$app->request->getUrl()));
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
         $get = Yii::$app->request->get();
         $paramsView = [];
         
-        if ($get['tp'] == 1 || $get['tp'] == 3) {
+        if ($get['searchType'] == Yii::t('app', 'favorite') || $get['searchType'] == Yii::t('app', 'online-order')) {
             
             $modelBusiness = Business::find()
                 ->joinWith([
@@ -359,7 +351,7 @@ class DataController extends base\BaseController
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
                 ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]]);
             
-            if ($get['tp'] == 1) {
+            if ($get['searchType'] == Yii::t('app', 'favorite')) {
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
                     ->andFilterWhere(['business_category.category_id' => $get['ctg']]);
@@ -434,7 +426,7 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else if ($get['tp'] == 2) {
+        } else if ($get['searchType'] == 2) {
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             

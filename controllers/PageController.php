@@ -77,7 +77,7 @@ class PageController extends base\BaseHistoryUrlController
         ]);
         
         $keyword = [];
-        $keyword['type'] = 1;
+        $keyword['searchType'] = Yii::t('app', 'favorite');
         $keyword['city'] = null;
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
@@ -452,7 +452,7 @@ class PageController extends base\BaseHistoryUrlController
         }
         
         $keyword = [];
-        $keyword['type'] = !empty($get['tp']) ? $get['tp'] : null;
+        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : null;
         $keyword['city'] = !empty($get['cty']) ? $get['cty'] : null;
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
@@ -461,8 +461,8 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['map']['coordinate'] = !empty($get['cmp']) ? $get['cmp'] : null;
         $keyword['map']['radius'] = !empty($get['rmp']) ? $get['rmp'] : null;
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
-        $keyword['price']['min'] = $keyword['type'] == 1 && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
-        $keyword['price']['max'] = $keyword['type'] == 1 && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+        $keyword['price']['min'] = $keyword['searchType'] == Yii::t('app', 'favorite') && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
+        $keyword['price']['max'] = $keyword['searchType'] == Yii::t('app', 'favorite') && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
         
         Yii::$app->session->set('keyword', $get);
 

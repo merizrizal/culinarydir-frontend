@@ -69,11 +69,11 @@ return [
             'rules' => [
                 'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'page/detail',
                 
-                'kuliner/di/<city:\w+(-\w+)*>' => 'page/result-list',
-                'data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-list',
+                '<searchType:\w+(-\w+)*>/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-list',
+                '<searchType:\w+(-\w+)*>/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-list',
                 
-                'map/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-map',
-                'map/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-map',
+                'map/<searchType:\w+(-\w+)*>/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-map',
+                'map/<searchType:\w+(-\w+)*>/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-map',
                 
                 '' => 'page/index',
                 

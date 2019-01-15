@@ -15,7 +15,7 @@ kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
 $isSearch = !empty($id) ? '-' . $id : '';
-$keywordType = $keyword['type'];
+$keywordType = $keyword['searchType'];
 $keywordCity = !empty($keyword['city']) ? $keyword['city'] : 1;
 $keywordName = $keyword['name'];
 $keywordProductId = $keyword['product']['id'];
@@ -55,13 +55,13 @@ if (!empty($keywordCoordinate) && !empty($keywordRadius)) {
 }
 
 $layoutListNav = '
-    <li role="presentation" class="' . ($keywordType == 1 ? 'active' : '') . '">
+    <li role="presentation" class="' . ($keywordType == Yii::t('app', 'favorite') ? 'active' : '') . '">
         <a href="#favorite' . $isSearch . '" aria-controls="favorite" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Favourite Foods?') . '</strong></a>
     </li>
     <li role="presentation" class="' . ($keywordType == 2 ? 'active' : '') . '">
         <a href="#special' . $isSearch . '" aria-controls="special" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Specials & Discounts?') . '</strong></a>
     </li>
-    <li role="presentation" class="' . ($keywordType == 3 ? 'active' : '') . '">
+    <li role="presentation" class="' . ($keywordType == Yii::t('app', 'online-order') ? 'active' : '') . '">
         <a href="#order' . $isSearch . '" aria-controls="order" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Want to Order Online?') . '</strong></a>
     </li>
 ';
@@ -96,13 +96,11 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
     <!-- Tab Favorite -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 1 ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite<?= $isSearch ?>">
 
-            <?= Html::beginForm(['page/result-list', 'city' => 'city_name'], 'get', [
+            <?= Html::beginForm(['page/result-list', 'searchType' => Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
                 'id' => 'search-favorite'
             ]) ?>
-
-                <?= Html::hiddenInput('tp', 1) ?>
 
                 <div class="row">
                     <div class="col-sm-10 col-xs-12 col">
@@ -407,9 +405,9 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
         </div>
         
-        <div role="tabpanel" class="tab-pane fade <?= $keywordType == 3 ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
+        <div role="tabpanel" class="tab-pane fade <?= $keywordType == Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order<?= $isSearch ?>">
 
-            <?= Html::beginForm(['page/result-list'], 'get', [
+            <?= Html::beginForm(['page/result-list', 'searchType' => Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
                 'id' => 'search-order'
             ]) ?>
 
@@ -495,9 +493,10 @@ $jscript = '
         allowClear: true
     });
 
-    $("#search-favorite").on("submit", function() {
+    $("#search-favorite, #search-order").on("submit", function() {
 
-        $(this).attr("action", $(this).attr("action").replace("city_name", $(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-")));
+        var action = $(this).attr("action").replace("city_name", $(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
+        $(this).attr("action", action);
     });
 
     $(".lbl-clear").on("click", function() {
