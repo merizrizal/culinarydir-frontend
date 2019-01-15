@@ -267,10 +267,7 @@ $this->title = 'Checkout'; ?>
                                                                                             '</label>
                                                         		                        </div>
                                                                                         <div class="col-sm-8 col-xs-12">
-                                                                                            <strong>' . $data['note'] . '</strong>
-                                                                                        </div>
-                                                                                        <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
-                                                                                        $data['description'] . '
+                                                                                            <strong>' . $data['description'] . '</strong>
                                                                                         </div>
                                                                                     </div>';
                                                     			            }
