@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
@@ -187,7 +188,12 @@ $linkPager = LinkPager::widget([
                         'businessName' => $dataBusinessPromo['business']['name'],
                         'businessLatitude' => $businessLatitude,
                         'businessLongitude' => $businessLongitude,
-                        'businessPromoUrl' => Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special'])
+                        'businessPromoUrl' => Yii::$app->urlManager->createUrl([
+                            'page/detail',
+                            'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
+                            'uniqueName' => $dataBusinessPromo['business']['unique_name'],
+                            '#' => 'special'
+                        ])
                     ];
 
                 endforeach;

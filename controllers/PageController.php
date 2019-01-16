@@ -169,7 +169,7 @@ class PageController extends base\BaseHistoryUrlController
                 }
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
-            ->andWhere(['lower(city.name)' => $city])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->asArray()->one();
         
         if (empty($modelBusiness)) {
@@ -296,7 +296,7 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionReview($id)
+    public function actionReview($id, $uniqueName)
     {
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -339,6 +339,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.id' => $id])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
@@ -378,11 +379,13 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionPhoto($id)
+    public function actionPhoto($id, $uniqueName)
     {
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostLoves' => function ($query) {
 
@@ -397,6 +400,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.id' => $id])
             ->andWhere(['user_post_main.type' => 'Photo'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
@@ -409,17 +413,19 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
     
-    public function actionMenu($id)
+    public function actionMenu($uniqueName)
     {
         $modelBusiness = Business::find()
             ->joinWith([
+                'businessLocation',
+                'businessLocation.city',
                 'businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false])
                         ->orderBy(['order' => SORT_ASC]);
                 },
             ])
-            ->andWhere(['business.id' => $id])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
         
         $modelTransactionSession = TransactionSession::find()

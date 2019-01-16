@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\ActiveForm;
 use kartik\file\FileInput; 
 
@@ -96,10 +97,11 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            data: {
-                "business_id": business_id
-            },
-            url: "' . Yii::$app->urlManager->createUrl(['data/post-photo']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
+            url: "' . Yii::$app->urlManager->createUrl([
+                'data/post-photo',
+                'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']),
+                'uniqueName' => $modelBusiness['unique_name']
+            ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
             success: function(response) {
 
                 $(".gallery-section").html(response);
@@ -223,7 +225,7 @@ $jscript = '
 
     $(".gallery-section").on("click", ".share-image-trigger", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + $(this).parents(".work-item").find(".work-image img").data("id");
+        var url = $(this).attr("href");
         var title = "Foto untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).parents(".work-item").find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src").replace("200x200", "");

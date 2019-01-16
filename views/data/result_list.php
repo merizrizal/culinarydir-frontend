@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
@@ -169,7 +170,7 @@ $linkPager = LinkPager::widget([
                                                         <?= Html::a($dataBusiness['name'], 
                                                             [
                                                                 'page/detail', 
-                                                                'city' => strtolower($dataBusiness['businessLocation']['city']['name']), 
+                                                                'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']), 
                                                                 'uniqueName' => $dataBusiness['unique_name']
                                                             ],
                                                             ['class' => 'link-to-business-detail']); ?>

@@ -76,14 +76,15 @@ class DataController extends base\BaseController
         return $this->getResult('result_map');
     }
 
-    public function actionPostReview()
+    public function actionPostReview($city, $uniqueName)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['page/detail', 
-                'id' => $queryParams['business_id'],
+                'city' => $city,
+                'uniqueName' => $uniqueName,
                 'redirect' => 'review', 
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -95,6 +96,9 @@ class DataController extends base\BaseController
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
                     
@@ -117,8 +121,9 @@ class DataController extends base\BaseController
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.type' => 'Review'])
-            ->andWhere(['user_post_main.business_id' => Yii::$app->request->get('business_id')])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
@@ -149,14 +154,15 @@ class DataController extends base\BaseController
         ]);
     }
 
-    public function actionPostPhoto()
-    {        
+    public function actionPostPhoto($city, $uniqueName)
+    {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['page/detail',
-                'id' => $queryParams['business_id'],
+                'city' => $city,
+                'uniqueName' => $uniqueName,
                 'redirect' => 'photo',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -165,12 +171,18 @@ class DataController extends base\BaseController
             
             $this->layout = 'ajax';
         }
-
+        
         $modelUserPostMain = UserPostMain::find()
-            ->andWhere(['type' => 'Photo'])
-            ->andWhere(['business_id' => Yii::$app->request->get('business_id')])
-            ->andWhere(['is_publish' => true])
-            ->orderBy(['created_at' => SORT_DESC])
+            ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
+            ])
+            ->andWhere(['user_post_main.type' => 'Photo'])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
@@ -426,7 +438,7 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else if ($get['searchType'] == 2) {
+        } else if ($get['searchType'] == Yii::t('app', 'promo')) {
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             
@@ -441,6 +453,7 @@ class DataController extends base\BaseController
                     },
                     'business.businessCategories.category',
                     'business.businessLocation',
+                    'business.businessLocation.city',
                     'business.businessProductCategories' => function($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);

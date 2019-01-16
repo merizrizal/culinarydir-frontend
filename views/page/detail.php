@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Inflector;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\web\View;
@@ -23,7 +24,12 @@ use frontend\components\GrowlCustom;
 
 $this->title = $modelBusiness['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/detail', 'id' => $modelBusiness['id']]);
+$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+    'page/detail',
+    'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']),
+    'uniqueName' => $modelBusiness['unique_name']
+]);
+
 $ogTitle = $modelBusiness['name'];
 
 $ogDescription = 'Kunjungi kami di ' . AddressType::widget([
@@ -81,6 +87,8 @@ if (!empty($modelBusiness['businessImages'][0]['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
 }
+
+$ogUrlMenuDetail = ['page/menu', 'uniqueName' => $modelBusiness['unique_name']];
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -501,7 +509,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 </div>
                                                 <div class="col-lg-4 col-offset-lg-4 col-sm-5 col-offset-sm-6 col-tab-5 col-offset-tab-6 pull-right">
                                                 
-                                                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), ['page/menu', 'id' => $modelBusiness['id']], [
+                                                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), $ogUrlMenuDetail, [
                                                         'class' => 'btn btn-standard btn-d btn-block btn-round-4'
                                                     ]) ?>
                                                     
@@ -528,7 +536,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                 
                                                 <div class="col-xs-12">
                                                 
-                                                	<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), ['page/menu', 'id' => $modelBusiness['id']], [
+                                                	<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), $ogUrlMenuDetail, [
                                                 	    'class' => 'btn btn-standard btn-d btn-block btn-round-4'
                                                 	]) ?>
                                                 	
@@ -1149,7 +1157,7 @@ $jscript = '
 
 $this->registerJs($jscript);
 
-$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange, $ogProductCategory, $ogBusinessHour) {
+$this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPriceRange, $ogProductCategory, $ogBusinessHour, $ogUrlMenuDetail) {
     
     $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
     
@@ -1160,7 +1168,7 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
             "@type": "Restaurant",
             "name": "' . $modelBusiness['name'] . '",
             "image": "' . $ogImage . '",
-            "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'id' => $modelBusiness['id']]) . '",
+            "menu": "' . Yii::$app->urlManager->createAbsoluteUrl($ogUrlMenuDetail) . '",
             "servesCuisine": "' . trim($ogProductCategory, ',') . '",
             "address": {
                 "@type": "PostalAddress",

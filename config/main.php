@@ -18,7 +18,7 @@ return [
     'container' => [
         'definitions' => [
             'yii\data\Pagination' => [
-                'pageSize' => 21
+                'pageSize' => 2
             ]
         ],
     ],
@@ -68,6 +68,14 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'page/detail',
+                
+                'menu-pesan-online/di/<uniqueName:\w+(-\w+)*>' => 'page/menu',
+                
+                'review-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-review',
+                'photo-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-photo',
+                
+                'review/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/review',
+                'photo/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/photo',
                 
                 '<searchType:\w+(-\w+)*>/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-list',
                 '<searchType:\w+(-\w+)*>/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-list',

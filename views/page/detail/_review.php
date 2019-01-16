@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\ActiveForm;
 use yii\web\JsExpression;
 use kartik\file\FileInput;
@@ -18,7 +19,13 @@ use common\components\Helper;
 
 kartik\popover\PopoverXAsset::register($this);
 
-Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
+Yii::$app->formatter->timeZone = 'Asia/Jakarta'; 
+
+$urlMyReviewDetail = [
+    'page/review',
+    'id' => $modelUserPostMain['id'],
+    'uniqueName' => $modelBusiness['unique_name'],
+]; ?>
 
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -195,7 +202,8 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                                     	
                                                                     	if ($i == 4 && $hiddenPhotos != 0) {
                                                                     	
-                                                                    	    echo Html::a('+' . $hiddenPhotos, ['page/review', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                                    	    echo Html::a('+' . $hiddenPhotos, Yii::$app->urlManager->createUrl($urlMyReviewDetail), ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                                    	    
                                                                     	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                                     	} else {
                                                                     	
@@ -279,7 +287,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                                     </a>
                                                     <ul class="dropdown-menu pull-right review-btn">
                                                         <li>
-                                                        	<?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-my-review-trigger']); ?>
+                                                        	<?= Html::a('<i class="fa fa-share-alt"></i> Share', Yii::$app->urlManager->createAbsoluteUrl($urlMyReviewDetail), ['class' => 'share-my-review-trigger']); ?>
                                                         </li>
                                                         <li>
                                                            	<?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']) ?>
@@ -295,7 +303,7 @@ Yii::$app->formatter->timeZone = 'Asia/Jakarta'; ?>
                                     <div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                                         <ul class="list-inline list-review mt-0 mb-0">
                                     		<li>
-                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-share-alt"></i> Share', Yii::$app->urlManager->createAbsoluteUrl($urlMyReviewDetail), ['class' => 'btn btn-default btn-small btn-round-4 share-my-review-trigger']) ?>
                                             </li>
                                             <li>
                                                 <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-small btn-round-4 edit-my-review-trigger']) ?>
@@ -686,10 +694,11 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        data: {
-            "business_id": $("#business_id").val()
-        },
-        url: "' . Yii::$app->urlManager->createUrl(['data/post-review']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
+        url: "' . Yii::$app->urlManager->createUrl([
+            'data/post-review',
+            'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']),
+            'uniqueName' => $modelBusiness['unique_name']
+        ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
         success: function(response) {
 
             $(".review-section").html(response);
@@ -812,7 +821,7 @@ $jscript = '
 
     $(".share-my-review-trigger").on("click", function(event) {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(".my-user-post-main-id").val();
+        var url = $(this).attr("href");
         var title = "Rating " + $("#edit-review-container").find(".my-rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(".my-review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
@@ -982,6 +991,7 @@ $jscript = '
                     $(".my-review-created").html(response.userCreated);
                     $(".my-review-description").html(response.userPostMain.text);
 
+                    $(".share-my-review-trigger").attr("href", response.shareUrl.absolute);
                     $(".delete-my-review-trigger").attr("href", response.deleteUrlReview);
 
                     readmoreText({
@@ -1035,7 +1045,7 @@ $jscript = '
                         if (i == 4 && hiddenPhotos != 0) {
                             
                             $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image hidden\" href=\"" + $(this).find("a.show-image").attr("href") + "\"><i class=\"fa fa-search\"></i></a>");
-                            $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").append("<a class=\"btn btn-d btn-small btn-xs btn-circle\" href=\"' . Yii::$app->urlManager->createUrl(['page/review', 'id' => '']) . '" + response.userPostMain.id + "\">+" + hiddenPhotos + "</a>");
+                            $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").append("<a class=\"btn btn-d btn-small btn-xs btn-circle\" href=\"" + response.shareUrl.notAbsolute + "\">+" + hiddenPhotos + "</a>");
                         } else {
 
                             $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + $(this).find("a.show-image").attr("href") + "\"><i class=\"fa fa-search\"></i></a>");
@@ -1352,7 +1362,7 @@ $jscript = '
 
     $(".review-section").on("click", ".share-review-trigger", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".review-post").find(".user-post-main-id").val();
+        var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".review-post").find(".rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
