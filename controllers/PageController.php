@@ -467,8 +467,9 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['map']['coordinate'] = !empty($get['cmp']) ? $get['cmp'] : null;
         $keyword['map']['radius'] = !empty($get['rmp']) ? $get['rmp'] : null;
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
-        $keyword['price']['min'] = $keyword['searchType'] == Yii::t('app', 'favorite') && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
-        $keyword['price']['max'] = $keyword['searchType'] == Yii::t('app', 'favorite') && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+        $keyword['price']['min'] = ($keyword['type'] == Yii::t('app', 'favorite') || $keyword['type'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
+        $keyword['price']['max'] = ($keyword['type'] == Yii::t('app', 'favorite') || $keyword['type'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+
         
         Yii::$app->session->set('keyword', $get);
 

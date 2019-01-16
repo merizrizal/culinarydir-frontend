@@ -266,11 +266,8 @@ $this->title = 'Checkout'; ?>
                                                                                             Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
                                                                                             '</label>
                                                         		                        </div>
-                                                                                        <div class="col-sm-8 col-xs-12">
-                                                                                            <strong>' . $data['note'] . '</strong>
-                                                                                        </div>
-                                                                                        <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
-                                                                                        $data['description'] . '
+                                                                                        <div class="col-sm-8 col-xs-12">' . 
+                                                                                            $data['description'] . '
                                                                                         </div>
                                                                                     </div>';
                                                     			            }
