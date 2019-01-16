@@ -110,57 +110,54 @@ if ($popover):
                         </div>
                     </div>
                     
-                    <?php
-                	if (!empty($keywordType)):
-                	
-                	    if ($keywordType == 1 || $keywordType == 2): ?>
+                    <div class="col-sm-6 col">
+                        <div class="form-group">
     
-                            <div class="col-sm-6 col">
-                                <div class="form-group">
-            
-                                    <?php
-                                    echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
-                                    echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']); 
-                                    echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']); 
-                                    echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-            
-                                </div>
-                            </div>
-                            
-                            <div class="col-sm-6 col">
-                                <div class="form-group">
-            
-                                    <?php
-                                    echo !empty($keywordProductId) ? $spanClear : null;
-                                    echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']); 
-                                    echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-            
-                                </div>
-                            </div>
-            
-                            <div class="col-sm-6 col">
-                                <div class="form-group">
-            
-                                    <?= Html::dropDownList('ctg', $keywordCategory,
-                                        ArrayHelper::map(
-                                            Category::find()->orderBy('name')->asArray()->all(),
-                                            'id',
-                                            function($data) {
-                                                
-                                                return $data['name'];
-                                            }
-                                        ),
-                                        [
-                                            'prompt' => '',
-                                            'class' => 'form-control category-id',
-                                            'style' => 'width: 100%'
-                                        ]) ?>
-            
-                                </div>
-                            </div>
+                            <?php
+                            echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
+                            echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']); 
+                            echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']); 
+                            echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
+    
+                        </div>
+                    </div>
                     
-                    	<?php
-                        endif;
+                    <div class="col-sm-6 col">
+                        <div class="form-group">
+    
+                            <?php
+                            echo !empty($keywordProductId) ? $spanClear : null;
+                            echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']); 
+                            echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
+    
+                        </div>
+                    </div>
+                        
+                    <?php
+                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 2)): ?>
+        
+                        <div class="col-sm-6 col">
+                            <div class="form-group">
+        
+                                <?= Html::dropDownList('ctg', $keywordCategory,
+                                    ArrayHelper::map(
+                                        Category::find()->orderBy('name')->asArray()->all(),
+                                        'id',
+                                        function($data) {
+                                            
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control category-id',
+                                        'style' => 'width: 100%'
+                                    ]) ?>
+        
+                            </div>
+                        </div>
+                
+                	<?php
                     endif; ?>
                     
                 </div>
@@ -168,22 +165,21 @@ if ($popover):
                 <div class="row">
                 	
                 	<?php
-                	if (!empty($keywordType)):
-                	
-                	    if ($keywordType == 1): ?>
+                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 3)): ?>
                     
-                            <div class="col-sm-6 col">
+                        <div class="col-sm-6 col">
+                            <div class="form-group">
                                 
-    							<?php
-    							echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null; 
-    							echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
-    							echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
-    							echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-        
-                            </div>
-                        
-                		<?php
-                        endif;
+        						<?php
+        						echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null; 
+        						echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
+        						echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
+        						echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+    
+    						</div>
+                        </div>
+                    
+            		<?php
                     endif; ?>
     
                     <div class="col-sm-3 col">
@@ -221,7 +217,18 @@ else: ?>
             <?= Html::hiddenInput('tp', !empty($keywordType) ? $keywordType : 1); ?>
 
                 <div class="row">
-                    <div class="col-tab-6 col-xs-12 col">
+                    <div class="col-sm-12 col">
+                        <div class="form-group">
+    
+                            <?= Html::textInput('nm', $keywordName, [
+                                'class' => 'form-control input-name',
+                                'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
+                            ]) ?>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-12 col">
                         <div class="form-group">
     
                             <?= Html::dropDownList('cty', $keywordCity,
@@ -241,21 +248,8 @@ else: ?>
     
                         </div>
                     </div>
-    
-                    <div class="col-tab-6 col-xs-12 col">
-                        <div class="form-group">
-    
-                            <?= Html::textInput('nm', $keywordName, [
-                                'class' => 'form-control input-name',
-                                'placeholder' => 'Ketik Nama Tempat / Jenis Makanan / Alamat'
-                            ]) ?>
-    
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-tab-6 col-xs-12 col">
+                    
+                    <div class="col-sm-12 col">
                         <div class="form-group">
     
                             <?php
@@ -265,53 +259,57 @@ else: ?>
     
                         </div>
                     </div>
-    
-                    <div class="col-tab-6 col-xs-12 col">
-                        <div class="form-group">
-    
-                            <?= Html::dropDownList('ctg', $keywordCategory,
-                                ArrayHelper::map(
-                                    Category::find()->orderBy('name')->asArray()->all(),
-                                    'id',
-                                    function($data) {
-                                        
-                                        return $data['name'];
-                                    }
-                                ),
-                                [
-                                    'prompt' => '',
-                                    'class' => 'form-control category-id',
-                                    'style' => 'width: 100%'
-                                ]) ?>
-    
+                        
+                    <?php
+                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 2)): ?>
+        
+                        <div class="col-sm-12 col">
+                            <div class="form-group">
+        
+                                <?= Html::dropDownList('ctg', $keywordCategory,
+                                    ArrayHelper::map(
+                                        Category::find()->orderBy('name')->asArray()->all(),
+                                        'id',
+                                        function($data) {
+                                            
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control category-id',
+                                        'style' => 'width: 100%'
+                                    ]) ?>
+        
+                            </div>
                         </div>
-                    </div>
+                
+                	<?php
+                    endif; ?>
+                    
                 </div>
 
                 <div class="row">
-    
-                    <?php
-                	if (!empty($keywordType)):
                 	
-                	    if ($keywordType == 1): ?>
+                	<?php
+                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 3)): ?>
                     
-                            <div class="col-sm-6 col-tab-6 col-xs-12 col">
-                                <div class="form-group">
-                                
-        							<?php
-        							echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null; 
-        							echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
-        							echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
-        							echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-        
-                                </div>
-                            </div>
-                        
-                		<?php
-                        endif;
+                        <div class="col-sm-12 col mb-20">
+                        	<div class="form-group">
+                            
+    							<?php
+    							echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null; 
+    							echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
+    							echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
+    							echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+    						
+							</div>
+                        </div>
+                    
+            		<?php
                     endif; ?>
-    
-                    <div class="col-tab-6 col-xs-12 col">
+                    
+                    <div class="col-sm-12 col">
                         <div class="form-group">
     
                             <?php
@@ -322,23 +320,23 @@ else: ?>
     
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col">
     
-                        <?= $btnSubmitLgXs ?>
-                        <?= $btnSubmitTab ?>
-                        <?= $btnSubmitMdSm ?>
-    
-                    </div>
-    
-                    <div class="col-xs-12 col">
-    
-                        <?= $btnClearLgXs ?>
-                        <?= $btnClearTab ?>
-                        <?= $btnClearMdSm ?>
-    
+    				<div class="form-group">
+                        <div class="col-sm-12 col">
+        					
+                            <?= $btnSubmitLgXs ?>
+                            <?= $btnSubmitTab ?>
+                            <?= $btnSubmitMdSm ?>
+        
+                        </div>
+        
+                        <div class="col-sm-12 col">
+        
+                            <?= $btnClearLgXs ?>
+                            <?= $btnClearTab ?>
+                            <?= $btnClearMdSm ?>
+            
+                        </div>
                     </div>
                 </div>
 
