@@ -33,14 +33,14 @@ class UserDataController extends base\BaseController
             ]);
     }
 
-    public function actionUserVisit()
+    public function actionUserVisit($username)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['user/user-profile',
-                'user' => $queryParams['username'],
+                'user' => $username,
                 'redirect' => 'visit',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -65,7 +65,7 @@ class UserDataController extends base\BaseController
                 'user',
             ])
             ->where(['user_visit.is_active' => true])
-            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
 
@@ -92,14 +92,14 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionUserLove()
+    public function actionUserLove($username)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['user/user-profile',
-                'user' => $queryParams['username'],
+                'user' => $username,
                 'redirect' => 'love',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -124,7 +124,7 @@ class UserDataController extends base\BaseController
                 'user',
             ])
             ->where(['user_love.is_active' => true])
-            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
 
@@ -153,14 +153,14 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionUserPost()
+    public function actionUserPost($username)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['user/user-profile',
-                'user' => $queryParams['username'],
+                'user' => $username,
                 'redirect' => 'review',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -199,7 +199,7 @@ class UserDataController extends base\BaseController
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
-            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->andWhere(['user.username' => $username])
             ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
@@ -229,14 +229,14 @@ class UserDataController extends base\BaseController
         ]);
     }
 
-    public function actionUserPostPhoto()
+    public function actionUserPostPhoto($username)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['user/user-profile',
-                'user' => $queryParams['username'],
+                'user' => $username,
                 'redirect' => 'photo',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -253,7 +253,7 @@ class UserDataController extends base\BaseController
             ])
             ->andWhere(['type' => 'Photo'])
             ->andWhere(['is_publish' => true])
-            ->andWhere(['user.username' => Yii::$app->request->get('username')])
+            ->andWhere(['user.username' => $username])
             ->orderBy(['id' => SORT_DESC])
             ->distinct()
             ->asArray();

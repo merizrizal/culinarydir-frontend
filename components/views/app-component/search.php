@@ -16,7 +16,7 @@ kartik\select2\ThemeKrajeeAsset::register($this);
 
 $isSearch = !empty($id) ? '-' . $id : '';
 $keywordType = $keyword['searchType'];
-$keywordCity = !empty($keyword['city']) ? $keyword['city'] : 1;
+$keywordCity = $keyword['city'];
 $keywordName = $keyword['name'];
 $keywordProductId = $keyword['product']['id'];
 $keywordProductName = $keyword['product']['name'];

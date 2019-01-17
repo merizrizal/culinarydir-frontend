@@ -78,7 +78,7 @@ class PageController extends base\BaseHistoryUrlController
         
         $keyword = [];
         $keyword['searchType'] = Yii::t('app', 'favorite');
-        $keyword['city'] = null;
+        $keyword['city'] = 1;
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
         $keyword['product']['name'] = null;
@@ -279,11 +279,16 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionDetailPromo($id)
+    public function actionDetailPromo($id, $uniqueName)
     {
         $modelBusinessPromo = BusinessPromo::find()
-            ->andWhere(['id' => $id])
-            ->distinct()
+            ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
+            ])
+            ->andWhere(['business_promo.id' => $id])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
         
         if (empty($modelBusinessPromo)) {
@@ -458,8 +463,8 @@ class PageController extends base\BaseHistoryUrlController
         }
         
         $keyword = [];
-        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : null;
-        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : null;
+        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : Yii::t('app', 'favorite');;
+        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : 1;
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
         $keyword['product']['name'] = !empty($modelProductCategory) ? $modelProductCategory['name'] : null;
@@ -467,8 +472,8 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['map']['coordinate'] = !empty($get['cmp']) ? $get['cmp'] : null;
         $keyword['map']['radius'] = !empty($get['rmp']) ? $get['rmp'] : null;
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
-        $keyword['price']['min'] = ($keyword['type'] == Yii::t('app', 'favorite') || $keyword['type'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
-        $keyword['price']['max'] = ($keyword['type'] == Yii::t('app', 'favorite') || $keyword['type'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+        $keyword['price']['min'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
+        $keyword['price']['max'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
 
         
         Yii::$app->session->set('keyword', $get);

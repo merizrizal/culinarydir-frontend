@@ -49,16 +49,16 @@ class UserController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionUserProfile()
+    public function actionUserProfile($user)
     {
-        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->username == Yii::$app->request->get('user')) {
+        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->username == $user) {
 
             return $this->redirect(ArrayHelper::merge(['user/index'], Yii::$app->request->getQueryParams()));
         } else {
             
             $modelUser = User::find()
                 ->joinWith(['userPerson.person'])
-                ->andWhere(['username' => Yii::$app->request->get('user')])
+                ->andWhere(['username' => $user])
                 ->asArray()->one();
             
             if (empty($modelUser)) {

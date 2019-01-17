@@ -656,44 +656,32 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                     <div class="col-sm-12 col-xs-12">
 
                                                         <?php
-                                                        foreach ($modelBusiness['businessPromos'] as $dataBusinessPromo): ?>
+                                                        foreach ($modelBusiness['businessPromos'] as $dataBusinessPromo): 
+                                                        
+                                                            $urlPromoDetail = [
+                                                                'page/detail-promo',
+                                                                'id' => $dataBusinessPromo['id'],
+                                                                'uniqueName' => $modelBusiness['unique_name'],
+                                                            ];
+                                                            
+                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
+                                                            
+                                                            if (!empty($dataBusinessPromo['image'])) {
+                                                                
+                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
+                                                            }
+                                                            
+                                                            $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
+                                                            $dateEnd = Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium'); ?>
 
                                                             <div class="row mb-10">
                                                                 <div class="col-sm-4 col-tab-12 col-xs-12">
-                                                                    
-                                                                    <?php
-                                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
-                            
-                                                                    if (!empty($dataBusinessPromo['image'])) {
-                            
-                                                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
-                                                                    }
-                            
-                                                                    $images = [];
-                                                                    $images[] = [
-                                                                        'title' => '',
-                                                                        'href' => $href,
-                                                                        'type' => 'image/jpeg',
-                                                                        'poster' => $href,
-                                                                    ];
-                                                                    
-                                                                    echo dosamigos\gallery\Carousel::widget([
-                                                                        'items' => $images,
-                                                                        'json' => true,
-                                                                        'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                                                        'clientOptions' => ['container' => '#blueimp-gallery-' . $dataBusinessPromo['id']],
-                                                                        'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                                                    ]); ?>
-
+                                                                    <?= Html::a(Html::img($img, ['class' => 'img-responsive']), $urlPromoDetail); ?>
                                                                 </div>
-                                                                
-                                                                <?php
-                                                                $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
-                                                                $dateEnd = Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium'); ?>
                                                                 
                                                                 <div class="col-sm-8 col-tab-12 col-xs-12">
                                                                     <h4 class="promo-title">
-                                                                        <?= Html::a($dataBusinessPromo['title'], ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
+                                                                        <?= Html::a($dataBusinessPromo['title'], $urlPromoDetail) ?>
                                                                     </h4>
                                                                     <p class="description mb-10">
                                                                         <?= $dataBusinessPromo['short_description'] ?>
@@ -702,8 +690,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         <?= Yii::t('app', 'Valid from {dateStart} until {dateEnd}', ['dateStart' => $dateStart, 'dateEnd' => $dateEnd]); ?>
                                                                     </p>
                                                                     <p>
-                                                                        <?= Html::a('<span class="text-red">' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/detail-promo', 'id' => $dataBusinessPromo['id']]) ?>
-                                                                    </p>
+                                                                        <?= Html::a('<span class="text-red">' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', $urlPromoDetail) ?>
+																	</p>
                                                                 </div>
                                                             </div>
 
