@@ -67,7 +67,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'page/detail',
+                'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>/' => 'page/detail',
                 
                 'menu-pesan-online/di/<uniqueName:\w+(-\w+)*>' => 'page/menu',
                 'promo-spesial-diskon/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/detail-promo',
@@ -77,6 +77,8 @@ return [
                 
                 'review/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/review',
                 'photo/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/photo',
+                
+                'user-profile/<user:\w+(-\w+)*>' => 'user/user-profile',
                 
                 'review-kuliner-oleh/<username:\w+(-\w+)*>' => 'user-data/user-post',
                 'love-kuliner-oleh/<username:\w+(-\w+)*>' => 'user-data/user-love',
