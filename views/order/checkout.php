@@ -204,7 +204,8 @@ $this->title = 'Checkout'; ?>
                                                     
                                                     <div class="order-online-form">
                                                         <div class="row mt-30">
-                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
+                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5>
+                                                        	<hr>
                                                         	<div class="col-xs-12">
                                                         	
                                                     			<?php 
@@ -247,8 +248,9 @@ $this->title = 'Checkout'; ?>
                                                     	</div>
                                                         	
                                                     	<div class="row mt-30">
-                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
-                                                        	<div class="col-xs-12">
+                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5>
+                                                    		<hr>
+                                                    		<div class="col-xs-12">
                                                         	
                                                         		<?php 
                                                     			if (!empty($modelTransactionSession['business']['businessPayments'])) {
@@ -278,6 +280,8 @@ $this->title = 'Checkout'; ?>
                                                     			                return $label;
                                                 			                }
                                             			                ]);
+                                                    			    
+                                                    			        echo '<i>*' . Yii::t('app', 'If Payment Is Made by Transfer or Online, Please Send a Screenshot of Proof of Payment') . '</i>';
                                                     			} else {
                                                     			    
                                                     			    echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
