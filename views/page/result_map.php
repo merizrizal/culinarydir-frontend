@@ -53,7 +53,7 @@ $appComponent = new AppComponent(); ?>
             $btnResultList = Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default btn-list']);
             $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), '', ['class' => 'btn btn-round btn-d btn-map']); ?>
 
-            <div class="col-md-7 col-sm-7 col-xs-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
+            <div class="col-sm-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
 
                 <?= $btnResultList ?>
                 <?= $btnResultMap ?>
@@ -71,7 +71,7 @@ $appComponent = new AppComponent(); ?>
                 <?= $btnResultMap ?>
 
             </div>
-            <div class="col-md-5 col-sm-5 col-tab-5 col-xs-5 mt-10 mb-10">
+            <div class="col-xs-5 mt-10 mb-10">
                 <div class="visible-lg visible-md visible-sm">
 
                     <?= $appComponent->searchPopover([
@@ -88,10 +88,10 @@ $appComponent = new AppComponent(); ?>
         </div>
 
         <div class="row">
-            <div class="col-md-7 col-sm-7 col-xs-12">
+            <div class="col-sm-7 col-xs-12">
                 <div id="maps"></div>
             </div>
-            <div class="col-md-5 col-sm-5 col-xs-12">
+            <div class="col-sm-5 col-xs-12">
                 <section class="module-extra-small-map in-result bg-main">
                     <div class="result-map"></div>
                 </section>

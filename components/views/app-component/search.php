@@ -450,6 +450,43 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-3 col-sm-offset-3 col-tab-6 col-xs-12 col">
+                                <div class="form-group">
+                                
+                                	<?php
+                                	echo !empty($keywordProductId) ? $spanClear : null;
+                                	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
+                                	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 col-tab-6 col-xs-12 col">
+                                <div class="form-group">
+
+                                    <?php
+                                    echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
+                                    echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
+                                    echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
+                                    echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 col-tab-6 col-xs-12 col">
+                                <div class="form-group">
+
+                                    <?php
+                                    echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
+                                    echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
+                                    echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
+                                    echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-sm-2 col-xs-12 col">
