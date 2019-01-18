@@ -24,10 +24,10 @@ $this->title = 'Checkout'; ?>
                 	<?php
 					if (!empty($modelTransactionSession)) {
 					    
-					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'id' => $modelTransactionSession['business']['id']]);
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
 					} else {
 					  
-					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']);
+					    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
 					} ?>
 
                 </div>
@@ -204,7 +204,8 @@ $this->title = 'Checkout'; ?>
                                                     
                                                     <div class="order-online-form">
                                                         <div class="row mt-30">
-                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5><hr>
+                                                        	<h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5>
+                                                        	<hr>
                                                         	<div class="col-xs-12">
                                                         	
                                                     			<?php 
@@ -247,8 +248,9 @@ $this->title = 'Checkout'; ?>
                                                     	</div>
                                                         	
                                                     	<div class="row mt-30">
-                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5><hr>
-                                                        	<div class="col-xs-12">
+                                                    		<h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5>
+                                                    		<hr>
+                                                    		<div class="col-xs-12">
                                                         	
                                                         		<?php 
                                                     			if (!empty($modelTransactionSession['business']['businessPayments'])) {
@@ -278,6 +280,8 @@ $this->title = 'Checkout'; ?>
                                                     			                return $label;
                                                 			                }
                                             			                ]);
+                                                    			    
+                                                    			        echo '<i>*' . Yii::t('app', 'If payment is made by transfer or online, please send a screenshot of proof of payment') . '</i>';
                                                     			} else {
                                                     			    
                                                     			    echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];

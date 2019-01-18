@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
@@ -112,7 +113,15 @@ $linkPager = LinkPager::widget([
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="m-0">
-                                                        <?= Html::a($dataBusinessPromo['title'], ['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']); ?>
+                                                    
+                                                        <?= Html::a($dataBusinessPromo['title'], [
+                                                                'page/detail',
+                                                                'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
+                                                                'uniqueName' => $dataBusinessPromo['business']['unique_name'],
+                                                                '#' => 'special'
+                                                            ],
+                                                            ['class' => 'link-to-business-detail']); ?>
+                                                        
                                                     </h4>
                                                 </div>
                                             </div>
@@ -235,6 +244,14 @@ $jscript = '
             placement: "bottom bottom-left",
             target: "#business-product-category-container-popover" + $(this).val()
         });
+    });
+
+    $(".direct-link").on("click", function() {
+
+        if (!$(this).hasClass("next") && !$(this).hasClass("prev")) {
+
+            window.location.href = $(this).parent().find(".link-to-business-detail").attr("href");
+        }
     });
 
     $("#pjax-result-list").off("pjax:send");

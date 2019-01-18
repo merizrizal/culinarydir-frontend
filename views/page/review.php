@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use yii\web\View;
 use kartik\rating\StarRating;
@@ -15,7 +16,12 @@ use frontend\components\GrowlCustom;
 
 $this->title = 'Review ' . $modelUserPostMain['business']['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $modelUserPostMain['id']]);
+$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+    'page/review',
+    'id' => $modelUserPostMain['id'],
+    'uniqueName' => $modelUserPostMain['business']['unique_name'],
+]);
+
 $ogOverallValue = number_format($dataUserVoteReview['overallValue'], 1);
 $ogTitle = !empty($modelUserPostMain['business']['name']) && !empty($dataUserVoteReview['overallValue']) ? 'Rating ' . $ogOverallValue . ' untuk ' . $modelUserPostMain['business']['name'] : 'Review di Asikmakan';
 $ogPerson = $modelUserPostMain['user']['full_name'];
@@ -88,7 +94,11 @@ kartik\popover\PopoverXAsset::register($this); ?>
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelUserPostMain['business']['id']], ['class' => 'btn btn-standard p-0']); ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
+                        'page/detail', 
+                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']), 
+                        'uniqueName' => $modelUserPostMain['business']['unique_name']
+                    ], ['class' => 'btn btn-standard p-0']); ?>
 
                 </div>
             </div>
@@ -584,7 +594,7 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPro
                 "@type": "Restaurant",
                 "name": "' . $modelBusiness['name'] . '",
                 "image": "' . $ogImage . '",
-                "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'id' => $modelBusiness['id']]) . '",
+                "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'uniqueName' => $modelBusiness['unique_name']]) . '",
                 "servesCuisine": "' . trim($ogProductCategory, ',') . '",
                 "address": {
                     "@type": "PostalAddress",

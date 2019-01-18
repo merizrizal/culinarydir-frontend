@@ -18,7 +18,7 @@
                         <a href="#view-love" aria-controls="view-love" role="tab" data-toggle="tab"><i class="fa fa-heart"></i> Love (<span class="total-user-love"></span>)</a>
                     </li>
                     <li role="presentation">
-                        <a href="#view-been-there" aria-controls="view-been-there" role="tab" data-toggle="tab"><i class="aicon aicon-icon-been-there"></i> Been There (<span class="total-user-visit"></span>)</a>
+                        <a href="#view-been-there" aria-controls="view-been-there" role="tab" data-toggle="tab"><i class="aicon aicon-icon-been-there"></i> Visit (<span class="total-user-visit"></span>)</a>
                     </li>
                 </ul>
 

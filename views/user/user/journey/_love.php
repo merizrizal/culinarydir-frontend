@@ -15,7 +15,10 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/user-love']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'love' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
+        url: "' . Yii::$app->urlManager->createUrl([
+            'user-data/user-love',
+            'username' => $username
+        ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'love' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
         success: function(response) {
 
             $(".user-love-section").html(response);

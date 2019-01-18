@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\web\View;
 use kartik\touchspin\TouchSpin;
 use frontend\components\GrowlCustom;
@@ -18,7 +19,11 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
         
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelBusiness['id']], ['class' => 'btn btn-standard p-0']); ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
+                        'page/detail', 
+                        'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']), 
+                        'uniqueName' => $modelBusiness['unique_name']
+                    ], ['class' => 'btn btn-standard p-0']); ?>
                 </div>
             </div>
         

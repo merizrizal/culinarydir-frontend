@@ -1,13 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use kartik\rating\StarRating;
 use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */
-/* @var $model core\models\UserPostMain */ ?>
+/* @var $model core\models\UserPostMain */ 
+
+$urlReviewDetail = [
+    'page/review', 
+    'id' => $model['id'],
+    'uniqueName' => $model['business']['unique_name'],
+]; ?>
 
 <div class="col-lg-4 col-md-4 col-sm-6 col-tab-6 col-xs-12">
     <div class="recent-post">
@@ -52,7 +59,7 @@ use common\components\Helper;
                                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 478, 165);
                             }
 
-                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), ['page/review', 'id' => $model['id']]); ?>
+                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
 
                         </div>
                     </div>
@@ -76,7 +83,7 @@ use common\components\Helper;
                                     
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-small btn-round-4']) ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', $urlReviewDetail, ['class' => 'btn btn-default btn-small btn-round-4']) ?>
                                 </li>
                                 <li>
                                     <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
@@ -89,7 +96,13 @@ use common\components\Helper;
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <h5 class="m-0">
-                                <?= Html::a($model['business']['name'], ['page/detail', 'city' => strtolower($model['business']['businessLocation']['city']['name']), 'uniqueName' => $model['business']['unique_name']]); ?>
+                            
+                                <?= Html::a($model['business']['name'], [
+                                    'page/detail', 
+                                    'city' => Inflector::slug($model['business']['businessLocation']['city']['name']), 
+                                    'uniqueName' => $model['business']['unique_name']
+                                ]); ?>
+                            
                             </h5>
                         </div>
                     </div>
@@ -136,7 +149,7 @@ use common\components\Helper;
 
                             <?php
                             $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 80, '. . .') . '<br>' : '';
-                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id']]);
+                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', $urlReviewDetail);
 
                             echo $textReview; ?>
 
@@ -154,7 +167,7 @@ $jscript = '
 
     $(".share-feature-' . $model['id'] . '-trigger").on("click", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $model['id']]) . '";
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail) . '";
         var title = "Rating " + $(".rating-' . $model['id'] . '").text().trim() + " untuk " + "' . $model['business']['name'] . '";
         var description = "' . addslashes($model['text']) . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";

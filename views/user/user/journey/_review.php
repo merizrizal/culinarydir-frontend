@@ -17,7 +17,10 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
+            url: "' . Yii::$app->urlManager->createUrl([
+                'user-data/user-post',
+                'username' => $username
+            ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
             success: function(response) {
     
                 $(".user-post-section").html(response);
@@ -148,7 +151,7 @@ $jscript = '
     
     $(".user-post-section").on("click", ".share-review-trigger", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review']) . '/" + $(this).parents(".user-post-item").find(".user-post-main-id").val();
+        var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".user-post-item").find(".rating > h3").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-review > a").text();
         var description = $(this).parents(".user-post-item").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");

@@ -1,12 +1,21 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
+use yii\web\View;
 use sycomponent\Tools;
+use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessPromo core\models\BusinessPromo */
 
 $this->title = $modelBusinessPromo['title'];
+
+$ogUrl = [
+    'page/detail-promo',
+    'id' => $modelBusinessPromo['id'],
+    'uniqueName' => $modelBusinessPromo['business']['unique_name']
+];
 
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
 
@@ -15,6 +24,8 @@ if (!empty($modelBusinessPromo['image'])) {
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image'];
 }
 
+$ogDescription = !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : $this->title;
+
 $this->registerMetaTag([
     'name' => 'keywords',
     'content' => 'asik, makan, kuliner, bandung, jakarta'
@@ -22,12 +33,12 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $modelBusinessPromo['short_description']
+    'content' => $ogDescription
 ]);
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl(['page/detail-promo', 'id' => $modelBusinessPromo['id']])
+    'content' => Yii::$app->urlManager->createAbsoluteUrl($ogUrl)
 ]);
 
 $this->registerMetaTag([
@@ -42,7 +53,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:description',
-    'content' => !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => $ogDescription
 ]);
 
 $this->registerMetaTag([
@@ -60,7 +71,8 @@ $this->registerMetaTag([
 
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back'), [
                         'page/detail',
-                        'id' => $modelBusinessPromo['business_id'],
+                        'city' => Inflector::slug($modelBusinessPromo['business']['businessLocation']['city']['name']),
+                        'uniqueName' => $modelBusinessPromo['business']['unique_name'],
                         '#' => 'special',
                     ]) ?>
 
@@ -117,10 +129,10 @@ $this->registerMetaTag([
                                 <hr class="divider-w">
 								
 								<?php
-								$dateStart = Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'); 
-								$dateEnd = Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium');
-								
-								$promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', ['dateStart' => $dateStart, 'dateEnd' => $dateEnd]); ?>
+								$promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
+								    'dateStart' => Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'), 
+								    'dateEnd' => Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium')
+								]); ?>
 								
                                 <div class="box-content">
                                     <div class="row">
@@ -148,3 +160,33 @@ $this->registerMetaTag([
     </section>
 
 </div>
+
+<?php
+$this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
+
+    echo '
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": "' . $modelBusinessPromo['title'] . '",
+            "startDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start']) . '",
+            "location": {
+                "@type": "Place",
+                "name": "' . $modelBusinessPromo['business']['name'] . '",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "' . AddressType::widget([
+                        'addressType' => $modelBusinessPromo['business']['businessLocation']['address_type'],
+                        'address' => $modelBusinessPromo['business']['businessLocation']['address']
+                    ]). '",
+                    "addressLocality": "' . $modelBusinessPromo['business']['businessLocation']['city']['name'] . '"
+                }
+            },
+            "image": "' . $ogImage . '",
+            "description": "' . $modelBusinessPromo['short_description'] . '",
+            "endDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end']) . '"
+        }
+        </script>
+    ';
+});?>

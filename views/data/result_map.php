@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
@@ -252,7 +253,11 @@ $linkPager = LinkPager::widget([
                         'businessPrice' => $businessPrice,
                         'businessLatitude' => $businessLatitude,
                         'businessLongitude' => $businessLongitude,
-                        'businessUrl' => Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusiness['id']])
+                        'businessUrl' => Yii::$app->urlManager->createUrl([
+                            'page/detail',
+                            'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']),
+                            'uniqueName' => $dataBusiness['unique_name']
+                        ])
                     ];
 
                 endforeach;

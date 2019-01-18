@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use sycomponent\Tools;
@@ -76,7 +77,7 @@ $linkPager = LinkPager::widget([
                             	<?= Html::hiddenInput('business_id', $dataBusiness['id'], ['class' => 'business-id']) ?>
 
                                 <div class="row">
-                                    <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusiness['id']]) ?>">
+                                    <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link">
 
                                         <?php
                                         $images = [];
@@ -166,7 +167,13 @@ $linkPager = LinkPager::widget([
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="m-0">
 
-                                                        <?= Html::a($dataBusiness['name'], ['page/detail', 'city' => strtolower($dataBusiness['businessLocation']['city']['name']), 'uniqueName' => $dataBusiness['unique_name']]); ?>
+                                                        <?= Html::a($dataBusiness['name'], 
+                                                            [
+                                                                'page/detail', 
+                                                                'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']), 
+                                                                'uniqueName' => $dataBusiness['unique_name']
+                                                            ],
+                                                            ['class' => 'link-to-business-detail']); ?>
 
                                                     </h4>
                                                 </div>
@@ -327,6 +334,14 @@ $jscript = '
             placement: "bottom bottom-left",
             target: "#business-product-category-container-popover" + $(this).val()
         });
+    });
+
+    $(".direct-link").on("click", function() {
+
+        if (!$(this).hasClass("next") && !$(this).hasClass("prev")) {
+
+            window.location.href = $(this).parent().find(".link-to-business-detail").attr("href");
+        }
     });
 
     $("#pjax-result-list").off("pjax:send");

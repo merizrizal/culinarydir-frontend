@@ -60,8 +60,8 @@ class OrderController extends base\BaseController
             $flag = false;
 
             $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
-            $modelTransactionSessionOrder->business_delivery_id = $post['business_delivery_id'];
-            $modelTransactionSessionOrder->business_payment_id = $post['business_payment_id'];
+            $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
+            $modelTransactionSessionOrder->business_payment_id = !empty($post['business_payment_id']) ? $post['business_payment_id'] : null;
             
             $modelTransactionSession->is_closed = true;
             $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;

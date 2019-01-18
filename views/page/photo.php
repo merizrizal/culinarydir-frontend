@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\web\View;
 use sycomponent\Tools;
 use common\components\Helper;
@@ -11,7 +12,12 @@ use frontend\components\GrowlCustom;
 
 $this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl(['page/photo', 'id' => $modelUserPostMain['id']]);
+$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+    'page/photo',
+    'id' => $modelUserPostMain['id'],
+    'uniqueName' => $modelUserPostMain['business']['unique_name'],
+]);
+
 $ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Asikmakan';
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;
 $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
@@ -64,7 +70,11 @@ $this->registerMetaTag([
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), ['page/detail', 'id' => $modelUserPostMain['business']['id']], ['class' => 'btn btn-standard p-0']) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
+                        'page/detail', 
+                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']), 
+                        'uniqueName' => $modelUserPostMain['business']['unique_name']
+                    ], ['class' => 'btn btn-standard p-0']); ?>
 
                 </div>
             </div>
@@ -85,23 +95,7 @@ $this->registerMetaTag([
                                         if (!empty($modelUserPostMain['user']['image'])) {
                                             
                                             $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
-                                        }
-                                    
-                                        $layout = '
-                                            <div class="widget">
-                                                <div class="widget-posts-image">
-            
-            									   ' .	Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
-                        
-                                                </div>
-                        
-                                                <div class="widget-posts-body">
-                                                    ' . Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) . '
-                                                    <br>
-                                                    <small>' . Helper::asRelativeTime($modelUserPostMain['created_at']) . '</small>
-                                                </div>
-                                            </div>
-                                        '; ?>
+                                        } ?>
 
                                         <div class="photo-container">
     
@@ -176,31 +170,25 @@ $this->registerMetaTag([
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
                                                                 
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], [
-                                                                        'class' => 'btn btn-default btn-small likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab'
-                                                                    ]); ?>
-                                                                    
-                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-small likes-photo-trigger ' . $selected . ' visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-small btn-round-4 likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-small btn-round-4 likes-photo-trigger ' . $selected . ' visible-xs']); ?>
                                                                     
                                                                 </li>
                                                                 <li>
                                                                 
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', [
-                                                                        'class' => 'btn btn-default btn-small comments-photo-trigger visible-lg visible-md visible-sm visible-tab'
-                                                                    ]); ?>
-                                                                    
-                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-small comments-photo-trigger visible-xs']); ?>
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-small btn-round-4 comments-photo-trigger visible-lg visible-md visible-sm visible-tab']); ?>
+                                                                    <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-small btn-round-4 comments-photo-trigger visible-xs']); ?>
                                                                     
                                                                 </li>
                                                                 <li class="visible-xs-inline-block">
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-small share-review-trigger']); ?>
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small share-review-trigger']); ?>
+                                                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
                                                                 </li>
                                                             </ul>
                                                     	</div>

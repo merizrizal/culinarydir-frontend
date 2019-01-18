@@ -21,7 +21,10 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            url: "' . Yii::$app->urlManager->createUrl(['user-data/user-post-photo']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
+            url: "' . Yii::$app->urlManager->createUrl([
+                'user-data/user-post-photo',
+                'username' => $username
+            ]). (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
             success: function(response) {
 
                 $(".user-post-photo").html(response);
@@ -37,7 +40,7 @@ $jscript = '
 
     $(".user-post-photo").on("click", ".share-image-trigger", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/photo']) . '/" + $(this).parents(".work-item").find(".work-image img").data("id");
+        var url = $(this).attr("href");
         var title = "Foto untuk " + $(this).parents(".work-item").find(".business-name").val();
         var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src");

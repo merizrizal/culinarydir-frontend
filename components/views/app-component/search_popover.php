@@ -13,7 +13,7 @@ use core\models\Category;
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
-$keywordType = $keyword['type'];
+$keywordType = $keyword['searchType'];
 $keywordCity = $keyword['city'];
 $keywordName = $keyword['name'];
 $keywordProductId = $keyword['product']['id'];
@@ -71,11 +71,9 @@ if ($popover):
 
         <div class="search-box popover-search-box">
     
-            <?= Html::beginForm(['page/result-map'], 'get', [
-                'id' => 'widget-search-map'
+            <?= Html::beginForm(['page/result-map', 'searchType' => $keywordType, 'city' => 'city_name'], 'get', [
+                'class' => 'widget-search-map'
             ]); ?>
-    
-                <?= Html::hiddenInput('tp', !empty($keywordType) ? $keywordType : 1); ?>
     
                 <div class="row">
                     <div class="col-sm-12 col">
@@ -134,7 +132,7 @@ if ($popover):
                     </div>
                         
                     <?php
-                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 2)): ?>
+                    if (!empty($keywordType) && ($keywordType == Yii::t('app', 'favorite') || $keywordType == Yii::t('app', 'promo'))): ?>
         
                         <div class="col-sm-6 col">
                             <div class="form-group">
@@ -165,7 +163,7 @@ if ($popover):
                 <div class="row">
                 	
                 	<?php
-                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 3)): ?>
+                	if (!empty($keywordType) && ($keywordType == Yii::t('app', 'favorite') || $keywordType == Yii::t('app', 'online-order'))): ?>
                     
                         <div class="col-sm-6 col">
                             <div class="form-group">
@@ -210,11 +208,9 @@ else: ?>
 
     <div class="search-box">
 
-        <?= Html::beginForm(['page/result-map'], 'get', [
-            'id' => 'widget-search-map'
+        <?= Html::beginForm(['page/result-map', 'searchType' => $keywordType, 'city' => 'city_name'], 'get', [
+            'class' => 'widget-search-map'
         ]); ?>
-
-            <?= Html::hiddenInput('tp', !empty($keywordType) ? $keywordType : 1); ?>
 
                 <div class="row">
                     <div class="col-sm-12 col">
@@ -261,7 +257,7 @@ else: ?>
                     </div>
                         
                     <?php
-                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 2)): ?>
+                    if (!empty($keywordType) && ($keywordType == Yii::t('app', 'favorite') || $keywordType == Yii::t('app', 'promo'))): ?>
         
                         <div class="col-sm-12 col">
                             <div class="form-group">
@@ -292,7 +288,7 @@ else: ?>
                 <div class="row">
                 	
                 	<?php
-                	if (!empty($keywordType) && ($keywordType == 1 || $keywordType == 3)): ?>
+                	if (!empty($keywordType) && ($keywordType == Yii::t('app', 'favorite') || $keywordType == Yii::t('app', 'online-order'))): ?>
                     
                         <div class="col-sm-12 col mb-20">
                         	<div class="form-group">
@@ -348,6 +344,9 @@ else: ?>
 endif; ?>
 
 <?php
+
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
+
 $csscript = '
     
     .modal {
@@ -356,6 +355,8 @@ $csscript = '
 ';
 
 $this->registerCss($csscript);
+
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $(".city-id").select2({
@@ -376,7 +377,12 @@ $jscript = '
         $(this).css("z-index", 1039);
     });
 
-    $(".city-id").val("1").trigger("change");
+    $(".widget-search-map").on("submit", function() {
+
+        var action = $(this).attr("action").replace("city_name", $(this).find(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
+
+        $(this).attr("action", action);
+    });
 
     $(".lbl-clear").on("click", function() {
 

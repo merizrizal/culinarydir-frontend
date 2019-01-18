@@ -70,6 +70,12 @@ $linkPager = LinkPager::widget([
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
+                
+                $urlReviewDetail = [
+                    'page/review',
+                    'id' => $dataUserPostMain['id'],
+                    'uniqueName' => $dataUserPostMain['business']['unique_name'],
+                ];
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
@@ -224,7 +230,7 @@ $linkPager = LinkPager::widget([
                                                         	
                                                         	if ($i == 4 && $hiddenPhotos != 0) {
                                                         	    
-                                                        	    echo Html::a('+' . $hiddenPhotos, ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                        	    echo Html::a('+' . $hiddenPhotos, $urlReviewDetail, ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
                                                         	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image hidden"]);
                                                         	} else { 
                                                         	    
@@ -298,7 +304,7 @@ $linkPager = LinkPager::widget([
                                             </a>
                                             <ul class="dropdown-menu pull-right review-btn">
                                                 <li>
-                                                	<?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'share-review-trigger']); ?>
+                                                	<?= Html::a('<i class="fa fa-share-alt"></i> Share', Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail), ['class' => 'share-review-trigger']); ?>
                                                 </li>
                                                 <li>
                                                    	<?= Html::a('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $dataUserPostMain['id']], ['class' => 'user-delete-review-trigger']) ?>
@@ -309,7 +315,8 @@ $linkPager = LinkPager::widget([
                                     <?php
                                     else:
                                     
-                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']);
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']);
+                                        
                                     endif; ?>
                                     
                                 </li>                                
@@ -318,7 +325,7 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
                                 </li>
 
                                 <?php

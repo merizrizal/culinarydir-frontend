@@ -500,6 +500,7 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $modelBusinessDetail = BusinessDetail::find()
+                ->joinWith(['business'])
                 ->andWhere(['business_id' => $modelUserPostMain->business_id])
                 ->one();
             
@@ -558,6 +559,8 @@ class ActionController extends base\BaseController
             $result['userCreated'] = Yii::$app->formatter->asRelativeTime($modelUserPostMain->created_at);
             $result['userPostMain'] = $modelUserPostMain->toArray();
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
+            $result['shareUrl']['notAbsolute'] = Yii::$app->urlManager->createUrl(['page/review', 'id' => $modelUserPostMain->id, 'uniqueName' => $modelBusinessDetail->business->unique_name]);
+            $result['shareUrl']['absolute'] = Yii::$app->urlManager->createAbsoluteUrl($result['shareUrl']['notAbsolute']);
             $result['deleteUrlPhoto'] = Yii::$app->urlManager->createUrl(['user-action/delete-photo']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
         } else {
@@ -687,6 +690,7 @@ class ActionController extends base\BaseController
         if ($flag) {
             
             $modelBusinessDetail = BusinessDetail::find()
+                ->joinWith(['business'])
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
             
@@ -746,6 +750,8 @@ class ActionController extends base\BaseController
             ]);
             $result['commentCount'] = count($modelUserPostMain->userPostComments);
             $result['userPostMainPhoto'] = $dataUserPostMainPhoto;
+            $result['shareUrl']['notAbsolute'] = Yii::$app->urlManager->createUrl(['page/review', 'id' => $modelUserPostMain->id, 'uniqueName' => $modelBusinessDetail->business->unique_name]);
+            $result['shareUrl']['absolute'] = Yii::$app->urlManager->createAbsoluteUrl($result['shareUrl']['notAbsolute']);
             $result['deleteUrlReview'] = Yii::$app->urlManager->createUrl(['user-action/delete-user-post', 'id' => $modelUserPostMain->id]);
             $result['deletedPhotoId'] = !empty($post['ImageReviewDelete']) ? $post['ImageReviewDelete'] : null;
         } else {

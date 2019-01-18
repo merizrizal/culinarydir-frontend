@@ -68,38 +68,23 @@ class DataController extends base\BaseController
 
     public function actionResultList()
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $this->redirect(str_replace('/data-kuliner/di/', '/kuliner/di/', Yii::$app->request->getUrl()));
-        } else {
-            
-            $this->layout = 'ajax';
-        }
-        
         return $this->getResult('result_list');
     }
 
     public function actionResultMap()
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $this->redirect(str_replace('/map/data-kuliner/di/', '/map/kuliner/di/', Yii::$app->request->getUrl()));
-        } else {
-            
-            $this->layout = 'ajax';
-        }
-        
         return $this->getResult('result_map');
     }
 
-    public function actionPostReview()
+    public function actionPostReview($city, $uniqueName)
     {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['page/detail', 
-                'id' => $queryParams['business_id'],
+                'city' => $city,
+                'uniqueName' => $uniqueName,
                 'redirect' => 'review', 
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -111,6 +96,9 @@ class DataController extends base\BaseController
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
                     
@@ -133,8 +121,9 @@ class DataController extends base\BaseController
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.type' => 'Review'])
-            ->andWhere(['user_post_main.business_id' => Yii::$app->request->get('business_id')])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
@@ -165,14 +154,15 @@ class DataController extends base\BaseController
         ]);
     }
 
-    public function actionPostPhoto()
-    {        
+    public function actionPostPhoto($city, $uniqueName)
+    {
         if (!Yii::$app->request->isAjax) {
             
             $queryParams = Yii::$app->request->getQueryParams();
             
             $this->redirect(['page/detail',
-                'id' => $queryParams['business_id'],
+                'city' => $city,
+                'uniqueName' => $uniqueName,
                 'redirect' => 'photo',
                 'page' => !empty($queryParams['page']) ? $queryParams['page'] : 1,
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
@@ -181,12 +171,18 @@ class DataController extends base\BaseController
             
             $this->layout = 'ajax';
         }
-
+        
         $modelUserPostMain = UserPostMain::find()
-            ->andWhere(['type' => 'Photo'])
-            ->andWhere(['business_id' => Yii::$app->request->get('business_id')])
-            ->andWhere(['is_publish' => true])
-            ->orderBy(['created_at' => SORT_DESC])
+            ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
+            ])
+            ->andWhere(['user_post_main.type' => 'Photo'])
+            ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
+            ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
@@ -319,25 +315,33 @@ class DataController extends base\BaseController
 
     private function getResult($fileRender)
     {
+        if (!Yii::$app->request->isAjax) {
+            
+            $this->redirect(str_replace('/data-kuliner/', '/kuliner/', Yii::$app->request->getUrl()));
+        } else {
+            
+            $this->layout = 'ajax';
+        }
+        
         $get = Yii::$app->request->get();
         $paramsView = [];
         
-        if ($get['tp'] == 1 || $get['tp'] == 3) {
+        if ($get['searchType'] == Yii::t('app', 'favorite') || $get['searchType'] == Yii::t('app', 'online-order')) {
             
             $modelBusiness = Business::find()
                 ->joinWith([
-                    'businessCategories' => function($query) {
+                    'businessCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'businessCategories.category',
-                    'businessImages' => function($query) {
+                    'businessImages' => function ($query) {
                     
                         $query->andOnCondition(['type' => 'Profile']);
                     },
                     'businessLocation',
                     'businessLocation.city',
-                    'businessProductCategories' => function($query) {
+                    'businessProductCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
@@ -346,7 +350,7 @@ class DataController extends base\BaseController
                         $query->andOnCondition(['product_category.is_active' => true]);
                     },
                     'businessDetail',
-                    'userLoves' => function($query) {
+                    'userLoves' => function ($query) {
                     
                         $query->andOnCondition([
                             'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
@@ -357,10 +361,11 @@ class DataController extends base\BaseController
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]]);
-            
-            if (!empty($get['pmn']) || !empty($get['pmx'])) {
+                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']]);
                 
+            if (!empty($get['pmn']) || !empty($get['pmx'])) {
+             
                 if ($get['pmn'] == 0 && $get['pmx'] != 0) {
                     
                     $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['pmx']]);
@@ -386,8 +391,8 @@ class DataController extends base\BaseController
                 
                 $modelBusiness = $modelBusiness->andWhere('(acos( sin( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * sin( radians( ' . $latitude . ' ) ) + cos( radians( split_part( "business_location"."coordinate" , \',\', 1)::double precision ) ) * cos( radians( ' . $latitude . ' )) * cos( radians( split_part( "business_location"."coordinate" , \',\', 2)::double precision ) - radians( ' . $longitude . ' )) ) * 6356 * 1000) <= ' . $radius . '');
             }
-                
-            if ($get['tp'] == 1) {
+            
+            if ($get['searchType'] == Yii::t('app', 'favorite')) {
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_category.category_id' => $get['ctg']]);
                 
@@ -409,7 +414,7 @@ class DataController extends base\BaseController
                     
                     $modelBusiness = $modelBusiness->andFilterWhere([$facilityCondition => count($get['fct'])]);
                 }
-            } else if ($get['tp'] == 3) {
+            } else if ($get['searchType'] == Yii::t('app', 'online-order')) {
                 
                 $modelBusiness = $modelBusiness->andFilterWhere(['product_service.code_name' => 'order-online']);
             }
@@ -433,7 +438,7 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
             
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else if ($get['tp'] == 2) {
+        } else if ($get['searchType'] == Yii::t('app', 'promo')) {
             
             Yii::$app->formatter->timeZone = 'Asia/Jakarta';
             
@@ -448,6 +453,7 @@ class DataController extends base\BaseController
                     },
                     'business.businessCategories.category',
                     'business.businessLocation',
+                    'business.businessLocation.city',
                     'business.businessProductCategories' => function($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);

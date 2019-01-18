@@ -73,7 +73,11 @@ $linkPager = LinkPager::widget([
                                         <?php
                                         echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMain['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
                                     	
-                                        echo Html::a('<i class="fa fa-share-alt"></i>', '', ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp'; ?>
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl([
+                                            'page/photo',
+                                            'id' => $dataUserPostMain['id'],
+                                            'uniqueName' => $dataUserPostMain['business']['unique_name'],
+                                        ]), ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp'; ?>
                                         
                                     </div>
                                 </div>

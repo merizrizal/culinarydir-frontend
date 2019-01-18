@@ -77,8 +77,8 @@ class PageController extends base\BaseHistoryUrlController
         ]);
         
         $keyword = [];
-        $keyword['type'] = 1;
-        $keyword['city'] = null;
+        $keyword['searchType'] = Yii::t('app', 'favorite');
+        $keyword['city'] = 1;
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
         $keyword['product']['name'] = null;
@@ -169,7 +169,7 @@ class PageController extends base\BaseHistoryUrlController
                 }
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
-            ->andWhere(['lower(city.name)' => $city])
+            ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->asArray()->one();
         
         if (empty($modelBusiness)) {
@@ -279,11 +279,16 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionDetailPromo($id)
+    public function actionDetailPromo($id, $uniqueName)
     {
         $modelBusinessPromo = BusinessPromo::find()
-            ->andWhere(['id' => $id])
-            ->distinct()
+            ->joinWith([
+                'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
+            ])
+            ->andWhere(['business_promo.id' => $id])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
         
         if (empty($modelBusinessPromo)) {
@@ -296,7 +301,7 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionReview($id)
+    public function actionReview($id, $uniqueName)
     {
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -339,6 +344,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.id' => $id])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
@@ -378,11 +384,13 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionPhoto($id)
+    public function actionPhoto($id, $uniqueName)
     {
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
                 'business',
+                'business.businessLocation',
+                'business.businessLocation.city',
                 'user',
                 'userPostLoves' => function ($query) {
 
@@ -397,6 +405,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.id' => $id])
             ->andWhere(['user_post_main.type' => 'Photo'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
                 
         if (empty($modelUserPostMain)) {
@@ -409,17 +418,19 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
     
-    public function actionMenu($id)
+    public function actionMenu($uniqueName)
     {
         $modelBusiness = Business::find()
             ->joinWith([
+                'businessLocation',
+                'businessLocation.city',
                 'businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false])
                         ->orderBy(['order' => SORT_ASC]);
                 },
             ])
-            ->andWhere(['business.id' => $id])
+            ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
         
         $modelTransactionSession = TransactionSession::find()
@@ -452,8 +463,8 @@ class PageController extends base\BaseHistoryUrlController
         }
         
         $keyword = [];
-        $keyword['type'] = !empty($get['tp']) ? $get['tp'] : null;
-        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : null;
+        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : Yii::t('app', 'favorite');;
+        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : 1;
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
         $keyword['product']['name'] = !empty($modelProductCategory) ? $modelProductCategory['name'] : null;
@@ -461,8 +472,9 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['map']['coordinate'] = !empty($get['cmp']) ? $get['cmp'] : null;
         $keyword['map']['radius'] = !empty($get['rmp']) ? $get['rmp'] : null;
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
-        $keyword['price']['min'] = ($keyword['type'] == 1 || $keyword['type'] == 3) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
-        $keyword['price']['max'] = ($keyword['type'] == 1 || $keyword['type'] == 3) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+        $keyword['price']['min'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
+        $keyword['price']['max'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+
         
         Yii::$app->session->set('keyword', $get);
 
