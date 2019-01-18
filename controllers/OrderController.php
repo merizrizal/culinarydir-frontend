@@ -105,7 +105,7 @@ class OrderController extends base\BaseController
                 $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
                 $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
                 
-                $messageOrder = str_replace('\n', '%0A', str_replace(' ', '%20', $messageOrder));
+                $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
             }
             
             if ($flag) {

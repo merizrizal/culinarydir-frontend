@@ -422,9 +422,16 @@ class SiteController extends base\BaseController
         if (!empty($modelUser)) {
 
             $modelUser->not_active = false;
-            $flag = $modelUser->save();
 
-            if (!$flag) {
+            if ($modelUser->save()) {
+                
+                return $this->render('message', [
+                    'fullname' => $modelUser['full_name'],
+                    'title' => Yii::t('app', 'Your Account Has Been Activated'),
+                    'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
+                    'links' => ['name' => Yii::t('app', 'Login to {app}', ['app' => Yii::$app->name]), 'url' => ['site/login']],
+                ]);
+            } else {
 
                 Yii::$app->session->setFlash('message', [
                     'type' => 'danger',
@@ -436,13 +443,6 @@ class SiteController extends base\BaseController
 
                 return $this->redirect(['register']);
             }
-            
-            return $this->render('message', [
-                'fullname' => $modelUser['full_name'],
-                'title' => Yii::t('app', 'Your Account Has Been Activated'),
-                'messages' => Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
-                'links' => ['name' => Yii::t('app', 'Login to {app}', ['app' => Yii::$app->name]), 'url' => ['site/login']],
-            ]);
         } else {
             
             return $this->redirect(['login']);
