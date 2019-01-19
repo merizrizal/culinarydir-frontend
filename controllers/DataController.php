@@ -330,18 +330,18 @@ class DataController extends base\BaseController
             
             $modelBusiness = Business::find()
                 ->joinWith([
-                    'businessCategories' => function($query) {
+                    'businessCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'businessCategories.category',
-                    'businessImages' => function($query) {
+                    'businessImages' => function ($query) {
                     
                         $query->andOnCondition(['type' => 'Profile']);
                     },
                     'businessLocation',
                     'businessLocation.city',
-                    'businessProductCategories' => function($query) {
+                    'businessProductCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
@@ -350,7 +350,7 @@ class DataController extends base\BaseController
                         $query->andOnCondition(['product_category.is_active' => true]);
                     },
                     'businessDetail',
-                    'userLoves' => function($query) {
+                    'userLoves' => function ($query) {
                     
                         $query->andOnCondition([
                             'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
