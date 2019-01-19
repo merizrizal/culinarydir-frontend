@@ -336,9 +336,9 @@ $jscript = '
         });
     });
 
-    $(".direct-link").on("click", function() {
+    $(".direct-link").on("click", function(event) {
 
-        if (!$(this).hasClass("next") && !$(this).hasClass("prev")) {
+        if (!$(event.target).hasClass("next") && !$(event.target).hasClass("prev")) {
 
             window.location.href = $(this).parent().find(".link-to-business-detail").attr("href");
         }
