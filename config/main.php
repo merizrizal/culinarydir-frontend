@@ -93,6 +93,8 @@ return [
                 
                 '' => 'page/index',
                 
+                'asikmakan-smap.xml' => 'site/sitemap',
+                
                 '<controller:\w+>/<action:\w+>/<id:\w+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]

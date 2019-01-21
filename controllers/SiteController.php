@@ -7,15 +7,17 @@ use common\models\LoginForm;
 use frontend\models\UserRegister;
 use frontend\models\RequestResetPassword;
 use frontend\models\ResetPassword;
+use core\models\Business;
 use core\models\Person;
 use core\models\UserPerson;
 use core\models\User;
 use core\models\UserSocialMedia;
-use yii\filters\VerbFilter;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 use yii\base\InvalidArgumentException;
+use yii\filters\VerbFilter;
+use yii\helpers\Inflector;
+use yii\web\Response;
 use yii\web\BadRequestHttpException;
+use yii\widgets\ActiveForm;
 
 /**
  * Site controller
@@ -447,5 +449,71 @@ class SiteController extends base\BaseController
             
             return $this->redirect(['login']);
         }
+    }
+    
+    public function actionSitemap() {
+        
+        $outputData = '';
+        
+        $modelBusiness = Business::find()
+            ->joinWith([
+                'businessLocation',
+                'businessLocation.city',
+                'userPostMains' => function($query) {
+                    
+                    $query->andOnCondition(['user_post_main.parent_id' => null])
+                        ->andOnCondition(['user_post_main.type' => 'Review'])
+                        ->andOnCondition(['user_post_main.is_publish' => true]);
+                }
+            ])
+            ->andWhere('strpos("business"."unique_name", \'-\') > 0')
+            ->asArray()->all();
+
+        foreach ($modelBusiness as $dataBusiness) {
+            
+            $outputData .= '
+                <url>
+                    <loc>' . Yii::$app->urlManager->createAbsoluteUrl([
+                        'page/detail', 
+                        'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']),
+                        'uniqueName' => $dataBusiness['unique_name']
+                    ]) . '</loc>
+                    <lastmod>2019-01-21</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>0.5</priority>
+                </url>
+            ';
+            
+            foreach ($dataBusiness['userPostMains'] as $dataUserPostMain) {
+                
+                $outputData .= '
+                    <url>
+                        <loc>' . Yii::$app->urlManager->createAbsoluteUrl([
+                            'page/review',
+                            'id' => $dataUserPostMain['id'],
+                            'uniqueName' => $dataBusiness['unique_name']
+                        ]) . '</loc>
+                        <lastmod>2019-01-21</lastmod>
+                        <changefreq>monthly</changefreq>
+                        <priority>0.5</priority>
+                    </url>
+                ';
+            }
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_RAW;
+        Yii::$app->response->headers->add('Content-Type', 'text/xml');
+        
+        return '<?xml version="1.0" encoding="UTF-8"?>
+            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+                <url>
+                    <loc>https://asikmakan.com</loc>
+                    <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>0.8</priority>
+                </url>' . 
+                $outputData . '
+            </urlset>
+        ';
     }
 }
