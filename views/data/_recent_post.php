@@ -185,7 +185,7 @@ $jscript = '
             cache: false,
             type: "POST",
             data: {
-                "user_post_main_id": "' . $model['id'] . '"
+                "user_post_main_id": ' . $model['id'] . '
             },
             url: thisObj.attr("href"),
             success: function(response) {
