@@ -478,9 +478,18 @@ class SiteController extends base\BaseController
                         'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']),
                         'uniqueName' => $dataBusiness['unique_name']
                     ]) . '</loc>
-                    <lastmod>2019-01-21</lastmod>
+                    <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
                     <changefreq>monthly</changefreq>
-                    <priority>0.5</priority>
+                    <priority>0.8</priority>
+                </url>
+                <url>
+                    <loc>' . Yii::$app->urlManager->createAbsoluteUrl([
+                        'page/menu',
+                        'uniqueName' => $dataBusiness['unique_name']
+                    ]) . '</loc>
+                    <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>0.64</priority>
                 </url>
             ';
             
@@ -493,9 +502,9 @@ class SiteController extends base\BaseController
                             'id' => $dataUserPostMain['id'],
                             'uniqueName' => $dataBusiness['unique_name']
                         ]) . '</loc>
-                        <lastmod>2019-01-21</lastmod>
+                        <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
                         <changefreq>monthly</changefreq>
-                        <priority>0.5</priority>
+                        <priority>0.64</priority>
                     </url>
                 ';
             }
@@ -505,9 +514,26 @@ class SiteController extends base\BaseController
         Yii::$app->response->headers->add('Content-Type', 'text/xml');
         
         return '<?xml version="1.0" encoding="UTF-8"?>
-            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <urlset 
+                xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+                    http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
                 <url>
-                    <loc>https://asikmakan.com</loc>
+                    <loc>' . Yii::$app->urlManager->createAbsoluteUrl('') . '</loc>
+                    <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>1</priority>
+                </url>
+                <url>
+                    <loc>' . Yii::$app->urlManager->createAbsoluteUrl(['site/login']) . '</loc>
+                    <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>0.8</priority>
+                </url>
+                <url>
+                    <loc>' . Yii::$app->urlManager->createAbsoluteUrl(['site/register']) . '</loc>
                     <lastmod>' . Yii::$app->formatter->asDate(time()) . '</lastmod>
                     <changefreq>monthly</changefreq>
                     <priority>0.8</priority>
