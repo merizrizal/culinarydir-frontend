@@ -84,11 +84,10 @@ $this->registerMetaTag([
                     ';
                 	
                     $btnProfile =
-                        Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-default']) . ' 
-                        
-                        <div class="btn-group">
-                            <a class="btn btn-default btn-small btn-round-4 dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-h"></i>
+                        '<div class="btn-group">' .
+                            Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
+                            <a class="btn btn-d btn-standard dropdown-toggle-split" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-ellipsis-h"></span>
                             </a>
                             <ul class="dropdown-menu pull-right profile-btn">
                                 <li>' .
