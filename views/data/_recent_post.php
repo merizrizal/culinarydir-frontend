@@ -8,13 +8,7 @@ use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */
-/* @var $model core\models\UserPostMain */ 
-
-$urlReviewDetail = [
-    'page/review', 
-    'id' => $model['id'],
-    'uniqueName' => $model['business']['unique_name'],
-]; ?>
+/* @var $model core\models\UserPostMain */ ?>
 
 <div class="col-lg-4 col-md-4 col-sm-6 col-tab-6 col-xs-12">
     <div class="recent-post">
@@ -59,7 +53,7 @@ $urlReviewDetail = [
                                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 478, 165);
                             }
 
-                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
+                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), ['page/review', 'id' => $model['id'], 'uniqueName' => $model['business']['unique_name']]); ?>
 
                         </div>
                     </div>
@@ -83,7 +77,7 @@ $urlReviewDetail = [
                                     
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', $urlReviewDetail, ['class' => 'btn btn-default btn-small btn-round-4']) ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-small btn-round-4']) ?>
                                 </li>
                                 <li>
                                     <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
@@ -99,10 +93,10 @@ $urlReviewDetail = [
                             
                                 <?= Html::a($model['business']['name'], [
                                     'page/detail', 
-                                    'city' => Inflector::slug($model['business']['businessLocation']['city']['name']), 
+                                    'city' => Inflector::slug($model['business']['businessLocation']['city']['name']),
                                     'uniqueName' => $model['business']['unique_name']
                                 ]); ?>
-                            
+                                
                             </h5>
                         </div>
                     </div>
@@ -149,7 +143,7 @@ $urlReviewDetail = [
 
                             <?php
                             $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 80, '. . .') . '<br>' : '';
-                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', $urlReviewDetail);
+                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', ['page/review', 'id' => $model['id'], 'uniqueName' => $model['business']['unique_name']]);
 
                             echo $textReview; ?>
 
@@ -167,7 +161,7 @@ $jscript = '
 
     $(".share-feature-' . $model['id'] . '-trigger").on("click", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail) . '";
+        var url = "' . Yii::$app->urlManager->createAbsoluteUrl(['page/review', 'id' => $model['id']]) . '";
         var title = "Rating " + $(".rating-' . $model['id'] . '").text().trim() + " untuk " + "' . $model['business']['name'] . '";
         var description = "' . addslashes($model['text']) . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";
@@ -191,7 +185,7 @@ $jscript = '
             cache: false,
             type: "POST",
             data: {
-                "user_post_main_id": ' . $model['id'] . '
+                "user_post_main_id": "' . $model['id'] . '"
             },
             url: thisObj.attr("href"),
             success: function(response) {
