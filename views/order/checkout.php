@@ -281,7 +281,7 @@ $this->title = 'Checkout'; ?>
                                                 			                }
                                             			                ]);
                                                     			    
-                                                    			        echo '<i>*' . Yii::t('app', 'If payment is made by transfer or online, please send a screenshot of proof of payment') . '</i>';
+                                                    			        echo '<i>*' . Yii::t('app', 'For transfer or online payments, please send a screenshot of proof of payment') . '</i>';
                                                     			} else {
                                                     			    
                                                     			    echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
