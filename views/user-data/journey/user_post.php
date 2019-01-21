@@ -316,7 +316,6 @@ $linkPager = LinkPager::widget([
                                     else:
                                     
                                         echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']);
-                                        
                                     endif; ?>
                                     
                                 </li>                                
