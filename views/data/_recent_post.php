@@ -77,7 +77,7 @@ use common\components\Helper;
                                     
                                 </li>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id']], ['class' => 'btn btn-default btn-small btn-round-4']) ?>
+                                    <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', ['page/review', 'id' => $model['id'], 'uniqueName' => $model['business']['unique_name']], ['class' => 'btn btn-default btn-small btn-round-4']) ?>
                                 </li>
                                 <li>
                                     <?= Html::a('<i class="fa fa-share-alt"></i> Share', '', ['class' => 'btn btn-default btn-small btn-round-4 share-feature-' . $model['id'] . '-trigger visible-lg visible-sm']); ?>
