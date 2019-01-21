@@ -288,8 +288,6 @@ class PageController extends base\BaseHistoryUrlController
                 'business',
                 'business.businessLocation',
                 'business.businessLocation.city',
-                'business.businessLocation.village',
-                'business.businessLocation.district',
             ])
             ->andWhere(['business_promo.id' => $id])
             ->andWhere(['business.unique_name' => $uniqueName])

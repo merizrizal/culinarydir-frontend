@@ -72,6 +72,7 @@ $this->registerMetaTag([
                 	$img = '/img/user/default-avatar.png';
                 	
                 	if (!empty($modelUser['image'])) {
+                	    
                 	    $img = Tools::thumb('/img/user/', $modelUser['image'], 160, 160);
                 	}
                 	
@@ -82,11 +83,20 @@ $this->registerMetaTag([
                         </h3>
                     ';
                 	
-                    $btnProfile = '
-                        <div class="btn-group" role="group">' . 
-                            Html::a('<i class="aicon aicon-pencil2"></i>', ['user/update-profile'], ['class' => 'btn btn-standard btn-default btn-round-4']) .
-                            Html::a('<i class="aicon aicon-document-edit"></i>', ['user/change-password'], ['class' => 'btn btn-standard btn-default btn-round-4']) .
-                            Html::a('<i class="aicon aicon-switch"></i>', ['site/logout'], ['class' => 'btn btn-standard btn-default btn-round-4', 'data-method' => 'post']) . '
+                    $btnProfile =
+                        '<div class="btn-group">' .
+                            Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
+                            <a class="btn btn-d btn-standard dropdown-toggle-split" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-ellipsis-h"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right profile-btn">
+                                <li>' .
+                                    Html::a('<i class="aicon aicon-key2"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) .
+                                '</li>
+                                <li>' .
+                                   	Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout'], ['data-method' => 'post']) .
+                                '</li>
+                            </ul>
                         </div>
                     '; ?>
 
@@ -98,6 +108,7 @@ $this->registerMetaTag([
                                         <?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body">
+                                    
                                         <?= $userName ?>
                                         <?= $btnProfile ?>
                                     </div>
@@ -206,24 +217,30 @@ $this->registerMetaTag([
                         <div class="tab-content">
 
                             <div role="tabpanel" class="tab-pane fade in active p-0" id="view-journey">
+                            
                                 <?= $this->render('user/_journey', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
+                                
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-photo">
+                            
                                 <?= $this->render('user/_photo', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
+                                
                             </div>
 							
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-order-history">
+                            
                                 <?= $this->render('user/_order_history', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
+                                
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">
