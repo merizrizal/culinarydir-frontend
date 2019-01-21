@@ -402,7 +402,7 @@ class DataController extends base\BaseController
                     
                     foreach ($get['fct'] as $facilityId) {
                         
-                        $facilityCondition .= 'business_facility.facility_id = ' . $facilityId . ' OR ';
+                        $facilityCondition .= 'business_facility.facility_id = \'' . $facilityId . '\' OR ';
                     }
                         
                     $facilityCondition = '
