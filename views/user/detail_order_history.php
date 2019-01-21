@@ -5,11 +5,18 @@ use yii\helpers\Html;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 use sycomponent\Tools;
+use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
 
-$this->title = Yii::t('app', 'Order Details'); ?>
+$this->title = Yii::t('app', 'Order Details'); 
+
+$urlDetail = [
+    'page/detail',
+    'city' => Inflector::slug($modelTransactionSession['business']['businessLocation']['city']['name']),
+    'uniqueName' => $modelTransactionSession['business']['unique_name']
+]; ?>
 
 <div class="main">
     <section class="module-extra-small bg-main">
@@ -41,13 +48,13 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                             		<div class="row mt-10 mb-10">
                                         <div class="col-sm-6 col-tab-7 col-xs-12">
                                             <div class="widget-posts-image image-order-history">
-                                                <?= Html::a($img, ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
+                                                <?= Html::a($img, $urlDetail) ?>
                                             </div>
                                         	<small>
                                         		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
                                     		</small>
                                         	<br>
-                                        		<?= Html::a($modelTransactionSession['business']['name'], ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
+                                        		<?= Html::a($modelTransactionSession['business']['name'], $urlDetail) ?>
                                             <br>
                                             <small>
                                                 <?= AddressType::widget(['businessLocation' => $modelTransactionSession['business']['businessLocation']]); ?>

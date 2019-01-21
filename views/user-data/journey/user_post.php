@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use common\components\Helper;
 use sycomponent\Tools;
 use kartik\rating\StarRating;
+use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -76,6 +77,12 @@ $linkPager = LinkPager::widget([
                     'id' => $dataUserPostMain['id'],
                     'uniqueName' => $dataUserPostMain['business']['unique_name'],
                 ];
+                
+                $urlDetail = [
+                    'page/detail',
+                    'city' => Inflector::slug($dataUserPostMain['business']['businessLocation']['city']['name']),
+                    'uniqueName' => $dataUserPostMain['business']['unique_name']
+                ];
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
@@ -105,11 +112,11 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image business-image">
-                                    <?= Html::a($img, ['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>
+                                    <?= Html::a($img, $urlDetail) ?>
                                 </div>
                     
                                 <div class="widget-posts-body business-review">
-                                    <?= Html::a($dataUserPostMain['business']['name'], ['page/detail', 'id' => $dataUserPostMain['business']['id']]) ?>
+                                    <?= Html::a($dataUserPostMain['business']['name'], $urlDetail) ?>
                                     <br>
                                     <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
                                 </div>
