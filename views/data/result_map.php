@@ -189,12 +189,7 @@ $linkPager = LinkPager::widget([
                                                         <ul class="icon-list">
                                                             <li>
                                                                 <i class="aicon aicon-home"></i>
-
-                                                                <?= AddressType::widget([
-                                                                    'addressType' => $dataBusiness['businessLocation']['address_type'],
-                                                                    'address' => $dataBusiness['businessLocation']['address']
-                                                                ]) ?>
-
+                                                                <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
                                                                 <i class="aicon aicon-rupiah"></i>
@@ -246,10 +241,7 @@ $linkPager = LinkPager::widget([
                         'businessImage' => $image,
                         'businessName' => $dataBusiness['name'],
                         'businessCategory' => $businessCategory,
-                        'businessAddress' => AddressType::widget([
-                            'addressType' => $dataBusiness['businessLocation']['address_type'],
-                            'address' => $dataBusiness['businessLocation']['address']
-                        ]),
+                        'businessAddress' => AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]),
                         'businessPrice' => $businessPrice,
                         'businessLatitude' => $businessLatitude,
                         'businessLongitude' => $businessLongitude,

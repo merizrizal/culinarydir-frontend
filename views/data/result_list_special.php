@@ -136,13 +136,9 @@ $linkPager = LinkPager::widget([
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <div class="widget">
                                                         <ul class="icon-list">
-                                                            <li><i class="aicon aicon-home"></i>
-
-                                                                <?= AddressType::widget([
-                                                                    'addressType' => $dataBusinessPromo['business']['businessLocation']['address_type'],
-                                                                    'address' => $dataBusinessPromo['business']['businessLocation']['address']
-                                                                ]) ?>
-
+                                                            <li>
+                                                            	<i class="aicon aicon-home"></i>
+                                                                <?= AddressType::widget(['businessLocation' => $dataBusinessPromo['business']['businessLocation']]) ?>
                                                             </li>
                                                         </ul>
                                                     </div>

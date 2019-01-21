@@ -33,8 +33,8 @@ $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
 $ogTitle = $modelBusiness['name'];
 
 $ogDescription = 'Kunjungi kami di ' . AddressType::widget([
-    'addressType' => $modelBusiness['businessLocation']['address_type'],
-    'address' => $modelBusiness['businessLocation']['address']
+    'businessLocation' => $modelBusiness['businessLocation'],
+    'showDetail' => true
 ]) . '.';
 
 $ogBusinessCategory = '';
@@ -340,8 +340,8 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                                         <?php 
                                                                         echo AddressType::widget([
-                                                                            'addressType' => $modelBusiness['businessLocation']['address_type'],
-                                                                            'address' => $modelBusiness['businessLocation']['address']
+                                                                            'businessLocation' => $modelBusiness['businessLocation'],
+                                                                            'showDetail' => true
                                                                         ]);
                                                                         
                                                                         echo !empty($modelBusiness['businessLocation']['address_info']) ? '<br>' . $modelBusiness['businessLocation']['address_info'] : '';
@@ -1161,8 +1161,8 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "' . AddressType::widget([
-                    'addressType' => $modelBusiness['businessLocation']['address_type'],
-                    'address' => $modelBusiness['businessLocation']['address']
+                    'businessLocation' => $modelBusiness['businessLocation'],
+                    'showDetail' => true
                 ]). '",
                 "AddressLocality": "' . $modelBusiness['businessLocation']['city']['name'] . '"
             },

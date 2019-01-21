@@ -93,12 +93,7 @@ $linkPager = LinkPager::widget([
                             	<?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
                             <br>
                             <small>
-                            
-                                <?= AddressType::widget([
-                                    'addressType' => $dataTransactionSession['business']['businessLocation']['address_type'],
-                                    'address' => $dataTransactionSession['business']['businessLocation']['address']
-                                ]); ?>
-                            
+                                <?= AddressType::widget(['businessLocation' => $dataTransactionSession['business']['businessLocation']]); ?>
                             </small>
                         </div>
                     </div>

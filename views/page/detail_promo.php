@@ -177,8 +177,8 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "' . AddressType::widget([
-                        'addressType' => $modelBusinessPromo['business']['businessLocation']['address_type'],
-                        'address' => $modelBusinessPromo['business']['businessLocation']['address']
+                        'businessLocation' => $modelBusinessPromo['business']['businessLocation'],
+                        'showDetail' => true
                     ]). '",
                     "addressLocality": "' . $modelBusinessPromo['business']['businessLocation']['city']['name'] . '"
                 }

@@ -198,12 +198,7 @@ $linkPager = LinkPager::widget([
                                                         <ul class="icon-list">
                                                             <li>
                                                                 <i class="aicon aicon-home"></i>
-
-                                                                <?= AddressType::widget([
-                                                                    'addressType' => $dataBusiness['businessLocation']['address_type'],
-                                                                    'address' => $dataBusiness['businessLocation']['address']
-                                                                ]) ?>
-
+                                                                <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
                                                                 <i class="aicon aicon-rupiah"></i>

@@ -50,12 +50,7 @@ $this->title = Yii::t('app', 'Order Details'); ?>
                                         		<?= Html::a($modelTransactionSession['business']['name'], ['page/detail', 'id' => $modelTransactionSession['business']['id']]) ?>
                                             <br>
                                             <small>
-                                            
-                                                <?= AddressType::widget([
-                                                    'addressType' => $modelTransactionSession['business']['businessLocation']['address_type'],
-                                                    'address' => $modelTransactionSession['business']['businessLocation']['address']
-                                                ]); ?>
-                                            
+                                                <?= AddressType::widget(['businessLocation' => $modelTransactionSession['business']['businessLocation']]); ?>
                                             </small>
                                         </div>
                                     </div>

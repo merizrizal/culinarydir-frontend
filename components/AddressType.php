@@ -6,8 +6,9 @@ use yii\helpers\Html;
 
 class AddressType extends Widget
 {
-
-    public $address;
+    public $businessLocation;
+    
+    public $showDetail = false;
 
     public $addressType;
 
@@ -17,13 +18,13 @@ class AddressType extends Widget
     {
         parent::init();
 
-        if ($this->addressType == "Jalan") {
+        if ($this->businessLocation['address_type'] == "Jalan") {
 
             $this->addressTypeShort = "Jl";
-        } else if ($this->addressType == "Komplek") {
+        } else if ($this->businessLocation['address_type'] == "Komplek") {
 
             $this->addressTypeShort = "Komp";
-        } else if ($this->addressType == "Gang") {
+        } else if ($this->businessLocation['address_type'] == "Gang") {
 
             $this->addressTypeShort = "Gg";
         }
@@ -31,7 +32,9 @@ class AddressType extends Widget
 
     public function run()
     {
-        return Html::encode($this->addressTypeShort . '. ' . $this->address);
+        $detail = $this->showDetail ? ', ' . $this->businessLocation['village']['name'] . ', ' . $this->businessLocation['district']['name'] : '';
+        
+        return Html::encode($this->addressTypeShort . '. ' . $this->businessLocation['address'] . $detail);
     }
     
 }
