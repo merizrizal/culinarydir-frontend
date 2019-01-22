@@ -155,9 +155,7 @@ $linkPager = LinkPager::widget([
                                                                     <div class="popover-body popover-content">
                                                                         <div class="row">
                                                                             <div class="col-sm-12 col-xs-12">
-
                                                                                 <?= $businessProductCategoryPopover; ?>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
