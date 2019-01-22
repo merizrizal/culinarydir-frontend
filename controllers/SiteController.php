@@ -18,7 +18,6 @@ use yii\helpers\Inflector;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
-use core\models\UserLevel;
 
 /**
  * Site controller
@@ -96,10 +95,8 @@ class SiteController extends base\BaseController
                 $modelPerson->city_id = $post['Person']['city_id'];
 
                 if (($flag = $modelPerson->save())) {
-                    
-                    $userLevel = UserLevel::findOne(['nama_level' => 'User']);
 
-                    $modelUserRegister->user_level_id = $userLevel['id'];
+                    $modelUserRegister->user_level_id = 4;
                     $modelUserRegister->email = $post['UserRegister']['email'];
                     $modelUserRegister->username = $post['UserRegister']['username'];
                     $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
