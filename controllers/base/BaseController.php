@@ -18,6 +18,7 @@ class BaseController extends \yii\web\Controller
                         'matchCallback' => function ($rule, $action) {
 
                             if (Yii::$app->session->get('user_data')['user_level']['is_super_admin']) {
+                                
                                 return true;
                             }
 
@@ -37,6 +38,7 @@ class BaseController extends \yii\web\Controller
                             }
 
                             if ($action->controller->id === 'site') {
+                                
                                 return true;
                             }
 
@@ -48,6 +50,7 @@ class BaseController extends \yii\web\Controller
                         'roles' => ['?'],
                         'matchCallback' => function ($rule, $action) {
                             if ($action->controller->id === 'site') {
+                                
                                 return true;
                             } else {
 
