@@ -3,6 +3,7 @@ namespace frontend\controllers\base;
 
 use Yii;
 use yii\filters\AccessControl;
+use common\models\LoginForm;
 
 class BaseController extends \yii\web\Controller
 {
@@ -84,6 +85,19 @@ class BaseController extends \yii\web\Controller
     public function beforeAction($action)
     {
         $this->getView()->params['assetCommon'] = \common\assets\AppAsset::register($this->getView());
+        
+        if (!empty(Yii::$app->request->get('token'))) {
+
+            if (Yii::$app->user->isGuest) {
+                
+                $modelLoginForm = new LoginForm([
+                    'useToken' => true,
+                    'token' => Yii::$app->request->get('token')
+                ]);
+                
+                $modelLoginForm->login();
+            }
+        }
 
         if (empty(Yii::$app->session->get('user_app_module'))) {
 
