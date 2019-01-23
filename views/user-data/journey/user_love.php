@@ -59,7 +59,7 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelUserLove as $dataUserLove): 
         
-                $urlDetail = [
+                $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataUserLove['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataUserLove['business']['unique_name']
@@ -78,7 +78,7 @@ $linkPager = LinkPager::widget([
                                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 565, 350);
                                 }
 
-                                echo Html::a(Html::img($img), $urlDetail); ?>
+                                echo Html::a(Html::img($img), $urlBusinessDetail); ?>
 
                             </div>
                         </div>
@@ -88,7 +88,7 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h5 class="m-0">
-                                                <?= Html::a($dataUserLove['business']['name'], $urlDetail); ?>
+                                                <?= Html::a($dataUserLove['business']['name'], $urlBusinessDetail); ?>
                                             </h5>
                                         </div>
                                     </div>

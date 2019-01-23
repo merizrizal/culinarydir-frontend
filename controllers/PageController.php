@@ -14,6 +14,7 @@ use frontend\models\Post;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use core\models\City;
 
 /**
  * Page Controller
@@ -76,9 +77,11 @@ class PageController extends base\BaseHistoryUrlController
             ]
         ]);
         
+        $city = City::findOne(['name' => 'Bandung']);
+        
         $keyword = [];
         $keyword['searchType'] = Yii::t('app', 'favorite');
-        $keyword['city'] = 1;
+        $keyword['city'] = $city['id'];
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
         $keyword['product']['name'] = null;
@@ -466,9 +469,11 @@ class PageController extends base\BaseHistoryUrlController
                 ->asArray()->one();
         }
         
+        $city = City::findOne(['name' => 'Bandung']);
+        
         $keyword = [];
         $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : Yii::t('app', 'favorite');;
-        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : 1;
+        $keyword['city'] = !empty($get['cty']) ? $get['cty'] : $city['id'];
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
         $keyword['product']['name'] = !empty($modelProductCategory) ? $modelProductCategory['name'] : null;

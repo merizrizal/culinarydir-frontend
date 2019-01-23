@@ -81,7 +81,7 @@ $linkPager = LinkPager::widget([
                     'data-id' => $dataTransactionSession['id']
                 ]);
                 
-                $urlDetail = [
+                $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataTransactionSession['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataTransactionSession['business']['unique_name']
@@ -91,13 +91,13 @@ $linkPager = LinkPager::widget([
             		<div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                                <?= Html::a($img, $urlDetail) ?>
+                                <?= Html::a($img, $urlBusinessDetail) ?>
                             </div>
                         	<small>
                         		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
                     		</small>
                         	<br>
-                            	<?= Html::a($dataTransactionSession['business']['name'], $urlDetail) ?>
+                            	<?= Html::a($dataTransactionSession['business']['name'], $urlBusinessDetail) ?>
                             <br>
                             <small>
                                 <?= AddressType::widget(['businessLocation' => $dataTransactionSession['business']['businessLocation']]); ?>

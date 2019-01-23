@@ -12,7 +12,7 @@ use yii\helpers\Inflector;
 
 $this->title = Yii::t('app', 'Order Details'); 
 
-$urlDetail = [
+$urlBusinessDetail = [
     'page/detail',
     'city' => Inflector::slug($modelTransactionSession['business']['businessLocation']['city']['name']),
     'uniqueName' => $modelTransactionSession['business']['unique_name']
@@ -48,13 +48,13 @@ $urlDetail = [
                             		<div class="row mt-10 mb-10">
                                         <div class="col-sm-6 col-tab-7 col-xs-12">
                                             <div class="widget-posts-image image-order-history">
-                                                <?= Html::a($img, $urlDetail) ?>
+                                                <?= Html::a($img, $urlBusinessDetail) ?>
                                             </div>
                                         	<small>
                                         		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
                                     		</small>
                                         	<br>
-                                        		<?= Html::a($modelTransactionSession['business']['name'], $urlDetail) ?>
+                                        		<?= Html::a($modelTransactionSession['business']['name'], $urlBusinessDetail) ?>
                                             <br>
                                             <small>
                                                 <?= AddressType::widget(['businessLocation' => $modelTransactionSession['business']['businessLocation']]); ?>

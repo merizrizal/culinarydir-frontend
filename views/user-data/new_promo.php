@@ -59,7 +59,7 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelBusinessPromo as $dataBusinessPromo): 
         
-                $urlDetail = [
+                $urlBusinessDetail = [
                     'page/detail',
                     '#' => 'special',
                     'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
@@ -80,7 +80,7 @@ $linkPager = LinkPager::widget([
 
                                 }
                                 
-                                echo Html::a(Html::img($img), $urlDetail); ?>
+                                echo Html::a(Html::img($img), $urlBusinessDetail); ?>
 
                             </div>
                         </div>
@@ -90,7 +90,7 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h5 class="m-0">
-                                                <?= Html::a($dataBusinessPromo['business']['name'], $urlDetail); ?>
+                                                <?= Html::a($dataBusinessPromo['business']['name'], $urlBusinessDetail); ?>
                                             </h5>
 										</div>
                                     </div>

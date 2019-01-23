@@ -78,7 +78,7 @@ $linkPager = LinkPager::widget([
                     'uniqueName' => $dataUserPostMain['business']['unique_name'],
                 ];
                 
-                $urlDetail = [
+                $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataUserPostMain['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataUserPostMain['business']['unique_name']
@@ -112,11 +112,11 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image business-image">
-                                    <?= Html::a($img, $urlDetail) ?>
+                                    <?= Html::a($img, $urlBusinessDetail) ?>
                                 </div>
                     
                                 <div class="widget-posts-body business-review">
-                                    <?= Html::a($dataUserPostMain['business']['name'], $urlDetail) ?>
+                                    <?= Html::a($dataUserPostMain['business']['name'], $urlBusinessDetail) ?>
                                     <br>
                                     <small><?= Helper::asRelativeTime($dataUserPostMain['created_at']) ?></small>
                                 </div>

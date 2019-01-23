@@ -471,7 +471,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         
                                                                             if ($dataBusinessProductCategory['productCategory']['is_active']) {
                                                                         
-                                                                                echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'];
+                                                                                echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                             }
                                                                         } ?>
 
@@ -481,7 +481,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         <?php
                                                                         foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
                                                                         
-                                                                            echo '<strong class="text-blue">#</strong>' . $dataBusinessFacility['facility']['name'];
+                                                                            echo '<strong class="text-blue">#</strong>' . $dataBusinessFacility['facility']['name'] . ' ';
                                                                         } ?>
 
                                                                     </li>
