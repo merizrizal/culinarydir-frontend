@@ -172,7 +172,7 @@ class UserController extends base\BaseHistoryUrlController
                 
                     $query->andOnCondition(['business_image.is_primary' => true]);
                 },
-                'business.businessLocation',
+                'business.businessLocation.city',
                 'transactionItems' => function($query) {
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);

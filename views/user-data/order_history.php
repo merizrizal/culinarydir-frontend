@@ -7,6 +7,7 @@ use yii\widgets\Pjax;
 use sycomponent\Tools;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
+use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -78,19 +79,25 @@ $linkPager = LinkPager::widget([
                 $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                     'class' => 'btn btn-default btn-small btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
-                ]); ?>
+                ]);
+                
+                $urlDetail = [
+                    'page/detail',
+                    'city' => Inflector::slug($dataTransactionSession['business']['businessLocation']['city']['name']),
+                    'uniqueName' => $dataTransactionSession['business']['unique_name']
+                ]; ?>
         
             	<div class="col-xs-12">
             		<div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                                <?= Html::a($img, ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
+                                <?= Html::a($img, $urlDetail) ?>
                             </div>
                         	<small>
                         		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
                     		</small>
                         	<br>
-                            	<?= Html::a($dataTransactionSession['business']['name'], ['page/detail', 'id' => $dataTransactionSession['business']['id']]) ?>
+                            	<?= Html::a($dataTransactionSession['business']['name'], $urlDetail) ?>
                             <br>
                             <small>
                                 <?= AddressType::widget(['businessLocation' => $dataTransactionSession['business']['businessLocation']]); ?>

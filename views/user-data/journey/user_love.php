@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
+use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -56,7 +57,13 @@ $linkPager = LinkPager::widget([
         <?php
         if (!empty($modelUserLove)):
 
-            foreach ($modelUserLove as $dataUserLove): ?>
+            foreach ($modelUserLove as $dataUserLove): 
+        
+                $urlDetail = [
+                    'page/detail',
+                    'city' => Inflector::slug($dataUserLove['business']['businessLocation']['city']['name']),
+                    'uniqueName' => $dataUserLove['business']['unique_name']
+                ]; ?>
 
                 <div class="col-lg-4 col-sm-6 col-tab-6 col-xs-12 mb-10">
                     <div class="box user-love">
@@ -71,7 +78,7 @@ $linkPager = LinkPager::widget([
                                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserLove['business']['businessImages'][0]['image'], 565, 350);
                                 }
 
-                                echo Html::a(Html::img($img), ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
+                                echo Html::a(Html::img($img), $urlDetail); ?>
 
                             </div>
                         </div>
@@ -81,7 +88,7 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h5 class="m-0">
-                                                <?= Html::a($dataUserLove['business']['name'], ['page/detail', 'id' => $dataUserLove['business']['id']]); ?>
+                                                <?= Html::a($dataUserLove['business']['name'], $urlDetail); ?>
                                             </h5>
                                         </div>
                                     </div>

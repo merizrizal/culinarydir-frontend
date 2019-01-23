@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
+use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -56,7 +57,14 @@ $linkPager = LinkPager::widget([
         <?php
         if (!empty($modelBusinessPromo)):
 
-            foreach ($modelBusinessPromo as $dataBusinessPromo): ?>
+            foreach ($modelBusinessPromo as $dataBusinessPromo): 
+        
+                $urlDetail = [
+                    'page/detail',
+                    '#' => 'special',
+                    'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
+                    'uniqueName' => $dataBusinessPromo['business']['unique_name']
+                ]; ?>
 
                 <div class="col-lg-4 col-sm-6 col-tab-6 col-xs-12 mb-10">
                     <div class="box user">
@@ -72,7 +80,7 @@ $linkPager = LinkPager::widget([
 
                                 }
                                 
-                                echo Html::a(Html::img($img), ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special'])?>
+                                echo Html::a(Html::img($img), $urlDetail); ?>
 
                             </div>
                         </div>
@@ -82,7 +90,7 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h5 class="m-0">
-                                                <?= Html::a($dataBusinessPromo['business']['name'], ['page/detail', 'id' => $dataBusinessPromo['business_id'], '#' => 'special']); ?>
+                                                <?= Html::a($dataBusinessPromo['business']['name'], $urlDetail); ?>
                                             </h5>
 										</div>
                                     </div>
