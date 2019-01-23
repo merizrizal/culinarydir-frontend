@@ -93,11 +93,13 @@ class SiteController extends base\BaseController
                 $modelPerson->last_name = $post['Person']['last_name'];
                 $modelPerson->email = $post['UserRegister']['email'];
                 $modelPerson->phone = $post['Person']['phone'];
-                $modelPerson->city_id = $post['Person']['city_id'];
+                $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
                 if (($flag = $modelPerson->save())) {
                     
-                    $userLevel = UserLevel::findOne(['nama_level' => 'User']);
+                    $userLevel = UserLevel::find()
+                        ->andWhere(['nama_level' => 'User'])
+                        ->asArray()->one();
 
                     $modelUserRegister->user_level_id = $userLevel['id'];
                     $modelUserRegister->email = $post['UserRegister']['email'];
