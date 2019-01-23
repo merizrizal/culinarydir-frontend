@@ -77,7 +77,7 @@ class PageController extends base\BaseHistoryUrlController
             ]
         ]);
         
-        $city = City::findOne(['name' => 'Bandung']);
+        $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
         
         $keyword = [];
         $keyword['searchType'] = Yii::t('app', 'favorite');
@@ -469,7 +469,7 @@ class PageController extends base\BaseHistoryUrlController
                 ->asArray()->one();
         }
         
-        $city = City::findOne(['name' => 'Bandung']);
+        $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
         
         $keyword = [];
         $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : Yii::t('app', 'favorite');;

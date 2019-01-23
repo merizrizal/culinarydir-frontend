@@ -1149,6 +1149,19 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
     
     $coordinate = explode(',', $modelBusiness['businessLocation']['coordinate']);
     
+    $aggregateRating = '';
+    
+    if (!empty($modelBusiness['businessDetail']['vote_value']) && !empty($modelBusiness['businessDetail']['voters'])) {
+        
+        $aggregateRating = '
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
+                "bestRating": "5",
+                "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
+            },';
+    }
+    
     echo '
         <script type="application/ld+json">
         {
@@ -1166,13 +1179,8 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPri
                 ]). '",
                 "AddressLocality": "' . $modelBusiness['businessLocation']['city']['name'] . '"
             },
-            "priceRange": "' . $ogPriceRange . '",
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "' . number_format(!empty($modelBusiness['businessDetail']['vote_value']) ? $modelBusiness['businessDetail']['vote_value'] : 0, 1) . '",
-                "bestRating": "5",
-                "reviewCount": "' . (!empty($modelBusiness['businessDetail']['voters']) ? $modelBusiness['businessDetail']['voters'] : 0) . '"
-            },' .
+            "priceRange": "' . $ogPriceRange . '",' .
+            $aggregateRating .
             (!empty($ogBusinessHour) ? $ogBusinessHour : '') . '
             "geo": {
                 "@type": "GeoCoordinates",

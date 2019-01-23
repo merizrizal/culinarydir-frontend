@@ -3,6 +3,7 @@ namespace frontend\controllers\base;
 
 use Yii;
 use yii\filters\AccessControl;
+use common\models\LoginForm;
 
 class BaseController extends \yii\web\Controller
 {
@@ -18,6 +19,7 @@ class BaseController extends \yii\web\Controller
                         'matchCallback' => function ($rule, $action) {
 
                             if (Yii::$app->session->get('user_data')['user_level']['is_super_admin']) {
+                                
                                 return true;
                             }
 
@@ -37,6 +39,7 @@ class BaseController extends \yii\web\Controller
                             }
 
                             if ($action->controller->id === 'site') {
+                                
                                 return true;
                             }
 
@@ -48,6 +51,7 @@ class BaseController extends \yii\web\Controller
                         'roles' => ['?'],
                         'matchCallback' => function ($rule, $action) {
                             if ($action->controller->id === 'site') {
+                                
                                 return true;
                             } else {
 
@@ -81,6 +85,19 @@ class BaseController extends \yii\web\Controller
     public function beforeAction($action)
     {
         $this->getView()->params['assetCommon'] = \common\assets\AppAsset::register($this->getView());
+        
+        if (!empty(Yii::$app->request->get('token'))) {
+
+            if (Yii::$app->user->isGuest) {
+                
+                $modelLoginForm = new LoginForm([
+                    'useToken' => true,
+                    'token' => Yii::$app->request->get('token')
+                ]);
+                
+                $modelLoginForm->login();
+            }
+        }
 
         if (empty(Yii::$app->session->get('user_app_module'))) {
 
