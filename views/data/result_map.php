@@ -149,15 +149,11 @@ $linkPager = LinkPager::widget([
                                     '; ?>
 									
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
-                                        
                                         <?= $layoutRatings ?>
-                                        
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
-                                        
                                         <?= $layoutRatings ?> 
-                                     	
                                     </div>
 
                                     <div class="col-md-7 col-sm-12 col-xs-12 col">

@@ -179,6 +179,7 @@ class UserDataController extends base\BaseController
                         'business_image.type' => 'Profile',
                         'business_image.is_primary' => true]);
                 },
+                'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
                     
@@ -291,7 +292,8 @@ class UserDataController extends base\BaseController
 
         $modelBusinessPromo = BusinessPromo::find()
             ->joinWith([
-                'business.userLoves'
+                'business.userLoves',
+                'business.businessLocation.city'
             ])
             ->andWhere([
                 'user_love.is_active' => true,
@@ -355,7 +357,7 @@ class UserDataController extends base\BaseController
                         'business_image.is_primary' => true
                     ]);
                 },
-                'business.businessLocation'
+                'business.businessLocation.city'
             ])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->orderBy(['created_at' => SORT_DESC])

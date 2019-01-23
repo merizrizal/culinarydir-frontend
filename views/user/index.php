@@ -111,6 +111,7 @@ $this->registerMetaTag([
                                     
                                         <?= $userName ?>
                                         <?= $btnProfile ?>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -125,8 +126,10 @@ $this->registerMetaTag([
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 text-center">
+                                
                                     <?= $userName ?>
                                     <?= $btnProfile ?>
+                                    
                                 </div>
                             </div>
                         </div>

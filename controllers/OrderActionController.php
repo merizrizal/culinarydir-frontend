@@ -70,17 +70,11 @@ class OrderActionController extends base\BaseController
                     ->andWhere(['business_product_id' => $post['product_id']])
                     ->one();
                 
-                if (!empty($modelTransactionItem)) {
-                    
-                    $modelTransactionItem->amount++;
-                } else {
-                    
-                    $modelTransactionItem = new TransactionItem();
-                    $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionItem->business_product_id = $post['product_id'];
-                    $modelTransactionItem->price = $post['product_price'];
-                    $modelTransactionItem->amount = 1;
-                }
+                $modelTransactionItem = new TransactionItem();
+                $modelTransactionItem->transaction_session_id = $modelTransactionSession->id;
+                $modelTransactionItem->business_product_id = $post['product_id'];
+                $modelTransactionItem->price = $post['product_price'];
+                $modelTransactionItem->amount = 1;
                 
                 $flag = $modelTransactionItem->save();
             }

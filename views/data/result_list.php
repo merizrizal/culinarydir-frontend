@@ -150,15 +150,11 @@ $linkPager = LinkPager::widget([
                                     '; ?>
 
                                     <div class="col-tab-5 col visible-tab text-center">
-                                        
                                         <?= $layoutRatings ?>
-                                        
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
-                                        
                                         <?= $layoutRatings ?>
-                                        
                                     </div>
 
                                     <div class="col-md-7 col-sm-7 col-xs-12 col">
@@ -256,9 +252,7 @@ $linkPager = LinkPager::widget([
                                                                     <div class="popover-body popover-content">
                                                                         <div class="row">
                                                                             <div class="col-sm-12 col-xs-12">
-
                                                                                 <?= $businessProductCategoryPopover; ?>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
