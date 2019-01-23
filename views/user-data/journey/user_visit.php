@@ -59,7 +59,7 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelUserVisit as $dataUserVisit): 
                 
-                $urlDetail = [
+                $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataUserVisit['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataUserVisit['business']['unique_name']
@@ -78,7 +78,7 @@ $linkPager = LinkPager::widget([
                                     $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserVisit['business']['businessImages'][0]['image'], 565, 350);
                                 }
 
-                                echo Html::a(Html::img($img), $urlDetail); ?>
+                                echo Html::a(Html::img($img), $urlBusinessDetail); ?>
 
                             </div>
                         </div>
@@ -88,7 +88,7 @@ $linkPager = LinkPager::widget([
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h5 class="m-0">
-                                                <?= Html::a($dataUserVisit['business']['name'], $urlDetail); ?>
+                                                <?= Html::a($dataUserVisit['business']['name'], $urlBusinessDetail); ?>
                                             </h5>
                                         </div>
                                     </div>
