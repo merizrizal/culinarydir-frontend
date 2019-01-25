@@ -135,11 +135,10 @@ class SiteController extends base\BaseController
                         if (($flag = $modelUserSocialMedia->save())) {
 
                             Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
-                                    'email' => $post['UserRegister']['email'],
-                                    'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                    'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
-                                ]
-                            )
+                                'email' => $post['UserRegister']['email'],
+                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
+                            ])
                             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
                             ->setTo($post['UserRegister']['email'])
                             ->setSubject('Welcome to ' . Yii::$app->name)
@@ -156,11 +155,10 @@ class SiteController extends base\BaseController
                         if (($flag = $modelUserRegister->save())) {
 
                             Yii::$app->mailer->compose(['html' => 'account_activation'], [
-                                    'email' => $post['UserRegister']['email'],
-                                    'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                    'userToken' => $modelUserRegister->account_activation_token
-                                ]
-                            )
+                                'email' => $post['UserRegister']['email'],
+                                'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'userToken' => $modelUserRegister->account_activation_token
+                            ])
                             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
                             ->setTo($post['UserRegister']['email'])
                             ->setSubject(Yii::$app->name . ' Account Activation')
