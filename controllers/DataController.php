@@ -361,25 +361,18 @@ class DataController extends base\BaseController
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']]);
                 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
-             
-                if ($get['pmn'] == 0 && $get['pmx'] != 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere(['<=', 'business_detail.price_max', $get['pmx']]);
-                } else if ($get['pmn'] != 0 && $get['pmx'] == 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere(['>=', 'business_detail.price_min', $get['pmn']]);
-                } else if ($get['pmn'] != 0 && $get['pmx'] != 0) {
-                    
-                    $modelBusiness = $modelBusiness->andFilterWhere([
-                        'or',
-                        ['between', 'business_detail.price_min', $get['pmn'], $get['pmx']],
-                        ['between', 'business_detail.price_max', $get['pmn'], $get['pmx']]
-                    ]);
-                }
+                
+                $modelBusiness = $modelBusiness->andFilterWhere([
+                    'OR', 
+                    '(' . $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max")',
+                    '(' . $get['pmx'] . ' >= "business_detail"."price_min" AND ' . $get['pmx'] . ' <= "business_detail"."price_max")',
+                    '("business_detail"."price_min" >= ' . $get['pmn'] . ' AND "business_detail"."price_min" <= ' . $get['pmx'] . ')',
+                    '("business_detail"."price_max" >= ' . $get['pmn'] . ' AND "business_detail"."price_max" <= ' . $get['pmx'] . ')',
+                ]);
             }
             
             if (!empty($get['cmp'])) {
@@ -461,7 +454,7 @@ class DataController extends base\BaseController
                     'business.businessProductCategories.productCategory',
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
-                ->andFilterWhere(['or', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
                 ->andFilterWhere(['business_category.category_id' => $get['ctg']])
                 ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
