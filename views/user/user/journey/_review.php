@@ -154,7 +154,14 @@ $jscript = '
         var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".user-post-item").find(".rating > h3").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-review > a").text();
         var description = $(this).parents(".user-post-item").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".user-post-item").find(".user-photo-review").eq(0).find(".work-image").children().attr("src");
+        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+        
+        var userPhotoList = $(this).parents(".user-post-item").find(".gallery-photo-review");
+
+        if (userPhotoList.length) {
+        
+            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("72x72", "");
+        }
 
         facebookShare({
             ogUrl: url,

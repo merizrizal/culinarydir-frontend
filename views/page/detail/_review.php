@@ -1366,10 +1366,12 @@ $jscript = '
         var title = "Rating " + $(this).parents(".review-post").find(".rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
         var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+        
+        var userPhotoList = $(this).parents(".review-post").find(".gallery-photo-review");
 
-        if ($(this).parents(".review-post").find(".user-photo-review").find(".gallery-photo-review").length) {
+        if (userPhotoList.length) {
 
-            image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".review-post").find(".user-photo-review").eq(0).find(".work-image").children().attr("src").replace("72x72", "");
+            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("72x72", "");
         }
 
         facebookShare({

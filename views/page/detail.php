@@ -850,6 +850,17 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 <?php
 echo Html::img($ogImage, ['id' => 'img-for-share-link']);
 
+$shareImg = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
+
+foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+    
+    if ($dataBusinessImage['is_primary']) {
+        
+        $shareImg = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+        break;
+    }
+}
+
 $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
     Modal::begin([
@@ -1057,7 +1068,7 @@ $jscript = '
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
             ogDescription: "' . addslashes($ogDescription) . '",
-            ogImage: "' . $ogImage . '",
+            ogImage: "' . $shareImg . '",
             type: "Halaman Bisnis"
         });
 

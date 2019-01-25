@@ -126,17 +126,13 @@ $this->registerMetaTag([
                                                     <div class="photo-review mt-10 mb-10">
                                                         <div class="row">
                                                             <div class="col-sm-12 text-center">
-    
                                                                 <?= Html::img(Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['image']) ?>
-    
                                                             </div>
                                                         </div>
                                                     </div>
     
                                                     <p class="review-description">
-
                                                         <?= $modelUserPostMain['text']; ?>
-
                                                     </p>
     												
     												<?php                   
@@ -235,9 +231,7 @@ $this->registerMetaTag([
                                                                                             <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                             <br>
                                                                                             <p class="comment-description">
-
                                                                                                 <?= $dataUserPostComment['text']; ?>
-
                                                                                             </p>
                                                                                         </div>
                                                                                     </div>

@@ -569,11 +569,19 @@ $jscript = '
 
     $(".share-review-trigger").on("click", function() {
 
+        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+        var userPhotoList = $(".review-container").find(".gallery-photo-review");
+
+        if (userPhotoList.length) {
+        
+            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("200x200", "");;
+        }
+
         facebookShare({
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
             ogDescription: "' . addslashes($ogDescription) . '",
-            ogImage: "' . $ogImage . '",
+            ogImage: image,
             type: "Review"
         });
 
