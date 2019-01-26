@@ -83,9 +83,13 @@ foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
 $ogDescription = $ogDescription . ' ' . trim($ogBusinessCategory, ',') . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '. ' . trim($ogProductCategory, ',') . '. ' . trim($ogFacility, ',');
 $ogDescription = StringHelper::truncate($ogDescription, 300);
 
-if (!empty($modelBusiness['businessImages'][0]['image'])) {
+foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
+    if ($dataBusinessImage['is_primary']) {
+        
+        $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+        break;
+    }
 }
 
 $ogUrlMenuDetail = ['page/menu', 'uniqueName' => $modelBusiness['unique_name']];
@@ -850,17 +854,6 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 <?php
 echo Html::img($ogImage, ['id' => 'img-for-share-link']);
 
-$shareImg = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
-
-foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
-    
-    if ($dataBusinessImage['is_primary']) {
-        
-        $shareImg = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
-        break;
-    }
-}
-
 $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserReport) {
 
     Modal::begin([
@@ -1068,7 +1061,7 @@ $jscript = '
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
             ogDescription: "' . addslashes($ogDescription) . '",
-            ogImage: "' . $shareImg . '",
+            ogImage: "' . $ogImage . '",
             type: "Halaman Bisnis"
         });
 

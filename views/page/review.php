@@ -33,12 +33,19 @@ $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') .
 
 $ogProductCategory = '';
 
-if (!empty($modelBusiness['businessImages'][0]['image'])) {
-    
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $modelBusiness['businessImages'][0]['image'];
-} else if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
+if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['userPostMains'][0]['image'];
+} else {
+    
+    foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+        
+        if ($dataBusinessImage['is_primary']) {
+            
+            $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+            break;
+        }
+    }
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
@@ -569,19 +576,11 @@ $jscript = '
 
     $(".share-review-trigger").on("click", function() {
 
-        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
-        var userPhotoList = $(".review-container").find(".gallery-photo-review");
-
-        if (userPhotoList.length) {
-        
-            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("200x200", "");;
-        }
-
         facebookShare({
             ogUrl: "' . $ogUrl . '",
             ogTitle: "' . $ogTitle . '",
             ogDescription: "' . addslashes($ogDescription) . '",
-            ogImage: image,
+            ogImage: "' . $ogImage . '",
             type: "Review"
         });
 
