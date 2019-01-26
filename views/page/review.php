@@ -36,16 +36,6 @@ $ogProductCategory = '';
 if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
     
     $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['userPostMains'][0]['image'];
-} else {
-    
-    foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
-        
-        if ($dataBusinessImage['is_primary']) {
-            
-            $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
-            break;
-        }
-    }
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
