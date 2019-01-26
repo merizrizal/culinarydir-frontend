@@ -83,11 +83,11 @@ foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
 $ogDescription = $ogDescription . ' ' . trim($ogBusinessCategory, ',') . '. Kisaran biaya rata-rata: ' . $ogPriceRange . '. ' . trim($ogProductCategory, ',') . '. ' . trim($ogFacility, ',');
 $ogDescription = StringHelper::truncate($ogDescription, 300);
 
-foreach ($modelBusiness['businessImages'] as $dataBusinessImage) {
+foreach ($modelBusiness['businessImages'] as $dataImageThumbail) {
     
-    if ($dataBusinessImage['is_primary']) {
+    if ($dataImageThumbail['is_primary']) {
         
-        $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataBusinessImage['image'];
+        $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataImageThumbail['image'];
         break;
     }
 }
