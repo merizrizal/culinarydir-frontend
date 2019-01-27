@@ -77,7 +77,7 @@ use yii\helpers\Html; ?>
                                 </a>
                             </li>
                             <li><?= Html::a('<i class="aicon aicon-key2"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) ?></li>
-                            <li><?= Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout'], ['data-method' => 'post']) ?></li>
+                            <li><?= Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout']) ?></li>
                         </ul>
                     </li>
 

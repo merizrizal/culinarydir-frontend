@@ -94,7 +94,7 @@ $this->registerMetaTag([
                                     Html::a('<i class="aicon aicon-key2"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) .
                                 '</li>
                                 <li>' .
-                                   	Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout'], ['data-method' => 'post']) .
+                                   	Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout']) .
                                 '</li>
                             </ul>
                         </div>
