@@ -791,7 +791,7 @@ $jscript = '
         return false;
     });
 
-    $("#write-review-trigger").on("focusin keyup", function(event) {
+    $("#write-review-trigger").on("focusin click", function(event) {
 
         var thisObj = $(this);
 
