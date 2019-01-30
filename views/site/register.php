@@ -200,7 +200,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
     
                                                 <div class="text-center">
                                                     <h4>
-                                                        <small><?= Yii::t('app', 'Already have Asikmakan account?') . ' ' . Html::a(Yii::t('app', 'Login'), ['site/login']) ?></small>
+                                                        <small><?= Yii::t('app', 'Already have {app} account?', ['app' => Yii::$app->name]) . ' ' . Html::a(Yii::t('app', 'Login'), ['site/login']) ?></small>
                                                     </h4>
                                                 </div>
                                             </div>
