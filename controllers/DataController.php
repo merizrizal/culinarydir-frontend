@@ -46,13 +46,14 @@ class DataController extends base\BaseController
         $modelProductCategory = ProductCategory::find()
             ->orderBy(['name' => SORT_ASC])
             ->andFilterWhere(['ilike', 'name', Yii::$app->request->post('keyword')])
+            ->andFilterWhere(['<>', 'type', 'Menu'])
             ->asArray()->all();
 
         $productCategory = [];
 
         foreach ($modelProductCategory as $dataProductCategory) {
 
-            if ($dataProductCategory['is_parent']) {
+            if ($dataProductCategory['type'] == 'General') {
 
                 $productCategory['parent'][] = $dataProductCategory;
             } else {

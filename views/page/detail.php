@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
