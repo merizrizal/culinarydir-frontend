@@ -106,7 +106,7 @@ class SiteController extends base\BaseController
                     $modelPerson->first_name = $post['Person']['first_name'];
                     $modelPerson->last_name = $post['Person']['last_name'];
                     $modelPerson->email = $post['UserRegister']['email'];
-                    $modelPerson->phone = $post['Person']['phone'];
+                    $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
                     $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
                     
                     if (($flag = $modelPerson->save())) {
