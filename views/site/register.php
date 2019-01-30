@@ -228,6 +228,7 @@ $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'City') . '",
+        allowClear: true,
         minimumResultsForSearch: -1
     });
 ';
