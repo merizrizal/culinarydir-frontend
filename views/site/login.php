@@ -128,7 +128,7 @@ kartik\select2\ThemeKrajeeAsset::register($this); ?>
     
                                                     <div class="text-center">
                                                         <h4>
-                                                            <small><?= Yii::t('app', 'don\'t have Account?') . ' ' . Html::a(Yii::t('app', 'Register'), ['site/register']) ?></small>
+                                                            <small><?= Yii::t('app', 'Don\'t have Asikmakan account?') . ' ' . Html::a(Yii::t('app', 'Register now'), ['site/register']) ?></small>
                                                         </h4>
                                                     </div>
                                                 </div>
