@@ -47,6 +47,7 @@ class DataController extends base\BaseController
             ->orderBy(['name' => SORT_ASC])
             ->andFilterWhere(['ilike', 'name', Yii::$app->request->post('keyword')])
             ->andFilterWhere(['<>', 'type', 'Menu'])
+            ->andWhere(['is_active' => true])
             ->asArray()->all();
 
         $productCategory = [];
@@ -346,10 +347,7 @@ class DataController extends base\BaseController
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
-                    'businessProductCategories.productCategory' => function ($query) {
-                    
-                        $query->andOnCondition(['product_category.is_active' => true]);
-                    },
+                    'businessProductCategories.productCategory',
                     'businessDetail',
                     'userLoves' => function ($query) {
                     
@@ -441,14 +439,14 @@ class DataController extends base\BaseController
             $modelBusinessPromo = BusinessPromo::find()
                 ->joinWith([
                     'business',
-                    'business.businessCategories' => function($query) {
+                    'business.businessCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_category.is_active' => true]);
                     },
                     'business.businessCategories.category',
                     'business.businessLocation',
                     'business.businessLocation.city',
-                    'business.businessProductCategories' => function($query) {
+                    'business.businessProductCategories' => function ($query) {
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },

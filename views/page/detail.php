@@ -70,10 +70,7 @@ if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusine
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
     
-    if ($dataBusinessProductCategory['productCategory']['is_active']) {
-
-        $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
-    }
+    $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
 }
 
 foreach ($modelBusiness['businessFacilities'] as $dataBusinessFacility) {
@@ -474,10 +471,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                                         <?php
                                                                         foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
                                                                         
-                                                                            if ($dataBusinessProductCategory['productCategory']['is_active']) {
-                                                                        
-                                                                                echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                            }
+                                                                            echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                         } ?>
 
                                                                     </li>
