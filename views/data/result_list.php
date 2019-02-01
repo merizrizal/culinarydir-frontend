@@ -224,19 +224,16 @@ $linkPager = LinkPager::widget([
                                                                 $incBusinessProductCategory = 0;
 
                                                                 foreach ($dataBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
-                                                                    
-                                                                    if ($dataBusinessProductCategory['productCategory']['is_active']) {
 
-                                                                        if ($incBusinessProductCategory < $businessProductCategoryLimit) {
+                                                                    if ($incBusinessProductCategory < $businessProductCategoryLimit) {
 
-                                                                            $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        } else {
+                                                                        $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                    } else {
 
-                                                                            $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        }
-                                                                        
-                                                                        $incBusinessProductCategory++;
+                                                                        $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                     }
+                                                                    
+                                                                    $incBusinessProductCategory++;
                                                                 }
 
                                                                 if (count($dataBusiness['businessProductCategories']) > $businessProductCategoryLimit) {
