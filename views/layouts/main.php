@@ -26,7 +26,7 @@ AppAsset::register($this); ?>
         <title><?= Html::encode(Yii::$app->name) . ' - ' . Html::encode($this->title) ?></title>
         <?php $this->head(); ?>
         <?php 
-        if (Yii::$app->request->serverName !== 'localhost') {
+        if (Yii::$app->request->serverName == 'asikmakan.com' || Yii::$app->request->serverName == 'www.asikmakan.com') {
             echo '
                 <!-- Global site tag (gtag.js) - Google Analytics -->
         		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118083293-1"></script>
