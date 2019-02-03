@@ -335,19 +335,19 @@ class SiteController extends base\BaseController
     {
         $loginFlag = false;
         $userAttributes = $client->getUserAttributes();
-
+        
         if ($client->id === 'facebook') {
-
+            
             $socmed = 'Facebook';
             $socmedEmail = $userAttributes['email'];
             $first_name = $userAttributes['first_name'];
             $last_name = $userAttributes['last_name'];
         } else if ($client->id === 'google') {
-
+            
             $socmed = 'Google';
-            $socmedEmail = $userAttributes['emails'][0]['value'];
-            $first_name = $userAttributes['name']['givenName'];
-            $last_name = $userAttributes['name']['familyName'];
+            $socmedEmail = $userAttributes['email'];
+            $first_name = $userAttributes['given_name'];
+            $last_name = $userAttributes['family_name'];
         }
 
         $modelUser = User::find()
