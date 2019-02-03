@@ -659,7 +659,26 @@ class ActionController extends base\BaseController
             
             if ($flag && !empty($post['ImageReviewDelete'])) {
                 
-                $flag = UserPostMain::deleteAll(['id' => $post['ImageReviewDelete']]);
+                $modelUserPhoto = UserPostMain::findAll(['parent_id' => $modelUserPostMain->id]);
+                
+                foreach ($modelUserPhoto as $dataUserPhoto) {
+                    
+                    foreach ($post['ImageReviewDelete'] as $deletedPhotoId) {
+                        
+                        if ($deletedPhotoId == $dataUserPhoto->id) {
+                            
+                            $dataUserPhoto->is_publish = false;
+                            
+                            if (!($flag = $dataUserPhoto->save())) {
+                                
+                                break 2;
+                            } else {
+                                
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
 
