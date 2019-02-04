@@ -491,7 +491,7 @@ $jscript = '
 
 if (!empty(($message = Yii::$app->session->getFlash('message')))) {
     
-    $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . $message['title'] . '" , "' . $message['message'] . '", "danger");';
+    $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . $message['title'] . '" , "' . $message['message'] . '", "danger");';
 }
 
 $this->registerJs($jscript); ?>

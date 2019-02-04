@@ -121,6 +121,8 @@ class OrderController extends base\BaseController
                     'title' => 'Gagal Checkout',
                     'message' => 'Terjadi kesalahan saat menyimpan data',
                 ]);
+                
+                return $this->redirect(['order/checkout']);
             }
         }
         
