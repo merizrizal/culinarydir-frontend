@@ -156,148 +156,164 @@ $jscript = '
 
         var defaultLatLng = {lat: -6.9175, lng: 107.6191};
 
-        if (coordinateMap.val() != "") {
+        var executeMap = function() {
 
-            var mapLatLng = coordinateMap.val().split(",");
-            defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
-        }
+            if (coordinateMap.val() != "") {
 
-        var mapOptions = {
-            center: defaultLatLng,
-            zoom: 15,
-            disableDefaultUI: true,
-            gestureHandling: "greedy",
-            styles: [ { "featureType": "poi.business", "stylers": [ { "visibility": "off" } ] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [ { "visibility": "off" } ] } ],
-        }
-
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        var icon = {
-            url: "' . Yii::$app->request->baseUrl . '/media/img/marker.png",
-            scaledSize: new google.maps.Size(32, 32),
-            origin: new google.maps.Point(0,0),
-            anchor: new google.maps.Point(15, 32)
-        };
-
-        var marker = new google.maps.Marker({
-            position: defaultLatLng,
-            map: map,
-            icon: icon
-        });
-
-        var radius = 500;
-        var latitude = map.getCenter().lat();
-        var longitude = map.getCenter().lng();
-
-        var circleRadius = new google.maps.Circle({
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#e52626",
-            fillOpacity: 0.35,
-            radius: radius,
-        });
-
-        $("<div/>").addClass("map-marker").appendTo(map.getDiv());
-
-        circleRadius.setMap(map);
-        circleRadius.bindTo("center", marker, "position");
-
-        google.maps.event.addListener(map, "dragstart", function() {
-
-            marker.setMap(null);
-            circleRadius.setMap(null);
-        });
-
-        google.maps.event.addListener(map, "dragend", function() {
-
-            latitude = map.getCenter().lat();
-            longitude = map.getCenter().lng();
-
-            map.panTo(new google.maps.LatLng(latitude, longitude));
-
-            marker.setPosition({lat: latitude, lng: longitude});
+                var mapLatLng = coordinateMap.val().split(",");
+                defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
+            }
+    
+            var mapOptions = {
+                center: defaultLatLng,
+                zoom: 15,
+                disableDefaultUI: true,
+                gestureHandling: "greedy",
+                styles: [ { "featureType": "poi.business", "stylers": [ { "visibility": "off" } ] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [ { "visibility": "off" } ] } ],
+            }
+    
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    
+            var icon = {
+                url: "' . Yii::$app->request->baseUrl . '/media/img/marker.png",
+                scaledSize: new google.maps.Size(32, 32),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(15, 32)
+            };
+    
+            var marker = new google.maps.Marker({
+                position: defaultLatLng,
+                map: map,
+                icon: icon
+            });
+    
+            var radius = 500;
+            var latitude = map.getCenter().lat();
+            var longitude = map.getCenter().lng();
+    
+            var circleRadius = new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#e52626",
+                fillOpacity: 0.35,
+                radius: radius,
+            });
+    
+            $("<div/>").addClass("map-marker").appendTo(map.getDiv());
+    
             circleRadius.setMap(map);
             circleRadius.bindTo("center", marker, "position");
-        });
-
-        google.maps.event.addListener(map, "zoom_changed", function() {
-
-            marker.setMap(null);
-            circleRadius.setMap(null);
-
-            latitude = map.getCenter().lat();
-            longitude = map.getCenter().lng();
-
-            map.panTo(new google.maps.LatLng(latitude, longitude));
-
-            marker.setPosition({lat: latitude, lng: longitude});
-            circleRadius.setMap(map);
-            circleRadius.bindTo("center", marker, "position");
-        });
-
-        $(".radius-500").on("change", function() {
-
-            radius = parseInt($(this).data("radius"));
-
-            map.setZoom(15);
-            circleRadius.setRadius(radius);
-        });
-
-        $(".radius-1000").on("change", function() {
-
-            radius = parseInt($(this).data("radius"));
-
-            map.setZoom(14);
-            circleRadius.setRadius(radius);
-        });
-
-        $(".radius-2000").on("change", function() {
-
-            radius = parseInt($(this).data("radius"));
-
-            map.setZoom(13);
-            circleRadius.setRadius(radius);
-        });
-
-        if (radiusMap.val() != "") {
-
-            radius = parseInt(radiusMap.val());
-
-            if (radius == 2000) {
-
-                map.setZoom(13);
+    
+            google.maps.event.addListener(map, "dragstart", function() {
+    
+                marker.setMap(null);
+                circleRadius.setMap(null);
+            });
+    
+            google.maps.event.addListener(map, "dragend", function() {
+    
+                latitude = map.getCenter().lat();
+                longitude = map.getCenter().lng();
+    
+                map.panTo(new google.maps.LatLng(latitude, longitude));
+    
+                marker.setPosition({lat: latitude, lng: longitude});
+                circleRadius.setMap(map);
+                circleRadius.bindTo("center", marker, "position");
+            });
+    
+            google.maps.event.addListener(map, "zoom_changed", function() {
+    
+                marker.setMap(null);
+                circleRadius.setMap(null);
+    
+                latitude = map.getCenter().lat();
+                longitude = map.getCenter().lng();
+    
+                map.panTo(new google.maps.LatLng(latitude, longitude));
+    
+                marker.setPosition({lat: latitude, lng: longitude});
+                circleRadius.setMap(map);
+                circleRadius.bindTo("center", marker, "position");
+            });
+    
+            $(".radius-500").on("change", function() {
+    
+                radius = parseInt($(this).data("radius"));
+    
+                map.setZoom(15);
                 circleRadius.setRadius(radius);
-            } else if (radius == 1000) {
-
+            });
+    
+            $(".radius-1000").on("change", function() {
+    
+                radius = parseInt($(this).data("radius"));
+    
                 map.setZoom(14);
                 circleRadius.setRadius(radius);
-            } else {
-
-                map.setZoom(15);
-                circleRadius.setRadius(500);
-            }
-
-            $(".btn-radius-" + radiusMap.val()).trigger("click");
-        }
-
-        $(".btn-coordinate-confirm").on("click", function() {
-
-            radiusMap.val(radius);
-            coordinateMap.val(latitude + ", " + longitude);
-
-            if (coordinateMap.val() != "" && radiusMap.val() != "") {
-
-                btnRegion.html($(".btn-radius-" + radiusMap.val()).text() + " <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
-
-                if (btnRegion.parent().find(".search-field-box-clear").length == 0) {
-
-                    btnRegion.parent().append("<span class=\"search-field-box-clear\">×</span>");
+            });
+    
+            $(".radius-2000").on("change", function() {
+    
+                radius = parseInt($(this).data("radius"));
+    
+                map.setZoom(13);
+                circleRadius.setRadius(radius);
+            });
+    
+            if (radiusMap.val() != "") {
+    
+                radius = parseInt(radiusMap.val());
+    
+                if (radius == 2000) {
+    
+                    map.setZoom(13);
+                    circleRadius.setRadius(radius);
+                } else if (radius == 1000) {
+    
+                    map.setZoom(14);
+                    circleRadius.setRadius(radius);
+                } else {
+    
+                    map.setZoom(15);
+                    circleRadius.setRadius(500);
                 }
+    
+                $(".btn-radius-" + radiusMap.val()).trigger("click");
             }
+    
+            $(".btn-coordinate-confirm").on("click", function() {
+    
+                radiusMap.val(radius);
+                coordinateMap.val(latitude + ", " + longitude);
+    
+                if (coordinateMap.val() != "" && radiusMap.val() != "") {
+    
+                    btnRegion.html($(".btn-radius-" + radiusMap.val()).text() + " <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
+    
+                    if (btnRegion.parent().find(".search-field-box-clear").length == 0) {
+    
+                        btnRegion.parent().append("<span class=\"search-field-box-clear\">×</span>");
+                    }
+                }
+    
+                $("#modal-region").modal("hide");
+            });
+        };
 
-            $("#modal-region").modal("hide");
-        });
+        if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+
+                defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+                executeMap();
+            });
+        } else {
+
+            executeMap();
+        }
     };
 
     $(".price-min-select").select2({
