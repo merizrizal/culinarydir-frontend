@@ -304,18 +304,20 @@ $jscript = '
             executeMap();
         } else {
 
-            if (navigator.geolocation) {
+            executeMap();
 
-                navigator.geolocation.getCurrentPosition(function(position) {
-    
-                    defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
-    
-                    executeMap();
-                });
-            } else {
+//             if (navigator.geolocation) {
 
-                executeMap();
-            }
+//                 navigator.geolocation.getCurrentPosition(function(position) {
+    
+//                     defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+    
+//                     executeMap();
+//                 });
+//             } else {
+
+//                 executeMap();
+//             }
         }
     };
 
