@@ -157,12 +157,6 @@ $jscript = '
         var defaultLatLng = {lat: -6.9175, lng: 107.6191};
 
         var executeMap = function() {
-
-            if (coordinateMap.val() != "") {
-
-                var mapLatLng = coordinateMap.val().split(",");
-                defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
-            }
     
             var mapOptions = {
                 center: defaultLatLng,
@@ -302,17 +296,26 @@ $jscript = '
             });
         };
 
-        if (navigator.geolocation) {
+        if (coordinateMap.val() != "") {
 
-            navigator.geolocation.getCurrentPosition(function(position) {
-
-                defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
-
-                executeMap();
-            });
-        } else {
+            var mapLatLng = coordinateMap.val().split(",");
+            defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
 
             executeMap();
+        } else {
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(function(position) {
+    
+                    defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+    
+                    executeMap();
+                });
+            } else {
+
+                executeMap();
+            }
         }
     };
 
