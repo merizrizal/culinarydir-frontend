@@ -311,7 +311,10 @@ $jscript = '
                      latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
     
                      executeMap(latLng);
-                 });
+                 }, function(error) {
+
+                    messageResponse("aicon aicon-icon-info", "Maps error", error.message, "danger");
+                });
              } else {
 
                  executeMap(latLng);
