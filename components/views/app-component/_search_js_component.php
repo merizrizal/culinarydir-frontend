@@ -154,9 +154,7 @@ $jscript = '
 
     function initMap(btnRegion, coordinateMap, radiusMap) {
 
-        var defaultLatLng = {lat: -6.9175, lng: 107.6191};
-
-        var executeMap = function() {
+        var executeMap = function(defaultLatLng) {
     
             var mapOptions = {
                 center: defaultLatLng,
@@ -296,25 +294,27 @@ $jscript = '
             });
         };
 
+        var latLng = {lat: -6.9175, lng: 107.6191};
+
         if (coordinateMap.val() != "") {
 
             var mapLatLng = coordinateMap.val().split(",");
-            defaultLatLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
+            latLng = {lat: parseFloat(mapLatLng[0]), lng: parseFloat(mapLatLng[1])};
 
-            executeMap();
+            executeMap(latLng);
         } else {
 
              if (navigator.geolocation) {
 
                  navigator.geolocation.getCurrentPosition(function(position) {
     
-                     defaultLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+                     latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
     
-                     executeMap();
+                     executeMap(latLng);
                  });
              } else {
 
-                 executeMap();
+                 executeMap(latLng);
              }
         }
     };
