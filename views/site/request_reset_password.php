@@ -7,6 +7,7 @@ use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\RequestResetPassword */
+/* @var $verification bool */
 
 $this->title = 'Reset Password';
 
@@ -32,35 +33,58 @@ $this->registerMetaTag([
                                     <h4 class="font-alt">Reset Password</h4>
                                     <hr class="divider-w mb-20">
 
-                                    <h4>
-                                        <small><?= Yii::t('app', 'Please enter your email. Link for reset your password will be sent to your email.') ?></small>
-                                    </h4>
-
                                     <?php
                                     $form = ActiveForm::begin([
                                         'id' => 'request-reset-password-form',
+                                        'action' => ['site/request-reset-password', 'verification' => $verification, 'email' => $model->email],
                                         'options' => [
                                         ],
                                         'fieldConfig' => [
                                             'template' => '{input}{error}',
                                         ]
-                                    ]); ?>
+                                    ]); 
+                                        if (!$verification): ?>
+                                        
+                                            <?= Yii::t('app', 'Please enter your email.') ?>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-    
-                                                <?= $form->field($model, 'email')->textInput([
-                                                    'class' => 'form-control',
-                                                    'placeholder' => 'Email',
-                                                ]) ?>
-    
+                                            <div class="row">
+                                                <div class="col-md-12">
+        
+                                                    <?= $form->field($model, 'email', [
+                                                        'enableAjaxValidation' => true
+                                                    ])->textInput([
+                                                        'class' => 'form-control',
+                                                        'placeholder' => $model->getAttributeLabel('email'),
+                                                    ]) ?>
+        
+                                                </div>
                                             </div>
-                                        </div>
+                                            
+                                        <?php 
+                                        else: ?>
+                                        
+                                        	<?= Yii::t('app', 'We have sent a verification code to') . ' ' . $model->email . '.<br>' .  Yii::t('app', 'Please check.') ?>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                
+                                                	<?= $form->field($model, 'verificationCode', [
+                                                        'enableAjaxValidation' => true
+                                                    ])->textInput([
+                                                        'class' => 'form-control',
+                                                	    'placeholder' => $model->getAttributeLabel('verificationCode'),
+                                                    ]) ?>
+        
+                                                </div>
+                                            </div>
+                                        
+                                        <?php
+                                        endif; ?>
     
                                         <div class="row">
                                             <div class="form-group col-md-12">
     
-                                                <?= Html::submitButton(Yii::t('app', 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
+                                                <?= Html::submitButton(Yii::t('app', !$verification ? 'Next' : 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
     
                                             </div>
                                         </div>

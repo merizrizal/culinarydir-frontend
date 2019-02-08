@@ -2,7 +2,7 @@
 namespace frontend\models;
 
 use yii\base\Model;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use core\models\User;
 
 /**
@@ -24,15 +24,20 @@ class ResetPassword extends Model
      * @param array $config name-value pairs that will be used to initialize the object properties
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
-    public function __construct($token, $config = [])
+    public function __construct($email, $token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException('Token reset password tidak boleh kosong.');
+            
+            throw new InvalidArgumentException('Token reset password tidak boleh kosong.');
         }
-        $this->_user = User::findByPasswordResetToken($token);
-        if (!$this->_user) {
-            throw new InvalidParamException('Token reset password salah.');
+        
+        $this->_user = User::findByEmailAndPasswordResetToken($email, $token);
+        
+        if (empty($this->_user)) {
+            
+            throw new InvalidArgumentException('Token reset password salah.');
         }
+        
         parent::__construct($config);
     }
 

@@ -32,9 +32,7 @@ $this->registerMetaTag([
                                     <h4 class="font-alt">Reset Password</h4>
                                     <hr class="divider-w mb-20">
 
-                                    <h4>
-                                        <small><?= Yii::t('app', 'Please enter your new password.') ?></small>
-                                    </h4>
+                                    <?= Yii::t('app', 'Please enter your new password.') ?>
 
                                     <?php
                                     $form = ActiveForm::begin([

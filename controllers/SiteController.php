@@ -271,36 +271,59 @@ class SiteController extends base\BaseController
      *
      * @return mixed
      */
-    public function actionRequestResetPassword()
+    public function actionRequestResetPassword($verification = false, $email = '')
     {
         $model = new RequestResetPassword();
-        if ($model->load(($post = Yii::$app->request->post())) && $model->validate()) {
+        $model->email = $email;
+        
+        $post = Yii::$app->request->post();
+        
+        if ($model->load($post)) {
 
-            $modelUser = User::findByEmail($post);
-
-            if ($model->sendEmail()) {
-
-                $messageParams = [
-                    'fullname' => $modelUser['full_name'],
-                    'title' => Yii::t('app', 'Request Password Reset'),
-                    'messages' => Yii::t('app', 'Check your email for further instructions'),
-                    'links' => '',
-                ];
+            if (!$verification) {
+                
+                if (Yii::$app->request->isAjax) {
+                
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                } else {
+                        
+                    $modelUser = User::findByEmail($model->email);
+                    
+                    if ($model->sendEmail()) {
+                        
+                        $this->redirect(['site/request-reset-password', 'verification' => true, 'email' => $model->email]);
+                    } else {
+                        
+                        $messageParams = [
+                            'fullname' => $modelUser['full_name'],
+                            'title' => Yii::t('app', 'Request Password Reset'),
+                            'messages' => Yii::t('app', 'An error has occurred while requesting password reset'),
+                            'links' => '',
+                        ];
+                        
+                        return $this->render('message', $messageParams);
+                    }
+                }
             } else {
-
-                $messageParams = [
-                    'fullname' => $modelUser['full_name'],
-                    'title' => Yii::t('app', 'Request Password Reset'),
-                    'messages' => Yii::t('app', 'An error has occurred while requesting password reset'),
-                    'links' => '',
-                ];
+                
+                if (Yii::$app->request->isAjax) {
+                    
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                } else {
+                
+                    if ($model->validate()) {
+                    
+                        return $this->redirect(['site/reset-password', 'user' => $model->email, 'token' => $model->token]);
+                    }
+                }
             }
-
-            return $this->render('message', $messageParams);
         }
 
         return $this->render('request_reset_password', [
             'model' => $model,
+            'verification' => $verification
         ]);
     }
 
@@ -311,11 +334,13 @@ class SiteController extends base\BaseController
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
+    public function actionResetPassword($user, $token)
     {
         try {
-            $model = new ResetPassword($token);
+            
+            $model = new ResetPassword($user, $token);
         } catch (InvalidArgumentException $e) {
+            
             throw new BadRequestHttpException($e->getMessage());
         }
 

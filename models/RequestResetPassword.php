@@ -8,6 +8,8 @@ use core\models\User;
 class RequestResetPassword extends Model
 {
     public $email;
+    public $verificationCode;
+    public $token;
 
     /**
      * {@inheritdoc}
@@ -23,7 +25,38 @@ class RequestResetPassword extends Model
                 'filter' => ['not_active' => false],
                 'message' => 'Tidak ada pengguna dengan alamat email ini.'
             ],
+            ['verificationCode', 'trim'],
+            ['verificationCode', 'required'],
+            ['verificationCode', 'validateVerificationCode']
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('app', 'Email'),
+            'verificationCode' => Yii::t('app', 'Verification Code'),
+        ];
+    }
+    
+    public function validateVerificationCode($attribute, $params) {
+        
+        $modelUser = User::find()
+            ->andWhere(['email' => $this->email])
+            ->andWhere(['ilike', 'password_reset_token', $this->verificationCode . '_'])
+            ->andWhere(['not_active' => false])
+            ->asArray()->one();
+        
+        if (empty($modelUser)) {
+            
+            $this->addError($attribute, Yii::t('app', 'Wrong verification code'));
+        } else {
+            
+            $this->token = $modelUser['password_reset_token'];
+        }
     }
 
     /**
@@ -39,7 +72,8 @@ class RequestResetPassword extends Model
             'email' => $this->email,
         ]);
 
-        if (!$user) {
+        if (empty($user)) {
+            
             return false;
         }
 
@@ -48,12 +82,12 @@ class RequestResetPassword extends Model
             $user->generatePasswordResetToken();
             
             if (!$user->save()) {
+                
                 return false;
             }
         }
 
-        return Yii::$app
-            ->mailer
+        return Yii::$app->mailer
             ->compose(
                 ['html' => 'password_reset_token'],
                 ['user' => $user]
