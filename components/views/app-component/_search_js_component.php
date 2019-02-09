@@ -306,15 +306,24 @@ $jscript = '
 
              if (navigator.geolocation) {
 
-                 navigator.geolocation.getCurrentPosition(function(position) {
+                var isSuccess = false;
+
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    isSuccess = true;
     
-                     executeMap({lat: position.coords.latitude, lng: position.coords.longitude});
-                 }, function(error) {
+                    executeMap({lat: position.coords.latitude, lng: position.coords.longitude});
+                }, function(error) {
 
                     executeMap(latLng);
 
                     messageResponse("aicon aicon-icon-info", "Maps error", error.message, "danger");
                 });
+
+                if (!isSuccess) {
+
+                    executeMap(latLng);
+                }
              } else {
 
                  executeMap(latLng);
