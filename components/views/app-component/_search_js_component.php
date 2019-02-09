@@ -306,9 +306,11 @@ $jscript = '
 
             executeMap(latLng);
 
-            if (navigator.geolocation) {
+            var navigatorGeolocation = navigator.geolocation;
 
-                navigator.geolocation.getCurrentPosition(function(position) {
+            if (navigatorGeolocation) {
+
+                navigatorGeolocation.getCurrentPosition(function(position) {
 
                     executeMap({lat: position.coords.latitude, lng: position.coords.longitude});
                 }, function(error) {
