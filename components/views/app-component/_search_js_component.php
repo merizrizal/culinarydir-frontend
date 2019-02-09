@@ -315,8 +315,6 @@ $jscript = '
                     executeMap({lat: position.coords.latitude, lng: position.coords.longitude});
                 }, function(error) {
 
-                    executeMap(latLng);
-
                     messageResponse("aicon aicon-icon-info", "Maps error", error.message, "danger");
                 });
 
