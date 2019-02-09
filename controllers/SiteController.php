@@ -288,15 +288,12 @@ class SiteController extends base\BaseController
                     return ActiveForm::validate($model);
                 } else {
                         
-                    $modelUser = User::findByEmail($model->email);
-                    
                     if ($model->sendEmail()) {
                         
                         $this->redirect(['site/request-reset-password', 'verification' => true, 'email' => $model->email]);
                     } else {
                         
                         $messageParams = [
-                            'fullname' => $modelUser['full_name'],
                             'title' => Yii::t('app', 'Request Password Reset'),
                             'messages' => Yii::t('app', 'An error has occurred while requesting password reset'),
                             'links' => '',
@@ -479,7 +476,8 @@ class SiteController extends base\BaseController
         }
     }
     
-    public function actionSitemap() {
+    public function actionSitemap() 
+    {
         
         $outputData = '';
         

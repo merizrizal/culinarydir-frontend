@@ -10,6 +10,8 @@ class RequestResetPassword extends Model
     public $email;
     public $verificationCode;
     public $token;
+    
+    public $isRequestToken;
 
     /**
      * {@inheritdoc}
@@ -20,14 +22,15 @@ class RequestResetPassword extends Model
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'exist',
-                'targetClass' => '\core\models\User',
-                'filter' => ['not_active' => false],
-                'message' => 'Tidak ada pengguna dengan alamat email ini.'
-            ],
             ['verificationCode', 'trim'],
-            ['verificationCode', 'required'],
-            ['verificationCode', 'validateVerificationCode']
+            ['verificationCode', 'required', 'when' => function($model) {
+                
+                return !$model->isRequestToken;
+            }],
+            ['verificationCode', 'validateVerificationCode', 'when' => function($model) {
+                
+                return !$model->isRequestToken;
+            }]
         ];
     }
     
@@ -64,9 +67,10 @@ class RequestResetPassword extends Model
      *
      * @return bool whether the email was send
      */
-    public function sendEmail()
+    public function sendEmail($isFromApi = false)
     {
-        /* @var $user User */
+        $mailer = Yii::$app->mailer;
+        
         $user = User::findOne([
             'not_active' => false,
             'email' => $this->email,
@@ -74,25 +78,25 @@ class RequestResetPassword extends Model
 
         if (empty($user)) {
             
-            return false;
-        }
+            $mailer = $mailer->compose(['html' => 'password_reset_token_unavailable'], ['isFromApi' => $isFromApi]);
+        } else {
 
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            
-            $user->generatePasswordResetToken();
-            
-            if (!$user->save()) {
+            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
                 
-                return false;
+                $user->generatePasswordResetToken();
+                
+                if (!$user->save()) {
+                    
+                    return false;
+                }
             }
+            
+            $mailer = $mailer->compose(
+                ['html' => 'password_reset_token'],
+                ['user' => $user, 'isFromApi' => $isFromApi]);
         }
 
-        return Yii::$app->mailer
-            ->compose(
-                ['html' => 'password_reset_token'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
+        return $mailer->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
             ->setTo($this->email)
             ->setSubject('Reset password untuk akun ' . Yii::$app->name)
             ->send();
