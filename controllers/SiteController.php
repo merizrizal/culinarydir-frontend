@@ -266,11 +266,6 @@ class SiteController extends base\BaseController
         return $this->goHome();
     }
 
-    /**
-     * Requests password reset.
-     *
-     * @return mixed
-     */
     public function actionRequestResetPassword($verification = false, $email = '')
     {
         $model = new RequestResetPassword();
@@ -324,28 +319,21 @@ class SiteController extends base\BaseController
         ]);
     }
 
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
-     * @throws BadRequestHttpException
-     */
     public function actionResetPassword($user, $token)
     {
-        try {
+        $model = new ResetPassword();
+        
+        if ($model->load(Yii::$app->request->post())) {
             
-            $model = new ResetPassword($user, $token);
-        } catch (InvalidArgumentException $e) {
-            
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-
-            Yii::$app->session->setFlash('resetSuccess', Yii::t('app', 'Your new password has been saved'));
-
-            return $this->redirect(['login']);
+            $model->email = $user;
+            $model->token = $token;
+        
+            if ($model->validate() && $model->resetPassword()) {
+    
+                Yii::$app->session->setFlash('resetSuccess', Yii::t('app', 'Your new password has been saved'));
+    
+                return $this->redirect(['login']);
+            }
         }
 
         return $this->render('reset_password', [

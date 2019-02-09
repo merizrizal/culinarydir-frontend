@@ -10,36 +10,14 @@ use core\models\User;
  */
 class ResetPassword extends Model
 {
+    public $email;
+    public $token;
     public $password;
 
     /**
      * @var \core\models\User
      */
     private $_user;
-
-    /**
-     * Creates a form model given a token.
-     *
-     * @param string $token
-     * @param array $config name-value pairs that will be used to initialize the object properties
-     * @throws \yii\base\InvalidParamException if token is empty or not valid
-     */
-    public function __construct($email, $token, $config = [])
-    {
-        if (empty($token) || !is_string($token)) {
-            
-            throw new InvalidArgumentException('Token reset password tidak boleh kosong.');
-        }
-        
-        $this->_user = User::findByEmailAndPasswordResetToken($email, $token);
-        
-        if (empty($this->_user)) {
-            
-            throw new InvalidArgumentException('Token reset password salah.');
-        }
-        
-        parent::__construct($config);
-    }
 
     /**
      * {@inheritdoc}
@@ -49,7 +27,23 @@ class ResetPassword extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'max' => 64],
+            ['password', 'validateToken'],
         ];
+    }
+    
+    public function validateToken($attribute, $params) {
+        
+        if (empty($this->token) || !is_string($this->token)) {
+            
+            $this->addError($attribute, 'Token reset password tidak boleh kosong.');
+        }
+        
+        $this->_user = User::findByEmailAndPasswordResetToken($this->email, $this->token);
+        
+        if (empty($this->_user)) {
+            
+            $this->addError($attribute, 'Token reset password salah.');
+        }
     }
 
     /**
