@@ -115,7 +115,11 @@ $this->params['beforeEndBody'][] = function() {
         ',
     ]);
 
-        echo '<div id="map"></div>';
+        echo '
+            <div class="overlay" style="display: none"></div>
+            <div class="loading-img" style="display: none"></div>
+            <div id="map"></div>
+        ';
 
     Modal::end();
 };
@@ -304,28 +308,27 @@ $jscript = '
             executeMap(latLng);
         } else {
 
-             if (navigator.geolocation) {
+            $("#modal-region").find(".overlay").show();
+            $("#modal-region").find(".loading-img").show();
 
-                var isSuccess = false;
+            executeMap(latLng);
+
+            if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(function(position) {
 
-                    isSuccess = true;
-    
                     executeMap({lat: position.coords.latitude, lng: position.coords.longitude});
+
+                    $("#modal-region").find(".overlay").hide();
+                    $("#modal-region").find(".loading-img").hide();
                 }, function(error) {
 
                     messageResponse("aicon aicon-icon-info", "Maps error", error.message, "danger");
+
+                    $("#modal-region").find(".overlay").hide();
+                    $("#modal-region").find(".loading-img").hide();                    
                 });
-
-                if (!isSuccess) {
-
-                    executeMap(latLng);
-                }
-             } else {
-
-                 executeMap(latLng);
-             }
+            }
         }
     };
 
