@@ -11,6 +11,7 @@ use core\models\User;
 class ResetPassword extends Model
 {
     public $email;
+    public $username;
     public $token;
     public $password;
 
@@ -25,6 +26,7 @@ class ResetPassword extends Model
     public function rules()
     {
         return [
+            [['email', 'token'], 'trim'],
             ['password', 'required'],
             ['password', 'string', 'max' => 64],
             ['password', 'validateToken'],
@@ -43,6 +45,9 @@ class ResetPassword extends Model
         if (empty($this->_user)) {
             
             $this->addError($attribute, 'Token reset password salah.');
+        } else {
+            
+            $this->username = $this->_user->username;
         }
     }
 
