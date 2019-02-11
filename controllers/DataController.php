@@ -347,7 +347,10 @@ class DataController extends base\BaseController
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
-                    'businessProductCategories.productCategory',
+                    'businessProductCategories.productCategory' => function ($query) {
+                        
+                        $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                    },
                     'businessDetail',
                     'userLoves' => function ($query) {
                     
@@ -450,7 +453,10 @@ class DataController extends base\BaseController
                     
                         $query->andOnCondition(['business_product_category.is_active' => true]);
                     },
-                    'business.businessProductCategories.productCategory',
+                    'business.businessProductCategories.productCategory' => function ($query) {
+                    
+                        $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                    },
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])

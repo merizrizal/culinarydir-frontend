@@ -135,10 +135,12 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'businessProductCategories' => function ($query) {
 
-                    $query->andOnCondition(['business_product_category.is_active' => true])
-                        ->orderBy(['business_product_category.order' => SORT_ASC]);
+                    $query->andOnCondition(['business_product_category.is_active' => true]);
                 },
-                'businessProductCategories.productCategory',
+                'businessProductCategories.productCategory' => function ($query) {
+                    
+                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                },
                 'businessDetail',
                 'businessHours' => function ($query) {
 

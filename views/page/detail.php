@@ -470,8 +470,11 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
 
                                                                         <?php
                                                                         foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
-                                                                        
-                                                                            echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            
+                                                                            if (!empty($dataBusinessProductCategory['productCategory'])) {
+                                                                                
+                                                                                echo '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            }
                                                                         } ?>
 
                                                                     </li>
