@@ -431,15 +431,24 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'businessLocation',
                 'businessLocation.city',
-                'businessProducts' => function ($query) {
+                'businessProductCategories' => function ($query) {
+                
+                    $query->andOnCondition(['business_product_category.is_active' => true])
+                        ->orderBy(['business_product_category.order' => SORT_ASC]);
+                },
+                'businessProductCategories.businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false])
-                        ->orderBy(['order' => SORT_ASC]);
+                        ->orderBy(['business_product.order' => SORT_ASC]);
+                },
+                'businessProductCategories.productCategory' => function ($query) {
+                    
+                    $query->andOnCondition(['OR', ['product_category.type' => 'Menu'], ['product_category.type' => 'Specific-Menu']]);    
                 },
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
-        
+            
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'transactionItems' => function ($query) {

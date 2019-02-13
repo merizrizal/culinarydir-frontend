@@ -13,17 +13,17 @@ use frontend\components\GrowlCustom;
 $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 
 <div class="main">
-
     <section class="module-extra-small bg-main">
-        <div class="container detail">
-        
+        <div class="container detail menu-list">
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+                
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
                         'page/detail', 
                         'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']), 
                         'uniqueName' => $modelBusiness['unique_name']
                     ], ['class' => 'btn btn-standard p-0']); ?>
+                    
                 </div>
             </div>
         
@@ -33,10 +33,46 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             			<div class="col-xs-12">
             				<div class="box bg-white">
             					<div class="box-title">
-            						<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
+    								<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
             					</div>
             					
-            					<hr class="divider-w">
+            					<div class="nav-menu view">
+            						<ul class="nav nav-tabs widget mb-10" role="tablist">
+            							<li class="active" role="presentation">
+
+                                            <?php
+                                            $isEmptyMenu = true;
+                                            
+                                            $linkDropdown = 
+                                                '<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                    ' . Yii::t('app', 'Category') . ' <i class="fas fa-chevron-circle-down"></i>
+                                                </a>';
+                                            
+                                            $businessProductCategory = '<ul class="dropdown-menu product-category-shortcut">';
+                                	           
+                                    	    foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+                                    	       
+                                    	        if (!empty($dataBusinessProductCategory['businessProducts'])) {
+                                    	            
+                                    	            $isEmptyMenu = false;
+                                    	        
+                                    	            $businessProductCategory .= '
+                                                        <li>' . 
+                                                            Html::a($dataBusinessProductCategory['productCategory']['name'] . ' (' . count($dataBusinessProductCategory['businessProducts']) . ')', '', [
+                                            	               'class' => 'menu-shortcut',
+                                            	               'data-id' => $dataBusinessProductCategory['productCategory']['id']
+                                                            ]) . '
+                                                        </li>';
+                                    	        }
+                                    	    }
+                                    	    
+                                    	    $businessProductCategory .= '</ul>';
+                                        	
+                                        	echo !$isEmptyMenu ? $linkDropdown . $businessProductCategory : ''; ?>
+                                            	
+                                        </li>
+                                    </ul>
+            					</div>
             					
             					<div class="box-content">
             						<div class="row">
@@ -51,208 +87,225 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 											    echo Html::hiddenInput('transaction_session_id', $modelTransactionSession['id'], ['class' => 'transaction-session-id']);
 											}
 											
-                                            if (!empty($modelBusiness['businessProducts'])):
-                                        
-                                                foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct):
+                                            foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory):
                                                 
-                                                    $existOrderClass = 'hidden';
-                                                    $addOrderClass = '';
-                                                    $transactionItemId = null;
-                                                    $transactionItemNotes = null;
-                                                    $transactionItemAmount = 1;
-                                            
-                                                    if (!empty($modelTransactionSession['transactionItems'])) {
-                                                        
-                                                        foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
+                                                if (!empty($dataBusinessProductCategory['businessProducts'])):
+                                        
+                                                    $isEmptyMenu = false; ?>
+                                                    
+                                                    <div class="row" id="menu-<?= $dataBusinessProductCategory['productCategory']['id'] ?>">
+                                                    	<div class="col-xs-12">
+                                                    
+                                                    		<h4><?= $dataBusinessProductCategory['productCategory']['name'] ?></h4>
+                                                	
+                                                        	<hr class="divider-w mb-10">
+                                                        	
+                                                        	<?php
+                                                            foreach ($dataBusinessProductCategory['businessProducts'] as $dataBusinessProduct):
                                                             
-                                                            if ($dataBusinessProduct['id'] === $dataTransactionItem['business_product_id']) {
-                                                                
-                                                                $existOrderClass = '';
-                                                                $addOrderClass = 'hidden';
-                                                                $transactionItemId = $dataTransactionItem['id'];
-                                                                $transactionItemNotes = $dataTransactionItem['note'];
-                                                                $transactionItemAmount = $dataTransactionItem['amount'];
-                                                                
-                                                                break;
-                                                            }
-                                                        }
-                                                    } ?>
-                                                    
-                                                    <div class="business-menu-group">
-                                                    
-                                                    	<?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
-                                                    
-                            							<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
-                            								<div class="row">
-                                                                <div class="col-sm-8 col-tab-8">
-                                                                    <strong><?= $dataBusinessProduct['name'] ?></strong>
-                                                                </div>
-                                                                <div class="col-sm-3 col-tab-3">
-                                                                    <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
-                                                                </div>
-                                                                <div class="col-sm-1 col-tab-1 text-right <?= $existOrderClass ?>">
-                                                    		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        		
-                                                        			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                        			
-                                                        		</div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-tab-12">
-                                                                    <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row <?= $addOrderClass ?>">
-                                                            	<div class="col-xs-offset-8 col-xs-4">
-                                                            	
-                                                            		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
-                                                            		    'class' => 'btn btn-d btn-round btn-xs add-item',
-                                                            		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
-                                                            		    'data-product-id' => $dataBusinessProduct['id'],
-                                                            		    'data-product-price' => $dataBusinessProduct['price']
-                                                            		]) ?>
-                                                                	
-                                                            	</div>
-                                                            </div>
-                                                            <div class="row input-order <?= $existOrderClass ?>">
-                                                            	<div class="col-sm-8 col-tab-8">
-                                                        		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
-                                                        			
-                                                        			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
-                                                                        'class' => 'form-control transaction-item-notes',
-                                                                        'placeholder' => Yii::t('app', 'Note'),
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                    ]); ?>
-                                                        			
-                                                        		</div>
-                                                            	<div class="col-lg-2 col-sm-3 col-tab-3">
-                                                        	
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
+                                                                $existOrderClass = 'hidden';
+                                                                $addOrderClass = '';
+                                                                $transactionItemId = null;
+                                                                $transactionItemNotes = null;
+                                                                $transactionItemAmount = 1;
                                                         
-                                                                    <?= TouchSpin::widget([
-                                                                        'name' => 'transaction_item_amount',
-                                                                        'value' => $transactionItemAmount,
-                                                                        'options' => [
-                                                                            'class' => 'transaction-item-amount text-right input-sm',
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                        ],
-                                                                        'pluginOptions' => [
-                                                                            'style' => 'width: 30%',
-                                                                            'min' => 1,
-                                                                            'max' => 50,
-                                                                            'step' => 1,
-                                                                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                            'buttondown_class' => "btn btn-default text-center",
-                                                                            'buttonup_class' => "btn btn-default text-center"
-                                                                        ],
-                                                                    ]); ?>
+                                                                if (!empty($modelTransactionSession['transactionItems'])) {
                                                                     
-                                                        		</div>
-                                                            </div>
-                            							</div>
-                            							<div class="business-menu mb-20 visible-xs">
-                            								<div class="row">
-                                                                <div class="col-xs-7">
-                                                                    <strong><?= $dataBusinessProduct['name'] ?></strong>
-                                                                </div>
-                                                                <div class="col-xs-5 product-price <?= $addOrderClass ?>">
-                                                                    <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
-                                                                </div>
-                                                                <div class="col-xs-5 text-right <?= $existOrderClass ?>">
-                                                    		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        		
-                                                        			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                        			
-                                                        		</div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-xs-12">
-                                                                    <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row <?= $addOrderClass ?>">
-                                                            	<div class="col-xs-offset-7 col-xs-5">
-                                                            	
-                                                            		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
-                                                            		    'class' => 'btn btn-d btn-round btn-xs add-item',
-                                                            		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
-                                                            		    'data-product-id' => $dataBusinessProduct['id'],
-                                                            		    'data-product-price' => $dataBusinessProduct['price']
-                                                            		]) ?>
+                                                                    foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
+                                                                        
+                                                                        if ($dataBusinessProduct['id'] === $dataTransactionItem['business_product_id']) {
+                                                                            
+                                                                            $existOrderClass = '';
+                                                                            $addOrderClass = 'hidden';
+                                                                            $transactionItemId = $dataTransactionItem['id'];
+                                                                            $transactionItemNotes = $dataTransactionItem['note'];
+                                                                            $transactionItemAmount = $dataTransactionItem['amount'];
+                                                                            
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                } ?>
+                                                                
+                                                                <div class="business-menu-group">
+                                                                
+                                                                	<?= Html::hiddenInput('transaction_item_id', $transactionItemId, ['class' => 'transaction-item-id']); ?>
                                                                 	
-                                                            	</div>
-                                                            </div>
-                                                            <div class="row input-order <?= $existOrderClass ?>">
-                                                            	<div class="col-xs-12 mb-10">
-                                                        		
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
-                                                        			
-                                                        			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
-                                                                        'class' => 'form-control transaction-item-notes',
-                                                                        'placeholder' => Yii::t('app', 'Note'),
-                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                    ]); ?>
-                                                        			
-                                                        		</div>
-                                                                <div class="col-xs-7">
-                                                                    <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
-                                                                </div>
-                                                            	<div class="col-xs-5">
-                                                        	
-                                                        			<div class="overlay" style="display: none;"></div>
-                                                        			<div class="loading-text" style="display: none;"></div>
-                                                        
-                                                                    <?= TouchSpin::widget([
-                                                                        'name' => 'transaction_item_amount',
-                                                                        'value' => $transactionItemAmount,
-                                                                        'options' => [
-                                                                            'class' => 'transaction-item-amount text-right input-sm',
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                        ],
-                                                                        'pluginOptions' => [
-                                                                            'style' => 'width: 30%',
-                                                                            'min' => 1,
-                                                                            'max' => 50,
-                                                                            'step' => 1,
-                                                                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                            'buttondown_class' => "btn btn-default text-center",
-                                                                            'buttonup_class' => "btn btn-default text-center"
-                                                                        ],
-                                                                    ]); ?>
+                                        							<div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
+                                        								<div class="row">
+                                                                            <div class="col-sm-8 col-tab-8">
+                                                                                <strong><?= $dataBusinessProduct['name'] ?></strong>
+                                                                            </div>
+                                                                            <div class="col-sm-3 col-tab-3">
+                                                                                <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            </div>
+                                                                            <div class="col-sm-1 col-tab-1 text-right <?= $existOrderClass ?>">
+                                                                		
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    		
+                                                                    			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
+                                                                    			
+                                                                    		</div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12 col-tab-12">
+                                                                                <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row <?= $addOrderClass ?>">
+                                                                        	<div class="col-xs-offset-8 col-xs-4">
+                                                                        	
+                                                                        		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
+                                                                        		    'class' => 'btn btn-d btn-round btn-xs add-item',
+                                                                        		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
+                                                                        		    'data-product-id' => $dataBusinessProduct['id'],
+                                                                        		    'data-product-price' => $dataBusinessProduct['price']
+                                                                        		]) ?>
+                                                                            	
+                                                                        	</div>
+                                                                        </div>
+                                                                        <div class="row input-order <?= $existOrderClass ?>">
+                                                                        	<div class="col-sm-8 col-tab-8">
+                                                                    		
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			
+                                                                    			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
+                                                                                    'class' => 'form-control transaction-item-notes',
+                                                                                    'placeholder' => Yii::t('app', 'Note'),
+                                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                                ]); ?>
+                                                                    			
+                                                                    		</div>
+                                                                        	<div class="col-lg-2 col-sm-3 col-tab-3">
+                                                                    	
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			
+                                                                                <?= TouchSpin::widget([
+                                                                                    'name' => 'transaction_item_amount',
+                                                                                    'value' => $transactionItemAmount,
+                                                                                    'options' => [
+                                                                                        'class' => 'transaction-item-amount text-right input-sm',
+                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                    ],
+                                                                                    'pluginOptions' => [
+                                                                                        'style' => 'width: 30%',
+                                                                                        'min' => 1,
+                                                                                        'max' => 50,
+                                                                                        'step' => 1,
+                                                                                        'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                        'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                        'buttondown_class' => "btn btn-default text-center",
+                                                                                        'buttonup_class' => "btn btn-default text-center"
+                                                                                    ],
+                                                                                ]); ?>
+                                                                                
+                                                                    		</div>
+                                                                        </div>
+                                        							</div>
+                                        							<div class="business-menu mb-20 visible-xs">
+                                        								<div class="row mb-10">
+                                                                            <div class="col-xs-7">
+                                                                                <strong><?= $dataBusinessProduct['name'] ?></strong>
+                                                                            </div>
+                                                                            <div class="col-xs-5 product-price <?= $addOrderClass ?>">
+                                                                                <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            </div>
+                                                                            <div class="col-xs-5 text-right <?= $existOrderClass ?>">
+                                                                		
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    		
+                                                                    			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
+                                                                    			
+                                                                    		</div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-xs-12">
+                                                                                <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row <?= $addOrderClass ?>">
+                                                                        	<div class="col-xs-offset-7 col-xs-5">
+                                                                        	
+                                                                        		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
+                                                                        		    'class' => 'btn btn-d btn-round btn-xs add-item',
+                                                                        		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
+                                                                        		    'data-product-id' => $dataBusinessProduct['id'],
+                                                                        		    'data-product-price' => $dataBusinessProduct['price']
+                                                                        		]) ?>
+                                                                            	
+                                                                        	</div>
+                                                                        </div>
+                                                                        <div class="row input-order <?= $existOrderClass ?>">
+                                                                        	<div class="col-xs-12 mb-10">
+                                                                    		
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			
+                                                                    			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
+                                                                                    'class' => 'form-control transaction-item-notes',
+                                                                                    'placeholder' => Yii::t('app', 'Note'),
+                                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                                ]); ?>
+                                                                    			
+                                                                    		</div>
+                                                                            <div class="col-xs-7">
+                                                                                <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            </div>
+                                                                        	<div class="col-xs-5">
+                                                                    	
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
                                                                     
-                                                        		</div>
-                                                            </div>
-                            							</div>
-                        							</div>
-                    
-                                                <?php
-                                                endforeach;
-                                            else:
-                            
-                                            	echo '<p>' . Yii::t('app', 'Currently there is no menu available') . '.</p>';
-                                            endif; ?>
+                                                                                <?= TouchSpin::widget([
+                                                                                    'name' => 'transaction_item_amount',
+                                                                                    'value' => $transactionItemAmount,
+                                                                                    'options' => [
+                                                                                        'class' => 'transaction-item-amount text-right input-sm',
+                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                    ],
+                                                                                    'pluginOptions' => [
+                                                                                        'style' => 'width: 30%',
+                                                                                        'min' => 1,
+                                                                                        'max' => 50,
+                                                                                        'step' => 1,
+                                                                                        'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                        'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                        'buttondown_class' => "btn btn-default text-center",
+                                                                                        'buttonup_class' => "btn btn-default text-center"
+                                                                                    ],
+                                                                                ]); ?>
+                                                                                
+                                                                    		</div>
+                                                                        </div>
+                                        							</div>
+                                    							</div>
+                                
+                                                            <?php
+                                                            endforeach; ?>
+                                                    	
+                                                    	</div>
+                                                    </div>
+                                                    
+                                    			<?php
+                                                endif;
+                                            endforeach;
+                                            
+                                            if ($isEmptyMenu) {
+
+                                                echo '<p>' . Yii::t('app', 'Currently there is no menu available') . '.</p>';
+                                            } ?>
 											
 										</div>
 									</div>
             					</div>
-            					<br><br><br>
             				</div>
         				</div>
     				</div>
         		</div>
     		</div>
-    		
         </div>
     </section>
-    
 </div>
 
 <?php
@@ -263,6 +316,32 @@ $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse()
 $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
 
 $jscript = '
+    $(window).scroll(function() {
+
+        var st = $(this).scrollTop();
+
+        if (st > $(".nav-menu").offset().top) {
+            
+            $(".nav-tabs").addClass("nav-tabs-fixed");
+            $(".nav-menu").addClass("stick");
+
+            setInterval(function () {
+                
+                if ($(".navbar-up").length) {
+                
+                    $(".nav-tabs").removeClass("nav-tabs-up");
+                } else {
+
+                    $(".nav-tabs").addClass("nav-tabs-up");
+                }
+            }, 250);
+        } else {
+
+            $(".nav-tabs").removeClass("nav-tabs-fixed");
+            $(".nav-menu").removeClass("stick");
+        }
+    });
+
     var cart = null;
 
     if ($(".transaction-session-id").length) {
@@ -461,6 +540,13 @@ $jscript = '
                 thisObj.children().removeClass("fa-spinner fa-spin").addClass("fa-times");
             }
         });
+
+        return false;
+    });
+
+    $(".menu-shortcut").on("click", function() {
+
+        $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top - 50 }, "slow");
 
         return false;
     });
