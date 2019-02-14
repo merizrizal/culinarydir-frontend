@@ -111,13 +111,13 @@ use kartik\rating\StarRating;
 </div>
 
 <?php
-$csscript = '
+$cssScript = '
     .business-rating-components {
         padding-top: 4px;
     }
 ';
 
-$this->registerCss($csscript);
+$this->registerCss($cssScript);
 
 frontend\components\RatingColor::widget();
 

@@ -120,7 +120,7 @@ $this->params['beforeEndBody'][] = function() {
     Modal::end();
 };
 
-$csscript = '
+$cssScript = '
     #map .map-marker {
         position: absolute;
         background: url(' . Yii::$app->request->baseUrl . '/media/img/marker.png) no-repeat;
@@ -136,7 +136,7 @@ $csscript = '
     }
 ';
 
-$this->registerCss($csscript);
+$this->registerCss($cssScript);
 
 frontend\components\GrowlCustom::widget();
 

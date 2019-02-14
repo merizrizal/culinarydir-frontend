@@ -347,14 +347,14 @@ endif; ?>
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
-$csscript = '
+$cssScript = '
     
     .modal {
         z-index: 1051;
     }
 ';
 
-$this->registerCss($csscript);
+$this->registerCss($cssScript);
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 

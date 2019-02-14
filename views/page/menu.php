@@ -309,18 +309,38 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 </div>
 
 <?php
+$cssScript = '';
+$jscript = '
+    var navMenuOffsetTop = 0;
+';
+
+if (Yii::$app->request->getUserAgent() == 'com.asikmakan.app') {
+    
+    $cssScript .= '
+        .nav-tabs-fixed {
+            top: 50px;
+        }
+    ';
+    
+    $jscript .= '
+        navMenuOffsetTop = -50; 
+    ';
+}
+
+$this->registerCss($cssScript);
+
 GrowlCustom::widget();
 
 $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse(), View::POS_HEAD);
 
 $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
 
-$jscript = '
+$jscript .= '
     $(window).scroll(function() {
 
         var st = $(this).scrollTop();
 
-        if (st > $(".nav-menu").offset().top) {
+        if (st > $(".nav-menu").offset().top + navMenuOffsetTop) {
             
             $(".nav-tabs").addClass("nav-tabs-fixed");
             $(".nav-menu").addClass("stick");
