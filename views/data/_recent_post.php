@@ -16,7 +16,7 @@ $urlReviewDetail = [
     'uniqueName' => $model['business']['unique_name'],
 ]; ?>
 
-<div class="col-lg-4 col-md-4 col-sm-6 col-tab-6 col-xs-12">
+<div class="col-lg-4 col-md-4 col-sm-6 col-tab-8 col-xs-12">
     <div class="recent-post">
         <div class="box">
             <div class="post">
@@ -95,7 +95,7 @@ $urlReviewDetail = [
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
-                            <h5 class="m-0">
+                            <h4 class="m-0">
                             
                                 <?= Html::a($model['business']['name'], [
                                     'page/detail', 
@@ -103,7 +103,7 @@ $urlReviewDetail = [
                                     'uniqueName' => $model['business']['unique_name']
                                 ]); ?>
                             
-                            </h5>
+                            </h4>
                         </div>
                     </div>
                     <div class="row">
