@@ -466,22 +466,22 @@ class PageController extends base\BaseHistoryUrlController
             
             if (!empty($dataBusinessProduct['businessProductCategory'])) {
                 
-                $key = $dataBusinessProduct['businessProductCategory']['order'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['id'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['name'];
+                $key = $dataBusinessProduct['businessProductCategory']['productCategory']['id'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['name'];
                 
                 if (empty($dataMenuCategorised[$key])) {
                     
-                    $dataMenuCategorised[$key] = [];
+                    $dataMenuCategorised[$dataBusinessProduct['businessProductCategory']['order']][$key] = [];
                 }
                 
-                array_push($dataMenuCategorised[$key], $dataBusinessProduct);
+                array_push($dataMenuCategorised[$dataBusinessProduct['businessProductCategory']['order']][$key], $dataBusinessProduct);
             } else {
                 
                 if (empty($dataMenuCategorised['emptyCategory'])) {
                     
-                    $dataMenuCategorised['emptyCategory'] = [];
+                    $dataMenuCategorised[999]['emptyCategory'] = [];
                 }
                 
-                array_push($dataMenuCategorised['emptyCategory'], $dataBusinessProduct);
+                array_push($dataMenuCategorised[999]['emptyCategory'], $dataBusinessProduct);
             }
         }
         
