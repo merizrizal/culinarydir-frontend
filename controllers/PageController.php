@@ -431,17 +431,16 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'businessLocation',
                 'businessLocation.city',
-                'businessProductCategories' => function ($query) {
-                
-                    $query->andOnCondition(['business_product_category.is_active' => true])
-                        ->orderBy(['business_product_category.order' => SORT_ASC]);
-                },
-                'businessProductCategories.businessProducts' => function ($query) {
+                'businessProducts' => function ($query) {
                 
                     $query->andOnCondition(['business_product.not_active' => false])
                         ->orderBy(['business_product.order' => SORT_ASC]);
                 },
-                'businessProductCategories.productCategory' => function ($query) {
+                'businessProducts.businessProductCategory' => function ($query) {
+                
+                    $query->andOnCondition(['business_product_category.is_active' => true]);
+                },
+                'businessProducts.businessProductCategory.productCategory' => function ($query) {
                     
                     $query->andOnCondition(['OR', ['product_category.type' => 'Menu'], ['product_category.type' => 'Specific-Menu']]);    
                 },
@@ -460,10 +459,36 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
+                
+        $dataMenuCategorised = [];
+                    
+        foreach ($modelBusiness['businessProducts'] as $dataBusinessProduct) {
             
+            if (!empty($dataBusinessProduct['businessProductCategory'])) {
+                
+                $key = $dataBusinessProduct['businessProductCategory']['order'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['id'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['name'];
+                
+                if (empty($dataMenuCategorised[$key])) {
+                    
+                    $dataMenuCategorised[$key] = [];
+                }
+                
+                array_push($dataMenuCategorised[$key], $dataBusinessProduct);
+            } else {
+                
+                if (empty($dataMenuCategorised['emptyCategory'])) {
+                    
+                    $dataMenuCategorised['emptyCategory'] = [];
+                }
+                
+                array_push($dataMenuCategorised['emptyCategory'], $dataBusinessProduct);
+            }
+        }
+        
         return $this->render('menu', [
             'modelBusiness' => $modelBusiness,
-            'modelTransactionSession' => $modelTransactionSession
+            'modelTransactionSession' => $modelTransactionSession,
+            'dataMenuCategorised' => $dataMenuCategorised
         ]);
     }
 
