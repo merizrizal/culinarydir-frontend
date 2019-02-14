@@ -188,7 +188,7 @@ $this->registerMetaTag([
 </div>
 
 <?php
-$csscript = '
+$cssScript = '
     .img-profile {
         position: relative;
         top: 35px;
@@ -206,7 +206,7 @@ $csscript = '
     }
 ';
 
-$this->registerCss($csscript);
+$this->registerCss($cssScript);
 
 GrowlCustom::widget();
 
