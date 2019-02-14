@@ -548,6 +548,8 @@ $jscript = '
 
         $("html, body").animate({ scrollTop: $("#menu-" + $(this).data("id")).offset().top - 50 }, "slow");
 
+        $(this).parent().parent().siblings("a").dropdown("toggle");
+
         return false;
     });
 ';
