@@ -468,7 +468,7 @@ class PageController extends base\BaseHistoryUrlController
                 
                 $key = $dataBusinessProduct['businessProductCategory']['productCategory']['id'] . '|' . $dataBusinessProduct['businessProductCategory']['productCategory']['name'];
                 
-                if (empty($dataMenuCategorised[$key])) {
+                if (empty($dataMenuCategorised[$dataBusinessProduct['businessProductCategory']['order']][$key])) {
                     
                     $dataMenuCategorised[$dataBusinessProduct['businessProductCategory']['order']][$key] = [];
                 }
@@ -476,7 +476,7 @@ class PageController extends base\BaseHistoryUrlController
                 array_push($dataMenuCategorised[$dataBusinessProduct['businessProductCategory']['order']][$key], $dataBusinessProduct);
             } else {
                 
-                if (empty($dataMenuCategorised['emptyCategory'])) {
+                if (empty($dataMenuCategorised[999]['emptyCategory'])) {
                     
                     $dataMenuCategorised[999]['emptyCategory'] = [];
                 }
