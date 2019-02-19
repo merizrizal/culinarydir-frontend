@@ -190,7 +190,22 @@ $this->title = 'Checkout'; ?>
                                                     endforeach; ?>
                                                     
                                                     <div class="row mt-40">
-                                                    	<div class="col-sm-offset-7 col-sm-5 col-xs-12">
+                                                    	<div class="col-xs-12">
+                                                    		<?= Yii::t('app', 'Got Promo Code?') ?>
+                                                    	</div>
+                                                    	<div class="col-sm-4 col-xs-12">
+                                                    		
+                                                    		<div class="overlay" style="display: none;"></div>
+                                                			<div class="loading-text" style="display: none;"></div>
+                                                			
+                                                			<?= Html::textInput('promo_code', null, [
+                                                                'class' => 'form-control promo-code',
+                                                                'placeholder' => Yii::t('app', 'Promo Code'),
+                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/redeem-promo'])
+                                                            ]); ?>
+                                                    		
+                                                    	</div>
+                                                    	<div class="col-sm-offset-3 col-sm-5 col-xs-12">
                                                     		<table class="table table-responsive table-striped table-border checkout-table">
                                                                 <tbody>
                                                                     <tr>
@@ -486,6 +501,45 @@ $jscript = '
         });
 
         return false;
+    });
+
+    $(".promo-code").on("change", function() {
+        
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $(this).data("url"),
+            data: {
+                "promo_code": $(this).val()
+            },
+            beforeSend: function(xhr) {
+
+                $(this).siblings(".overlay").show();
+                $(this).siblings(".loading-text").show();
+            },
+            success: function(response) {
+
+                if (response.success) {
+
+                    messageResponse(response.icon, response.title, response.text, response.type);
+
+                    $(".total-price").html(response.total_price);
+                } else {
+
+                    messageResponse(response.icon, response.title, response.text, response.type);
+                }
+
+                $(this).siblings(".overlay").hide();
+                $(this).siblings(".loading-text").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                $(this).siblings(".overlay").hide();
+                $(this).siblings(".loading-text").hide();
+            }
+        });
     });
 ';
 

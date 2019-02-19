@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use core\models\City;
+use core\models\Promo;
 
 /**
  * Page Controller
@@ -79,6 +80,15 @@ class PageController extends base\BaseHistoryUrlController
         
         $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
         
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
+        $modelPromo = Promo::find()
+            ->andWhere(['not_active' => false])
+            ->andWhere(['OR', ['>=', 'date_end', Yii::$app->formatter->asDate(time())], ['date_end' => null]])
+            ->asArray()->all();
+        
+        Yii::$app->formatter->timeZone = 'UTC';
+        
         $keyword = [];
         $keyword['searchType'] = Yii::t('app', 'favorite');
         $keyword['city'] = $city['id'];
@@ -94,7 +104,8 @@ class PageController extends base\BaseHistoryUrlController
 
         return $this->render('index', [
             'dataProviderUserPostMain' => $dataProviderUserPostMain,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'modelPromo' => $modelPromo
         ]);
     }
 

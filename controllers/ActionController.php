@@ -15,6 +15,7 @@ use core\models\BusinessDetailVote;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use core\models\PromoItem;
 
 /**
  * Action Controller
@@ -40,7 +41,8 @@ class ActionController extends base\BaseController
                         'submit-photo' => ['POST'],
                         'submit-user-love' => ['POST'],
                         'submit-user-visit' => ['POST'],
-                        'submit-report' => ['POST']
+                        'submit-report' => ['POST'],
+                        'claim-promo' => ['POST']
                     ]
                 ]
             ]);
@@ -400,6 +402,53 @@ class ActionController extends base\BaseController
             Yii::$app->response->format = Response::FORMAT_JSON;
             return $result;
         }
+    }
+    
+    public function actionClaimPromo()
+    {
+        $post = Yii::$app->request->post();
+        
+        $modelPromoItem = PromoItem::find()
+            ->andWhere(['promo_id' => $post['promo_id']])
+            ->andWhere(['user_claimed' => null])
+            ->andWhere(['business_claimed' => null])
+            ->andWhere(['not_active' => false])
+            ->one();
+        
+        $modelPromoItem->user_claimed = Yii::$app->user->getIdentity()->id;
+        
+        $result = [];
+        
+        if ($modelPromoItem->save()) {
+            
+            $userEmail = Yii::$app->user->getIdentity()->email;
+            $userFullName = Yii::$app->user->getIdentity()->full_name;
+            
+            Yii::$app->mailer->compose(['html' => 'claim_promo'], [
+                'modelPromoItem' => $modelPromoItem,
+                'fullName' => $userFullName,
+                'dateStart' => Yii::$app->formatter->asDate($post['date_start'], 'long'),
+                'dateEnd' => Yii::$app->formatter->asDate($post['date_end'], 'long')
+            ])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
+            ->setTo($userEmail)
+            ->setSubject(Yii::$app->name . ' Promo Code')
+            ->send();
+            
+            $result['icon'] = 'aicon aicon-icon-tick-in-circle';
+            $result['title'] = 'Claim Promo Berhasil';
+            $result['message'] = 'Harap periksa email anda untuk mendapatkan kode promo.';
+            $result['type'] = 'success';
+        } else {
+            
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Claim Promo Gagal';
+            $result['message'] = 'Anda gagal mengklaim promo ini.';
+            $result['type'] = 'danger';
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $result;
     }
 
     private function createReview($post)

@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
 use yii\web\View;
@@ -144,6 +145,27 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
 <section class="module-extra-small in-result bg-main">
     <div class="container detail">
         <div class="view">
+        
+        	<div class="row">
+        
+            	<?php
+            	if (!empty($modelPromo)) {
+            	    
+            	    foreach ($modelPromo as $dataPromo) {
+            	        
+            	        echo '
+                            <div class="col-xs-3 mb-10">' .
+                    	        Html::a('Claim ' . $dataPromo['title'], ['action/claim-promo'], [
+                    	            'class' => 'btn btn-d claim-promo-btn',
+                    	            'data-promo' => $dataPromo['id'],
+                    	            'data-date_start' => $dataPromo['date_start'],
+                    	            'data-date_end' => $dataPromo['date_end']
+                    	        ]) .
+                	        '</div>';
+            	    }
+            	} ?>
+        	
+        	</div>
 
             <div class="row mt-10 mb-20">
                 <div class="col-lg-12 font-alt"><?= Yii::t('app', 'Recent Activity'); ?></div>
@@ -218,6 +240,30 @@ $jscript = '
             }
         });
 
+        return false;
+    });
+
+    $(".claim-promo-btn").on("click", function() {
+        
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "promo_id": $(this).data("promo"),
+                "date_start": $(this).data("date_start"),
+                "date_end": $(this).data("date_end")
+            },
+            url: $(this).attr("href"),
+            success: function(response) {
+                
+                messageResponse(response.icon, response.title, response.message, response.type);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+            }
+        });
+        
         return false;
     });
 ';

@@ -8,6 +8,7 @@ use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 use yii\web\NotFoundHttpException;
+use core\models\PromoItem;
 
 /**
  * OrderAction controller
@@ -28,7 +29,8 @@ class OrderActionController extends base\BaseController
                         'save-order' => ['post'],
                         'change-qty' => ['post'],
                         'remove-item' => ['post'],
-                        'save-notes' => ['post']
+                        'save-notes' => ['post'],
+                        'redeem-promo' => ['post']
                     ],
                 ],
             ]);
@@ -56,7 +58,7 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->total_amount = 1;
         }
         
-        $return = [];
+        $result = [];
         
         if ($modelTransactionSession->business_id == $post['business_id']) {
             
@@ -83,31 +85,31 @@ class OrderActionController extends base\BaseController
                 
                 $transaction->commit();
                 
-                $return['success'] = true;
-                $return['item_id'] = $modelTransactionItem->id;
-                $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
-                $return['total_amount'] = $modelTransactionSession->total_amount;
+                $result['success'] = true;
+                $result['item_id'] = $modelTransactionItem->id;
+                $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+                $result['total_amount'] = $modelTransactionSession->total_amount;
             } else {
                 
                 $transaction->rollBack();
                 
-                $return['success'] = false;
-                $return['type'] = 'danger';
-                $return['icon'] = 'aicon aicon-icon-info';
-                $return['title'] = 'Penambahan pesanan gagal';
-                $return['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan pesan kembali';
+                $result['success'] = false;
+                $result['type'] = 'danger';
+                $result['icon'] = 'aicon aicon-icon-info';
+                $result['title'] = 'Penambahan pesanan gagal';
+                $result['text'] = 'Terjadi kesalahan saat menambahkan pesanan, silahkan pesan kembali';
             }
         } else {
 
-            $return['success'] = false;
-            $return['type'] = 'danger';
-            $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Penambahan pesanan gagal';
-            $return['text'] = 'Mohon maaf anda tidak dapat memesan dari dua tempat secara bersamaan';
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Penambahan pesanan gagal';
+            $result['text'] = 'Mohon maaf anda tidak dapat memesan dari dua tempat secara bersamaan';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
-        return $return;
+        return $result;
     }
     
     public function actionChangeQty()
@@ -142,28 +144,28 @@ class OrderActionController extends base\BaseController
             $flag = $modelTransactionSession->save();
         }
         
-        $return = [];
+        $result = [];
         
         if ($flag) {
             
             $transaction->commit();
             
-            $return['success'] = true;
-            $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
-            $return['total_amount'] = $modelTransactionSession->total_amount;
+            $result['success'] = true;
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
             
             $transaction->rollBack();
             
-            $return['success'] = false;
-            $return['type'] = 'danger';
-            $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Perubahan jumlah pesanan gagal';
-            $return['text'] = 'Terjadi kesalahan saat proses perubahan jumlah pesanan, silahkan ulangi kembali';
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Perubahan jumlah pesanan gagal';
+            $result['text'] = 'Terjadi kesalahan saat proses perubahan jumlah pesanan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
-        return $return;
+        return $result;
     }
     
     public function actionRemoveItem()
@@ -195,28 +197,28 @@ class OrderActionController extends base\BaseController
             $flag = $modelTransactionItem->delete() && $modelTransactionSession->save();
         }
         
-        $return = [];
+        $result = [];
         
         if ($flag) {
             
             $transaction->commit();
             
-            $return['success'] = true;
-            $return['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
-            $return['total_amount'] = $modelTransactionSession->total_amount;
+            $result['success'] = true;
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
             
             $transaction->rollBack();
             
-            $return['success'] = false;
-            $return['type'] = 'danger';
-            $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Penghapusan pesanan gagal';
-            $return['text'] = 'Terjadi kesalahan saat menghapus pesanan, silahkan ulangi kembali';
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Penghapusan pesanan gagal';
+            $result['text'] = 'Terjadi kesalahan saat menghapus pesanan, silahkan ulangi kembali';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
-        return $return;
+        return $result;
     }
     
     public function actionSaveNotes()
@@ -234,21 +236,52 @@ class OrderActionController extends base\BaseController
         
         $modelTransactionItem->note = !empty($post['note']) ? $post['note'] : null;
         
-        $return = [];
+        $result = [];
         
         if ($modelTransactionItem->save()) {
             
-            $return['success'] = true;
+            $result['success'] = true;
         } else {
             
-            $return['success'] = false;
-            $return['type'] = 'danger';
-            $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Input keterangan pesanan gagal';
-            $return['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Input keterangan pesanan gagal';
+            $result['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
-        return $return;
+        return $result;
+    }
+    
+    public function actionRedeemPromo()
+    {
+        $modelPromoItem = PromoItem::find()
+            ->andWhere(['like', 'id', Yii::$app->request->post()['promo_code']])
+            ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['not_active' => false])
+            ->one();
+        
+        $result = [];
+            
+        if (!empty($modelPromoItem)) {
+            
+            $result['success'] = true;
+            $result['amount'] = $modelPromoItem->amount;
+            $result['icon'] = 'aicon aicon-icon-tick-in-circle';
+            $result['title'] = 'Redeem Promo Berhasil';
+            $result['message'] = 'Total pembelian anda akan dikurangi sebesar ' . $result['amount'];
+            $result['type'] = 'success';
+        } else {
+            
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Redeem Promo Gagal';
+            $result['text'] = 'Kode promo yang anda masukkan tidak valid.';
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $result;
     }
 }
