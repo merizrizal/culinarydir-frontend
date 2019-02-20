@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\filters\VerbFilter;
+use core\models\PromoItem;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
 
@@ -53,59 +54,81 @@ class OrderController extends base\BaseController
             ->one();
                 
         $modelTransactionSessionOrder = new TransactionSessionOrder();
-                
+        
         if (($post = Yii::$app->request->post())) {
             
             $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-
-            $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
-            $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
-            $modelTransactionSessionOrder->business_payment_id = !empty($post['business_payment_id']) ? $post['business_payment_id'] : null;
+            $flag = true;
             
-            $modelTransactionSession->is_closed = true;
-            $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
+            if (!empty($post['promo_code'])) {
+                
+                $modelPromoItem = PromoItem::find()
+                    ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
+                    ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
+                    ->andWhere(['business_claimed' => null])
+                    ->andWhere(['not_active' => false])
+                    ->one();
+                
+                if (!empty($modelPromoItem)) {
+                    
+                    $modelPromoItem->business_claimed = $modelTransactionSession->business_id;
+                    $modelPromoItem->not_active = true;
+                    $modelTransactionSession->total_price -= $modelPromoItem->amount;
+                    
+                    $flag = $modelPromoItem->save();
+                }
+            }
             
-            if (($flag = $modelTransactionSessionOrder->save() && $modelTransactionSession->save())) {
+            if ($flag) {
                 
-                $dataDelivery = [];
+                $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+                $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
+                $modelTransactionSessionOrder->business_payment_id = !empty($post['business_payment_id']) ? $post['business_payment_id'] : null;
                 
-                foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
+                $modelTransactionSession->is_closed = true;
+                $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
+                
+                if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
                     
-                    if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
+                    $dataDelivery = [];
+                    
+                    foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
                         
-                        $dataDelivery = $dataBusinessDelivery;
-                        break;
+                        if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
+                            
+                            $dataDelivery = $dataBusinessDelivery;
+                            break;
+                        }
                     }
-                }
-                
-                $dataPayment = [];
-                
-                foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
                     
-                    if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
+                    $dataPayment = [];
+                    
+                    foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
                         
-                        $dataPayment = $dataBusinessPayment;
-                        break;
+                        if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
+                            
+                            $dataPayment = $dataBusinessPayment;
+                            break;
+                        }
                     }
-                }
                     
-                $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
-                
-                $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
-                
-                foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
+                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
                     
-                    $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
-                    $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
+                    
+                    foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
+                        
+                        $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
+                        $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
+                    }
+                    
+                    $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
+                    $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
+                    $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
+                    $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
+                    
+                    $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
                 }
-                
-                $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
-                $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
-                $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
-                $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
-                
-                $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
             }
             
             if ($flag) {

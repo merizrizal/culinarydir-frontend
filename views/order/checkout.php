@@ -193,7 +193,7 @@ $this->title = 'Checkout'; ?>
                                                     	<div class="col-xs-12">
                                                     		<?= Yii::t('app', 'Got Promo Code?') ?>
                                                     	</div>
-                                                    	<div class="col-sm-4 col-xs-12">
+                                                    	<div class="col-sm-4 col-xs-12 mb-20">
                                                     		
                                                     		<div class="overlay" style="display: none;"></div>
                                                 			<div class="loading-text" style="display: none;"></div>
@@ -504,40 +504,39 @@ $jscript = '
     });
 
     $(".promo-code").on("change", function() {
-        
+                
+        var thisObj = $(this);
+
         $.ajax({
             cache: false,
             type: "POST",
-            url: $(this).data("url"),
+            url: thisObj.data("url"),
             data: {
-                "promo_code": $(this).val()
+                "promo_code": thisObj.val()
             },
             beforeSend: function(xhr) {
 
-                $(this).siblings(".overlay").show();
-                $(this).siblings(".loading-text").show();
+                thisObj.siblings(".overlay").show();
+                thisObj.siblings(".loading-text").show();
             },
             success: function(response) {
-
-                if (response.success) {
-
-                    messageResponse(response.icon, response.title, response.text, response.type);
-
-                    $(".total-price").html(response.total_price);
-                } else {
+                
+                if (!response.empty) {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
                 }
 
-                $(this).siblings(".overlay").hide();
-                $(this).siblings(".loading-text").hide();
+                $(".total-price").html(response.total_price);
+
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-text").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
-                $(this).siblings(".overlay").hide();
-                $(this).siblings(".loading-text").hide();
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-text").hide();
             }
         });
     });

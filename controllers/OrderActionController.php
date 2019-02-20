@@ -256,29 +256,79 @@ class OrderActionController extends base\BaseController
     
     public function actionRedeemPromo()
     {
-        $modelPromoItem = PromoItem::find()
-            ->andWhere(['like', 'id', Yii::$app->request->post()['promo_code']])
-            ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['not_active' => false])
-            ->one();
+        $post = Yii::$app->request->post();
         
         $result = [];
+        
+        $modelTransactionSession = TransactionSession::find()
+            ->joinWith([
+                'transactionItems'
+            ])
+            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['is_closed' => false])
+            ->one();
+        
+        $realAmount = 0;
+        
+        foreach ($modelTransactionSession->transactionItems as $modelTransactionItem) {
             
-        if (!empty($modelPromoItem)) {
+            $realAmount += ($modelTransactionItem->amount * $modelTransactionItem->price);
+        }
+        
+        if (!empty($post['promo_code'])) {
             
-            $result['success'] = true;
-            $result['amount'] = $modelPromoItem->amount;
-            $result['icon'] = 'aicon aicon-icon-tick-in-circle';
-            $result['title'] = 'Redeem Promo Berhasil';
-            $result['message'] = 'Total pembelian anda akan dikurangi sebesar ' . $result['amount'];
-            $result['type'] = 'success';
+            $modelPromoItem = PromoItem::find()
+                ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
+                ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
+                ->andWhere(['not_active' => false])
+                ->one();
+            
+            $result['empty'] = false;
+            
+            if (!empty($modelPromoItem)) {
+                
+                if ($modelTransactionSession->total_price == $realAmount) {
+                    
+                    $modelTransactionSession->total_price -= $modelPromoItem->amount;
+                    
+                    if ($modelTransactionSession->save()) {
+                        
+                        $result['success'] = true;
+                        $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
+                        $result['type'] = 'success';
+                        $result['icon'] = 'aicon aicon-icon-tick-in-circle';
+                        $result['title'] = 'Redeem Promo Berhasil';
+                        $result['text'] = 'Total pembelian akan dikurangi sebesar ' . Yii::$app->formatter->asCurrency($modelPromoItem->amount);
+                    } else {
+                        
+                        $result['text'] = 'Proses redeem promo gagal, silahkan ulangi kembali.';
+                    }
+                } else {
+                    
+                    $result['empty'] = true;
+                }
+            } else {
+                
+                $result['success'] = false;
+                $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+                $result['type'] = 'danger';
+                $result['icon'] = 'aicon aicon-icon-info';
+                $result['title'] = 'Redeem Promo Gagal';
+                $result['text'] = 'Kode promo yang anda masukkan tidak valid.';
+            }
         } else {
             
-            $result['success'] = false;
-            $result['type'] = 'danger';
-            $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Redeem Promo Gagal';
-            $result['text'] = 'Kode promo yang anda masukkan tidak valid.';
+            $result['empty'] = true;
+            
+            if ($modelTransactionSession->total_price != $realAmount) {
+                
+                $modelTransactionSession->total_price = $realAmount;
+                
+                if ($modelTransactionSession->save()) {
+                    
+                    $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+                }
+            }
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;
