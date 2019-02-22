@@ -531,12 +531,15 @@ $jscript = '
 
                     if (response.success) {
 
-                        $(".promo-amount").attr("value", response.promo_amount);
-                        $(".total-after-promo").attr("value", response.total_after_promo);
+                        $(".total-price").html(response.total_price);
+                    }
+                } else {
+                    
+                    if (response.success) {
+                    
+                        $(".total-price").html(response.total_price);
                     }
                 }
-
-                $(".total-price").html(response.total_price);
 
                 thisObj.parent().siblings(".overlay").hide();
                 thisObj.parent().siblings(".loading-text").hide();

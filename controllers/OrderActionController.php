@@ -259,9 +259,7 @@ class OrderActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelTransactionSession = TransactionSession::find()
-            ->joinWith([
-                'transactionItems'
-            ])
+            ->joinWith(['transactionItems'])
             ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['is_closed' => false])
             ->one();
@@ -279,7 +277,6 @@ class OrderActionController extends base\BaseController
             $result['empty'] = false;
             
             $result['success'] = false;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
             $result['type'] = 'danger';
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Redeem Promo Gagal';
@@ -308,6 +305,9 @@ class OrderActionController extends base\BaseController
                     if ($modelTransactionSession->promo_item_id != $modelPromoItem['id']) {
                         
                         $result['text'] = 'Pembelian anda sudah menggunakan promo.';
+                    } else {
+                        
+                        $result['empty'] = true;
                     }
                 }
             } else {
@@ -317,6 +317,7 @@ class OrderActionController extends base\BaseController
         } else {
             
             $result['empty'] = true;
+            $result['success'] = true;
             
             if (!empty($modelTransactionSession->promo_item_id)) {
                 

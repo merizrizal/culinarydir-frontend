@@ -60,10 +60,12 @@ class OrderController extends base\BaseController
             $transaction = Yii::$app->db->beginTransaction();
             $flag = true;
             
-            if (!empty($post['promo_code'])) {
+            if (!empty($post['TransactionSession']['promo_item_id'])) {
+                
+                $promoCode =  strlen(trim($post['TransactionSession']['promo_item_id'])) > 6 ? substr(trim($post['TransactionSession']['promo_item_id']), 0, 6) : trim($post['TransactionSession']['promo_item_id']);
                 
                 $modelPromoItem = PromoItem::find()
-                    ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
+                    ->andWhere(['SUBSTRING(id, 1, 6)' => $promoCode])
                     ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
                     ->andWhere(['business_claimed' => null])
                     ->andWhere(['not_active' => false])
@@ -73,7 +75,6 @@ class OrderController extends base\BaseController
                     
                     $modelPromoItem->business_claimed = $modelTransactionSession->business_id;
                     $modelPromoItem->not_active = true;
-                    $modelTransactionSession->total_price -= $modelPromoItem->amount;
                     
                     $flag = $modelPromoItem->save();
                 }

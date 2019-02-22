@@ -177,7 +177,8 @@ class UserController extends base\BaseHistoryUrlController
                 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
-                'transactionItems.businessProduct'
+                'transactionItems.businessProduct',
+                'promoItem'
             ])
             ->andWhere(['transaction_session.id' => $id])
             ->asArray()->one();
@@ -190,7 +191,8 @@ class UserController extends base\BaseHistoryUrlController
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
         
         return $this->render('detail_order_history', [
-            'modelTransactionSession' => $modelTransactionSession
+            'modelTransactionSession' => $modelTransactionSession,
+            'totalPrice' => $modelTransactionSession['total_price'] + (!empty($modelTransactionSession['promoItem']) ? $modelTransactionSession['promoItem']['amount'] : 0)
         ]);
     }
 }

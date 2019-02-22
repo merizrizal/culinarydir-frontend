@@ -238,7 +238,10 @@ class UserActionController extends base\BaseController
             $flag = false;
         
             $oldModelTransaction = TransactionSession::find()
-                ->joinWith(['transactionItems'])
+                ->joinWith([
+                    'transactionItems',
+                    'promoItem'
+                ])
                 ->andWhere(['transaction_session.id' => Yii::$app->request->post('id')])
                 ->one();
             
@@ -246,7 +249,7 @@ class UserActionController extends base\BaseController
             $newModelTransactionSession->user_ordered = $oldModelTransaction->user_ordered;
             $newModelTransactionSession->business_id = $oldModelTransaction->business_id;
             $newModelTransactionSession->note = !empty($oldModelTransaction->note) ? $oldModelTransaction->note : null;
-            $newModelTransactionSession->total_price = $oldModelTransaction->total_price;
+            $newModelTransactionSession->total_price = $oldModelTransaction->total_price + (!empty($oldModelTransaction->promoItem) ? $oldModelTransaction->promoItem->amount : 0);
             $newModelTransactionSession->total_amount = $oldModelTransaction->total_amount;
             $newModelTransactionSession->is_closed = false;
             

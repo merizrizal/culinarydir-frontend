@@ -9,6 +9,7 @@ use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
+/* @var $totalPrice integer */
 
 $this->title = Yii::t('app', 'Order Details'); 
 
@@ -106,7 +107,15 @@ $urlBusinessDetail = [
                                     
                                     <div class="row">
                                     	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
-                                    		Total : <?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $modelTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
+                                    		Total : <?= Yii::$app->formatter->asCurrency($totalPrice) ?>
+                                    		
+                                    		<?php
+                                    		if (!empty($modelTransactionSession['promoItem'])) {
+                                    		
+                                        		echo '<br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) . '
+                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                    		} ?>
+                                			
                                     	</div>
                                     	<div class="col-sm-4 col-tab-4 col-xs-12">
                                     	
