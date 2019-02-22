@@ -190,20 +190,22 @@ $this->title = 'Checkout'; ?>
                                                     endforeach; ?>
                                                     
                                                     <div class="row mt-40">
-                                                    	<div class="col-xs-12">
-                                                    		<?= Yii::t('app', 'Got Promo Code?') ?>
-                                                    	</div>
-                                                    	<div class="col-sm-4 col-xs-12 mb-20">
-                                                    		
-                                                    		<div class="overlay" style="display: none;"></div>
-                                                			<div class="loading-text" style="display: none;"></div>
-                                                			
-                                                			<?= Html::textInput('promo_code', null, [
-                                                                'class' => 'form-control promo-code',
-                                                                'placeholder' => Yii::t('app', 'Promo Code'),
-                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/redeem-promo'])
-                                                            ]); ?>
-                                                    		
+                                                    	<div class ="promo-code-section">
+                                                        	<div class="col-xs-12">
+                                                        		<?= Yii::t('app', 'Got Promo Code?') ?>
+                                                        	</div>
+                                                        	<div class="col-sm-4 col-xs-12 mb-20">
+                                                        		
+                                                        		<div class="overlay" style="display: none;"></div>
+                                                    			<div class="loading-text" style="display: none;"></div>
+                                                    			
+                                                    			<?= $form->field($modelTransactionSession, 'promo_item_id')->textInput([
+                                                    			    'class' => 'form-control promo-code',
+                                                    			    'placeholder' => Yii::t('app', 'Promo Code'),
+                                                    			    'data-url' => Yii::$app->urlManager->createUrl(['order-action/redeem-promo'])
+                                                    			]) ?>
+                                                        		
+                                                        	</div>
                                                     	</div>
                                                     	<div class="col-sm-offset-3 col-sm-5 col-xs-12">
                                                     		<table class="table table-responsive table-striped table-border checkout-table">
@@ -477,6 +479,8 @@ $jscript = '
 
                     if (!$(".business-menu-group").length) {
                         
+                        $(".promo-code-section").siblings().removeClass("col-sm-offset-3").addClass("col-sm-offset-7");
+                        $(".promo-code-section").remove();
                         $(".order-online-form").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-submit").prop("disabled", true);
@@ -504,7 +508,7 @@ $jscript = '
     });
 
     $(".promo-code").on("change", function() {
-                
+        
         var thisObj = $(this);
 
         $.ajax({
@@ -516,27 +520,33 @@ $jscript = '
             },
             beforeSend: function(xhr) {
 
-                thisObj.siblings(".overlay").show();
-                thisObj.siblings(".loading-text").show();
+                thisObj.parent().siblings(".overlay").show();
+                thisObj.parent().siblings(".loading-text").show();
             },
             success: function(response) {
                 
                 if (!response.empty) {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
+
+                    if (response.success) {
+
+                        $(".promo-amount").attr("value", response.promo_amount);
+                        $(".total-after-promo").attr("value", response.total_after_promo);
+                    }
                 }
 
                 $(".total-price").html(response.total_price);
 
-                thisObj.siblings(".overlay").hide();
-                thisObj.siblings(".loading-text").hide();
+                thisObj.parent().siblings(".overlay").hide();
+                thisObj.parent().siblings(".loading-text").hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
-                thisObj.siblings(".overlay").hide();
-                thisObj.siblings(".loading-text").hide();
+                thisObj.parent().siblings(".overlay").hide();
+                thisObj.parent().siblings(".loading-text").hide();
             }
         });
     });

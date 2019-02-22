@@ -258,8 +258,6 @@ class OrderActionController extends base\BaseController
     {
         $post = Yii::$app->request->post();
         
-        $result = [];
-        
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'transactionItems'
@@ -268,61 +266,62 @@ class OrderActionController extends base\BaseController
             ->andWhere(['is_closed' => false])
             ->one();
         
-        $realAmount = 0;
+        $modelPromoItem = PromoItem::find()
+            ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
+            ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['not_active' => false])
+            ->asArray()->one();
         
-        foreach ($modelTransactionSession->transactionItems as $modelTransactionItem) {
-            
-            $realAmount += ($modelTransactionItem->amount * $modelTransactionItem->price);
-        }
+        $result = [];
         
         if (!empty($post['promo_code'])) {
             
-            $modelPromoItem = PromoItem::find()
-                ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
-                ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
-                ->andWhere(['not_active' => false])
-                ->one();
-            
             $result['empty'] = false;
+            
+            $result['success'] = false;
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Redeem Promo Gagal';
+            $result['text'] = 'Proses redeem promo gagal, silahkan ulangi kembali.';
             
             if (!empty($modelPromoItem)) {
                 
-                if ($modelTransactionSession->total_price == $realAmount) {
+                if (empty($modelTransactionSession->promo_item_id)) {
                     
-                    $modelTransactionSession->total_price -= $modelPromoItem->amount;
+                    $modelTransactionSession->total_price -= $modelPromoItem['amount'];
+                    $modelTransactionSession->promo_item_id = $modelPromoItem['id'];
                     
                     if ($modelTransactionSession->save()) {
                         
                         $result['success'] = true;
                         $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
+                        $result['promo_amount'] = Yii::$app->formatter->asCurrency($modelPromoItem['amount']);
+                        $result['total_after_promo'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
                         $result['type'] = 'success';
                         $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                         $result['title'] = 'Redeem Promo Berhasil';
-                        $result['text'] = 'Total pembelian akan dikurangi sebesar ' . Yii::$app->formatter->asCurrency($modelPromoItem->amount);
-                    } else {
-                        
-                        $result['text'] = 'Proses redeem promo gagal, silahkan ulangi kembali.';
+                        $result['text'] = 'Total pembelian akan dikurangi sebesar ' . Yii::$app->formatter->asCurrency($modelPromoItem['amount']);
                     }
                 } else {
                     
-                    $result['empty'] = true;
+                    if ($modelTransactionSession->promo_item_id != $modelPromoItem['id']) {
+                        
+                        $result['text'] = 'Pembelian anda sudah menggunakan promo.';
+                    }
                 }
             } else {
                 
-                $result['success'] = false;
-                $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
-                $result['type'] = 'danger';
-                $result['icon'] = 'aicon aicon-icon-info';
-                $result['title'] = 'Redeem Promo Gagal';
-                $result['text'] = 'Kode promo yang anda masukkan tidak valid.';
+                $result['text'] = 'Kode promo yang anda masukkan salah atau tidak valid.';
             }
         } else {
             
             $result['empty'] = true;
             
-            if ($modelTransactionSession->total_price != $realAmount) {
+            if (!empty($modelTransactionSession->promo_item_id)) {
                 
-                $modelTransactionSession->total_price = $realAmount;
+                $modelTransactionSession->total_price += $modelTransactionSession->promoItem->amount;
+                $modelTransactionSession->promo_item_id = null;
                 
                 if ($modelTransactionSession->save()) {
                     
