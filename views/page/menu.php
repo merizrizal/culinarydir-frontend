@@ -40,8 +40,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             					<?php
             					if (!empty($dataMenuCategorised)):
             					
-            					   ksort($dataMenuCategorised);
-            					   
+            					    ksort($dataMenuCategorised);
+            					    
                 					if (!(count($dataMenuCategorised) == 1 && key_exists('emptyCategory', $dataMenuCategorised)) && count($dataMenuCategorised) > 1): ?> 
             					    
                     					<div class="nav-menu view">
@@ -158,11 +158,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                                                         </div>
                                                                         <div class="col-sm-1 col-tab-1 text-right <?= $existOrderClass ?>">
-                                                            		
                                                                 			<div class="overlay" style="display: none;"></div>
-                                                                		
                                                                 			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                                			
                                                                 		</div>
                                                                     </div>
                                                                     <div class="row">
@@ -231,11 +228,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                                                         </div>
                                                                         <div class="col-xs-5 text-right <?= $existOrderClass ?>">
-                                                            		
                                                                 			<div class="overlay" style="display: none;"></div>
-                                                                		
                                                                 			<?= Html::a('<i class="fa fa-times"></i>', ['order-action/remove-item'], ['class' => 'remove-item']); ?>
-                                                                			
                                                                 		</div>
                                                                     </div>
                                                                     <div class="row">
