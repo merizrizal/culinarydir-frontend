@@ -249,9 +249,7 @@ $jscript = '
             cache: false,
             type: "POST",
             data: {
-                "promo_id": $(this).data("promo"),
-                "date_start": $(this).data("date_start"),
-                "date_end": $(this).data("date_end")
+                "promo_id": $(this).data("promo")
             },
             url: $(this).attr("href"),
             success: function(response) {

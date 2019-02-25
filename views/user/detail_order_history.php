@@ -107,13 +107,16 @@ $urlBusinessDetail = [
                                     
                                     <div class="row">
                                     	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
-                                    		Total : <?= Yii::$app->formatter->asCurrency($totalPrice) ?>
                                     		
                                     		<?php
                                     		if (!empty($modelTransactionSession['promoItem'])) {
                                     		
-                                        		echo '<br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) . '
+                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($totalPrice) . '
+                                                    <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) . '
                                                     <br>Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                    		} else {
+                                    		
+                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
                                     		} ?>
                                 			
                                     	</div>

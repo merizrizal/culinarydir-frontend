@@ -309,10 +309,8 @@ $this->title = 'Checkout'; ?>
                                                     	
                                                     	<div class="row mt-30">
                                                         	<div class="col-xs-12">
-                                                        	
                                                         		<strong><?= Yii::t('app', 'Order Information') ?></strong>
                                                         		<?= $form->field($modelTransactionSession, 'note')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Add Notes to Seller (Optional)')]) ?>
-                                                        		
                                                         	</div>
                                                         </div>
                                                     </div>
@@ -538,6 +536,9 @@ $jscript = '
                     if (response.success) {
                     
                         $(".total-price").html(response.total_price);
+                    } else {
+
+                        messageResponse(response.icon, response.title, response.text, response.type);
                     }
                 }
 

@@ -327,6 +327,13 @@ class OrderActionController extends base\BaseController
                 if ($modelTransactionSession->save()) {
                     
                     $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+                } else {
+                    
+                    $result['success'] = false;
+                    $result['type'] = 'danger';
+                    $result['icon'] = 'aicon aicon-icon-info';
+                    $result['title'] = 'Hapus Kode Promo Gagal';
+                    $result['text'] = 'Proses hapus kode promo gagal, silahkan ulangi kembali.';
                 }
             }
         }
