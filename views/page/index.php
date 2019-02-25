@@ -54,7 +54,7 @@ $appComponent = new AppComponent();
 $info = '
     <div class="row">
         <div class="col-md-10 col-md-offset-1 col-sm-12">
-            <div class="titan-title-tagline p-10 mb-10" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 5px;">750+ tempat kuliner dan terus bertambah</div>
+            <div class="titan-title-tagline p-10 mb-10" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 5px;">800+ tempat kuliner dan terus bertambah</div>
         </div>
     </div>
 ';
