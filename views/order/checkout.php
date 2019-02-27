@@ -220,7 +220,7 @@ $this->title = 'Checkout'; ?>
                                                                     </tr>
                                                                     <tr>
                                                                         <th class="font-alt">Total</th>
-                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
+                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] < 0 ? 0 : $modelTransactionSession['total_price']) ?></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -334,7 +334,7 @@ $this->title = 'Checkout'; ?>
                                                                 <tbody>
                                                                     <tr>
                                                                         <th class="font-alt">Total</th>
-                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) ?></td>
+                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(0) ?></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -403,6 +403,11 @@ $jscript = '
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
 
                     $(".total-price").html(response.total_price);
+
+                    if (response.real_price != null) {
+
+                        $(".real-price").children().last().html(response.real_price);
+                    }
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -490,9 +495,16 @@ $jscript = '
                         $(".order-online-form").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-submit").prop("disabled", true);
+                        $(".real-price").hide();
+                        $(".promo-amount").hide();
                     }
 
                     $(".total-price").html(response.total_price);
+
+                    if (response.real_price != null) {
+
+                        $(".real-price").children().last().html(response.real_price);
+                    }
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);

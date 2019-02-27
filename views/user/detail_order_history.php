@@ -113,7 +113,7 @@ $urlBusinessDetail = [
                                     		
                                     		    echo 'Total : ' . Yii::$app->formatter->asCurrency($totalPrice) . '
                                                     <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) . '
-                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] < 0 ? 0 : $modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
                                     		} else {
                                     		
                                     		    echo 'Total : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';

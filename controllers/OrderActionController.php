@@ -151,7 +151,8 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
+            $result['real_price'] = !empty($modelTransactionSession->promoItem) ? Yii::$app->formatter->asCurrency($modelTransactionSession->total_price + $modelTransactionSession->promoItem->amount) : null;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
@@ -186,10 +187,10 @@ class OrderActionController extends base\BaseController
         $flag = false;
 
         $modelTransactionSession = $modelTransactionItem->transactionSession;
-        $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
         $modelTransactionSession->total_amount -= $modelTransactionItem->amount;
+        $modelTransactionSession->total_price -= $modelTransactionItem->price * $modelTransactionItem->amount;
 
-        if ($modelTransactionSession->total_price == 0) {
+        if ($modelTransactionSession->total_amount == 0) {
 
             $flag = $modelTransactionItem->delete() && $modelTransactionSession->delete();
         } else {
@@ -204,7 +205,8 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
+            $result['real_price'] = !empty($modelTransactionSession->promoItem) ? Yii::$app->formatter->asCurrency($modelTransactionSession->total_price + $modelTransactionSession->promoItem->amount) : null;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
