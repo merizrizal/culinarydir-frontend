@@ -57,16 +57,14 @@ class OrderController extends base\BaseController
         $modelTransactionSessionOrder = new TransactionSessionOrder();
 
         if (($post = Yii::$app->request->post())) {
-
+            
             $transaction = Yii::$app->db->beginTransaction();
             $flag = true;
 
             if (!empty($post['TransactionSession']['promo_item_id'])) {
 
-                $promoCode =  strlen(trim($post['TransactionSession']['promo_item_id'])) > 6 ? substr(trim($post['TransactionSession']['promo_item_id']), 0, 6) : trim($post['TransactionSession']['promo_item_id']);
-
                 $modelPromoItem = PromoItem::find()
-                    ->andWhere(['SUBSTRING(id, 1, 6)' => $promoCode])
+                    ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['TransactionSession']['promo_item_id'])])
                     ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
                     ->andWhere(['business_claimed' => null])
                     ->andWhere(['not_active' => false])
@@ -77,7 +75,19 @@ class OrderController extends base\BaseController
                     $modelPromoItem->business_claimed = $modelTransactionSession->business_id;
                     $modelPromoItem->not_active = true;
 
-                    $flag = $modelPromoItem->save();
+                    if (($flag = $modelPromoItem->save())) {
+                        
+                        $modelTransactionSession->promo_item_id = $modelPromoItem->id;
+                        $modelTransactionSession->total_price -= $modelPromoItem->amount;
+                    }
+                } else {
+                    
+                    Yii::$app->session->setFlash('message', [
+                        'title' => 'Gagal Checkout',
+                        'message' => 'Kode Promo tidak valid',
+                    ]);
+                    
+                    return $this->redirect(['order/checkout']);
                 }
             }
 

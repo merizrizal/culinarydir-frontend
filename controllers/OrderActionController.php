@@ -29,8 +29,7 @@ class OrderActionController extends base\BaseController
                         'save-order' => ['post'],
                         'change-qty' => ['post'],
                         'remove-item' => ['post'],
-                        'save-notes' => ['post'],
-                        'redeem-promo' => ['post']
+                        'save-notes' => ['post']
                     ],
                 ],
             ]);
@@ -250,94 +249,6 @@ class OrderActionController extends base\BaseController
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Input keterangan pesanan gagal';
             $result['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        return $result;
-    }
-
-    public function actionRedeemPromo()
-    {
-        $post = Yii::$app->request->post();
-
-        $modelTransactionSession = TransactionSession::find()
-            ->joinWith(['transactionItems'])
-            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['is_closed' => false])
-            ->one();
-
-        $modelPromoItem = PromoItem::find()
-            ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['promo_code'])])
-            ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['not_active' => false])
-            ->asArray()->one();
-
-        $result = [];
-
-        if (!empty($post['promo_code'])) {
-
-            $result['empty'] = false;
-
-            $result['success'] = false;
-            $result['type'] = 'danger';
-            $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Redeem Promo Gagal';
-            $result['text'] = 'Proses redeem promo gagal, silahkan ulangi kembali.';
-
-            if (!empty($modelPromoItem)) {
-
-                if (empty($modelTransactionSession->promo_item_id)) {
-
-                    $modelTransactionSession->total_price -= $modelPromoItem['amount'];
-                    $modelTransactionSession->promo_item_id = $modelPromoItem['id'];
-
-                    if ($modelTransactionSession->save()) {
-
-                        $result['success'] = true;
-                        $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
-                        $result['promo_amount'] = Yii::$app->formatter->asCurrency($modelPromoItem['amount']);
-                        $result['real_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price + $modelPromoItem['amount']);
-                        $result['type'] = 'success';
-                        $result['icon'] = 'aicon aicon-icon-tick-in-circle';
-                        $result['title'] = 'Redeem Promo Berhasil';
-                        $result['text'] = 'Total pembelian akan dikurangi sebesar ' . Yii::$app->formatter->asCurrency($modelPromoItem['amount']);
-                    }
-                } else {
-
-                    if ($modelTransactionSession->promo_item_id != $modelPromoItem['id']) {
-
-                        $result['text'] = 'Pembelian anda sudah menggunakan promo.';
-                    } else {
-
-                        $result['empty'] = true;
-                    }
-                }
-            } else {
-
-                $result['text'] = 'Kode promo yang anda masukkan salah atau tidak valid.';
-            }
-        } else {
-
-            $result['empty'] = true;
-            $result['success'] = true;
-
-            if (!empty($modelTransactionSession->promo_item_id)) {
-
-                $modelTransactionSession->total_price += $modelTransactionSession->promoItem->amount;
-                $modelTransactionSession->promo_item_id = null;
-
-                if ($modelTransactionSession->save()) {
-
-                    $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
-                } else {
-
-                    $result['success'] = false;
-                    $result['type'] = 'danger';
-                    $result['icon'] = 'aicon aicon-icon-info';
-                    $result['title'] = 'Hapus Kode Promo Gagal';
-                    $result['text'] = 'Proses hapus kode promo gagal, silahkan ulangi kembali.';
-                }
-            }
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;

@@ -196,13 +196,9 @@ $this->title = 'Checkout'; ?>
                                                             </div>
                                                             <div class="col-sm-4 col-xs-12 mb-20">
 
-                                                                <div class="overlay" style="display: none;"></div>
-                                                                <div class="loading-text" style="display: none;"></div>
-
                                                                 <?= $form->field($modelTransactionSession, 'promo_item_id')->textInput([
-                                                                    'class' => 'form-control promo-code',
-                                                                    'placeholder' => Yii::t('app', 'Promo Code'),
-                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/redeem-promo'])
+                                                                    'class' => 'form-control',
+                                                                    'placeholder' => Yii::t('app', 'Promo Code')
                                                                 ]) ?>
 
                                                             </div>
@@ -210,14 +206,6 @@ $this->title = 'Checkout'; ?>
                                                         <div class="col-sm-offset-3 col-sm-5 col-xs-12">
                                                             <table class="table table-responsive table-striped table-border checkout-table">
                                                                 <tbody>
-                                                                    <tr class="real-price" style=<?= empty($modelTransactionSession['promo_item_id']) ? "display:none" : "" ?>>
-                                                                        <th class="font-alt">Harga Awal</th>
-                                                                        <td><?= !empty($modelTransactionSession['promo_item_id']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] + $modelTransactionSession['promoItem']['amount']) : '' ?></td>
-                                                                    </tr>
-                                                                    <tr class="promo-amount" style=<?= empty($modelTransactionSession['promo_item_id']) ? "display:none" : "" ?>>
-                                                                        <th class="font-alt">Promo</th>
-                                                                        <td><?= !empty($modelTransactionSession['promo_item_id']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) : '' ?></td>
-                                                                    </tr>
                                                                     <tr>
                                                                         <th class="font-alt">Total</th>
                                                                         <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] < 0 ? 0 : $modelTransactionSession['total_price']) ?></td>
@@ -523,65 +511,6 @@ $jscript = '
         });
 
         return false;
-    });
-
-    $(".promo-code").on("change", function() {
-
-        var thisObj = $(this);
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: thisObj.data("url"),
-            data: {
-                "promo_code": thisObj.val()
-            },
-            beforeSend: function(xhr) {
-
-                thisObj.parent().siblings(".overlay").show();
-                thisObj.parent().siblings(".loading-text").show();
-            },
-            success: function(response) {
-
-                if (!response.empty) {
-
-                    messageResponse(response.icon, response.title, response.text, response.type);
-
-                    if (response.success) {
-
-                        $(".total-price").html(response.total_price);
-
-                        $(".real-price").show();
-                        $(".real-price").children().last().html(response.real_price);
-
-                        $(".promo-amount").show();
-                        $(".promo-amount").children().last().html(response.promo_amount);
-                    }
-                } else {
-
-                    if (response.success) {
-
-                        $(".total-price").html(response.total_price);
-
-                        $(".real-price").hide();
-                        $(".promo-amount").hide();
-                    } else {
-
-                        messageResponse(response.icon, response.title, response.text, response.type);
-                    }
-                }
-
-                thisObj.parent().siblings(".overlay").hide();
-                thisObj.parent().siblings(".loading-text").hide();
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                thisObj.parent().siblings(".overlay").hide();
-                thisObj.parent().siblings(".loading-text").hide();
-            }
-        });
     });
 ';
 
