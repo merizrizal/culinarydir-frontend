@@ -16,6 +16,7 @@ use sycomponent\Tools;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use core\models\PromoItem;
+use core\models\UserPromoItem;
 
 /**
  * Action Controller
@@ -409,10 +410,11 @@ class ActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelPromoItem = PromoItem::find()
-            ->andWhere(['promo_id' => $post['promo_id']])
-            ->andWhere(['user_claimed' => null])
-            ->andWhere(['business_claimed' => null])
-            ->andWhere(['not_active' => false])
+            ->joinWith(['userPromoItems'])
+            ->andWhere(['promo_item.promo_id' => $post['promo_id']])
+            ->andWhere(['promo_item.business_claimed' => null])
+            ->andWhere(['promo_item.not_active' => false])
+            ->andWhere(['user_promo_item.user_id' => null])
             ->one();
             
         $result = [];
@@ -424,9 +426,11 @@ class ActionController extends base\BaseController
         
         if (!empty($modelPromoItem)) {
             
-            $modelPromoItem->user_claimed = Yii::$app->user->getIdentity()->id;
+            $modelUserPromoItem = new UserPromoItem();
+            $modelUserPromoItem->user_id = Yii::$app->user->getIdentity()->id;
+            $modelUserPromoItem->promo_item_id = $modelPromoItem->id;
             
-            if ($modelPromoItem->save()) {
+            if ($modelUserPromoItem->save()) {
                 
                 $userEmail = Yii::$app->user->getIdentity()->email;
                 $userFullName = Yii::$app->user->getIdentity()->full_name;

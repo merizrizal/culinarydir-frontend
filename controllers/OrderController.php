@@ -47,8 +47,7 @@ class OrderController extends base\BaseController
 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
-                'transactionItems.businessProduct',
-                'promoItem'
+                'transactionItems.businessProduct'
             ])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
@@ -64,10 +63,11 @@ class OrderController extends base\BaseController
             if (!empty($post['TransactionSession']['promo_item_id'])) {
 
                 $modelPromoItem = PromoItem::find()
-                    ->andWhere(['SUBSTRING(id, 1, 6)' => trim($post['TransactionSession']['promo_item_id'])])
-                    ->andWhere(['user_claimed' => Yii::$app->user->getIdentity()->id])
-                    ->andWhere(['business_claimed' => null])
-                    ->andWhere(['not_active' => false])
+                    ->joinWith(['userPromoItems'])
+                    ->andWhere(['SUBSTRING(promo_item.id, 1, 6)' => trim($post['TransactionSession']['promo_item_id'])])
+                    ->andWhere(['promo_item.business_claimed' => null])
+                    ->andWhere(['promo_item.not_active' => false])
+                    ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
                     ->one();
 
                 if (!empty($modelPromoItem)) {

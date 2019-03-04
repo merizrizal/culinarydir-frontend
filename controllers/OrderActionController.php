@@ -8,7 +8,6 @@ use yii\web\Response;
 use core\models\TransactionSession;
 use core\models\TransactionItem;
 use yii\web\NotFoundHttpException;
-use core\models\PromoItem;
 
 /**
  * OrderAction controller
