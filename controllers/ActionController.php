@@ -427,8 +427,10 @@ class ActionController extends base\BaseController
         if (!empty($modelPromoItem)) {
             
             $modelUserPromoItem = new UserPromoItem();
-            $modelUserPromoItem->user_id = Yii::$app->user->getIdentity()->id;
             $modelUserPromoItem->promo_item_id = $modelPromoItem->id;
+            $modelUserPromoItem->promo_id = $modelPromoItem->promo_id;
+            $modelUserPromoItem->user_id = Yii::$app->user->getIdentity()->id;
+            $modelUserPromoItem->unique_id = $modelPromoItem->promo_id . '-' . $modelUserPromoItem->user_id;
             
             if ($modelUserPromoItem->save()) {
                 
