@@ -12,11 +12,9 @@ use core\models\Person;
 use core\models\UserPerson;
 use core\models\User;
 use core\models\UserSocialMedia;
-use yii\base\InvalidArgumentException;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
 use yii\web\Response;
-use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 use core\models\UserLevel;
 
@@ -466,7 +464,6 @@ class SiteController extends base\BaseController
     
     public function actionSitemap() 
     {
-        
         $outputData = '';
         
         $modelBusiness = Business::find()
