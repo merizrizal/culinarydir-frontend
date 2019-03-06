@@ -459,6 +459,11 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
             
+        if (empty($modelBusiness)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+            
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'transactionItems' => function ($query) {

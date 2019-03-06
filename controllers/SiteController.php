@@ -12,11 +12,9 @@ use core\models\Person;
 use core\models\UserPerson;
 use core\models\User;
 use core\models\UserSocialMedia;
-use yii\base\InvalidArgumentException;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
 use yii\web\Response;
-use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 use core\models\UserLevel;
 
@@ -209,7 +207,7 @@ class SiteController extends base\BaseController
 
             $modelUserRegister->email = $get['email'];
             $modelPerson->first_name = $get['first_name'];
-            $modelPerson->last_name = $get['last_name'];
+            $modelPerson->last_name = !empty($get['last_name']) ? $get['last_name'] : null;
 
             if ($get['socmed'] === 'Facebook') {
 
@@ -357,7 +355,7 @@ class SiteController extends base\BaseController
             $socmed = 'Google';
             $socmedEmail = $userAttributes['email'];
             $first_name = $userAttributes['given_name'];
-            $last_name = $userAttributes['family_name'];
+            $last_name = !empty($userAttributes['family_name']) ? $userAttributes['family_name'] : null;
         }
 
         $modelUser = User::find()
@@ -466,7 +464,6 @@ class SiteController extends base\BaseController
     
     public function actionSitemap() 
     {
-        
         $outputData = '';
         
         $modelBusiness = Business::find()
