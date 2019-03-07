@@ -85,7 +85,9 @@ $linkPager = LinkPager::widget([
                     'page/detail',
                     'city' => Inflector::slug($dataTransactionSession['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataTransactionSession['business']['unique_name']
-                ]; ?>
+                ];
+                
+                $subtotal = $dataTransactionSession['total_price'] - $dataTransactionSession['discount_value']; ?>
         
             	<div class="col-xs-12">
             		<div class="row mb-10">
@@ -106,7 +108,7 @@ $linkPager = LinkPager::widget([
                     </div>
                     <div class="row mb-10">
                     	<div class="col-sm-7 col-tab-6 col-xs-12">
-                    		Total : <?= Yii::$app->formatter->asCurrency($dataTransactionSession['total_price'] < 0 ? 0 : $dataTransactionSession['total_price']) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
+                    		Total : <?= Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
                     	</div>
                     	<div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                     		<ul class="list-inline list-review mt-0 mb-0">

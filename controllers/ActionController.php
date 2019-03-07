@@ -410,12 +410,15 @@ class ActionController extends base\BaseController
         $post = Yii::$app->request->post();
         
         $modelPromoItem = PromoItem::find()
-            ->joinWith(['userPromoItems'])
+            ->joinWith([
+                'userPromoItems',
+                'promo'
+            ])
             ->andWhere(['promo_item.promo_id' => $post['promo_id']])
             ->andWhere(['promo_item.business_claimed' => null])
             ->andWhere(['promo_item.not_active' => false])
             ->andWhere(['user_promo_item.user_id' => null])
-            ->one();
+            ->asArray()->one();
             
         $result = [];
         
@@ -427,10 +430,10 @@ class ActionController extends base\BaseController
         if (!empty($modelPromoItem)) {
             
             $modelUserPromoItem = new UserPromoItem();
-            $modelUserPromoItem->promo_item_id = $modelPromoItem->id;
-            $modelUserPromoItem->promo_id = $modelPromoItem->promo_id;
+            $modelUserPromoItem->promo_item_id = $modelPromoItem['id'];
+            $modelUserPromoItem->promo_id = $modelPromoItem['promo_id'];
             $modelUserPromoItem->user_id = Yii::$app->user->getIdentity()->id;
-            $modelUserPromoItem->unique_id = $modelPromoItem->promo_id . '-' . $modelUserPromoItem->user_id;
+            $modelUserPromoItem->unique_id = $modelPromoItem['promo_id'] . '-' . $modelUserPromoItem->user_id;
             
             if ($modelUserPromoItem->save()) {
                 
@@ -440,8 +443,8 @@ class ActionController extends base\BaseController
                 Yii::$app->mailer->compose(['html' => 'claim_promo'], [
                     'modelPromoItem' => $modelPromoItem,
                     'fullName' => $userFullName,
-                    'dateStart' => Yii::$app->formatter->asDate($modelPromoItem->promo->date_start, 'long'),
-                    'dateEnd' => Yii::$app->formatter->asDate($modelPromoItem->promo->date_end, 'long')
+                    'dateStart' => Yii::$app->formatter->asDate($modelPromoItem['promo']['date_start'], 'long'),
+                    'dateEnd' => Yii::$app->formatter->asDate($modelPromoItem['promo']['date_end'], 'long')
                 ])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
                 ->setTo($userEmail)

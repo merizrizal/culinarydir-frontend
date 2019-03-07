@@ -9,7 +9,6 @@ use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
-/* @var $totalPrice integer */
 
 $this->title = Yii::t('app', 'Order Details'); 
 
@@ -109,14 +108,17 @@ $urlBusinessDetail = [
                                     	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
                                     		
                                     		<?php
-                                    		if (!empty($modelTransactionSession['promoItem'])) {
+                                    		$subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
+                                    		$checkSymbol = ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
                                     		
-                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($totalPrice) . '
-                                                    <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['promoItem']['amount']) . '
-                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] < 0 ? 0 : $modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                    		if (!empty($modelTransactionSession['discount_value'])) {
+                                    		    
+                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '
+                                                    <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '
+                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . $checkSymbol;
                                     		} else {
                                     		
-                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($subtotal) . $checkSymbol;
                                     		} ?>
                                 			
                                     	</div>

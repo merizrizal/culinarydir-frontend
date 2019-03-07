@@ -78,7 +78,8 @@ class OrderController extends base\BaseController
                     if (($flag = $modelPromoItem->save())) {
                         
                         $modelTransactionSession->promo_item_id = $modelPromoItem->id;
-                        $modelTransactionSession->total_price -= $modelPromoItem->amount;
+                        $modelTransactionSession->discount_value = $modelPromoItem->amount;
+                        $modelTransactionSession->discount_type = 'Amount';
                     }
                 } else {
                     
@@ -123,7 +124,7 @@ class OrderController extends base\BaseController
                             break;
                         }
                     }
-
+                    
                     $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
 
                     $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
@@ -135,6 +136,14 @@ class OrderController extends base\BaseController
                     }
 
                     $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
+                    
+                    if (!empty($modelTransactionSession['discount_value'])) {
+                        
+                        $subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
+                        $messageOrder .= '\n\n*Promo: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '*';
+                        $messageOrder .= '\n\n*Subtotal: ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . '*';
+                    }
+                    
                     $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
                     $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
                     $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';

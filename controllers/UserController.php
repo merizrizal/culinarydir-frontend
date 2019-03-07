@@ -178,7 +178,6 @@ class UserController extends base\BaseHistoryUrlController
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
                 'transactionItems.businessProduct',
-                'promoItem'
             ])
             ->andWhere(['transaction_session.id' => $id])
             ->asArray()->one();
@@ -192,7 +191,6 @@ class UserController extends base\BaseHistoryUrlController
         
         return $this->render('detail_order_history', [
             'modelTransactionSession' => $modelTransactionSession,
-            'totalPrice' => $modelTransactionSession['total_price'] + (!empty($modelTransactionSession['promoItem']) ? $modelTransactionSession['promoItem']['amount'] : 0)
         ]);
     }
 }
