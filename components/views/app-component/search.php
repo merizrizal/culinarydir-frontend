@@ -131,7 +131,9 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat',
+                                        'data-keyword' => $keyword,
+                                        'data-type' => 'favorit'
                                     ]) ?>
 
                                 </div>
@@ -327,7 +329,9 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat',
+                                        'data-keyword' => $keyword,
+                                        'data-type' => 'promo'
                                     ]) ?>
 
                                 </div>
@@ -438,7 +442,9 @@ $btnClearMdSm = Html::a('<i class="fa fa-times"></i>', '', ['class' => 'search-l
 
                                     <?= Html::textInput('nm', $keywordName, [
                                         'class' => 'form-control input-name',
-                                        'placeholder' => 'Nama Tempat / Makanan / Alamat'
+                                        'placeholder' => 'Nama Tempat / Makanan / Alamat',
+                                        'data-keyword' => $keyword,
+                                        'data-type' => 'pesan-online'
                                     ]) ?>
 
                                 </div>

@@ -62,7 +62,7 @@ $this->params['beforeEndBody'][] = function() {
             <div class="row">
                 <div class="col-sm-5 col-tab-5 col-xs-12">'
                 
-                    . Yii::t('app', Yii::t('app', 'Price Min')) 
+                    . Yii::t('app', Yii::t('app', 'Price Min'))
                     
                     . Html::dropDownList('price_min', null, $priceItems, [
                         'prompt' => '',
@@ -118,7 +118,23 @@ $this->params['beforeEndBody'][] = function() {
         echo '<div id="map"></div>';
 
     Modal::end();
+    
+    Modal::begin([
+        'header' => 'Search',
+        'id' => 'modal-search',
+        'size' => Modal::SIZE_LARGE,
+    ]);
+    
+        echo '
+            <div class="overlay" style="display: none"></div>
+            <div class="loading-img" style="display: none"></div>
+            <div id="modal-search-content"></div>
+        ';
+    
+    Modal::end();
 };
+
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
 $cssScript = '
     #map .map-marker {
@@ -139,6 +155,8 @@ $cssScript = '
 $this->registerCss($cssScript);
 
 frontend\components\GrowlCustom::widget();
+
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDORji7AXzhxgYhuKOGJg6_KYrnTPYPOn8', ['depends' => 'yii\web\YiiAsset']);
 
@@ -535,6 +553,46 @@ $jscript = '
         $(this).remove();
 
         return false;
+    });
+
+    $(".input-name").on("click", function() {
+        
+        searchFieldBox = $(this);
+
+        $("#modal-search").modal("show");
+        $("#modal-search").find(".overlay").show();
+        $("#modal-search").find(".loading-img").show();
+
+        return false;
+    });
+
+    $("#modal-search").on("shown.bs.modal", function(e) {
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "keyword": searchFieldBox.data("keyword"),
+                "type": searchFieldBox.data("type")
+            },
+            url: "' . Yii::$app->urlManager->createUrl(['data/search-detail']) . '",
+            success: function(response) {
+
+                $("#modal-search").find("#modal-search-content").html(response);
+
+                initCustomicheck();
+
+                $("#modal-search").find(".overlay").hide();
+                $("#modal-search").find(".loading-img").hide();
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                $("#modal-search").find(".overlay").hide();
+                $("#modal-search").find(".loading-img").hide();
+            }
+        });
     });
 ';
 
