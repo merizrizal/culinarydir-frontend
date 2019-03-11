@@ -44,10 +44,10 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelProductCategory = ProductCategory::find()
-            ->orderBy(['name' => SORT_ASC])
             ->andFilterWhere(['ilike', 'name', Yii::$app->request->post('keyword')])
-            ->andFilterWhere(['<>', 'type', 'Menu'])
+            ->andWhere(['<>', 'type', 'Menu'])
             ->andWhere(['is_active' => true])
+            ->orderBy(['name' => SORT_ASC])
             ->asArray()->all();
 
         $productCategory = [];
