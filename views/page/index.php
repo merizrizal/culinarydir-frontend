@@ -75,7 +75,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
     ';
 } ?>
 
-<section class="home-section home-full-height bg-dark visible-lg visible-md visible-sm" data-background="<?= $background ?>">
+<section class="home-section home-full-height bg-dark" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">
@@ -86,7 +86,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
                         <?= $appComponent->search([
                             'keyword' => $keyword,
                         ]); ?>
-
+                        
                     </div>
                 </div>
                 <div class="row mt-40">
@@ -105,38 +105,6 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
                         </h5>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="module-small visible-tab" data-background="<?= $background ?>">
-    <div class="container">
-        <?= $info ?>
-        <div class="row">
-            <div class="col-tab-12">
-
-                <?= $appComponent->search([
-                    'keyword' => $keyword,
-                    'id' => 'tab-search'
-                ]); ?>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="module-small visible-xs" data-background="<?= $background ?>">
-    <div class="container">
-        <?= $info ?>
-        <div class="row">
-            <div class="col-xs-12">
-
-                <?= $appComponent->search([
-                    'keyword' => $keyword,
-                    'id' => 'xs-search'
-                ]); ?>
-
             </div>
         </div>
     </div>
@@ -197,7 +165,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
     </div>
 </section>
 
-<?= $appComponent->searchJsComponent(); ?>
+<?= $appComponent->searchJsComponent($keyword); ?>
 
 <div id="temp-listview-recent-post" class="hidden">
 

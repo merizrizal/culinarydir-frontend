@@ -86,7 +86,7 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
     </section>
 </div>
 
-<?= $appComponent->searchJsComponent(); ?>
+<?= $appComponent->searchJsComponent($keyword); ?>
 
 <?php
 GrowlCustom::widget();

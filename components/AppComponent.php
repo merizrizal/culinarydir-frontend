@@ -32,22 +32,19 @@ class AppComponent extends Widget
 
     public function search($config = [])
     {
-        return $this->render('app-component/search', ArrayHelper::merge($config, [
-            'showFacilityFilter' => $this->showFacilityFilter
-        ]));
+        return $this->render('app-component/search', $config);
     }
 
     public function searchPopover($config = [])
     {
-        return $this->render('app-component/search_popover', ArrayHelper::merge($config, [
-            
-        ]));
+        return $this->render('app-component/search_popover', $config);
     }
 
-    public function searchJsComponent()
+    public function searchJsComponent($keyword)
     {
         return $this->render('app-component/_search_js_component', [
-            
+            'keyword' => $keyword,
+            'showFacilityFilter' => $this->showFacilityFilter
         ]);
     }
 

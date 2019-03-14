@@ -314,17 +314,6 @@ class DataController extends base\BaseController
             'dataProviderUserPostMain' => $dataProviderUserPostMain,
         ]);
     }
-    
-    public function actionSearchDetail()
-    {
-        $this->layout = 'ajax';
-        
-        return $this->render('search_detail', [
-            'keyword' => Yii::$app->request->post()['keyword'],
-            'type' => Yii::$app->request->post()['type'],
-            'showFacilityFilter' => true
-        ]);
-    }
 
     private function getResult($fileRender)
     {
