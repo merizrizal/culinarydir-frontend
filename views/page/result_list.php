@@ -32,28 +32,13 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
 
 <div class="main">
 
-    <section class="module-small visible-lg visible-md visible-sm" data-background="<?= $background ?>">
+    <section class="module-small" data-background="<?= $background ?>">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
 
                     <?= $appComponent->search([
                         'keyword' => $keyword,
-                    ]); ?>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="module-small result-list-search" data-background="<?= $background ?>">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-
-                    <?= $appComponent->search([
-                        'keyword' => $keyword,
-                        'id' => 'search'
                     ]); ?>
 
                 </div>
@@ -73,12 +58,6 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
                     <?= Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
-                <div class="col-xs-5">
-
-                    <?= Html::button('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-round btn-default btn-search-toggle visible-tab']) ?>
-                    <?= Html::button('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-round btn-default btn-search-toggle visible-xs']) ?>
-
-                </div>
             </div>
         </div>
 
@@ -86,9 +65,9 @@ $background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.j
     </section>
 </div>
 
-<?= $appComponent->searchJsComponent($keyword); ?>
-
 <?php
+echo $appComponent->searchJsComponent($keyword);
+
 GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 

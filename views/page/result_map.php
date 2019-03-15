@@ -100,7 +100,7 @@ $appComponent = new AppComponent(); ?>
     </section>
 </div>
 
-<?= $appComponent->searchJsComponent(); ?>
+<?= $appComponent->searchJsComponent($keyword); ?>
 
 <?php
 GrowlCustom::widget();

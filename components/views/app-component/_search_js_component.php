@@ -57,13 +57,13 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
 	
 	$layoutListNav = '
         <li role="presentation">
-            <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong>' . Yii::t('app', 'favorite') . '</strong></a>
+            <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong>' . Yii::t('app', 'Favorite') . '</strong></a>
         </li>
         <li role="presentation">
-            <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong>' . Yii::t('app', 'promo') . '</strong></a>
+            <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong>' . Yii::t('app', 'Promo') . '</strong></a>
         </li>
         <li role="presentation">
-            <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong>' . Yii::t('app', 'online-order') . '</strong></a>
+            <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong>' . Yii::t('app', 'Online Order') . '</strong></a>
         </li>
     '; ?>
 	
@@ -81,7 +81,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-12 col">
+            <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <?= $layoutListNav ?>
                 </ul>
@@ -93,7 +93,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                     	]) ?>
                     	
                         	<div class="row">
-                            	<div class="col-xs-9 col">
+                            	<div class="col-sm-9 col-tab-9 col-xs-10">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -116,7 +116,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?= Html::textInput('nm', $keywordName, [
@@ -131,7 +131,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -144,7 +144,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
     						
     						<div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?= Html::dropDownList('ctg', $keywordCategory,
@@ -167,7 +167,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?php
@@ -181,7 +181,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?php
@@ -197,13 +197,13 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             <?php
                             if (!$showFacilityFilter): ?>
                             
-                                <div class="row">
-                                	<div class="col-xs-4 col">
+                                <div class="row mt-10">
+                                	<div class="col-sm-4 col-tab-4 col-xs-5">
                                         <div class="form-group">
                                             <?= $btnSubmit ?>
                                         </div>
                                     </div>
-                                    <div class="col-xs-offset-1 col-xs-4 col">
+                                    <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
                                         <div class="btn-clear-container">
                                             <?= $btnClear ?>
                                         </div>
@@ -278,12 +278,12 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                                 </div>
                                 
                                 <div class="row mt-10">
-                                	<div class="col-xs-4 col">
+                                	<div class="col-sm-4 col-tab-4 col-xs-5">
                                         <div class="form-group">
                                             <?= $btnSubmit ?>
                                         </div>
                                     </div>
-                                    <div class="col-xs-offset-1 col-xs-4 col">
+                                    <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
                                         <div class="btn-clear-container">
                                             <?= $btnClear ?>
                                         </div>
@@ -304,7 +304,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                         ]) ?>
                     
                         	<div class="row">
-                            	<div class="col-xs-9 col">
+                            	<div class="col-sm-9 col-tab-9 col-xs-10">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -327,7 +327,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?= Html::textInput('nm', $keywordName, [
@@ -342,7 +342,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -355,7 +355,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
     						
     						<div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?= Html::dropDownList('ctg', $keywordCategory,
@@ -378,7 +378,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?php
@@ -392,12 +392,12 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                            	<div class="col-xs-4 col">
+                            	<div class="col-sm-4 col-tab-4 col-xs-5">
                                     <div class="form-group">
                                         <?= $btnSubmit ?>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-1 col-xs-4 col">
+                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
                                     <div class="btn-clear-container">
                                         <?= $btnClear ?>
                                     </div>
@@ -415,7 +415,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                         ]) ?>
                     
                         	<div class="row">
-                            	<div class="col-xs-9 col">
+                            	<div class="col-sm-9 col-tab-9 col-xs-10">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -438,7 +438,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?= Html::textInput('nm', $keywordName, [
@@ -453,7 +453,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                 
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -466,7 +466,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?php
@@ -480,7 +480,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                                <div class="col-xs-9 col">
+                                <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
                                         <?php
@@ -494,12 +494,12 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                             </div>
                             
                             <div class="row">
-                            	<div class="col-xs-4 col">
+                            	<div class="col-sm-4 col-tab-4 col-xs-5">
                                     <div class="form-group">
                                         <?= $btnSubmit ?>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-1 col-xs-4 col">
+                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
                                     <div class="btn-clear-container">
                                         <?= $btnClear ?>
                                     </div>
@@ -1051,7 +1051,9 @@ $jscript = '
 
     $(".btn-close").on("click", function() {
         
-        $(".search-box-modal").hide();
+        $(".search-input").removeAttr("disabled");
+
+        $(".search-box-modal").fadeOut("medium");
     });
 ';
 

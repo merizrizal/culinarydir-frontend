@@ -14,13 +14,13 @@ $keywordName = $keyword['name'];
 
 $layoutListNav = '
     <li role="presentation" class="' . ($keywordType == Yii::t('app', 'favorite') ? 'active' : '') . '">
-        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Favourite Foods?') . '</strong></a>
+        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Favorite') . '</strong></a>
     </li>
     <li role="presentation" class="' . ($keywordType == Yii::t('app', 'promo') ? 'active' : '') . '">
-        <a href="#special" aria-controls="special" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Find Specials & Discounts?') . '</strong></a>
+        <a href="#special" aria-controls="special" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Promo') . '</strong></a>
     </li>
     <li role="presentation" class="' . ($keywordType == Yii::t('app', 'online-order') ? 'active' : '') . '">
-        <a href="#order" aria-controls="order" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Want to Order Online?') . '</strong></a>
+        <a href="#order" aria-controls="order" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Online Order') . '</strong></a>
     </li>
 '; ?>
 
@@ -29,8 +29,6 @@ $layoutListNav = '
     <ul class="nav nav-tabs" role="tablist">
         <?= $layoutListNav ?>
     </ul>
-    
-    <br>
     
 	<?= Html::textInput('nm', $keywordName, ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
 	
@@ -64,7 +62,7 @@ $jscript = '
 
     $(".lbl-clear").on("click", function() {
 
-        $(".input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
+        $(".search-input, .input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
         $(".category-id").val(null).trigger("change");
         $(".facility").prop("checked", false).trigger("change");
 
@@ -78,7 +76,9 @@ $jscript = '
 
     $(".search-input").on("click", function() {
         
-        $(".search-box-modal").show();
+        $(".search-input").attr("disabled", "disabled");
+
+        $(".search-box-modal").fadeIn("medium");
 
         var href;
 
