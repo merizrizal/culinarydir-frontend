@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $keyword array */
 /* @var $showFacilityFilter bool */
+/* @var $type string */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -24,14 +25,20 @@ $layoutListNav = '
     </li>
 '; ?>
 
-<div class="search-box">
+<div class="search-box <?= !empty($type) ? $type : "" ?>">
     
     <ul class="nav nav-tabs" role="tablist">
         <?= $layoutListNav ?>
     </ul>
     
-	<?= Html::textInput('nm', $keywordName, ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
-	
+    <div class="form-group">
+        <div class="input-group">
+        	<div class="input-group-addon">
+        		<i class="fa fa-search"></i>
+        	</div>
+        	<?= Html::textInput('nm', $keywordName, ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
+    	</div>
+	</div>
 </div>
 
 <?php

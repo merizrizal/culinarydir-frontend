@@ -2,7 +2,6 @@
 namespace frontend\components;
 
 use yii\base\Widget;
-use yii\helpers\ArrayHelper;
 
 class AppComponent extends Widget
 {

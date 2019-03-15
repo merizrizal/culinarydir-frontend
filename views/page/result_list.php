@@ -26,28 +26,22 @@ $this->registerMetaTag([
     'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
 ]);
 
-$appComponent = new AppComponent(['showFacilityFilter' => true]);
-
-$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.jpeg'; ?>
+$appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
 
 <div class="main">
 
-    <section class="module-small" data-background="<?= $background ?>">
+    <section class="module-extra-small in-result bg-main">
         <div class="container">
-            <div class="row">
+        	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
 
                     <?= $appComponent->search([
                         'keyword' => $keyword,
+                        'type' => 'result-list-page'
                     ]); ?>
 
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="module-extra-small in-result bg-main">
-        <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-7">
 
