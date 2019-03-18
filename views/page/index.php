@@ -1,5 +1,6 @@
 <?php
 
+use sycomponent\Tools;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
@@ -10,6 +11,8 @@ use frontend\components\GrowlCustom;
 /* @var $this yii\web\View */
 /* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
 /* @var $keyword array */
+
+common\assets\OwlCarouselAsset::register($this);
 
 $this->title = 'Home';
 
@@ -75,7 +78,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
     ';
 } ?>
 
-<section class="home-section home-full-height bg-dark" data-background="<?= $background ?>">
+<section class="home-section bg-dark" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">
@@ -89,6 +92,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
                         
                     </div>
                 </div>
+                
                 <div class="row mt-40">
                     <div class="col-sm-10 col-sm-offset-1">
                         <a class="section-scroll text-center text-white" href="#recent-activity">
@@ -113,27 +117,46 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
 <section class="module-extra-small in-result bg-main">
     <div class="container detail">
         <div class="view">
-        
-        	<div class="row">
-        
-            	<?php
-            	if (!empty($modelPromo)) {
-            	    
-            	    foreach ($modelPromo as $dataPromo) {
-            	        
-            	        echo '
-                            <div class="col-xs-3 mb-10">' .
-                    	        Html::a('Claim ' . $dataPromo['title'], ['action/claim-promo'], [
-                    	            'class' => 'btn btn-d claim-promo-btn',
-                    	            'data-promo' => $dataPromo['id'],
-                    	            'data-date_start' => $dataPromo['date_start'],
-                    	            'data-date_end' => $dataPromo['date_end']
-                    	        ]) .
-                	        '</div>';
-            	    }
-            	} ?>
         	
-        	</div>
+        	<div class="row mt-10 mb-20">
+                <div class="col-lg-12 font-alt"><?= Yii::t('app', 'News And Promo'); ?></div>
+            </div>
+        	
+        	<div class="row mt-20">
+            	<div class="col-sm-12">
+                    <div class="owl-carousel owl-theme">
+                    
+                    	<?php
+                    	if (!empty($modelPromo)) {
+                    	    
+                    	    //foreach ($modelPromo as $dataPromo) {
+                    	        
+                    	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'katalogkuliner-Dominos-Pizza-Promo-Diskon-40-Untuk-Semua-Pizza-Mulai-Dari-Rp.-25.091-.jpg', 350, 154);
+                    	        
+                    	        echo Html::a(Html::img($img), ['action/claim-promo'], [
+                    	            'class' => 'claim-promo-btn',
+                    	            'data-promo' => $modelPromo[0]['id'],
+                    	            'data-date_start' => $modelPromo[0]['date_start'],
+                    	            'data-date_end' => $modelPromo[0]['date_end']
+                    	        ]);
+                    	        
+                    	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'LUSX8st5ITScy6ZS-promo-diskon-50-dari-zippy-1509384752_1.jpg', 350, 154);
+                    	        
+                    	        echo Html::a(Html::img($img), ['action/claim-promo'], [
+                    	            'class' => 'claim-promo-btn',
+                    	            'data-promo' => $modelPromo[1]['id'],
+                    	            'data-date_start' => $modelPromo[1]['date_start'],
+                    	            'data-date_end' => $modelPromo[1]['date_end']
+                    	        ]);
+                    	    //}
+                    	} ?>
+                    
+                    	<?= Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app') ?>
+                    	<?= Html::a(Html::img('https://placehold.it/360x154&text=1', ['class' => 'img-responsive']), 'https://asikmakan.com') ?>
+                    	
+                    </div>
+                </div>
+            </div>
 
             <div class="row mt-10 mb-20">
                 <div class="col-lg-12 font-alt"><?= Yii::t('app', 'Recent Activity'); ?></div>
@@ -179,6 +202,22 @@ frontend\components\FacebookShare::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
+    $(".owl-carousel").owlCarousel({
+        margin: 10,
+        lazyLoad: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1000: {
+                items: 3
+            }
+        }
+    })
+    
     $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {
 
         var thisObj = $(this);
