@@ -23,6 +23,8 @@ use frontend\components\GrowlCustom;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
+common\assets\OwlCarouselAsset::register($this);
+
 $this->title = $modelBusiness['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
@@ -167,118 +169,88 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                         <div class="tab-content box bg-white">
                                             <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                                 <div class="row">
-                                                    <div class="col-sm-10 col-sm-offset-1">
-
-                                                        <?php
-                                                        $images = [];
-
-                                                        if (!empty($dataBusinessImage['Ambience']) && count($dataBusinessImage['Ambience']) > 0) {
-                                                            
-                                                            $orderedBusinessImage = [];
-                                                            
-                                                            foreach ($dataBusinessImage['Ambience'] as $businessImage) {
+                                                	<div class="col-sm-1 btn-prev text-center hidden-xs">
+                                                		<a><i class="fa fa-chevron-left fa-2x"></i></a>
+                                                	</div>
+                                                    <div class="col-sm-10 col-xs-12">
+														<div class="ambience-gallery owl-carousel owl-theme">
+														
+                                                            <?php
+                                                            if (!empty($dataBusinessImage['Ambience']) && count($dataBusinessImage['Ambience']) > 0) {
                                                                 
-                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
-                                                            }
-                                                            
-                                                            ksort($orderedBusinessImage);
-                                                            
-                                                            foreach ($orderedBusinessImage as $businessImage) {
+                                                                $orderedBusinessImage = [];
                                                                 
-                                                                $img = $noImg;
-                                                                
-                                                                if (!empty($businessImage['image'])) {
+                                                                foreach ($dataBusinessImage['Ambience'] as $businessImage) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                    $orderedBusinessImage[$businessImage['order']] = $businessImage;
                                                                 }
                                                                 
-                                                                $images[] = [
-                                                                    'title' => '',
-                                                                    'href' => $img,
-                                                                    'type' => 'image/jpeg',
-                                                                    'poster' => $img,
-                                                                ];
-                                                            }
-                                                        } else {
-                                                        
-                                                            $images[] = [
-                                                                'title' => '',
-                                                                'href' => $noImg,
-                                                                'type' => 'image/jpeg',
-                                                                'poster' => $noImg,
-                                                            ];
-                                                        };
-                                                        
-                                                        echo dosamigos\gallery\Carousel::widget([
-                                                            'items' => $images,
-                                                            'json' => true,
-                                                            'templateOptions' => ['id' => 'gallery_business'],
-                                                            'clientOptions' => [
-                                                                'container' => '#gallery_business',
-                                                                'startSlideshow' => false,
-                                                            ],
-                                                            'options' => ['id' => 'gallery_business'],
-                                                        ]); ?>
-
+                                                                ksort($orderedBusinessImage);
+                                                                
+                                                                foreach ($orderedBusinessImage as $businessImage) {
+                                                                    
+                                                                    $img = $noImg;
+                                                                    
+                                                                    if (!empty($businessImage['image'])) {
+                                                                        
+                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                    }
+                                                                    
+                                                                    echo Html::img($img);
+                                                                }
+                                                            } else {
+                                                            
+                                                                echo Html::img($noImg);
+                                                            }; ?>
+                                                            
+                                                        </div>
                                                     </div>
+                                                    <div class="col-sm-1 btn-next text-center hidden-xs">
+                                                		<a><i class="fa fa-chevron-right fa-2x"></i></a>
+                                                	</div>
                                                 </div>
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade in active" id="menu">
                                                 <div class="row">
-                                                    <div class="col-sm-10 col-sm-offset-1">
+                                                	<div class="col-sm-1 btn-prev text-center hidden-xs">
+                                                		<a><i class="fa fa-chevron-left fa-2x"></i></a>
+                                                	</div>
+                                                    <div class="col-sm-10 col-xs-12">
+                                                    	<div class="menu-gallery owl-carousel owl-theme">
 
-                                                        <?php                                                        
-                                                        $images = [];
-                                                        
-                                                        if (!empty($dataBusinessImage['Menu']) && count($dataBusinessImage['Menu']) > 0) {
-                                                            
-                                                            $orderedBusinessImage = [];
-                                                            
-                                                            foreach ($dataBusinessImage['Menu'] as $businessImage) {
+                                                            <?php                                                        
+                                                            if (!empty($dataBusinessImage['Menu']) && count($dataBusinessImage['Menu']) > 0) {
                                                                 
-                                                                $orderedBusinessImage[$businessImage['order']] = $businessImage;
-                                                            }
-                                                            
-                                                            ksort($orderedBusinessImage);
-                                                        
-                                                            foreach ($orderedBusinessImage as $businessImage) {
-                                                                    
-                                                                $img = $noImg;
+                                                                $orderedBusinessImage = [];
                                                                 
-                                                                if (!empty($businessImage['image'])) {
+                                                                foreach ($dataBusinessImage['Menu'] as $businessImage) {
                                                                     
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                    $orderedBusinessImage[$businessImage['order']] = $businessImage;
                                                                 }
                                                                 
-                                                                $images[] = [
-                                                                    'title' => '',
-                                                                    'href' => $img,
-                                                                    'type' => 'image/jpeg',
-                                                                    'poster' => $img,
-                                                                ];
-                                                            }
-                                                        } else {
+                                                                ksort($orderedBusinessImage);
                                                             
-                                                            $images[] = [
-                                                                'title' => '',
-                                                                'href' => $noImg,
-                                                                'type' => 'image/jpeg',
-                                                                'poster' => $noImg,
-                                                            ];
-                                                        } 
-                                                        
-                                                        echo dosamigos\gallery\Carousel::widget([
-                                                            'items' => $images,
-                                                            'json' => true,
-                                                            'templateOptions' => ['id' => 'gallery_menu'],
-                                                            'clientOptions' => [
-                                                                'container' => '#gallery_menu',
-                                                                'startSlideshow' => false,
-                                                            ],
-                                                            'options' => ['id' => 'gallery_menu'],
-                                                        ]); ?>
-
+                                                                foreach ($orderedBusinessImage as $businessImage) {
+                                                                        
+                                                                    $img = $noImg;
+                                                                    
+                                                                    if (!empty($businessImage['image'])) {
+                                                                        
+                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                    }
+                                                                    
+                                                                    echo Html::img($img);
+                                                                }
+                                                            } else {
+                                                                
+                                                                echo Html::img($noImg);
+                                                            } ?>
+                                                            
+                                                        </div>
                                                     </div>
+                                                    <div class="col-sm-1 btn-next text-center hidden-xs">
+                                                		<a><i class="fa fa-chevron-right fa-2x"></i></a>
+                                                	</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1142,7 +1114,39 @@ $jscript = '
         $(this).find(".form-group").removeClass("has-error");
         $(this).find(".form-group").removeClass("has-success");
         $(this).find(".form-group").find(".help-block").html("");
-    });    
+    });
+
+    $(".ambience-gallery, .menu-gallery").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        margin: 1,
+        autoHeight: true,
+    });
+
+    $("#photo").find(".btn-prev").on("click", function() {
+
+        $("#photo").find(".owl-prev").click();
+        return false;
+    });
+
+    $("#photo").find(".btn-next").on("click", function() {
+
+        $("#photo").find(".owl-next").click();
+        return false;
+    });
+
+    $("#menu").find(".btn-prev").on("click", function() {
+
+        $("#menu").find(".owl-prev").click();
+        return false;
+    });
+
+    $("#menu").find(".btn-next").on("click", function() {
+
+        $("#menu").find(".owl-next").click();
+        return false;
+    });
 ';
 
 $this->registerJs($jscript);

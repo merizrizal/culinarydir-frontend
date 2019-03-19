@@ -11,6 +11,7 @@ use frontend\components\GrowlCustom;
 /* @var $this yii\web\View */
 /* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
 /* @var $keyword array */
+/* @var $modelPromo core\models\Promo */
 
 common\assets\OwlCarouselAsset::register($this);
 
@@ -53,36 +54,12 @@ $this->registerMetaTag([
     'content' => Yii::$app->urlManager->getHostInfo() . $background
 ]);
 
-$appComponent = new AppComponent(); 
+$appComponent = new AppComponent(); ?>
 
-$info = '
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1 col-sm-12">
-            <div class="titan-title-tagline p-10 mb-10" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 5px;">800+ tempat kuliner dan terus bertambah</div>
-        </div>
-    </div>
-';
-
-if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
-    
-    $info .= '
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12">
-                <a href="https://play.google.com/store/apps/details?id=com.asikmakan.app" style="color:#fff; padding:0"> 
-                    <div class="p-10 mb-10" style="background: rgba(229, 38, 38, 0.9); border-radius: 5px;">
-                        <i class="aicon aicon-mobile"></i> Download app <strong>Asikmakan</strong> di <strong>Google Play Store</strong>
-                    </div>
-                </a>
-            </div>
-        </div>
-    ';
-} ?>
-
-<section class="home-section bg-dark" data-background="<?= $background ?>">
+<section class="module-small bg-dark" data-background="<?= $background ?>">
     <div class="titan-caption">
         <div class="caption-content">
             <div class="container">
-                <?= $info ?>
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-12">
 
@@ -92,7 +69,6 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
                         
                     </div>
                 </div>
-                
                 <div class="row mt-40">
                     <div class="col-sm-10 col-sm-offset-1">
                         <a class="section-scroll text-center text-white" href="#recent-activity">
@@ -124,7 +100,7 @@ if (Yii::$app->request->getUserAgent() != 'com.asikmakan.app') {
         	
         	<div class="row mt-20">
             	<div class="col-sm-12">
-                    <div class="owl-carousel owl-theme">
+                    <div class="news-promo-section owl-carousel owl-theme">
                     
                     	<?php
                     	if (!empty($modelPromo)) {
@@ -202,7 +178,7 @@ frontend\components\FacebookShare::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
-    $(".owl-carousel").owlCarousel({
+    $(".news-promo-section").owlCarousel({
         margin: 10,
         lazyLoad: true,
         responsive: {
