@@ -9,12 +9,13 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $keyword Array */
+/* @var $pageType String */
 /* @var $showFacilityFilter boolean */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
-$this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter) {
+$this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFacilityFilter) {
 	
 	$keywordType = $keyword['searchType'];
 	$keywordName = $keyword['name'];
@@ -91,7 +92,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                 <div class="tab-content">
                 	<div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
                         
-                    	<?= Html::beginForm(['page/result-list', 'searchType' => Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
                     	    'class' => 'search-favorite'
                     	]) ?>
                     	
@@ -302,7 +303,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                 
                     <div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
                         
-                    	<?= Html::beginForm(['page/result-list', 'searchType' => Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-special'
                         ]) ?>
                     
@@ -413,7 +414,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter
                     
                     <div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
                         
-                    	<?= Html::beginForm(['page/result-list', 'searchType' => Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-order'
                         ]) ?>
                     

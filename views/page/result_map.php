@@ -1,9 +1,9 @@
 <?php
 
+use yii\web\View;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
-use yii\web\View;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
 
@@ -29,22 +29,6 @@ $this->registerMetaTag([
 $appComponent = new AppComponent(); ?>
 
 <div class="main">
-
-    <section class="module-small result-map-search" data-background="<?= Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-result-bg.jpeg' ?>">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-
-                    <?= $appComponent->searchPopover([
-                        'keyword' => $keyword,
-                        'popover' => false,
-                    ]); ?>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="module-small-map bg-main">
         <div class="row">
 
@@ -72,17 +56,11 @@ $appComponent = new AppComponent(); ?>
 
             </div>
             <div class="col-xs-5 mt-10 mb-10">
-                <div class="visible-lg visible-md visible-sm">
 
-                    <?= $appComponent->searchPopover([
-                        'keyword' => $keyword,
-                        'popover' => true,
-                    ]); ?>
-
-                </div>
-
-                <?= Html::button('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-round btn-default btn-search-map-toggle visible-tab']) ?>
-                <?= Html::button('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-round btn-default btn-search-map-toggle visible-xs']) ?>
+                <?= $appComponent->search([
+                    'keyword' => $keyword,
+                    'type' => 'result-map-page'
+                ]); ?>
 
             </div>
         </div>
@@ -100,9 +78,9 @@ $appComponent = new AppComponent(); ?>
     </section>
 </div>
 
-<?= $appComponent->searchJsComponent($keyword); ?>
-
 <?php
+echo $appComponent->searchJsComponent($keyword, 'map');
+
 GrowlCustom::widget();
 frontend\components\RatingColor::widget();
 
@@ -111,8 +89,6 @@ $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDORji7AXzhxgYhuKOGJg6_KYrnTPYPOn8', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    $(".result-map-search").hide();    
-
     $.ajax({
         cache: false,
         type: "GET",
@@ -128,17 +104,7 @@ $jscript = '
         }
     });
 
-    $(".btn-search-map-toggle").on("click", function() {
-
-        $(".result-map-search").toggle();
-    });
-
     $(".btn-map").on("click", function() {
-
-        return false;
-    });
-
-    $(".result-map").on("click", ".popover-tag", function() {
 
         return false;
     });
