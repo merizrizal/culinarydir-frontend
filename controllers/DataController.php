@@ -363,7 +363,7 @@ class DataController extends base\BaseController
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
-                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']], ['ilike', 'business_location.address_info', $get['nm']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']]);
                 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
@@ -459,7 +459,7 @@ class DataController extends base\BaseController
                     },
                 ])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
-                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']]])
+                ->andFilterWhere(['OR', ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']], ['ilike', 'business_location.address', $get['nm']], ['ilike', 'business_location.address_info', $get['nm']]])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
                 ->andFilterWhere(['business_category.category_id' => $get['ctg']])
                 ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
