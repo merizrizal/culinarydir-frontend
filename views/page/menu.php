@@ -312,6 +312,8 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
     				</div>
         		</div>
     		</div>
+    		
+    		<div class="clearfix blank-space">&nbsp;</div>
         </div>
     </section>
 </div>
@@ -327,6 +329,10 @@ if (Yii::$app->request->getUserAgent() == 'com.asikmakan.app') {
     $cssScript .= '
         .nav-tabs-fixed {
             top: 50px;
+        }
+
+        .menu-list .blank-space {
+            padding-top: 64px
         }
     ';
     
