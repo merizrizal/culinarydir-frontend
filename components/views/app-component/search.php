@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 $keywordType = $keyword['searchType'];
 
-if ($type == 'result-map-page'):
+if (!empty($type) && $type == 'result-map-page'):
     
     echo Html::button('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-round btn-default btn-search-map-toggle', 'data-keyword' => $keywordType]);
 else: ?>
