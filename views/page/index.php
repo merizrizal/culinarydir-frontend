@@ -166,9 +166,7 @@ $appComponent = new AppComponent(); ?>
 
 <?= $appComponent->searchJsComponent($keyword); ?>
 
-<div id="temp-listview-recent-post" class="hidden">
-
-</div>
+<div id="temp-listview-recent-post" class="hidden"></div>
 
 <?php
 GrowlCustom::widget();
@@ -247,7 +245,7 @@ $jscript = '
                 items: 3
             }
         }
-    })
+    });
 ';
 
 $this->registerJs($jscript); ?>
