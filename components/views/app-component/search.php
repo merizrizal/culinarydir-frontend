@@ -7,28 +7,20 @@ use yii\helpers\Html;
 /* @var $showFacilityFilter bool */
 /* @var $type string */
 
-kartik\select2\Select2Asset::register($this);
-kartik\select2\ThemeKrajeeAsset::register($this);
-
-$keywordType = $keyword['searchType'];
-$keywordName = $keyword['name'];
-
-$layoutListNav = '
-    <li role="presentation" class="' . ($keywordType == Yii::t('app', 'favorite') ? 'active' : '') . '">
-        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Favorite') . '</strong></a>
-    </li>
-    <li role="presentation" class="' . ($keywordType == Yii::t('app', 'promo') ? 'active' : '') . '">
-        <a href="#special" aria-controls="special" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Promo') . '</strong></a>
-    </li>
-    <li role="presentation" class="' . ($keywordType == Yii::t('app', 'online-order') ? 'active' : '') . '">
-        <a href="#order" aria-controls="order" role="tab" data-toggle="tab"><strong>' . Yii::t('app', 'Online Order') . '</strong></a>
-    </li>
-'; ?>
+$keywordType = $keyword['searchType']; ?>
 
 <div class="search-box <?= !empty($type) ? $type : "" ?>">
     
     <ul class="nav nav-tabs" role="tablist">
-        <?= $layoutListNav ?>
+        <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'favorite') ? 'active' : '' ?>">
+            <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Favorite') ?></strong></a>
+        </li>
+        <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'promo') ? 'active' : '' ?>">
+            <a href="#special" aria-controls="special" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Promo') ?></strong></a>
+        </li>
+        <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'online-order') ? 'active' : '' ?>">
+            <a href="#order" aria-controls="order" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Online Order') ?></strong></a>
+        </li>
     </ul>
     
     <div class="form-group">
@@ -36,7 +28,7 @@ $layoutListNav = '
         	<div class="input-group-addon">
         		<i class="fa fa-search"></i>
         	</div>
-        	<?= Html::textInput('nm', $keywordName, ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
+        	<?= Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
     	</div>
 	</div>
 </div>

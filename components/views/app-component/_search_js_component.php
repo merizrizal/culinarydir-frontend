@@ -11,6 +11,9 @@ use yii\bootstrap\Modal;
 /* @var $keyword Array */
 /* @var $showFacilityFilter boolean */
 
+kartik\select2\Select2Asset::register($this);
+kartik\select2\ThemeKrajeeAsset::register($this);
+
 $this->params['beforeEndBody'][] = function() use ($keyword, $showFacilityFilter) {
 	
 	$keywordType = $keyword['searchType'];

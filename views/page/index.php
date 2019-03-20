@@ -125,10 +125,10 @@ $appComponent = new AppComponent(); ?>
                     	            'data-date_end' => $modelPromo[1]['date_end']
                     	        ]);
                     	    //}
-                    	} ?>
+                    	}
                     
-                    	<?= Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app') ?>
-                    	<?= Html::a(Html::img('https://placehold.it/360x154&text=1', ['class' => 'img-responsive']), 'https://asikmakan.com') ?>
+                    	echo Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
+                    	echo Html::a(Html::img('https://placehold.it/360x154&text=1', ['class' => 'img-responsive']), 'https://asikmakan.com'); ?>
                     	
                     </div>
                 </div>
@@ -178,22 +178,6 @@ frontend\components\FacebookShare::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
-    $(".news-promo-section").owlCarousel({
-        margin: 10,
-        lazyLoad: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            }
-        }
-    })
-    
     $("#recent-activity").on("click", "#pagination-recent-post li.next a", function() {
 
         var thisObj = $(this);
@@ -247,6 +231,23 @@ $jscript = '
         
         return false;
     });
+
+    $(".news-promo-section").owlCarousel({
+
+        margin: 10,
+        lazyLoad: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1000: {
+                items: 3
+            }
+        }
+    })
 ';
 
 $this->registerJs($jscript); ?>

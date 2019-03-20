@@ -129,7 +129,19 @@ $this->registerMetaTag([
     'content' => $ogImage
 ]); 
 
-$noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425); ?>
+$noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425);
+
+$btnPrev = '
+    <div class="col-sm-1 btn-prev text-center hidden-xs"> ' .
+		Html::a('<i class="fa fa-chevron-left fa-2x"></i>') . '
+	</div>
+';
+
+$btnNext = '
+    <div class="col-sm-1 btn-next text-center hidden-xs"> ' .
+		Html::a('<i class="fa fa-chevron-right fa-2x"></i>') . '
+	</div>
+'; ?>
 
 <div class="main">
 
@@ -169,9 +181,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                         <div class="tab-content box bg-white">
                                             <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                                 <div class="row">
-                                                	<div class="col-sm-1 btn-prev text-center hidden-xs">
-                                                		<a><i class="fa fa-chevron-left fa-2x"></i></a>
-                                                	</div>
+                                                	<?= $btnPrev ?>
                                                     <div class="col-sm-10 col-xs-12">
 														<div class="ambience-gallery owl-carousel owl-theme">
 														
@@ -205,16 +215,12 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-1 btn-next text-center hidden-xs">
-                                                		<a><i class="fa fa-chevron-right fa-2x"></i></a>
-                                                	</div>
+                                                    <?= $btnNext ?>
                                                 </div>
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade in active" id="menu">
                                                 <div class="row">
-                                                	<div class="col-sm-1 btn-prev text-center hidden-xs">
-                                                		<a><i class="fa fa-chevron-left fa-2x"></i></a>
-                                                	</div>
+                                                	<?= $btnPrev ?>
                                                     <div class="col-sm-10 col-xs-12">
                                                     	<div class="menu-gallery owl-carousel owl-theme">
 
@@ -248,9 +254,7 @@ $noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-availabl
                                                             
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-1 btn-next text-center hidden-xs">
-                                                		<a><i class="fa fa-chevron-right fa-2x"></i></a>
-                                                	</div>
+                                                    <?= $btnNext ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -1124,27 +1128,29 @@ $jscript = '
         autoHeight: true,
     });
 
-    $("#photo").find(".btn-prev").on("click", function() {
+    $(".btn-prev").on("click", function() {
 
-        $("#photo").find(".owl-prev").click();
+        if ($(this).parents("#photo").length) {
+            
+            $("#photo").find(".owl-prev").click();
+        } else if ($(this).parents("#menu").length) {
+
+            $("#menu").find(".owl-prev").click();
+        }
+
         return false;
     });
 
-    $("#photo").find(".btn-next").on("click", function() {
+    $(".btn-next").on("click", function() {
 
-        $("#photo").find(".owl-next").click();
-        return false;
-    });
+        if ($(this).parents("#photo").length) {
+            
+            $("#photo").find(".owl-next").click();
+        } else if ($(this).parents("#menu").length) {
 
-    $("#menu").find(".btn-prev").on("click", function() {
+            $("#menu").find(".owl-next").click();
+        }
 
-        $("#menu").find(".owl-prev").click();
-        return false;
-    });
-
-    $("#menu").find(".btn-next").on("click", function() {
-
-        $("#menu").find(".owl-next").click();
         return false;
     });
 ';
