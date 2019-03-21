@@ -154,7 +154,7 @@ $btnNext = '
                     <?php
                     $sessionKeyword = Yii::$app->session->get('keyword');
                     $urlBack = !empty($sessionKeyword) ? ArrayHelper::merge(['result-list'], $sessionKeyword) : ['index'];
-                    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Search Result'), $urlBack, ['class' => 'btn btn-standard p-0']); ?>
+                    echo Html::a('<i class="fa fa-angle-double-left"></i> ' . (!empty($sessionKeyword) ? Yii::t('app', 'Back to Search Result') : Yii::t('app', 'Back To Home Page')), $urlBack, ['class' => 'btn btn-standard p-0']); ?>
 
                 </div>
             </div>
@@ -330,7 +330,6 @@ $btnNext = '
                                                                     </li>
                                                                     <li>
                                                                         <i class="aicon aicon-rupiah"></i>
-
                                                                         <?= $ogPriceRange; ?>
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>

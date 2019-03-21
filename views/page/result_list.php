@@ -68,8 +68,6 @@ frontend\components\RatingColor::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
-    $(".result-list-search").hide();    
-
     $.ajax({
         cache: false,
         type: "GET",
@@ -83,11 +81,6 @@ $jscript = '
 
             messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
         }
-    });
-
-    $(".btn-search-toggle").on("click", function() {
-
-        $(".result-list-search").toggle();
     });
 
     $(".btn-list").on("click", function() {

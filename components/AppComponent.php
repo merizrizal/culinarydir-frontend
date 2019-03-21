@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\components;
 
 use yii\base\Widget;
@@ -41,11 +42,9 @@ class AppComponent extends Widget
 
     public function searchJsComponent($keyword, $pageType = null)
     {
-        $pageType = empty($pageType) ? 'list' : $pageType;
-        
         return $this->render('app-component/_search_js_component', [
             'keyword' => $keyword,
-            'pageType' => $pageType,
+            'pageType' => empty($pageType) ? 'list' : $pageType,
             'showFacilityFilter' => $this->showFacilityFilter
         ]);
     }
