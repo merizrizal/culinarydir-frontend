@@ -11,9 +11,6 @@ use frontend\components\GrowlCustom;
 /* @var $keyword array */
 /* @var $params array */
 
-dosamigos\gallery\GalleryAsset::register($this);
-dosamigos\gallery\DosamigosAsset::register($this);
-
 $this->title = Yii::t('app', 'Search Result');
 
 $this->registerMetaTag([

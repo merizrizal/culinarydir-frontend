@@ -339,7 +339,8 @@ class DataController extends base\BaseController
                     'businessCategories.category',
                     'businessImages' => function ($query) {
                     
-                        $query->andOnCondition(['type' => 'Profile']);
+                        $query->andOnCondition(['type' => 'Profile'])
+                            ->andOnCondition(['is_primary' => true]);
                     },
                     'businessLocation',
                     'businessLocation.city',

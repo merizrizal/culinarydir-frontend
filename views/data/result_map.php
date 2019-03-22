@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
@@ -13,6 +14,8 @@ use frontend\components\AddressType;
 /* @var $endItem int */
 /* @var $totalCount int */
 /* @var $modelBusiness core\models\Business */
+
+common\assets\OwlCarouselAsset::register($this);
 
 Pjax::begin([
     'enablePushState' => false,
@@ -55,7 +58,6 @@ $linkPager = LinkPager::widget([
 
 <div class="container-map-detail">
     <div class="row">
-
         <div class="col-md-12 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
@@ -71,70 +73,21 @@ $linkPager = LinkPager::widget([
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="box box-small place-<?= $dataBusiness['id']; ?>" role="button">
-
                                 <div class="row">
                                     <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
+                                        <div class="result-map-image owl-carousel owl-theme">
 
-                                        <?php
-                                        $images = [];
-                                        
-                                        $image = '';
-                                        $href = '';
-                                        
-                                        if (count($dataBusiness['businessImages']) > 0) {
+                                            <?php
+                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
                                             
-                                            $orderedBusinessImage = [];
-                                            
-                                            foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
-                                                
-                                                $orderedBusinessImage[$dataBusinessImage['order']] = $dataBusinessImage;
+                                            if (!empty($dataBusiness['businessImages'])) {
+
+                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 429, 241);
                                             }
                                             
-                                            ksort($orderedBusinessImage);
-
-                                            foreach ($orderedBusinessImage as $dataBusinessImage) {
-
-                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 446, 251);
-
-                                                if (!empty($dataBusinessImage['image'])) {
-
-                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 446, 251);
-                                                }
-
-                                                $images[] = [
-                                                    'title' => '',
-                                                    'href' => $href,
-                                                    'type' => 'image/jpeg',
-                                                    'poster' => $href,
-                                                ];
-                                                
-                                                $image = empty($image) ? $href : $image;
-                                            }                                            
-                                        } else {
-
-                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 446, 251);
-
-                                            $images[] = [
-                                                'title' => '',
-                                                'href' => $href,
-                                                'type' => 'image/jpeg',
-                                                'poster' => $href,
-                                            ];
+                                            echo Html::img($img); ?>
                                             
-                                            $image = $href;
-                                        }
-                                        
-                                        echo dosamigos\gallery\Carousel::widget([
-                                            'items' => $images,
-                                            'json' => true,
-                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                            'clientOptions' => [
-                                                'container' => '#blueimp-gallery-' . $dataBusiness['id'],
-                                                'startSlideshow' => false,
-                                            ],
-                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                        ]); ?>
-
+                                        </div>
                                     </div>
 									
 									<?php 
@@ -234,7 +187,7 @@ $linkPager = LinkPager::widget([
 
                     $businessDetail[$key][] = [
                         'businessId' => $dataBusiness['id'],
-                        'businessImage' => $image,
+                        'businessImage' => $img,
                         'businessName' => $dataBusiness['name'],
                         'businessCategory' => $businessCategory,
                         'businessAddress' => AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]),
@@ -415,6 +368,12 @@ $jscript = '
     $("#pjax-result-map-container").on("pjax:error", function (event) {
 
         event.preventDefault();
+    });
+
+    $(".result-map-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1
     });
 ';
 

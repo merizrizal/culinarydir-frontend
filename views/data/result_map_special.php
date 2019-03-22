@@ -14,6 +14,7 @@ use sycomponent\Tools;
 /* @var $modelBusinessPromo core\models\BusinessPromo */
 
 kartik\popover\PopoverXAsset::register($this);
+common\assets\OwlCarouselAsset::register($this);
 
 Pjax::begin([
     'enablePushState' => false,
@@ -56,7 +57,6 @@ $linkPager = LinkPager::widget([
 
 <div class="container-map-detail">
     <div class="row">
-
         <div class="col-md-12 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
@@ -77,34 +77,19 @@ $linkPager = LinkPager::widget([
 
                                 <div class="row">
                                     <div class="col-md-5 col-sm-12 col-tab-6 col-xs-12 col">
+                                        <div class="result-map-special-image owl-carousel owl-theme">
 
-                                        <?php
-                                        $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 597, 336);
-
-                                        if (!empty($dataBusinessPromo['image'])) {
-
-                                            $image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 597, 336);
-                                        }
-
-                                        $images = [];
-                                        $images[] = [
-                                            'title' => '',
-                                            'href' => $image,
-                                            'type' => 'image/jpeg',
-                                            'poster' => $image,
-                                        ];
+                                            <?php
+                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
+    
+                                            if (!empty($dataBusinessPromo['image'])) {
+    
+                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
+                                            }
+                                            
+                                            echo Html::img($img); ?>
                                         
-                                        echo dosamigos\gallery\Carousel::widget([
-                                            'items' => $images,
-                                            'json' => true,
-                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                            'clientOptions' => [
-                                                'container' => '#blueimp-gallery-' . $dataBusinessPromo['id'],
-                                                'startSlideshow' => false,
-                                            ],
-                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                        ]); ?>
-
+                                        </div>
                                     </div>
                                     <div class="col-md-7 col-sm-12 col-tab-6 col-xs-12 col">
                                         <div class="short-desc">
@@ -181,7 +166,7 @@ $linkPager = LinkPager::widget([
 
                     $businessPromoDetail[$key][] = [
                         'businessId' => $dataBusinessPromo['business']['id'],
-                        'businessPromoImage' => $image,
+                        'businessPromoImage' => $img,
                         'businessPromoTitle' => $dataBusinessPromo['title'],
                         'businessName' => $dataBusinessPromo['business']['name'],
                         'businessLatitude' => $businessLatitude,
@@ -359,6 +344,12 @@ $jscript = '
     $("#pjax-result-map-container").on("pjax:error", function (event) {
 
         event.preventDefault();
+    });
+
+    $(".result-map-special-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1
     });
 ';
 

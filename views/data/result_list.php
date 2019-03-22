@@ -15,6 +15,7 @@ use frontend\components\AddressType;
 /* @var $modelBusiness core\models\Business */
 
 kartik\popover\PopoverXAsset::register($this);
+common\assets\OwlCarouselAsset::register($this);
 
 Pjax::begin([
     'enablePushState' => false,
@@ -59,7 +60,6 @@ $linkPager = LinkPager::widget([
 
 <div class="container">
     <div class="row">
-
         <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
@@ -78,60 +78,19 @@ $linkPager = LinkPager::widget([
 
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link">
+                                    	<div class="result-list-image owl-carousel owl-theme">
 
-                                        <?php
-                                        $images = [];
-                                        
-                                        if (count($dataBusiness['businessImages']) > 0) {
+                                            <?php
+                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
                                             
-                                            $orderedBusinessImage = [];
-                                            
-                                            foreach ($dataBusiness['businessImages'] as $dataBusinessImage) {
-                                                
-                                                $orderedBusinessImage[$dataBusinessImage['order']] = $dataBusinessImage;
+                                            if (!empty($dataBusiness['businessImages'])) {
+
+                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 429, 241);
                                             }
                                             
-                                            ksort($orderedBusinessImage);
-
-                                            foreach ($orderedBusinessImage as $dataBusinessImage) {
-
-                                                $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
-
-                                                if (!empty($dataBusinessImage['image'])) {
-
-                                                    $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusinessImage['image'], 429, 241);
-                                                }
-
-                                                $images[] = [
-                                                    'title' => '',
-                                                    'href' => $href,
-                                                    'type' => 'image/jpeg',
-                                                    'poster' => $href,
-                                                ];
-                                            }                                                
-                                        } else {
-
-                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
+                                            echo Html::img($img); ?>
                                             
-                                            $images[] = [
-                                                'title' => '',
-                                                'href' => $href,
-                                                'type' => 'image/jpeg',
-                                                'poster' => $href,
-                                            ];
-                                        }
-                                        
-                                        echo dosamigos\gallery\Carousel::widget([
-                                            'items' => $images,
-                                            'json' => true,                                                
-                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                            'clientOptions' => [
-                                                'container' => '#blueimp-gallery-' . $dataBusiness['id'],
-                                                'startSlideshow' => false,
-                                            ],
-                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusiness['id']],
-                                        ]); ?>
-
+                                        </div>
                                     </div>
 
                                     <?php
@@ -163,13 +122,13 @@ $linkPager = LinkPager::widget([
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="m-0">
 
-                                                        <?= Html::a($dataBusiness['name'], 
-                                                            [
-                                                                'page/detail', 
-                                                                'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']), 
-                                                                'uniqueName' => $dataBusiness['unique_name']
-                                                            ],
-                                                            ['class' => 'link-to-business-detail']); ?>
+                                                        <?= Html::a($dataBusiness['name'], [
+                                                            'page/detail', 
+                                                            'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']), 
+                                                            'uniqueName' => $dataBusiness['unique_name']
+                                                        ], [
+                                                            'class' => 'link-to-business-detail'
+                                                        ]); ?>
 
                                                     </h4>
                                                 </div>
@@ -353,6 +312,12 @@ $jscript = '
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();
+    });
+
+    $(".result-list-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1
     });
 ';
 

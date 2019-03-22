@@ -57,33 +57,47 @@ $this->registerMetaTag([
 $appComponent = new AppComponent(); ?>
 
 <section class="module-small bg-dark" data-background="<?= $background ?>">
-    <div class="titan-caption">
-        <div class="caption-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-sm-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
 
-                        <?= $appComponent->search([
-                            'keyword' => $keyword,
-                        ]); ?>
-                        
-                    </div>
-                </div>
-                <div class="row mt-40">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <a class="section-scroll text-center text-white" href="#recent-activity">
-                            <i class="fa fa-angle-double-down fa-4x animate-bounce"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <h5 class="font-alt">
-                        	<a class="section-scroll text-center text-white" href="#recent-activity" style="background-color: rgba(0, 0, 0, 0.5)">
-                            	<?= Yii::t('app', 'Recent Activity') ?>
-                        	</a>
-                        </h5>
-                    </div>
+                <?= $appComponent->search([
+                    'keyword' => $keyword,
+                ]); ?>
+                
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col-xs-12 font-alt"><strong><?= Yii::t('app', 'News And Promo'); ?></strong></div>
+        </div>
+    	
+    	<div class="row mt-10">
+        	<div class="col-xs-12">
+                <div class="news-promo-section owl-carousel owl-theme">
+                
+                	<?php
+                	if (!empty($modelPromo)) {
+                	    
+                	    foreach ($modelPromo as $dataPromo) {
+                	        
+                	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 350, 154);
+                	        
+                	        if (!empty($dataPromo['image'])) {
+                	            
+                	            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/promo/', $dataPromo['image'], 350, 154);
+                	        }
+                	        
+                	        echo Html::a(Html::img($img), ['action/claim-promo'], [
+                	            'class' => 'claim-promo-btn',
+                	            'data-promo' => $dataPromo['id'],
+                	            'data-date_start' => $dataPromo['date_start'],
+                	            'data-date_end' => $dataPromo['date_end']
+                	        ]);
+                	    }
+                	}
+                
+                	echo Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app'); ?>
+                	
                 </div>
             </div>
         </div>
@@ -93,47 +107,6 @@ $appComponent = new AppComponent(); ?>
 <section class="module-extra-small in-result bg-main">
     <div class="container detail">
         <div class="view">
-        	
-        	<div class="row mt-10 mb-20">
-                <div class="col-lg-12 font-alt"><?= Yii::t('app', 'News And Promo'); ?></div>
-            </div>
-        	
-        	<div class="row mt-20">
-            	<div class="col-sm-12">
-                    <div class="news-promo-section owl-carousel owl-theme">
-                    
-                    	<?php
-                    	if (!empty($modelPromo)) {
-                    	    
-                    	    //foreach ($modelPromo as $dataPromo) {
-                    	        
-                    	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'katalogkuliner-Dominos-Pizza-Promo-Diskon-40-Untuk-Semua-Pizza-Mulai-Dari-Rp.-25.091-.jpg', 350, 154);
-                    	        
-                    	        echo Html::a(Html::img($img), ['action/claim-promo'], [
-                    	            'class' => 'claim-promo-btn',
-                    	            'data-promo' => $modelPromo[0]['id'],
-                    	            'data-date_start' => $modelPromo[0]['date_start'],
-                    	            'data-date_end' => $modelPromo[0]['date_end']
-                    	        ]);
-                    	        
-                    	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'LUSX8st5ITScy6ZS-promo-diskon-50-dari-zippy-1509384752_1.jpg', 350, 154);
-                    	        
-                    	        echo Html::a(Html::img($img), ['action/claim-promo'], [
-                    	            'class' => 'claim-promo-btn',
-                    	            'data-promo' => $modelPromo[1]['id'],
-                    	            'data-date_start' => $modelPromo[1]['date_start'],
-                    	            'data-date_end' => $modelPromo[1]['date_end']
-                    	        ]);
-                    	    //}
-                    	}
-                    
-                    	echo Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
-                    	echo Html::a(Html::img('https://placehold.it/360x154&text=1', ['class' => 'img-responsive']), 'https://asikmakan.com'); ?>
-                    	
-                    </div>
-                </div>
-            </div>
-
             <div class="row mt-10 mb-20">
                 <div class="col-lg-12 font-alt"><?= Yii::t('app', 'Recent Activity'); ?></div>
             </div>

@@ -15,6 +15,7 @@ use frontend\components\AddressType;
 /* @var $modelBusinessPromo core\models\BusinessPromo */
 
 kartik\popover\PopoverXAsset::register($this);
+common\assets\OwlCarouselAsset::register($this);
 
 Pjax::begin([
     'enablePushState' => false,
@@ -59,7 +60,6 @@ $linkPager = LinkPager::widget([
 
 <div class="container">
     <div class="row">
-
         <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 box-place">
 
             <div class="overlay" style="display: none;"></div>
@@ -78,34 +78,19 @@ $linkPager = LinkPager::widget([
 
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
+                                    	<div class="result-list-special-image owl-carousel owl-theme">
 
-                                        <?php
-                                        $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
-
-                                        if (!empty($dataBusinessPromo['image'])) {
-
-                                            $href = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
-                                        }
-
-                                        $images = [];
-                                        $images[] = [
-                                            'title' => '',
-                                            'href' => $href,
-                                            'type' => 'image/jpeg',
-                                            'poster' => $href,
-                                        ];
+                                            <?php
+                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
+    
+                                            if (!empty($dataBusinessPromo['image'])) {
+    
+                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
+                                            }
+                                            
+                                            echo Html::img($img); ?>
                                         
-                                        echo dosamigos\gallery\Carousel::widget([
-                                            'items' => $images,
-                                            'json' => true,
-                                            'templateOptions' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                            'clientOptions' => [
-                                                'container' => '#blueimp-gallery-' . $dataBusinessPromo['id'],
-                                                'startSlideshow' => false,
-                                            ],
-                                            'options' => ['id' => 'blueimp-gallery-' . $dataBusinessPromo['id']],
-                                        ]); ?>
-
+                                        </div>
                                     </div>
 
                                     <div class="col-md-7 col-sm-7 col-tab-6 col-xs-12 col">
@@ -115,12 +100,13 @@ $linkPager = LinkPager::widget([
                                                     <h4 class="m-0">
                                                     
                                                         <?= Html::a($dataBusinessPromo['title'], [
-                                                                'page/detail',
-                                                                'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
-                                                                'uniqueName' => $dataBusinessPromo['business']['unique_name'],
-                                                                '#' => 'special'
-                                                            ],
-                                                            ['class' => 'link-to-business-detail']); ?>
+                                                            'page/detail',
+                                                            'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
+                                                            'uniqueName' => $dataBusinessPromo['business']['unique_name'],
+                                                            '#' => 'special'
+                                                        ], [
+                                                            'class' => 'link-to-business-detail'
+                                                        ]); ?>
                                                         
                                                     </h4>
                                                 </div>
@@ -276,6 +262,12 @@ $jscript = '
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();
+    });
+
+    $(".result-list-special-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1
     });
 ';
 

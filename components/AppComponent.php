@@ -35,11 +35,6 @@ class AppComponent extends Widget
         return $this->render('app-component/search', $config);
     }
 
-    public function searchPopover($config = [])
-    {
-        return $this->render('app-component/search_popover', $config);
-    }
-
     public function searchJsComponent($keyword, $pageType = null)
     {
         return $this->render('app-component/_search_js_component', [
