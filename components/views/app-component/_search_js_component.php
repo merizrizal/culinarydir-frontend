@@ -122,13 +122,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                 			<div class="row">
                                 <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
-    
-                                        <?= Html::textInput('nm', $keywordName, [
+    									
+    									<?php
+                                        echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'favorit'
-                                        ]) ?>
+                                        ]);
+                                        echo !empty($keywordName) ? $spanClear : null; ?>
     
                                     </div>
                                 </div>
@@ -334,12 +336,14 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                 <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
-                                        <?= Html::textInput('nm', $keywordName, [
+                                        <?php
+                                        echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'promo'
-                                        ]) ?>
+                                        ]);
+                                        echo !empty($keywordName) ? $spanClear : null; ?>
     
                                     </div>
                                 </div>
@@ -445,12 +449,14 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                 <div class="col-sm-9 col-tab-9 col-xs-10">
                                     <div class="form-group">
     
-                                        <?= Html::textInput('nm', $keywordName, [
+                                        <?php
+                                        echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'pesan-online'
-                                        ]) ?>
+                                        ]);
+                                        echo !empty($keywordName) ? $spanClear : null; ?>
     
                                     </div>
                                 </div>
@@ -1058,6 +1064,38 @@ $jscript = '
         $(".search-input").removeAttr("disabled");
 
         $(".search-box-modal").fadeOut("medium");
+    });
+
+    $(".input-name").on("keyup", function() {
+        
+        var clearElement = $(this).siblings(".search-field-box-clear");
+
+        if ($(this).val() != "") {
+
+            if (clearElement.length == 0) {
+            
+                $(this).parent().append("<span class=\"search-field-box-clear\">×</span>");
+            }
+
+            $(".search-input").val($(this).val());
+        } else {
+
+            if (clearElement.length != 0) {
+
+                clearElement.remove();
+                $(".search-input").val("");
+            }
+        }
+
+        return false;
+    });
+
+    $(".input-name").parent().on("click", ".search-field-box-clear", function() {
+        
+        $(".input-name, .search-input").val("");
+        $(this).remove();
+
+        return false;
     });
 ';
 
