@@ -1035,7 +1035,7 @@ $jscript = '
 
         $(".product-category-id").val("");
         $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(this).remove();
+        $(".btn-product-category").siblings(".search-field-box-clear").remove();
 
         return false;
     });
@@ -1044,7 +1044,7 @@ $jscript = '
 
         $(".price-min, .price-max").val("");
         $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(this).remove();
+        $(".btn-price").siblings(".search-field-box-clear").remove();
 
         return false;
     });
@@ -1054,7 +1054,7 @@ $jscript = '
         $(".coordinate-map, .radius-map").val("");
         $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-radius-500").trigger("click");
-        $(this).remove();
+        $(".btn-region").siblings(".search-field-box-clear").remove();
 
         return false;
     });
@@ -1068,11 +1068,9 @@ $jscript = '
 
     $(".input-name").on("keyup", function() {
         
-        var clearElement = $(this).siblings(".search-field-box-clear");
-
         if ($(this).val() != "") {
 
-            if (clearElement.length == 0) {
+            if ($(this).siblings(".search-field-box-clear").length == 0) {
             
                 $(this).parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
@@ -1080,11 +1078,9 @@ $jscript = '
             $(".search-input").val($(this).val());
         } else {
 
-            if (clearElement.length != 0) {
-
-                clearElement.remove();
-                $(".search-input").val("");
-            }
+            $(".search-input").val("");
+            $(".input-name").val("");
+            $(".input-name").siblings(".search-field-box-clear").remove();
         }
 
         return false;
@@ -1093,7 +1089,7 @@ $jscript = '
     $(".input-name").parent().on("click", ".search-field-box-clear", function() {
         
         $(".input-name, .search-input").val("");
-        $(this).remove();
+        $(".input-name").siblings(".search-field-box-clear").remove();
 
         return false;
     });

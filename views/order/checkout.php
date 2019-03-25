@@ -208,7 +208,7 @@ $this->title = 'Checkout'; ?>
                                                                 <tbody>
                                                                     <tr>
                                                                         <th class="font-alt">Total</th>
-                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price'] < 0 ? 0 : $modelTransactionSession['total_price']) ?></td>
+                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -234,14 +234,14 @@ $this->title = 'Checkout'; ?>
                                                                                     <div class="row mb-10">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                            Html::radio('business_delivery_id', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
+                                                                                                Html::radio('business_delivery_id', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
                                                                                             '</label>
-                                                                                                </div>
+                                                                                        </div>
                                                                                         <div class="col-sm-8 col-xs-12">
                                                                                             <strong>' . $data['note'] . '</strong>
                                                                                         </div>
                                                                                         <div class="' . (!empty($data['note']) ? 'col-sm-offset-4 ' : '') . 'col-sm-8 col-xs-12">' .
-                                                                                        $data['description'] . '
+                                                                                            $data['description'] . '
                                                                                         </div>
                                                                                     </div>';
                                                                             }
@@ -278,9 +278,9 @@ $this->title = 'Checkout'; ?>
                                                                                     <div class="row mb-10">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                            Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
+                                                                                                Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
                                                                                             '</label>
-                                                                                                </div>
+                                                                                        </div>
                                                                                         <div class="col-sm-8 col-xs-12">' .
                                                                                             $data['description'] . '
                                                                                         </div>
@@ -391,11 +391,6 @@ $jscript = '
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
 
                     $(".total-price").html(response.total_price);
-
-                    if (response.real_price != null) {
-
-                        $(".real-price").children().last().html(response.real_price);
-                    }
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -463,7 +458,7 @@ $jscript = '
             type: "POST",
             url: thisObj.attr("href"),
             data: {
-                "id": $(this).parents(".business-menu-group").find(".transaction-item-id").val()
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
 
@@ -483,16 +478,9 @@ $jscript = '
                         $(".order-online-form").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-submit").prop("disabled", true);
-                        $(".real-price").hide();
-                        $(".promo-amount").hide();
                     }
 
                     $(".total-price").html(response.total_price);
-
-                    if (response.real_price != null) {
-
-                        $(".real-price").children().last().html(response.real_price);
-                    }
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);

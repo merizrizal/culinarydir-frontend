@@ -149,8 +149,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
-            $result['real_price'] = !empty($modelTransactionSession->promoItem) ? Yii::$app->formatter->asCurrency($modelTransactionSession->total_price + $modelTransactionSession->promoItem->amount) : null;
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
@@ -203,8 +202,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price < 0 ? 0 : $modelTransactionSession->total_price);
-            $result['real_price'] = !empty($modelTransactionSession->promoItem) ? Yii::$app->formatter->asCurrency($modelTransactionSession->total_price + $modelTransactionSession->promoItem->amount) : null;
+            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
