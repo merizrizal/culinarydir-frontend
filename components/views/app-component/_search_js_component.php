@@ -544,7 +544,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
 
-                    ' . Html::textInput('product_category_search', null, ['class' => 'form-control input-product-category', 'placeholder' => 'Cari kategori menu disini...']) . '
+                    ' . Html::textInput('product_category_search', null, ['class' => 'form-control input-product-category', 'placeholder' => 'Cari kategori menu di sini...']) . '
 
                 </div>
             </div>
@@ -843,6 +843,19 @@ $jscript = '
         }
     };
 
+    $(".city-id").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'City') . '",
+        minimumResultsForSearch: Infinity
+    });
+
+    $(".category-id").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'Business Category') . '",
+        minimumResultsForSearch: Infinity,
+        allowClear: true
+    });
+
     $(".price-min-select").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Price Min') . '",
@@ -1059,10 +1072,105 @@ $jscript = '
         return false;
     });
 
+    $(".input-name").parent().on("click", ".search-field-box-clear", function() {
+        
+        $(".input-name, .search-input").val("");
+        $(".input-name").siblings(".search-field-box-clear").remove();
+
+        return false;
+    });
+
+    $(".search-favorite, .search-special, .search-order").on("submit", function() {
+
+        var action = $(this).attr("action").replace("city_name", $(this).find(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
+
+        $(this).attr("action", action);
+    });
+
+    $(".lbl-clear").on("click", function() {
+
+        $(".search-input, .input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
+        $(".category-id").val(null).trigger("change");
+        $(".facility").prop("checked", false).trigger("change");
+
+        $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".search-field-box-clear").remove();
+
+        return false;
+    });
+
+    $(".search-input").on("click", function() {
+
+        var href;
+        
+        $(".search-input").attr("disabled", "disabled");
+
+        $(".search-box > .nav-tabs").children("li").each(function() {
+            
+            if ($(this).hasClass("active")) {
+                
+                href = $(this).children().attr("href");
+                return false;
+            }
+        });
+        
+        $(".search-box-modal").find(".nav-tabs").children("li").each(function() {
+
+            var thisObj = $(this);
+            var navTab = thisObj.children("a").attr("href");
+        
+            if (navTab != ("#" + href)) {
+
+                thisObj.removeClass("active");
+            }
+
+            thisObj.on("click", function() {
+                
+                $(".search-box > .nav-tabs").children("li").each(function() {
+    
+                    if ($(this).children().attr("href") != navTab) {
+    
+                        $(this).removeClass("active");
+                    } else {
+    
+                        $(this).addClass("active");
+                    }
+                });
+            });
+        });
+
+        $(".search-box-modal").find(href + "-id").parent().addClass("active");
+        $(".search-box-modal").fadeIn("medium");
+    });
+
+    if ($(".btn-search-map-toggle").length) {
+
+        var keyword = $(".btn-search-map-toggle").data("keyword");
+        
+        if (keyword == "favorit") {
+
+            keyword = "favorite";
+        } else if (keyword == "promo") {
+            
+            keyword = "special";
+        } else if (keyword == "pesan-online") {
+
+            keyword = "order";
+        }
+        
+        $(".search-box-modal").find("#" + keyword + "-id").parent().addClass("active");
+    }
+
+    $(".btn-search-map-toggle").on("click", function() {
+        
+        $(".search-box-modal").fadeIn("medium");
+    });
+
     $(".btn-close").on("click", function() {
         
         $(".search-input").removeAttr("disabled");
-
         $(".search-box-modal").fadeOut("medium");
     });
 
@@ -1078,18 +1186,9 @@ $jscript = '
             $(".search-input").val($(this).val());
         } else {
 
-            $(".search-input").val("");
-            $(".input-name").val("");
+            $(".input-name, .search-input").val("");
             $(".input-name").siblings(".search-field-box-clear").remove();
         }
-
-        return false;
-    });
-
-    $(".input-name").parent().on("click", ".search-field-box-clear", function() {
-        
-        $(".input-name, .search-input").val("");
-        $(".input-name").siblings(".search-field-box-clear").remove();
 
         return false;
     });

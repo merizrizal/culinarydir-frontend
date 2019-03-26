@@ -43,10 +43,10 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-7">
 
                     <?php
-                    $urlResultMap = ArrayHelper::merge(['result-map'], $params); ?>
+                    $urlResultMap = ArrayHelper::merge(['result-map'], $params);
 
-                    <?= Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) ?>
-                    <?= Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
+                    echo Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) . '&nbsp';
+                    echo Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
             </div>

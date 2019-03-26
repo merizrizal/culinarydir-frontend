@@ -529,7 +529,7 @@ $jscript .= '
             type: "POST",
             url: thisObj.attr("href"),
             data: { 
-                "id": $(this).parents(".business-menu-group").find(".transaction-item-id").val()
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
 
