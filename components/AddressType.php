@@ -34,7 +34,7 @@ class AddressType extends Widget
     {
         $detail = $this->showDetail && !empty($this->businessLocation['village']) && !empty($this->businessLocation['district']) ? ', ' . $this->businessLocation['village']['name'] . ', ' . $this->businessLocation['district']['name'] : '';
         
-        return Html::encode($this->addressTypeShort . '. ' . trim($this->businessLocation['address']) . $detail);
+        return Html::encode($this->addressTypeShort . '. ' . $this->businessLocation['address'] . $detail);
     }
     
 }
