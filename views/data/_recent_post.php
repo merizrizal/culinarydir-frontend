@@ -31,7 +31,7 @@ $urlReviewDetail = [
                                 	
                                 	if (!empty($model['user']['image'])) {
                                 	    
-                                	    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $model['user']['image'], 100, 100);
+                                	    $img = Yii::$app->params['loadUserImage'] . $model['user']['image'] . '&w=100&h=100';
                                 	}
                                 	
                                 	echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>

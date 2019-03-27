@@ -66,7 +66,7 @@ $linkPager = LinkPager::widget([
         
                 if (!empty($dataUserPostMain['user']['image'])) {
         
-                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostMain['user']['image'], 64, 64);
+                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostMain['user']['image'] . '&w=64&h=64';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']);
@@ -198,9 +198,7 @@ $linkPager = LinkPager::widget([
                     <div class="row">
                         <div class="col-xs-12">
                             <p class="review-description">
-        
                                 <?= $dataUserPostMain['text']; ?>
-        
                             </p>
                         </div>
                     </div>
@@ -350,12 +348,10 @@ $linkPager = LinkPager::widget([
 
                                                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
+                                                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                                                 }
 
-                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                                                
-                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                 
                                                             </div>
     

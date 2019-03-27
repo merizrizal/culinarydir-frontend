@@ -94,7 +94,7 @@ $this->registerMetaTag([
                                         
                                         if (!empty($modelUserPostMain['user']['image'])) {
                                             
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
+                                            $img = Yii::$app->params['loadUserImage'] . $modelUserPostMain['user']['image'] . '&w=200&h=200';
                                         } ?>
 
                                         <div class="photo-container">
@@ -219,7 +219,7 @@ $this->registerMetaTag([
                                                                                             
                                                                                             if (!empty($dataUserPostComment['user']['image'])) {
                                                                                                 
-                                                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                                $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=200&h=200';
                                                                                             }
                                                                                             
                                                                                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>

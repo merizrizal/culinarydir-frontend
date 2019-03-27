@@ -50,7 +50,7 @@ $urlMyReviewDetail = [
                     	
                     	if (!empty(Yii::$app->user->getIdentity()->image)) {
                     	    
-                    	    $img = Yii::getAlias('@uploadsUrl') . Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 64, 64);
+                    	    $img = Yii::$app->params['loadUserImage'] . Yii::$app->user->getIdentity()->image . '&w=64&h=64';
                     	} 
                     	
                     	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
@@ -347,12 +347,10 @@ $urlMyReviewDetail = [
     
                                                                                 if (!empty($dataUserPostComment['user']['image'])) {
     
-                                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
+                                                                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                                                                 }
     
-                                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                                                                
-                                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                                     
                                                                             </div>
     

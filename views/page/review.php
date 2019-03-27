@@ -115,7 +115,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 										
 										if (!empty($modelUserPostMain['user']['image'])) {
 										    
-										    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $modelUserPostMain['user']['image'], 200, 200);
+										    $img = Yii::$app->params['loadUserImage'] . $modelUserPostMain['user']['image'] . '&w=200&h=200';
 										}
 										
 										$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
@@ -190,9 +190,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                             </div>
 
                                                                                             <div class="col-sm-7 col-xs-7">
-
                                                                                                 <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
-
                                                                                             </div>
                                                                                         </div>
                                                                                     </li>
@@ -363,7 +361,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                     
                                                                                     if (!empty($dataUserPostComment['user']['image'])) {
                                                                                         
-                                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 200, 200);
+                                                                                        $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=200&h=200';
                                                                                     }
                                                                                     
                                                                                     echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
@@ -375,9 +373,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                     <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                                                                     <br>
                                                                                     <p class="comment-description">
-
                                                                                         <?= $dataUserPostComment['text']; ?>
-
                                                                                     </p>
                                                                                 </div>
                                                                             </div>

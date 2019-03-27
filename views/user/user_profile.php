@@ -24,7 +24,7 @@ $ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescrip
 
 if (!empty($modelUser['image'])) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/' . $modelUser['image'];
+    $ogImage = Yii::$app->params['loadUserImage'] . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -71,24 +71,21 @@ $this->registerMetaTag([
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                 
                 	<?php
-                	$img = '/img/user/default-avatar.png';
+                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
                 	
                 	if (!empty($modelUser['image'])) {
-                	    $img = Tools::thumb('/img/user/', $modelUser['image'], 200, 200);
+                	    
+                	    $img = Yii::$app->params['loadUserImage'] . $modelUser['image'] . '&w=200&h=200';
                 	}
                 	
-                	$userName = '
-                        <h3>' .
-                            $modelUser['full_name'] . '
-                        </h3>
-                    '; ?>
+                	$userName = '<h3>' . $modelUser['full_name'] . ' </h3>'; ?>
 
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
                         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-tab-8 col-xs-offset-2">
                             <div class="row ">
                                 <div class="widget">
                                     <div class="widget-posts-image">
-                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                                        <?= Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body user-profile-identity">
                                         <?= $userName ?>

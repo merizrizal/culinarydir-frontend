@@ -38,7 +38,7 @@ $urlBusinessDetail = [
                             
                             if (!empty($modelTransactionSession['business']['businessImages'])) {
                                 
-                                $img = Yii::$app->params['loadImage'] . $modelTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
+                                $img = Yii::$app->params['loadBusinessImage'] . $modelTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
                             }
                             
                             $img = Html::img($img, ['class' => 'img-rounded']); ?>

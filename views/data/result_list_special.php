@@ -144,9 +144,9 @@ $linkPager = LinkPager::widget([
 
                                                                 foreach ($dataBusinessPromo['business']['businessProductCategories'] as $i => $dataBusinessProductCategory) {
                                                                     
-                                                                    $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                    
                                                                     if (!empty($dataBusinessProductCategory['productCategory'])) {
+                                                                        
+                                                                        $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
                                                                         
                                                                         if ($i < $businessProductCategoryLimit) {
     

@@ -67,7 +67,7 @@ $linkPager = LinkPager::widget([
         
                 if (!empty($dataUserPostMain['business']['businessImages'])) {
         
-                    $img = Yii::$app->params['loadImage']. $dataUserPostMain['business']['businessImages'][0]['image'] . '&w=64&h=64';
+                    $img = Yii::$app->params['loadBusinessImage']. $dataUserPostMain['business']['businessImages'][0]['image'] . '&w=64&h=64';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
@@ -379,7 +379,7 @@ $linkPager = LinkPager::widget([
 
                                                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
+                                                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                                                 }
 
                                                                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);

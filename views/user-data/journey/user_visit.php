@@ -75,7 +75,7 @@ $linkPager = LinkPager::widget([
 
                                 if (!empty($dataUserVisit['business']['businessImages'])) {
 
-                                    $img = Yii::$app->params['loadImage']. $dataUserVisit['business']['businessImages'][0]['image'] . '&w=565&h=350';
+                                    $img = Yii::$app->params['loadBusinessImage']. $dataUserVisit['business']['businessImages'][0]['image'] . '&w=565&h=350';
                                 }
 
                                 echo Html::a(Html::img($img), $urlBusinessDetail); ?>

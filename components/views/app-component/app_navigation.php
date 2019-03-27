@@ -56,14 +56,14 @@ use yii\helpers\Html; ?>
                                                 <div class="widget-posts-image">
                                                 
                                                 	<?php
-                                                	$img = '/img/user/default-avatar.png';
+                                                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
                                                 	
                                                 	if (!empty(Yii::$app->user->getIdentity()->image)) {
                                                 	   
-                                            	       $img = Yii::$app->user->getIdentity()->thumb('/img/user/', 'image', 32, 32);    
+                                                	    $img = Yii::$app->params['loadUserImage'] . Yii::$app->user->getIdentity()->image . '&w=32&h=32';    
                                                 	}
                                                 	
-                                                	echo Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                                                	echo Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
     
                                                 </div>
                                                 <div class="widget-posts-body">

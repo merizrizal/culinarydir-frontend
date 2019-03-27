@@ -6,9 +6,8 @@ use common\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $modelUserPostComment core\models\UserPostComment */ 
-/* @var $userPostId frontend\controllers\DataController */?>
+/* @var $userPostId frontend\controllers\DataController */
 
-<?php
 if (!empty($modelUserPostComment)): ?>
 
     <div class="comment-container">
@@ -23,16 +22,14 @@ if (!empty($modelUserPostComment)): ?>
                             <div class="widget-comments-image">
 
                                 <?php
-                                $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                    $imgUserProfileComment = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user/', $dataUserPostComment['user']['image'], 64, 64);
+                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                 }
 
-                                $imgUserProfileComment = Html::img($imgUserProfileComment, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
-                                
-                                echo Html::a($imgUserProfileComment, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
                             </div>
 
@@ -41,9 +38,7 @@ if (!empty($modelUserPostComment)): ?>
                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
                                 <br>
                                 <p class="comment-description">
-
                                     <?= $dataUserPostComment['text']; ?>
-
                                 </p>
                             </div>
                         </div>
@@ -57,9 +52,8 @@ if (!empty($modelUserPostComment)): ?>
     </div>
 
 <?php
-endif; ?>
+endif;
 
-<?php
 $jscript = '
     var commentCount = ' . (!empty($modelUserPostComment) ? count($modelUserPostComment) : '0') . ';
 ';

@@ -87,7 +87,7 @@ foreach ($modelBusiness['businessImages'] as $dataImageThumbail) {
     
     if ($dataImageThumbail['is_primary']) {
         
-        $ogImage = Yii::$app->params['loadImage'] . $dataImageThumbail['image'];
+        $ogImage = Yii::$app->params['loadBusinessImage'] . $dataImageThumbail['image'];
         break;
     }
 }
@@ -203,7 +203,7 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['loadImage'] . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['loadBusinessImage'] . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
 
                                                                     echo Html::img($img);
@@ -242,7 +242,7 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['loadImage'] . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['loadBusinessImage'] . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
                                                                     
                                                                     echo Html::img($img);

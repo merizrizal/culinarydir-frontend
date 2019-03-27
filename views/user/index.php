@@ -22,7 +22,7 @@ if (!empty($modelUser['userPerson']['person']['about_me'])) {
 
 if (!empty($modelUser['image'])) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/' . $modelUser['image'];
+    $ogImage = Yii::$app->params['loadUserImage'] . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -69,11 +69,11 @@ $this->registerMetaTag([
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                 
                 	<?php
-                	$img = '/img/user/default-avatar.png';
+                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
                 	
                 	if (!empty($modelUser['image'])) {
                 	    
-                	    $img = Tools::thumb('/img/user/', $modelUser['image'], 160, 160);
+                	    $img = Yii::$app->params['loadUserImage'] . $modelUser['image'] . '&w=160&h=160';
                 	}
                 	
                 	$userName = '
@@ -105,7 +105,7 @@ $this->registerMetaTag([
                             <div class="row ">
                                 <div class="widget">
                                     <div class="widget-posts-image">
-                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                                        <?= Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body">
                                     
@@ -121,7 +121,7 @@ $this->registerMetaTag([
                         <div class="col-xs-12">
                             <div class="row">
                                 <div class="col-xs-12 text-center">
-                                	<?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
+                                	<?= Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
                                 </div>
                             </div>
                             <div class="row">

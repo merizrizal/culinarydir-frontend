@@ -85,7 +85,7 @@ $linkPager = LinkPager::widget([
                                             
                                             if (!empty($dataBusiness['businessImages'])) {
 
-                                                $img = Yii::$app->params['loadImage'] . $dataBusiness['businessImages'][0]['image'] . '&w=429&h=241';
+                                                $img = Yii::$app->params['loadBusinessImage'] . $dataBusiness['businessImages'][0]['image'] . '&w=429&h=241';
                                             }
                                             
                                             echo Html::img($img); ?>
