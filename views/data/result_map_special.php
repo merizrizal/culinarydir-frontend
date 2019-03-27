@@ -116,14 +116,19 @@ $linkPager = LinkPager::widget([
                                                                 $businessProductCategoryList = '';
                                                                 $businessProductCategoryPopover = '';
 
-                                                                foreach ($dataBusinessPromo['business']['businessProductCategories'] as $key => $dataBusinessProductCategory) {
-
-                                                                    if ($key < $businessProductCategoryLimit) {
-
-                                                                        $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                    } else {
-
-                                                                        $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                foreach ($dataBusinessPromo['business']['businessProductCategories'] as $i => $dataBusinessProductCategory) {
+                                                                    
+                                                                    $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                    
+                                                                    if (!empty($dataBusinessProductCategory['productCategory'])) {
+                                                                        
+                                                                        if ($i < $businessProductCategoryLimit) {
+    
+                                                                            $businessProductCategoryList .= $hashtagItem;
+                                                                        } else {
+    
+                                                                            $businessProductCategoryPopover .= $hashtagItem;
+                                                                        }
                                                                     }
                                                                 }
 
