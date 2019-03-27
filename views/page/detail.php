@@ -87,7 +87,7 @@ foreach ($modelBusiness['businessImages'] as $dataImageThumbail) {
     
     if ($dataImageThumbail['is_primary']) {
         
-        $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataImageThumbail['image'];
+        $ogImage = Yii::$app->params['loadImage'] . $dataImageThumbail['image'];
         break;
     }
 }
@@ -203,9 +203,9 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                        $img = Yii::$app->params['loadImage'] . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
-                                                                    
+
                                                                     echo Html::img($img);
                                                                 }
                                                             } else {
@@ -242,7 +242,7 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $businessImage['image'], 1252, 706, false, false);
+                                                                        $img = Yii::$app->params['loadImage'] . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
                                                                     
                                                                     echo Html::img($img);

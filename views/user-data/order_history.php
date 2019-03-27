@@ -65,9 +65,9 @@ $linkPager = LinkPager::widget([
             
                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 88, 88);
                 
-                if (!empty($dataTransactionSession['business']['businessImages'][0]['image'])) {
+                if (!empty($dataTransactionSession['business']['businessImages'])) {
                     
-                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataTransactionSession['business']['businessImages'][0]['image'], 88, 88);
+                    $img = Yii::$app->params['loadImage'] . $dataTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-rounded']);

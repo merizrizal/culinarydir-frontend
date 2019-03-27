@@ -1,10 +1,11 @@
 <?php
+
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
 
-/* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */ ?>
+/* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
 
-<?= ListView::widget([
+echo ListView::widget([
     'id' => 'recent-activity',
     'dataProvider' => $dataProviderUserPostMain,
     'itemView' => '_recent_post',

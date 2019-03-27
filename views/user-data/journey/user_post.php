@@ -65,9 +65,9 @@ $linkPager = LinkPager::widget([
         
                 $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 64, 64);
         
-                if (!empty($dataUserPostMain['business']['businessImages'][0]['image'])) {
+                if (!empty($dataUserPostMain['business']['businessImages'])) {
         
-                    $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataUserPostMain['business']['businessImages'][0]['image'], 64, 64);
+                    $img = Yii::$app->params['loadImage']. $dataUserPostMain['business']['businessImages'][0]['image'] . '&w=64&h=64';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);

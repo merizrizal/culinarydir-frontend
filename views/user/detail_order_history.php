@@ -36,9 +36,9 @@ $urlBusinessDetail = [
                     		<?php
                             $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 88, 88);
                             
-                            if (!empty($modelTransactionSession['business']['businessImages'][0]['image'])) {
+                            if (!empty($modelTransactionSession['business']['businessImages'])) {
                                 
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $modelTransactionSession['business']['businessImages'][0]['image'], 88, 88);
+                                $img = Yii::$app->params['loadImage'] . $modelTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
                             }
                             
                             $img = Html::img($img, ['class' => 'img-rounded']); ?>

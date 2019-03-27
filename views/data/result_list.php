@@ -85,7 +85,7 @@ $linkPager = LinkPager::widget([
                                             
                                             if (!empty($dataBusiness['businessImages'])) {
 
-                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataBusiness['businessImages'][0]['image'], 429, 241);
+                                                $img = Yii::$app->params['loadImage'] . $dataBusiness['businessImages'][0]['image'] . '&w=429&h=241';
                                             }
                                             
                                             echo Html::img($img); ?>
