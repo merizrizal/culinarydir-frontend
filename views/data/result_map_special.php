@@ -84,7 +84,7 @@ $linkPager = LinkPager::widget([
     
                                             if (!empty($dataBusinessPromo['image'])) {
     
-                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
+                                                $img = Yii::$app->params['loadBusinessPromoImage'] . $dataBusinessPromo['image'] . '&w=567&h=319';
                                             }
                                             
                                             echo Html::img($img); ?>

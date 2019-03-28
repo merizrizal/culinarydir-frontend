@@ -56,7 +56,7 @@ $urlReviewDetail = [
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $model['userPostMains'][0]['image'], 478, 165);
+                                $img = Yii::$app->params['loadUserPostImage'] . $model['userPostMains'][0]['image'] . '&w=478&h=165';
                             }
 
                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>

@@ -6,7 +6,6 @@ use yii\widgets\ActiveForm;
 use yii\web\JsExpression;
 use kartik\file\FileInput;
 use kartik\rating\StarRating;
-use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */
@@ -172,9 +171,7 @@ $urlMyReviewDetail = [
                                 <div class="row">
                                     <div class="col-sm-12 col-xs-12">
                                         <p class="my-review-description">
-    
                                             <?= !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : null ?>
-    
                                         </p>
                                     </div>
                                 </div>
@@ -192,7 +189,7 @@ $urlMyReviewDetail = [
                                                         <div class="gallery-item review-post-gallery">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                                 </div>
                                                                 <div class="work-caption">
                                                                     <div class="work-descr">
@@ -203,11 +200,10 @@ $urlMyReviewDetail = [
                                                                     	if ($i == 4 && $hiddenPhotos != 0) {
                                                                     	
                                                                     	    echo Html::a('+' . $hiddenPhotos, Yii::$app->urlManager->createUrl($urlMyReviewDetail), ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                                    	    
-                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                                     	} else {
                                                                     	
-                                                                        	echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
+                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
                                                                     	} ?>
                                                                     	
                                                                     </div>
@@ -397,9 +393,9 @@ $urlMyReviewDetail = [
                     'fieldConfig' => [
                         'template' => '{input}',
                     ]
-                ]); ?>
+                ]);
 
-                    <?= Html::hiddenInput('business_id', $modelBusiness['id'], ['id' => 'business_id']); ?>
+                    echo Html::hiddenInput('business_id', $modelBusiness['id'], ['id' => 'business_id']); ?>
 
                     <div class="row" id="write-review-container">
                         <div class="col-lg-4 col-md-5 col-sm-5 col-tab-6 col-xs-12 mb-20">
@@ -459,39 +455,39 @@ $urlMyReviewDetail = [
                                                         }
                                                     } ?>
 
-                                                        <li>
-                                                            <div class="row">
-                                                                <div class="col-sm-6 col-tab-6 col-xs-6">
+                                                    <li>
+                                                        <div class="row">
+                                                            <div class="col-sm-6 col-tab-6 col-xs-6">
 
-                                                                    <?= Html::hiddenInput('rating_component_id', $dataRatingComponent['id'], ['class' => 'rating-component-id']) ?>
+                                                                <?= Html::hiddenInput('rating_component_id', $dataRatingComponent['id'], ['class' => 'rating-component-id']) ?>
 
-                                                                    <?= Html::hiddenInput('temp_rating_' . $dataRatingComponent['id'], null, ['class' => 'temp-rating-' . $dataRatingComponent['id']]) ?>
+                                                                <?= Html::hiddenInput('temp_rating_' . $dataRatingComponent['id'], null, ['class' => 'temp-rating-' . $dataRatingComponent['id']]) ?>
 
-                                                                    <?= $form->field($modelPost, '[review]rating[' . $dataRatingComponent['id'] . ']')->hiddenInput(['value' => !empty($valueRatingComponent) ? $valueRatingComponent : null,]) ?>
+                                                                <?= $form->field($modelPost, '[review]rating[' . $dataRatingComponent['id'] . ']')->hiddenInput(['value' => !empty($valueRatingComponent) ? $valueRatingComponent : null,]) ?>
 
-                                                                    <?= StarRating::widget([
-                                                                        'id' => 'rating-' . $dataRatingComponent['id'],
-                                                                        'name' => 'rating_' . $dataRatingComponent['id'],
-                                                                        'value' => !empty($valueRatingComponent) ? $valueRatingComponent : null,
-                                                                        'pluginOptions' => [
-                                                                            'step' => 1,
-                                                                            'filledStar' => '<span class="aicon aicon-star-full"></span>',
-                                                                            'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
-                                                                            'showClear' => false,
-                                                                            'clearCaption' => Yii::t('app', $dataRatingComponent['name']),
-                                                                            'captionElement' => '.rating-' . $dataRatingComponent['id'],
-                                                                            'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '" : val + " &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '";}'),
-                                                                            'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
-                                                                        ]
-                                                                    ]); ?>
+                                                                <?= StarRating::widget([
+                                                                    'id' => 'rating-' . $dataRatingComponent['id'],
+                                                                    'name' => 'rating_' . $dataRatingComponent['id'],
+                                                                    'value' => !empty($valueRatingComponent) ? $valueRatingComponent : null,
+                                                                    'pluginOptions' => [
+                                                                        'step' => 1,
+                                                                        'filledStar' => '<span class="aicon aicon-star-full"></span>',
+                                                                        'emptyStar' => '<span class="aicon aicon-star-empty"></span>',
+                                                                        'showClear' => false,
+                                                                        'clearCaption' => Yii::t('app', $dataRatingComponent['name']),
+                                                                        'captionElement' => '.rating-' . $dataRatingComponent['id'],
+                                                                        'starCaptions' => new JsExpression('function(val){return val == 1 ? "1 &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '" : val + " &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataRatingComponent['name']) . '";}'),
+                                                                        'starCaptionClasses' => new JsExpression('function(val){ return false;}'),
+                                                                    ]
+                                                                ]); ?>
 
-                                                                </div>
-
-                                                                <div class="col-sm-6 col-xs-6 business-rating-components">
-                                                                    <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
-                                                                </div>
                                                             </div>
-                                                        </li>
+
+                                                            <div class="col-sm-6 col-xs-6 business-rating-components">
+                                                                <div class="rating-<?= $dataRatingComponent['id'] ?>"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
                                                 <?php
                                                 endforeach;
@@ -531,9 +527,7 @@ $urlMyReviewDetail = [
                                                         <div class="gallery-item review-post-gallery mb-10">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
-
-                                                                    <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
-
+                                                                    <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -572,11 +566,8 @@ $urlMyReviewDetail = [
 
                             </div>
                             <div class="form-group">
-
                                 <?= Html::submitButton('<i class="fa fa-share-square"></i> Post review', ['id' => 'submit-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
-
                                 <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), '', ['id' => 'cancel-write-review', 'class' => 'btn btn-default btn-standard btn-round']) ?>
-
                             </div>
                         </div>
                     </div>
@@ -1015,7 +1006,7 @@ $jscript = '
 
                         cloneImageReviewContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageReviewContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("72x72", "") + "\"><i class=\"fa fa-search\"></i></a>");
+                        cloneImageReviewContainer.find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + userPostMainPhoto.image.replace("&w=72&h=72", "") + "\"><i class=\"fa fa-search\"></i></a>");
                         cloneImageReviewContainer.appendTo($("#review-uploaded-photo"));
                         
                         cloneImageFormContainer.addClass("text-center");
@@ -1369,7 +1360,7 @@ $jscript = '
 
         if (userPhotoList.length) {
 
-            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("72x72", "");
+            image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("&w=72&h=72", "");
         }
 
         facebookShare({

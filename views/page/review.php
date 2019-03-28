@@ -35,7 +35,7 @@ $ogProductCategory = '';
 
 if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['userPostMains'][0]['image'];
+    $ogImage = Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['userPostMains'][0]['image'];
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
@@ -257,11 +257,11 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                     <div class="gallery-item post-gallery">
                                                                         <div class="gallery-image">
                                                                             <div class="work-image">
-                                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainChild['image'], 200, 200), ['class' => 'img-component']); ?>
+                                                                                <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=200&h=200', ['class' => 'img-component']); ?>
                                                                             </div>
                                                                             <div class="work-caption">
                                                                                 <div class="work-descr">
-                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

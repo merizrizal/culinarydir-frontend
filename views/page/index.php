@@ -84,7 +84,7 @@ $appComponent = new AppComponent(); ?>
                 	        
                 	        if (!empty($dataPromo['image'])) {
                 	            
-                	            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/promo/', $dataPromo['image'], 350, 154);
+                	            $img = Yii::$app->params['loadPromoImage'] . $dataPromo['image'] . '&w=350&h=154';
                 	        }
                 	        
                 	        echo Html::a(Html::img($img), ['action/claim-promo'], [

@@ -205,7 +205,7 @@ class ActionController extends base\BaseController
 
             $flag = $modelUserPostMainPhoto->save();
             
-            $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMainPhoto->image;
+            $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image;
 
             $result = [];
 
@@ -521,7 +521,7 @@ class ActionController extends base\BaseController
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
                     
-                    $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainPhoto->image, 72, 72);
+                    $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image . '&w=72&h=72';
                     
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
                     
@@ -699,7 +699,7 @@ class ActionController extends base\BaseController
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
                     
-                    $modelUserPostMainPhoto->image = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $modelUserPostMainPhoto->image, 72, 72);
+                    $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image . '&w=72&h=72';
                     
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
                     

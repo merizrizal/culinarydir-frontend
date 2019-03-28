@@ -227,7 +227,7 @@ $linkPager = LinkPager::widget([
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
-                                                        <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/user_post/', $dataUserPostMainChild['image'], 72, 72), ['class' => 'img-component']); ?>
+                                                        <?= Html::img(Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">
@@ -238,10 +238,10 @@ $linkPager = LinkPager::widget([
                                                         	if ($i == 4 && $hiddenPhotos != 0) {
                                                         	    
                                                         	    echo Html::a('+' . $hiddenPhotos, $urlReviewDetail, ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image hidden"]);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image hidden"]);
                                                         	} else { 
                                                         	    
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image"]);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'], ['class' => "btn btn-d btn-small btn-xs btn-circle show-image"]);
                                                         	} ?>
                                                         	
                                                         </div>

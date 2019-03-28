@@ -85,7 +85,7 @@ $linkPager = LinkPager::widget([
     
                                             if (!empty($dataBusinessPromo['image'])) {
     
-                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 567, 319);
+                                                $img = Yii::$app->params['loadBusinessPromoImage'] . $dataBusinessPromo['image'] . '&w=567&h=319';
                                             }
                                             
                                             echo Html::img($img); ?>
@@ -171,9 +171,7 @@ $linkPager = LinkPager::widget([
                                                                     <div class="popover-body popover-content">
                                                                         <div class="row">
                                                                             <div class="col-sm-12 col-xs-12">
-
                                                                                 <?= $businessProductCategoryPopover; ?>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>

@@ -24,7 +24,7 @@ $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') .
 
 if (!empty($modelUserPostMain['image'])) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['image'];
+    $ogImage = Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['image'];
 }
 
 $this->registerMetaTag([
@@ -106,9 +106,7 @@ $this->registerMetaTag([
                                                 
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
-                    
                     									   <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
-                                
                                                         </div>
                                 
                                                         <div class="widget-posts-body">
@@ -126,7 +124,7 @@ $this->registerMetaTag([
                                                     <div class="photo-review mt-10 mb-10">
                                                         <div class="row">
                                                             <div class="col-sm-12 text-center">
-                                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . '/img/user_post/' . $modelUserPostMain['image']) ?>
+                                                                <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['image']) ?>
                                                             </div>
                                                         </div>
                                                     </div>

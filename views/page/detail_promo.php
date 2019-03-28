@@ -9,6 +9,8 @@ use frontend\components\AddressType;
 /* @var $this yii\web\View */
 /* @var $modelBusinessPromo core\models\BusinessPromo */
 
+common\assets\OwlCarouselAsset::register($this);
+
 $this->title = $modelBusinessPromo['title'];
 
 $ogUrl = [
@@ -21,7 +23,7 @@ $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') .
 
 if (!empty($modelBusinessPromo['image'])) {
     
-    $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image'];
+    $ogImage = Yii::$app->params['loadBusinessPromoImage'] . $modelBusinessPromo['image'];
 }
 
 $ogDescription = !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : $this->title;
@@ -95,18 +97,20 @@ $this->registerMetaTag([
                                 <div class="tab-content box bg-white">
                                     <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                         <div class="row">
-                                            <div class="col-sm-12 col-xs-12 text-center">
+                                            <div class="col-xs-12 text-center">
+                                            	<div class="promo-image-container owl-carousel owl-theme">
 
-                                                <?php
-                                                $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                
-                                                if (!empty($modelBusinessPromo['image'])) {
-
-                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/business_promo/' . $modelBusinessPromo['image'];
-                                                } 
-                                                
-                                                echo Html::img($img); ?>
-
+                                                    <?php
+                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
+                                                    
+                                                    if (!empty($modelBusinessPromo['image'])) {
+    
+                                                        $img = Yii::$app->params['loadBusinessPromoImage'] . $modelBusinessPromo['image'];
+                                                    } 
+                                                    
+                                                    echo Html::img($img); ?>
+                                                    
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -143,9 +147,7 @@ $this->registerMetaTag([
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">
-
                                             <?= $modelBusinessPromo['description'] ?>
-
                                         </div>
                                     </div>
                                 </div>
@@ -162,6 +164,16 @@ $this->registerMetaTag([
 </div>
 
 <?php
+$jscript = '
+    $(".promo-image-container").owlCarousel({
+        
+        lazyLoad: true,
+        items: 1
+    });
+';
+
+$this->registerJs($jscript);
+
 $this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
 
     echo '
@@ -189,4 +201,4 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
         }
         </script>
     ';
-});?>
+}); ?>

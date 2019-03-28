@@ -645,7 +645,7 @@ $btnNext = '
                                                             
                                                             if (!empty($dataBusinessPromo['image'])) {
                                                                 
-                                                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/business_promo/', $dataBusinessPromo['image'], 312, 175);
+                                                                $img = Yii::$app->params['loadBusinessPromoImage'] . $dataBusinessPromo['image'] . '&w=312&h=175';
                                                             }
                                                             
                                                             $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
