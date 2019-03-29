@@ -54,17 +54,19 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
+            $modelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
+            $modelTransactionSession->order_status = 'New';
         }
-
+        
         $result = [];
 
         if ($modelTransactionSession->business_id == $post['business_id']) {
-
+            
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
 
             if (($flag = $modelTransactionSession->save())) {
-
+                
                 $modelTransactionItem = TransactionItem::find()
                     ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
                     ->andWhere(['business_product_id' => $post['product_id']])
