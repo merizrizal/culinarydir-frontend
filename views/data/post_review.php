@@ -65,7 +65,7 @@ $linkPager = LinkPager::widget([
         
                 if (!empty($dataUserPostMain['user']['image'])) {
         
-                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostMain['user']['image'] . '&w=64&h=64';
+                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostMain['user']['image'] . '&w=64&h=64';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']);
@@ -215,7 +215,7 @@ $linkPager = LinkPager::widget([
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
-                                                        <?= Html::img(Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
+                                                        <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">
@@ -224,10 +224,10 @@ $linkPager = LinkPager::widget([
                                                         	if ($i == 4) {
                                                         	    
                                                         	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                         	} else {
                                                         	    
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
                                                         	} ?>
                                                         	
                                                         </div>
@@ -347,7 +347,7 @@ $linkPager = LinkPager::widget([
 
                                                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
+                                                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                                                 }
 
                                                                 echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>

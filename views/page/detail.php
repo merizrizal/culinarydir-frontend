@@ -87,7 +87,7 @@ foreach ($modelBusiness['businessImages'] as $dataImageThumbail) {
     
     if ($dataImageThumbail['is_primary']) {
         
-        $ogImage = Yii::$app->params['loadBusinessImage'] . $dataImageThumbail['image'];
+        $ogImage = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $dataImageThumbail['image'];
         break;
     }
 }
@@ -203,7 +203,7 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['loadBusinessImage'] . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
 
                                                                     echo Html::img($img);
@@ -242,7 +242,7 @@ $btnNext = '
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['loadBusinessImage'] . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
                                                                     
                                                                     echo Html::img($img);
@@ -645,7 +645,7 @@ $btnNext = '
                                                             
                                                             if (!empty($dataBusinessPromo['image'])) {
                                                                 
-                                                                $img = Yii::$app->params['loadBusinessPromoImage'] . $dataBusinessPromo['image'] . '&w=312&h=175';
+                                                                $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=312&h=175';
                                                             }
                                                             
                                                             $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');

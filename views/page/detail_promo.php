@@ -23,7 +23,7 @@ $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') .
 
 if (!empty($modelBusinessPromo['image'])) {
     
-    $ogImage = Yii::$app->params['loadBusinessPromoImage'] . $modelBusinessPromo['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
 }
 
 $ogDescription = !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : $this->title;
@@ -105,7 +105,7 @@ $this->registerMetaTag([
                                                     
                                                     if (!empty($modelBusinessPromo['image'])) {
     
-                                                        $img = Yii::$app->params['loadBusinessPromoImage'] . $modelBusinessPromo['image'];
+                                                        $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
                                                     } 
                                                     
                                                     echo Html::img($img); ?>

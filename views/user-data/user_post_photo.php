@@ -66,14 +66,14 @@ $linkPager = LinkPager::widget([
                         <div class="gallery-item place-gallery">
                             <div class="gallery-image">
                                 <div class="work-image">
-                                    <?= Html::img(Yii::$app->params['loadUserPostImage'] . $dataUserPostMainPhoto['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
+                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
                                 </div>
                                 <div class="work-caption">
                                     <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
                                     <div class="work-descr">
                                     	
                                     	<?php
-                                    	echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+                                    	echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
                                     	
                                     	echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl([
                                     	    'page/photo',

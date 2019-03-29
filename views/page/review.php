@@ -35,7 +35,7 @@ $ogProductCategory = '';
 
 if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
     
-    $ogImage = Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['userPostMains'][0]['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['userPostMains'][0]['image'];
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
@@ -115,7 +115,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 										
 										if (!empty($modelUserPostMain['user']['image'])) {
 										    
-										    $img = Yii::$app->params['loadUserImage'] . $modelUserPostMain['user']['image'] . '&w=200&h=200';
+										    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUserPostMain['user']['image'] . '&w=200&h=200';
 										}
 										
 										$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
@@ -257,11 +257,11 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                     <div class="gallery-item post-gallery">
                                                                         <div class="gallery-image">
                                                                             <div class="work-image">
-                                                                                <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=200&h=200', ['class' => 'img-component']); ?>
+                                                                                <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'] . '&w=200&h=200', ['class' => 'img-component']); ?>
                                                                             </div>
                                                                             <div class="work-caption">
                                                                                 <div class="work-descr">
-                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -361,7 +361,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                     
                                                                                     if (!empty($dataUserPostComment['user']['image'])) {
                                                                                         
-                                                                                        $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=200&h=200';
+                                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=200&h=200';
                                                                                     }
                                                                                     
                                                                                     echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>

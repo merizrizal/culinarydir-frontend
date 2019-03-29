@@ -49,7 +49,7 @@ $urlMyReviewDetail = [
                     	
                     	if (!empty(Yii::$app->user->getIdentity()->image)) {
                     	    
-                    	    $img = Yii::$app->params['loadUserImage'] . Yii::$app->user->getIdentity()->image . '&w=64&h=64';
+                    	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=64&h=64';
                     	} 
                     	
                     	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
@@ -189,7 +189,7 @@ $urlMyReviewDetail = [
                                                         <div class="gallery-item review-post-gallery">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
-                                                                    <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                                 </div>
                                                                 <div class="work-caption">
                                                                     <div class="work-descr">
@@ -200,10 +200,10 @@ $urlMyReviewDetail = [
                                                                     	if ($i == 4 && $hiddenPhotos != 0) {
                                                                     	
                                                                     	    echo Html::a('+' . $hiddenPhotos, Yii::$app->urlManager->createUrl($urlMyReviewDetail), ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                                     	} else {
                                                                     	
-                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
+                                                                    	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
                                                                     	} ?>
                                                                     	
                                                                     </div>
@@ -343,7 +343,7 @@ $urlMyReviewDetail = [
     
                                                                                 if (!empty($dataUserPostComment['user']['image'])) {
     
-                                                                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
+                                                                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                                                                 }
     
                                                                                 echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
@@ -527,7 +527,7 @@ $urlMyReviewDetail = [
                                                         <div class="gallery-item review-post-gallery mb-10">
                                                             <div class="gallery-image">
                                                                 <div class="work-image">
-                                                                    <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
+                                                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                                 </div>
                                                             </div>
                                                         </div>

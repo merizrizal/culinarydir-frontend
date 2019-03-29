@@ -24,7 +24,7 @@ $ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') .
 
 if (!empty($modelUserPostMain['image'])) {
     
-    $ogImage = Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image'];
 }
 
 $this->registerMetaTag([
@@ -94,7 +94,7 @@ $this->registerMetaTag([
                                         
                                         if (!empty($modelUserPostMain['user']['image'])) {
                                             
-                                            $img = Yii::$app->params['loadUserImage'] . $modelUserPostMain['user']['image'] . '&w=200&h=200';
+                                            $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUserPostMain['user']['image'] . '&w=200&h=200';
                                         } ?>
 
                                         <div class="photo-container">
@@ -124,7 +124,7 @@ $this->registerMetaTag([
                                                     <div class="photo-review mt-10 mb-10">
                                                         <div class="row">
                                                             <div class="col-sm-12 text-center">
-                                                                <?= Html::img(Yii::$app->params['loadUserPostImage'] . $modelUserPostMain['image']) ?>
+                                                                <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image']) ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -217,7 +217,7 @@ $this->registerMetaTag([
                                                                                             
                                                                                             if (!empty($dataUserPostComment['user']['image'])) {
                                                                                                 
-                                                                                                $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=200&h=200';
+                                                                                                $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=200&h=200';
                                                                                             }
                                                                                             
                                                                                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>

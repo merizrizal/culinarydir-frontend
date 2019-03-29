@@ -205,7 +205,7 @@ class ActionController extends base\BaseController
 
             $flag = $modelUserPostMainPhoto->save();
             
-            $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image;
+            $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image;
 
             $result = [];
 
@@ -521,7 +521,7 @@ class ActionController extends base\BaseController
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
                     
-                    $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image . '&w=72&h=72';
+                    $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
                     
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
                     
@@ -699,7 +699,7 @@ class ActionController extends base\BaseController
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
                     
-                    $modelUserPostMainPhoto->image = Yii::$app->params['loadUserPostImage'] . $modelUserPostMainPhoto->image . '&w=72&h=72';
+                    $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
                     
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
                     

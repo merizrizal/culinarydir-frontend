@@ -24,7 +24,7 @@ $ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescrip
 
 if (!empty($modelUser['image'])) {
     
-    $ogImage = Yii::$app->params['loadUserImage'] . $modelUser['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -75,7 +75,7 @@ $this->registerMetaTag([
                 	
                 	if (!empty($modelUser['image'])) {
                 	    
-                	    $img = Yii::$app->params['loadUserImage'] . $modelUser['image'] . '&w=200&h=200';
+                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'] . '&w=200&h=200';
                 	}
                 	
                 	$userName = '<h3>' . $modelUser['full_name'] . ' </h3>'; ?>

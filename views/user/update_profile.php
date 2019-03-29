@@ -62,7 +62,7 @@ $this->registerMetaTag([
                                             	
                                             	if (!empty(Yii::$app->user->getIdentity()->image)) {
                                             	    
-                                            	    $img = Yii::$app->params['loadUserImage'] . Yii::$app->user->getIdentity()->image . '&w=200&h=200';
+                                            	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=200&h=200';
                                             	}
     
                                                 echo $form->field($modelUser, 'image')->widget(FileInput::classname(), [

@@ -67,7 +67,7 @@ $linkPager = LinkPager::widget([
                 
                 if (!empty($dataTransactionSession['business']['businessImages'])) {
                     
-                    $img = Yii::$app->params['loadBusinessImage'] . $dataTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
+                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $dataTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
                 }
                 
                 $img = Html::img($img, ['class' => 'img-rounded']);

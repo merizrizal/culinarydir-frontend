@@ -22,7 +22,7 @@ if (!empty($modelUser['userPerson']['person']['about_me'])) {
 
 if (!empty($modelUser['image'])) {
     
-    $ogImage = Yii::$app->params['loadUserImage'] . $modelUser['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -73,7 +73,7 @@ $this->registerMetaTag([
                 	
                 	if (!empty($modelUser['image'])) {
                 	    
-                	    $img = Yii::$app->params['loadUserImage'] . $modelUser['image'] . '&w=160&h=160';
+                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'] . '&w=160&h=160';
                 	}
                 	
                 	$userName = '

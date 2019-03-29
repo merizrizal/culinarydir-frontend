@@ -26,7 +26,7 @@ if (!empty($modelUserPostComment)): ?>
 
                                 if (!empty($dataUserPostComment['user']['image'])) {
 
-                                    $img = Yii::$app->params['loadUserImage'] . $dataUserPostComment['user']['image'] . '&w=64&h=64';
+                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
                                 }
 
                                 echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>

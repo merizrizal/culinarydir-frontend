@@ -31,7 +31,7 @@ $urlReviewDetail = [
                                 	
                                 	if (!empty($model['user']['image'])) {
                                 	    
-                                	    $img = Yii::$app->params['loadUserImage'] . $model['user']['image'] . '&w=100&h=100';
+                                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $model['user']['image'] . '&w=100&h=100';
                                 	}
                                 	
                                 	echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
@@ -56,7 +56,7 @@ $urlReviewDetail = [
 
                             if (!empty($model['userPostMains'][0]['image'])) {
                                 
-                                $img = Yii::$app->params['loadUserPostImage'] . $model['userPostMains'][0]['image'] . '&w=478&h=165';
+                                $img = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $model['userPostMains'][0]['image'] . '&w=478&h=165';
                             }
 
                             echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
