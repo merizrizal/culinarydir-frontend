@@ -221,21 +221,20 @@ $linkPager = LinkPager::widget([
                                                                 $businessProductCategoryLimit = 3;
                                                                 $businessProductCategoryList = '';
                                                                 $businessProductCategoryPopover = '';
-                                                                $incBusinessProductCategory = 0;
 
-                                                                foreach ($dataBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
+                                                                foreach ($dataBusiness['businessProductCategories'] as $i => $dataBusinessProductCategory) {
                                                                     
                                                                     if (!empty($dataBusinessProductCategory['productCategory'])) {
+                                                                        
+                                                                        $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
 
-                                                                        if ($incBusinessProductCategory < $businessProductCategoryLimit) {
+                                                                        if ($i < $businessProductCategoryLimit) {
     
-                                                                            $businessProductCategoryList .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            $businessProductCategoryList .= $hashtagItem;
                                                                         } else {
     
-                                                                            $businessProductCategoryPopover .= '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
+                                                                            $businessProductCategoryPopover .= $hashtagItem;
                                                                         }
-                                                                        
-                                                                        $incBusinessProductCategory++;
                                                                     }
                                                                 }
 
