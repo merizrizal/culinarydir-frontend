@@ -56,11 +56,11 @@ use yii\helpers\Html; ?>
                                                 <div class="widget-posts-image">
                                                 
                                                 	<?php
-                                                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                                	$img = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
                                                 	
                                                 	if (!empty(Yii::$app->user->getIdentity()->image)) {
                                                 	   
-                                                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=32&h=32';    
+                                                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=32&h=32';
                                                 	}
                                                 	
                                                 	echo Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>

@@ -5,7 +5,6 @@ use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
@@ -68,7 +67,9 @@ $linkPager = LinkPager::widget([
 
                 $businessDetail = [];
 
-                foreach ($modelBusiness as $dataBusiness): ?>
+                foreach ($modelBusiness as $dataBusiness):
+                    
+                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241'; ?>
 
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -76,17 +77,7 @@ $linkPager = LinkPager::widget([
                                 <div class="row">
                                     <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
                                         <div class="result-map-image owl-carousel owl-theme">
-
-                                            <?php
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
-                                            
-                                            if (!empty($dataBusiness['businessImages'])) {
-
-                                                $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $dataBusiness['businessImages'][0]['image'] . '&w=429&h=241';
-                                            }
-                                            
-                                            echo Html::img($img); ?>
-                                            
+                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
                                         </div>
                                     </div>
 									
@@ -350,6 +341,14 @@ $jscript = '
 
     ratingColor($(".rating"), "span");
 
+    $(".result-map-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
+    });
+
     $("#pjax-result-map-container").off("pjax:send");
     $("#pjax-result-map-container").on("pjax:send", function() {
 
@@ -368,12 +367,6 @@ $jscript = '
     $("#pjax-result-map-container").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });
-
-    $(".result-map-image").owlCarousel({
-
-        lazyLoad: true,
-        items: 1
     });
 ';
 

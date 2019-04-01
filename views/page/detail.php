@@ -45,7 +45,7 @@ $ogPriceRange = '-';
 $ogProductCategory = '';
 $ogFacility = '';
 
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 786, 425);
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'registry-business/image=&w=786&h=425';
 
 $ogBusinessHour = null;
 
@@ -129,7 +129,7 @@ $this->registerMetaTag([
     'content' => $ogImage
 ]); 
 
-$noImg = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 756, 425);
+$noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=756&h=425';
 
 $btnPrev = '
     <div class="col-sm-1 btn-prev text-center hidden-xs"> ' .
@@ -206,11 +206,11 @@ $btnNext = '
                                                                         $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
 
-                                                                    echo Html::img($img);
+                                                                    echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
                                                                 }
                                                             } else {
                                                             
-                                                                echo Html::img($noImg);
+                                                                echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $noImg]);
                                                             }; ?>
                                                             
                                                         </div>
@@ -245,11 +245,11 @@ $btnNext = '
                                                                         $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
                                                                     
-                                                                    echo Html::img($img);
+                                                                    echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
                                                                 }
                                                             } else {
                                                                 
-                                                                echo Html::img($noImg);
+                                                                echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $noImg]);
                                                             } ?>
                                                             
                                                         </div>
@@ -641,12 +641,7 @@ $btnNext = '
                                                                 'uniqueName' => $modelBusiness['unique_name'],
                                                             ];
                                                             
-                                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 312, 175);
-                                                            
-                                                            if (!empty($dataBusinessPromo['image'])) {
-                                                                
-                                                                $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=312&h=175';
-                                                            }
+                                                            $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=312&h=175';
                                                             
                                                             $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
                                                             $dateEnd = Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium'); ?>

@@ -80,23 +80,14 @@ $appComponent = new AppComponent(); ?>
                 	    
                 	    foreach ($modelPromo as $dataPromo) {
                 	        
-                	        $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 350, 154);
-                	        
-                	        if (!empty($dataPromo['image'])) {
-                	            
-                	            $img = Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=350&h=154';
-                	        }
-                	        
-                	        echo Html::a(Html::img($img), ['action/claim-promo'], [
+                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=350&h=154']), ['action/claim-promo'], [
                 	            'class' => 'claim-promo-btn',
-                	            'data-promo' => $dataPromo['id'],
-                	            'data-date_start' => $dataPromo['date_start'],
-                	            'data-date_end' => $dataPromo['date_end']
+                	            'data-promo' => $dataPromo['id']
                 	        ]);
                 	    }
                 	}
                 
-                	echo Html::a(Html::img('https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app'); ?>
+                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => 'https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app'); ?>
                 	
                 </div>
             </div>

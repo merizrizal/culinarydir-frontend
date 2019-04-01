@@ -27,14 +27,8 @@ $urlReviewDetail = [
                         		<div class="widget-posts-image">
                         		
                         			<?php
-                                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png'; 
-                                	
-                                	if (!empty($model['user']['image'])) {
-                                	    
-                                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $model['user']['image'] . '&w=100&h=100';
-                                	}
-                                	
-                                	echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
+                        			$img = !empty($model['user']['image']) ? $model['user']['image'] . '&w=100&h=100' : 'default-avatar.png';
+                        			echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
                                 	
                         		</div>
                         		
@@ -52,14 +46,8 @@ $urlReviewDetail = [
                         <div class="col-xs-12">
 
                             <?php
-                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 478, 165, false, false);
-
-                            if (!empty($model['userPostMains'][0]['image'])) {
-                                
-                                $img = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $model['userPostMains'][0]['image'] . '&w=478&h=165';
-                            }
-
-                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
+                            $img = (!empty($model['userPostMains'][0]['image']) ? $model['userPostMains'][0]['image'] : '') . '&w=478&h=165';
+                            echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
 
                         </div>
                     </div>

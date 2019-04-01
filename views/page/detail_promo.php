@@ -19,7 +19,7 @@ $ogUrl = [
     'uniqueName' => $modelBusinessPromo['business']['unique_name']
 ];
 
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=&w=490&h=276';
 
 if (!empty($modelBusinessPromo['image'])) {
     
@@ -99,17 +99,7 @@ $this->registerMetaTag([
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                             	<div class="promo-image-container owl-carousel owl-theme">
-
-                                                    <?php
-                                                    $img = Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg';
-                                                    
-                                                    if (!empty($modelBusinessPromo['image'])) {
-    
-                                                        $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
-                                                    } 
-                                                    
-                                                    echo Html::img($img); ?>
-                                                    
+                                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -168,7 +158,9 @@ $jscript = '
     $(".promo-image-container").owlCarousel({
         
         lazyLoad: true,
-        items: 1
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
     });
 ';
 
