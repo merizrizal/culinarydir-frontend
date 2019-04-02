@@ -7,7 +7,6 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 

@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\web\View;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 
 /* @var $this yii\web\View */

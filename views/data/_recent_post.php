@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use kartik\rating\StarRating;
-use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */

@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\web\View;
-use sycomponent\Tools;
 use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
@@ -13,7 +12,6 @@ use frontend\components\GrowlCustom;
 $this->title = $modelUser['full_name'];
 
 $ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
 
 if (!empty($modelUser['userPerson']['person']['about_me'])) {
     
@@ -21,6 +19,7 @@ if (!empty($modelUser['userPerson']['person']['about_me'])) {
 }
 
 $ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescription), 300);
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
 
 if (!empty($modelUser['image'])) {
     
@@ -71,13 +70,7 @@ $this->registerMetaTag([
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                 
                 	<?php
-                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-                	
-                	if (!empty($modelUser['image'])) {
-                	    
-                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'] . '&w=200&h=200';
-                	}
-                	
+                	$img = !empty($modelUser['image']) ? $modelUser['image'] . '&w=200&h=200' : 'default-avatar.png';
                 	$userName = '<h3>' . $modelUser['full_name'] . ' </h3>'; ?>
 
                     <div class="row mt-10 visible-lg visible-md visible-sm visible-tab">
@@ -85,7 +78,7 @@ $this->registerMetaTag([
                             <div class="row ">
                                 <div class="widget">
                                     <div class="widget-posts-image">
-                                        <?= Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                                        <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body user-profile-identity">
                                         <?= $userName ?>
@@ -98,7 +91,7 @@ $this->registerMetaTag([
                         <div class="col-xs-12">
                             <div class="row">
                                 <div class="col-xs-12 text-center">
-                                	<?= Html::img(Yii::getAlias('@uploadsUrl') . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
+                                	<?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
                                 </div>
                             </div>
                             <div class="row">

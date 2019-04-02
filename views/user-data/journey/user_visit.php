@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use sycomponent\Tools;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use yii\helpers\Inflector;
@@ -71,14 +70,8 @@ $linkPager = LinkPager::widget([
                             <div class="col-xs-12">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 565, 350);
-
-                                if (!empty($dataUserVisit['business']['businessImages'])) {
-
-                                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image='. $dataUserVisit['business']['businessImages'][0]['image'] . '&w=565&h=350';
-                                }
-
-                                echo Html::a(Html::img($img), $urlBusinessDetail); ?>
+                                $img = (!empty($dataUserVisit['business']['businessImages']) ? $dataUserVisit['business']['businessImages'][0]['image'] : '') . '&w=565&h=350';
+                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img), $urlBusinessDetail); ?>
 
                             </div>
                         </div>

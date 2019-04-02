@@ -1,9 +1,8 @@
 <?php
 
+use yii\web\View;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
-use yii\web\View;
-use sycomponent\Tools;
 use common\components\Helper;
 use frontend\components\GrowlCustom;
 
@@ -20,7 +19,7 @@ $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
 
 $ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Asikmakan';
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 490, 276);
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
 
 if (!empty($modelUserPostMain['image'])) {
     
@@ -90,12 +89,7 @@ $this->registerMetaTag([
                                     <?php
                                     if (!empty($modelUserPostMain)):
                                     
-                                        $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-                                        
-                                        if (!empty($modelUserPostMain['user']['image'])) {
-                                            
-                                            $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUserPostMain['user']['image'] . '&w=200&h=200';
-                                        } ?>
+                                        $img = !empty($modelUserPostMain['user']['image']) ? $modelUserPostMain['user']['image'] . '&w=200&h=200' : 'default-avatar.png'; ?>
 
                                         <div class="photo-container">
     
@@ -106,7 +100,11 @@ $this->registerMetaTag([
                                                 
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
-                    									   <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+                                                        
+                    									   <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                    									       'class' => 'img-responsive img-circle img-profile-thumb img-component'
+                    									   ]), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
+                    									   
                                                         </div>
                                 
                                                         <div class="widget-posts-body">
@@ -213,14 +211,11 @@ $this->registerMetaTag([
                                                                                         <div class="widget-comments-image">
 
                                                                                             <?php
-                                                                                            $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                                                                                            $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=200&h=200' : 'default-avatar.png';
                                                                                             
-                                                                                            if (!empty($dataUserPostComment['user']['image'])) {
-                                                                                                
-                                                                                                $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=200&h=200';
-                                                                                            }
-                                                                                            
-                                                                                            echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                            echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                                                                                'class' => 'img-responsive img-circle img-comment-thumb img-component'
+                                                                                            ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
                                                                                         </div>
 

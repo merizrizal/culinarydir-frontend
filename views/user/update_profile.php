@@ -58,12 +58,7 @@ $this->registerMetaTag([
                                             <div class="profile-img-container img-circle mb-20">
                                             	
                                             	<?php 
-                                            	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-                                            	
-                                            	if (!empty(Yii::$app->user->getIdentity()->image)) {
-                                            	    
-                                            	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=200&h=200';
-                                            	}
+                                            	$img = !empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->image . '&w=200&h=200' : 'default-avatar.png';
     
                                                 echo $form->field($modelUser, 'image')->widget(FileInput::classname(), [
                                                     'options' => [
@@ -72,7 +67,7 @@ $this->registerMetaTag([
                                                     ],
                                                     'pluginOptions' => [
                                                         'initialPreview' => [
-                                                            Html::img($img, ['class' => 'img-responsive img-component img-profile']),
+                                                            Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-component img-profile']),
                                                         ],
                                                         'showRemove' => false,
                                                         'showUpload' => false,

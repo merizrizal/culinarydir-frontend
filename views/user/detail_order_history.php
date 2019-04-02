@@ -4,7 +4,6 @@ use yii\web\View;
 use yii\helpers\Html;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
-use sycomponent\Tools;
 use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
@@ -16,7 +15,9 @@ $urlBusinessDetail = [
     'page/detail',
     'city' => Inflector::slug($modelTransactionSession['business']['businessLocation']['city']['name']),
     'uniqueName' => $modelTransactionSession['business']['unique_name']
-]; ?>
+];
+
+$img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelTransactionSession['business']['businessImages'][0]['image'] : '') . '&w=88&h=88'; ?>
 
 <div class="main">
     <section class="module-extra-small bg-main">
@@ -32,23 +33,13 @@ $urlBusinessDetail = [
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
                     <div class="box bg-white">
                         <div class="box-content">
-                        		
-                    		<?php
-                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 88, 88);
-                            
-                            if (!empty($modelTransactionSession['business']['businessImages'])) {
-                                
-                                $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $modelTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
-                            }
-                            
-                            $img = Html::img($img, ['class' => 'img-rounded']); ?>
                     
                             <div class="row">
                             	<div class="col-xs-12">
                             		<div class="row mt-10 mb-10">
                                         <div class="col-sm-6 col-tab-7 col-xs-12">
                                             <div class="widget-posts-image image-order-history">
-                                                <?= Html::a($img, $urlBusinessDetail) ?>
+                                                <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
                                             </div>
                                         	<small>
                                         		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>

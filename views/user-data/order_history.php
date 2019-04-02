@@ -4,7 +4,6 @@ use yii\web\View;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
 use yii\helpers\Inflector;
@@ -63,14 +62,7 @@ $linkPager = LinkPager::widget([
         
             foreach ($modelTransactionSession as $dataTransactionSession):
             
-                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 88, 88);
-                
-                if (!empty($dataTransactionSession['business']['businessImages'])) {
-                    
-                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $dataTransactionSession['business']['businessImages'][0]['image'] . '&w=88&h=88';
-                }
-                
-                $img = Html::img($img, ['class' => 'img-rounded']);
+                $img = (!empty($dataTransactionSession['business']['businessImages']) ? $dataTransactionSession['business']['businessImages'][0]['image'] : '') . '&w=88&h=88';
                 
                 $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']], [
                     'class' => 'btn btn-default btn-small btn-round-4'
@@ -93,7 +85,7 @@ $linkPager = LinkPager::widget([
             		<div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                                <?= Html::a($img, $urlBusinessDetail) ?>
+                                <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
                             </div>
                         	<small>
                         		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>

@@ -1,6 +1,5 @@
 <?php
 
-use sycomponent\Tools;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
