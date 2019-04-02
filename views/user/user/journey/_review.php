@@ -154,8 +154,8 @@ $jscript = '
         var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".user-post-item").find(".rating > h3").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-review > a").text();
         var description = $(this).parents(".user-post-item").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
-        
+        var image = "' . Yii::$app->params['endPointLoadImage'] . 'user-post?image=";
+    
         var userPhotoList = $(this).parents(".user-post-item").find(".gallery-photo-review");
 
         if (userPhotoList.length) {

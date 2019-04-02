@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\web\View;
-use sycomponent\Tools;
 use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
@@ -13,7 +12,7 @@ use frontend\components\GrowlCustom;
 $this->title = $modelUser['full_name'];
 
 $ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
-$ogImage = Yii::$app->urlManager->getHostInfo() . Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
 
 if (!empty($modelUser['userPerson']['person']['about_me'])) {
     
@@ -69,7 +68,7 @@ $this->registerMetaTag([
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                 
                 	<?php
-                	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
+                	$img = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
                 	
                 	if (!empty($modelUser['image'])) {
                 	    

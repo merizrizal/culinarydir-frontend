@@ -61,14 +61,7 @@ $linkPager = LinkPager::widget([
         
             foreach ($modelUserPostMain as $dataUserPostMain):
         
-                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-        
-                if (!empty($dataUserPostMain['user']['image'])) {
-        
-                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostMain['user']['image'] . '&w=64&h=64';
-                }
-                
-                $img = Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']);
+                $img = !empty($dataUserPostMain['user']['image']) ? $dataUserPostMain['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
         
                 $totalVoteValue = 0;
                 $ratingComponent = [];
@@ -98,7 +91,7 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image">
-                                    <?= Html::a($img, ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
+                                    <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
                                 </div>
                     
                                 <div class="widget-posts-body">
@@ -146,9 +139,7 @@ $linkPager = LinkPager::widget([
                                                                     </div>
         
                                                                     <div class="col-xs-7">
-        
                                                                         <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
-        
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -343,17 +334,11 @@ $linkPager = LinkPager::widget([
                                                             <div class="widget-comments-image">
     
                                                                 <?php
-                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-
-                                                                if (!empty($dataUserPostComment['user']['image'])) {
-
-                                                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
-                                                                }
-
-                                                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
+                                                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                 
                                                             </div>
-    
+    	
                                                             <div class="widget-comments-body">
                                                                 <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
                                                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>

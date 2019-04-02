@@ -57,19 +57,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 	}
 	
 	$btnSubmit = Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search']);
-	$btnClear = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'btn btn-block btn-default search-label lbl-clear']);
-	
-	$layoutListNav = '
-        <li role="presentation">
-            <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong>' . Yii::t('app', 'Favorite') . '</strong></a>
-        </li>
-        <li role="presentation">
-            <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong>' . Yii::t('app', 'Promo') . '</strong></a>
-        </li>
-        <li role="presentation">
-            <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong>' . Yii::t('app', 'Online Order') . '</strong></a>
-        </li>
-    '; ?>
+	$btnClear = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'btn btn-block btn-default search-label lbl-clear']); ?>
 	
 	<div class="search-box-modal" style="display:none">
 		<div class="row">
@@ -87,7 +75,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             </div>
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
-                    <?= $layoutListNav ?>
+                    <li role="presentation">
+                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong><?= Yii::t('app', 'Favorite') ?></strong></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong><?= Yii::t('app', 'Promo') ?></strong></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong><?= Yii::t('app', 'Online Order') ?></strong></a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                 	<div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">

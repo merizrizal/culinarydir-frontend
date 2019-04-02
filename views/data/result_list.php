@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
@@ -79,16 +78,10 @@ $linkPager = LinkPager::widget([
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link">
                                     	<div class="result-list-image owl-carousel owl-theme">
-
-                                            <?php
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 429, 241);
-                                            
-                                            if (!empty($dataBusiness['businessImages'])) {
-
-                                                $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $dataBusiness['businessImages'][0]['image'] . '&w=429&h=241';
-                                            }
-                                            
-                                            echo Html::img($img); ?>
+                                    	
+                                    		<?php
+                                    		$img = (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241';
+                                            echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img]); ?>
                                             
                                         </div>
                                     </div>
@@ -291,6 +284,14 @@ $jscript = '
         }
     });
 
+    $(".result-list-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
+    });
+
     $("#pjax-result-list").off("pjax:send");
     $("#pjax-result-list").on("pjax:send", function() {
 
@@ -311,12 +312,6 @@ $jscript = '
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });
-
-    $(".result-list-image").owlCarousel({
-
-        lazyLoad: true,
-        items: 1
     });
 ';
 

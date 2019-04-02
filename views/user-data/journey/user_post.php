@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use common\components\Helper;
-use sycomponent\Tools;
 use kartik\rating\StarRating;
 use yii\helpers\Inflector;
 
@@ -63,14 +62,7 @@ $linkPager = LinkPager::widget([
         
             foreach ($modelUserPostMain as $dataUserPostMain):
         
-                $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 64, 64);
-        
-                if (!empty($dataUserPostMain['business']['businessImages'])) {
-        
-                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image='. $dataUserPostMain['business']['businessImages'][0]['image'] . '&w=64&h=64';
-                }
-                
-                $img = Html::img($img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']);
+                $img = (!empty($dataUserPostMain['business']['businessImages']) ? $dataUserPostMain['business']['businessImages'][0]['image'] : '') . '&w=64&h=64';
                 
                 $urlReviewDetail = [
                     'page/review',
@@ -112,7 +104,7 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image business-image">
-                                    <?= Html::a($img, $urlBusinessDetail) ?>
+                                    <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-responsive img-rounded img-place-thumb img-component']), $urlBusinessDetail) ?>
                                 </div>
                     
                                 <div class="widget-posts-body business-review">
@@ -375,16 +367,11 @@ $linkPager = LinkPager::widget([
                                                             <div class="widget-comments-image">
 																
 																<?php
-																$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-
-                                                                if (!empty($dataUserPostComment['user']['image'])) {
-
-                                                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
-                                                                }
-
-                                                                $img = Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']);
+																$img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
                                                                 
-                                                                echo Html::a($img, ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                                                    'class' => 'img-responsive img-circle img-comment-thumb img-component'
+                                                                ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                 
                                                             </div>
 

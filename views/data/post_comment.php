@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use sycomponent\Tools;
 use common\components\Helper;
 
 /* @var $this yii\web\View */
@@ -22,14 +21,11 @@ if (!empty($modelUserPostComment)): ?>
                             <div class="widget-comments-image">
 
                                 <?php
-                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-
-                                if (!empty($dataUserPostComment['user']['image'])) {
-
-                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
-                                }
-
-                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
+                                
+                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                    'class' => 'img-responsive img-circle img-comment-thumb img-component'
+                                ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
                             </div>
 

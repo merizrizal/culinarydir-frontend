@@ -45,16 +45,10 @@ $urlMyReviewDetail = [
                 	<?php
                 	if (!empty(Yii::$app->user->getIdentity())):
                 	    
-                    	$img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-                    	
-                    	if (!empty(Yii::$app->user->getIdentity()->image)) {
-                    	    
-                    	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . Yii::$app->user->getIdentity()->image . '&w=64&h=64';
-                    	} 
-                    	
-                    	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
+            	        $img = !empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->image . '&w=64&h=64' : 'default-avatar.png'; 
+                    	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0;
 
-                    	<?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'my-user-post-main-id']) ?>
+                    	echo Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'my-user-post-main-id']); ?>
 
                         <div class="row">
                             <div class="col-md-12">
@@ -62,7 +56,11 @@ $urlMyReviewDetail = [
                                     <div class="col-md-6 col-sm-6 col-tab-7 col-xs-12">
                                         <div class="widget">
                                             <div class="widget-posts-image">
-                                                <?= Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) ?>
+                                            
+                                                <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                                    'class' => 'img-responsive img-circle img-profile-thumb img-component'
+                                                ]), ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username]) ?>
+                                                
                                             </div>
                                                 
                                             <div class="widget-posts-body">
@@ -339,14 +337,11 @@ $urlMyReviewDetail = [
                                                                             <div class="widget-comments-image">
     
                                                                                 <?php
-                                                                                $img = Yii::getAlias('@uploadsUrl') . '/img/user/default-avatar.png';
-    
-                                                                                if (!empty($dataUserPostComment['user']['image'])) {
-    
-                                                                                    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $dataUserPostComment['user']['image'] . '&w=64&h=64';
-                                                                                }
-    
-                                                                                echo Html::a(Html::img($img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+                                                                                $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
+                                                                                
+                                                                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                                                                    'class' => 'img-responsive img-circle img-comment-thumb img-component'
+                                                                                ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
                                                                                     
                                                                             </div>
     
@@ -813,7 +808,7 @@ $jscript = '
         var url = $(this).attr("href");
         var title = "Rating " + $("#edit-review-container").find(".my-rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(".my-review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
+        var image = "' . Yii::$app->params['endPointLoadImage'] . 'user-post?image=";
 
         if ($("#review-uploaded-photo").children(".gallery-photo-review").length) {
 
@@ -1354,8 +1349,8 @@ $jscript = '
         var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".review-post").find(".rating > h3").text().trim() + " untuk " + $(".business-name").text().trim();
         var description = $(this).parents(".review-post").find(".review-description").text();
-        var image = window.location.protocol + "//" + window.location.hostname + "' . Yii::getAlias('@uploadsUrl') . '/img/image-no-available.jpg' . '";
-        
+        var image = "' . Yii::$app->params['endPointLoadImage'] . 'user-post?image=";
+
         var userPhotoList = $(this).parents(".review-post").find(".gallery-photo-review");
 
         if (userPhotoList.length) {

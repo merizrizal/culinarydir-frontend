@@ -422,11 +422,6 @@ class ActionController extends base\BaseController
             
         $result = [];
         
-        $result['icon'] = 'aicon aicon-icon-info';
-        $result['title'] = 'Claim Promo Gagal';
-        $result['message'] = 'Promo sudah habis.';
-        $result['type'] = 'danger';
-        
         if (!empty($modelPromoItem)) {
             
             $modelUserPromoItem = new UserPromoItem();
@@ -437,17 +432,14 @@ class ActionController extends base\BaseController
             
             if ($modelUserPromoItem->save()) {
                 
-                $userEmail = Yii::$app->user->getIdentity()->email;
-                $userFullName = Yii::$app->user->getIdentity()->full_name;
-                
                 Yii::$app->mailer->compose(['html' => 'claim_promo'], [
                     'modelPromoItem' => $modelPromoItem,
-                    'fullName' => $userFullName,
+                    'fullName' => Yii::$app->user->getIdentity()->full_name,
                     'dateStart' => Yii::$app->formatter->asDate($modelPromoItem['promo']['date_start'], 'long'),
                     'dateEnd' => Yii::$app->formatter->asDate($modelPromoItem['promo']['date_end'], 'long')
                 ])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])
-                ->setTo($userEmail)
+                ->setTo(Yii::$app->user->getIdentity()->email)
                 ->setSubject(Yii::$app->name . ' Promo Code')
                 ->send();
                 
@@ -462,6 +454,12 @@ class ActionController extends base\BaseController
                 $result['message'] = 'Anda gagal mengklaim promo ini.';
                 $result['type'] = 'danger';
             }
+        } else {
+            
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Claim Promo Gagal';
+            $result['message'] = 'Promo sudah habis.';
+            $result['type'] = 'danger';
         }
         
         Yii::$app->response->format = Response::FORMAT_JSON;

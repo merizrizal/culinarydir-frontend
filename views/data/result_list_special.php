@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
 use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
@@ -79,17 +78,7 @@ $linkPager = LinkPager::widget([
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
                                     	<div class="result-list-special-image owl-carousel owl-theme">
-
-                                            <?php
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
-    
-                                            if (!empty($dataBusinessPromo['image'])) {
-    
-                                                $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319';
-                                            }
-                                            
-                                            echo Html::img($img); ?>
-                                        
+                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319']); ?>
                                         </div>
                                     </div>
 
@@ -239,6 +228,14 @@ $jscript = '
         }
     });
 
+    $(".result-list-special-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
+    });
+
     $("#pjax-result-list").off("pjax:send");
     $("#pjax-result-list").on("pjax:send", function() {
 
@@ -259,12 +256,6 @@ $jscript = '
     $("#pjax-result-list").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });
-
-    $(".result-list-special-image").owlCarousel({
-
-        lazyLoad: true,
-        items: 1
     });
 ';
 

@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -67,7 +66,9 @@ $linkPager = LinkPager::widget([
 
                 $businessPromoDetail = [];
 
-                foreach ($modelBusinessPromo as $dataBusinessPromo): ?>
+                foreach ($modelBusinessPromo as $dataBusinessPromo):
+                
+                    $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319'; ?>
 
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -78,17 +79,7 @@ $linkPager = LinkPager::widget([
                                 <div class="row">
                                     <div class="col-md-5 col-sm-12 col-tab-6 col-xs-12 col">
                                         <div class="result-map-special-image owl-carousel owl-theme">
-
-                                            <?php
-                                            $img = Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/', 'image-no-available.jpg', 567, 319);
-    
-                                            if (!empty($dataBusinessPromo['image'])) {
-    
-                                                $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319';
-                                            }
-                                            
-                                            echo Html::img($img); ?>
-                                        
+                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
                                         </div>
                                     </div>
                                     <div class="col-md-7 col-sm-12 col-tab-6 col-xs-12 col">
@@ -331,6 +322,14 @@ $jscript = '
         });
     });
 
+    $(".result-map-special-image").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
+    });
+
     $("#pjax-result-map-container").off("pjax:send");
     $("#pjax-result-map-container").on("pjax:send", function() {
 
@@ -349,12 +348,6 @@ $jscript = '
     $("#pjax-result-map-container").on("pjax:error", function (event) {
 
         event.preventDefault();
-    });
-
-    $(".result-map-special-image").owlCarousel({
-
-        lazyLoad: true,
-        items: 1
     });
 ';
 
