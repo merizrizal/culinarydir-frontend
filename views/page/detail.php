@@ -128,19 +128,7 @@ $this->registerMetaTag([
     'content' => $ogImage
 ]); 
 
-$noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=756&h=425';
-
-$btnPrev = '
-    <div class="col-sm-1 btn-prev text-center hidden-xs"> ' .
-		Html::a('<i class="fa fa-chevron-left fa-2x"></i>') . '
-	</div>
-';
-
-$btnNext = '
-    <div class="col-sm-1 btn-next text-center hidden-xs"> ' .
-		Html::a('<i class="fa fa-chevron-right fa-2x"></i>') . '
-	</div>
-'; ?>
+$noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=756&h=425'; ?>
 
 <div class="main">
 
@@ -180,8 +168,7 @@ $btnNext = '
                                         <div class="tab-content box bg-white">
                                             <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                                 <div class="row">
-                                                	<?= $btnPrev ?>
-                                                    <div class="col-sm-10 col-xs-12">
+                                                    <div class="col-xs-12">
 														<div class="ambience-gallery owl-carousel owl-theme">
 														
                                                             <?php
@@ -214,13 +201,11 @@ $btnNext = '
                                                             
                                                         </div>
                                                     </div>
-                                                    <?= $btnNext ?>
                                                 </div>
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade in active" id="menu">
                                                 <div class="row">
-                                                	<?= $btnPrev ?>
-                                                    <div class="col-sm-10 col-xs-12">
+                                                    <div class="col-xs-12">
                                                     	<div class="menu-gallery owl-carousel owl-theme">
 
                                                             <?php                                                        
@@ -253,7 +238,6 @@ $btnNext = '
                                                             
                                                         </div>
                                                     </div>
-                                                    <?= $btnNext ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -1119,32 +1103,6 @@ $jscript = '
         items: 1,
         margin: 1,
         autoHeight: true,
-    });
-
-    $(".btn-prev").on("click", function() {
-
-        if ($(this).parents("#photo").length) {
-            
-            $("#photo").find(".owl-prev").click();
-        } else if ($(this).parents("#menu").length) {
-
-            $("#menu").find(".owl-prev").click();
-        }
-
-        return false;
-    });
-
-    $(".btn-next").on("click", function() {
-
-        if ($(this).parents("#photo").length) {
-            
-            $("#photo").find(".owl-next").click();
-        } else if ($(this).parents("#menu").length) {
-
-            $("#menu").find(".owl-next").click();
-        }
-
-        return false;
     });
 ';
 
