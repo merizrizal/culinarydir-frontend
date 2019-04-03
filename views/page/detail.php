@@ -1098,7 +1098,6 @@ $jscript = '
     });
 
     $(".ambience-gallery, .menu-gallery").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         margin: 1,

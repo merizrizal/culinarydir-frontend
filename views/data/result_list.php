@@ -285,7 +285,6 @@ $jscript = '
     });
 
     $(".result-list-image").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

@@ -155,7 +155,6 @@ $this->registerMetaTag([
 <?php
 $jscript = '
     $(".promo-image-container").owlCarousel({
-        
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

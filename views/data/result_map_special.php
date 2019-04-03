@@ -323,7 +323,6 @@ $jscript = '
     });
 
     $(".result-map-special-image").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

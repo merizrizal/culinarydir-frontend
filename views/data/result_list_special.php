@@ -229,7 +229,6 @@ $jscript = '
     });
 
     $(".result-list-special-image").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         mouseDrag: false,
