@@ -342,7 +342,6 @@ $jscript = '
     ratingColor($(".rating"), "span");
 
     $(".result-map-image").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

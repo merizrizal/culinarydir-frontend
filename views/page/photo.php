@@ -394,7 +394,6 @@ $jscript = '
     });
 
     $(".photo-review").find(".owl-carousel").owlCarousel({
-
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

@@ -194,7 +194,6 @@ $jscript = '
     });
 
     $(".news-promo-section").owlCarousel({
-
         margin: 10,
         lazyLoad: true,
         responsive: {
