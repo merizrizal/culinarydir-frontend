@@ -98,7 +98,7 @@ $this->registerMetaTag([
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                             	<div class="promo-image-container owl-carousel owl-theme">
-                                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']); ?>
+                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']]); ?>
                                                 </div>
                                             </div>
                                         </div>

@@ -9,6 +9,8 @@ use frontend\components\GrowlCustom;
 /* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
 
+common\assets\OwlCarouselAsset::register($this);
+
 $this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
@@ -121,8 +123,10 @@ $this->registerMetaTag([
                                                 <div class="col-sm-12 col-xs-12">
                                                     <div class="photo-review mt-10 mb-10">
                                                         <div class="row">
-                                                            <div class="col-sm-12 text-center">
-                                                                <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image']) ?>
+                                                            <div class="col-sm-offset-1 col-sm-10">
+                                                            	<div class="owl-carousel owl-theme">
+                                                                	<?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image']]) ?>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -387,6 +391,14 @@ $jscript = '
         });
 
         return false;
+    });
+
+    $(".photo-review").find(".owl-carousel").owlCarousel({
+
+        lazyLoad: true,
+        items: 1,
+        mouseDrag: false,
+        touchDrag: false
     });
 ';
 
