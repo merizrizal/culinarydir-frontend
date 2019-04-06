@@ -16,9 +16,7 @@ use common\components\Helper;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
-kartik\popover\PopoverXAsset::register($this);
-
-Yii::$app->formatter->timeZone = 'Asia/Jakarta'; 
+kartik\popover\PopoverXAsset::register($this); 
 
 $urlMyReviewDetail = [
     'page/review',

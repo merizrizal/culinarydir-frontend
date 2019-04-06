@@ -323,7 +323,11 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                         if (!empty($modelBusiness['businessHours'])):
 
                                                                             $days = Yii::$app->params['days'];
+                                                                        
+                                                                            Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+                                                                        
                                                                             $now = Yii::$app->formatter->asTime(time());
+                                                                            
                                                                             Yii::$app->formatter->timeZone = 'UTC';
                                                                             
                                                                             $isOpen = false;

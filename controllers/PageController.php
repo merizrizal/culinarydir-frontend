@@ -281,6 +281,8 @@ class PageController extends base\BaseHistoryUrlController
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
 
+        Yii::$app->formatter->timeZone = 'UTC';
+        
         return $this->render('detail', [
             'modelBusiness' => $modelBusiness,
             'dataBusinessImage' => $dataBusinessImage,
