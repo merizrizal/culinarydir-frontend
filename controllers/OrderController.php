@@ -164,11 +164,13 @@ class OrderController extends base\BaseController
                 
                 $result = [];
                 
+                $result['customer_id'] = $modelTransactionSession['user_ordered'];
                 $result['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
                 $result['customer_username'] = $modelTransactionSession['userOrdered']['username'];
                 $result['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
                 $result['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
                 
+                $result['business_id'] = $modelTransactionSession['business_id'];
                 $result['business_name'] = $modelTransactionSession['business']['name'];
                 $result['business_phone'] = $modelTransactionSession['business']['phone3'];
                 $result['business_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
@@ -185,6 +187,8 @@ class OrderController extends base\BaseController
                 $result['total_distance'] = $modelTransactionSession['total_distance'];
                 $result['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
                 $result['order_status'] = $modelTransactionSession['order_status'];
+                
+                print_r($result); exit;
                 
                 $client = new Client(new Version2X('http://192.168.0.23:3000'));
                 
