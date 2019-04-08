@@ -16,9 +16,7 @@ use common\components\Helper;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 
-kartik\popover\PopoverXAsset::register($this);
-
-Yii::$app->formatter->timeZone = 'Asia/Jakarta'; 
+kartik\popover\PopoverXAsset::register($this); 
 
 $urlMyReviewDetail = [
     'page/review',
@@ -66,7 +64,7 @@ $urlMyReviewDetail = [
                                             <div class="widget-posts-body">
                                                 <?= Html::a(Yii::$app->user->getIdentity()->full_name, ['user/user-profile', 'user' => Yii::$app->user->getIdentity()->username], ['class' => 'my-review-user-name']) ?>
                                                 <br>
-                                                <small class="my-review-created"><?=  Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
+                                                <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
                                             </div>
                                         </div>
                                     </div>
@@ -1008,8 +1006,10 @@ $jscript = '
                         cloneImageFormContainer.find(".review-post-gallery").addClass("mb-10");
                         cloneImageFormContainer.attr("id", "image-" + userPostMainPhoto.id);
                         cloneImageFormContainer.find(".review-post-gallery").find(".work-image").html("<img class=\"img-component\" src=\"" + userPostMainPhoto.image + "\" title=\"\">");
-                        cloneImageFormContainer.append("<label><input type=\"checkbox\" name=\"ImageReviewDelete[]\" value=\"" + userPostMainPhoto.id + "\"> <i class=\"fa fa-trash\"></i></label>");
+                        cloneImageFormContainer.append("<label><input class=\"new-image-" + userPostMainPhoto.id + "\" type=\"checkbox\" name=\"ImageReviewDelete[]\" value=\"" + userPostMainPhoto.id + "\"> <i class=\"fa fa-trash\"></i></label>");
                         cloneImageFormContainer.appendTo($("#form-review-uploaded-photo"));
+                        
+                        initCustomicheck($(".new-image-" + userPostMainPhoto.id));
                     });
 
                     var countLi = $("#review-uploaded-photo > li").length;
@@ -1035,8 +1035,6 @@ $jscript = '
                             $(this).find(".review-post-gallery").find(".work-caption").find(".work-descr").html("<a class=\"btn btn-d btn-small btn-xs btn-circle show-image\" href=\"" + $(this).find("a.show-image").attr("href") + "\"><i class=\"fa fa-search\"></i></a>");
                         }
                     });
-
-                    initCustomicheck();
 
                     var tempOverall = 0;
 

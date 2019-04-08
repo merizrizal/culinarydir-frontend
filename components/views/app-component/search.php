@@ -32,7 +32,7 @@ else: ?>
             	<div class="input-group-addon">
             		<i class="fa fa-search"></i>
             	</div>
-            	<?= Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Nama Tempat / Makanan / Alamat']) ?>
+            	<?= Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']) ?>
         	</div>
     	</div>
 	</div>
