@@ -188,8 +188,6 @@ class OrderController extends base\BaseController
                 $result['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
                 $result['order_status'] = $modelTransactionSession['order_status'];
                 
-                print_r($result); exit;
-                
                 $client = new Client(new Version2X('http://192.168.0.23:3000'));
                 
                 $client->initialize();
