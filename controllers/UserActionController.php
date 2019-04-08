@@ -249,6 +249,8 @@ class UserActionController extends base\BaseController
             $newModelTransactionSession->total_price = $oldModelTransaction->total_price;
             $newModelTransactionSession->total_amount = $oldModelTransaction->total_amount;
             $newModelTransactionSession->is_closed = false;
+            $newModelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
+            $newModelTransactionSession->order_status = 'New';
             
             if (($flag = $newModelTransactionSession->save())) {
                 

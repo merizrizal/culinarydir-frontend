@@ -7,6 +7,9 @@ use yii\filters\VerbFilter;
 use core\models\PromoItem;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
+use frontend\components\AddressType;
 
 /**
  * Order controller
@@ -35,6 +38,7 @@ class OrderController extends base\BaseController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
+                'business.businessLocation',
                 'business.businessDeliveries' => function ($query) {
 
                     $query->andOnCondition(['business_delivery.is_active' => true]);
@@ -47,7 +51,9 @@ class OrderController extends base\BaseController
 
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
-                'transactionItems.businessProduct'
+                'transactionItems.businessProduct',
+                'userOrdered',
+                'userOrdered.userPerson.person'
             ])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
             ->andWhere(['transaction_session.is_closed' => false])
@@ -151,10 +157,40 @@ class OrderController extends base\BaseController
                     $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
                 }
             }
-
+            
             if ($flag) {
 
                 $transaction->commit();
+                
+                $result = [];
+                
+                $result['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
+                $result['customer_username'] = $modelTransactionSession['userOrdered']['username'];
+                $result['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
+                $result['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
+                
+                $result['business_name'] = $modelTransactionSession['business']['name'];
+                $result['business_phone'] = $modelTransactionSession['business']['phone3'];
+                $result['business_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
+                $result['business_address'] =
+                    AddressType::widget([
+                        'businessLocation' => $modelTransactionSession['business']['businessLocation'],
+                        'showDetail' => false
+                    ]);
+                
+                $result['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
+                $result['note'] = $modelTransactionSession['note'];
+                $result['total_price'] = $modelTransactionSession['total_price'];
+                $result['total_amount'] = $modelTransactionSession['total_amount'];
+                $result['total_distance'] = $modelTransactionSession['total_distance'];
+                $result['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
+                $result['order_status'] = $modelTransactionSession['order_status'];
+                
+                $client = new Client(new Version2X('http://192.168.0.23:3000'));
+                
+                $client->initialize();
+                $client->emit('broadcast', $result);
+                $client->close();
 
                 return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
             } else {
