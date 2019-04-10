@@ -64,10 +64,10 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 			<div class="col-xs-12">
         		<div class="modal-header-search">
                     <div class="row">
-                        <div class="col-sm-7 col-xs-7 text-right">
+                        <div class="col-sm-7 col-xs-7 text-right hidden-xs">
                             <h1 id="modal-favorite-label" class="modal-title-search">Search</h1>
                         </div>
-                        <div class="col-sm-offset-3 col-sm-2 col-xs-offset-3 col-xs-2 mt-10">
+                        <div class="col-sm-offset-3 col-sm-2 col-xs-offset-11 col-xs-1 mt-10">
                             <button type="button" class="close btn-close">×</button>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                     	]) ?>
                     	
                         	<div class="row">
-                            	<div class="col-sm-9 col-tab-9 col-xs-10">
+                            	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -116,7 +116,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     									
     									<?php
@@ -133,7 +133,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -146,7 +146,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
     						
     						<div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?= Html::dropDownList('ctg', $keywordCategory,
@@ -169,7 +169,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                             
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -183,7 +183,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                             
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -195,26 +195,8 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                     </div>
                                 </div>
                             </div>
-                            
+                                                        
                             <?php
-                            if (!$showFacilityFilter): ?>
-                            
-                                <div class="row mt-10">
-                                	<div class="col-sm-4 col-tab-4 col-xs-5">
-                                        <div class="form-group">
-                                            <?= $btnSubmit ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
-                                        <div class="btn-clear-container">
-                                            <?= $btnClear ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                            <?php
-                            endif;
-                    
                             if ($showFacilityFilter):
                             
                                 $modelFacility = Facility::find()
@@ -278,23 +260,29 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="row mt-10">
-                                	<div class="col-sm-4 col-tab-4 col-xs-5">
-                                        <div class="form-group">
-                                            <?= $btnSubmit ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
-                                        <div class="btn-clear-container">
-                                            <?= $btnClear ?>
-                                        </div>
-                                    </div>
-                                </div>
     
                             <?php
-                            endif;
-                                
+                            endif; ?>
+                            
+                            <div class="row mt-10">
+                            	<div class="col-sm-4 col-tab-4 col-xs-5">
+                                    <div class="form-group">
+                                        <?= $btnSubmit ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
+                                    <div class="btn-clear-container">
+                                        <?= $btnClear ?>
+                                    </div>
+                                </div>
+                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
+                                    <div class="btn-clear-container">
+                                        <?= $btnClear ?>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        <?php
                         echo Html::endForm(); ?>
                             
                     </div>
@@ -306,7 +294,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                         ]) ?>
                     
                         	<div class="row">
-                            	<div class="col-sm-9 col-tab-9 col-xs-10">
+                            	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -329,7 +317,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -346,7 +334,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -359,7 +347,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
     						
     						<div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?= Html::dropDownList('ctg', $keywordCategory,
@@ -382,7 +370,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                             
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -401,7 +389,12 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                         <?= $btnSubmit ?>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
+                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
+                                    <div class="btn-clear-container">
+                                        <?= $btnClear ?>
+                                    </div>
+                                </div>
+                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
                                     <div class="btn-clear-container">
                                         <?= $btnClear ?>
                                     </div>
@@ -419,7 +412,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                         ]) ?>
                     
                         	<div class="row">
-                            	<div class="col-sm-9 col-tab-9 col-xs-10">
+                            	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
                             
                                         <?= Html::dropDownList('cty', $keywordCity,
@@ -442,7 +435,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 			
                 			<div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -459,7 +452,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                 
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
                                     
                                     	<?php
@@ -472,7 +465,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                             
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -486,7 +479,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                             </div>
                             
                             <div class="row">
-                                <div class="col-sm-9 col-tab-9 col-xs-10">
+                                <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
     
                                         <?php
@@ -505,7 +498,12 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                         <?= $btnSubmit ?>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5">
+                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
+                                    <div class="btn-clear-container">
+                                        <?= $btnClear ?>
+                                    </div>
+                                </div>
+                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
                                     <div class="btn-clear-container">
                                         <?= $btnClear ?>
                                     </div>
