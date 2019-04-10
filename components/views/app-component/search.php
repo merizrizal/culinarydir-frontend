@@ -16,13 +16,13 @@ else: ?>
 
 	<div class="search-box <?= !empty($type) ? $type : "" ?>">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'favorite') ? 'active' : '' ?>">
+            <li role="presentation" class="<?= $keywordType == Yii::t('app', 'favorite') ? 'active' : '' ?>">
                 <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Favorite') ?></strong></a>
             </li>
-            <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'promo') ? 'active' : '' ?>">
+            <li role="presentation" class="<?= $keywordType == Yii::t('app', 'promo') ? 'active' : '' ?>">
                 <a href="#special" aria-controls="special" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Promo') ?></strong></a>
             </li>
-            <li role="presentation" class=" <?= $keywordType == Yii::t('app', 'online-order') ? 'active' : '' ?>">
+            <li role="presentation" class="<?= $keywordType == Yii::t('app', 'online-order') ? 'active' : '' ?>">
                 <a href="#order" aria-controls="order" role="tab" data-toggle="tab"><strong><?= Yii::t('app', 'Online Order') ?></strong></a>
             </li>
         </ul>
