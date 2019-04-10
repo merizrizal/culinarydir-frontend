@@ -282,8 +282,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                 </div>
                             </div>
                             
-                        <?php
-                        echo Html::endForm(); ?>
+                        <?= Html::endForm(); ?>
                             
                     </div>
                 
