@@ -128,7 +128,7 @@ $this->registerMetaTag([
     'content' => $ogImage
 ]); 
 
-$noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=756&h=425'; ?>
+$noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=756&h=340'; ?>
 
 <div class="main">
 
@@ -189,7 +189,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=565';
                                                                     }
 
                                                                     echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
@@ -226,7 +226,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=565';
                                                                     }
                                                                     
                                                                     echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
