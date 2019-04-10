@@ -97,8 +97,10 @@ class OrderController extends base\BaseController
                     return $this->redirect(['order/checkout']);
                 }
             }
-
+            
             if ($flag) {
+                
+                $result = [];
 
                 $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
                 $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
@@ -134,11 +136,19 @@ class OrderController extends base\BaseController
                     $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
 
                     $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
+                    
+                    $result['detail'] = [];
 
-                    foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem) {
+                    foreach ($modelTransactionSession['transactionItems'] as $i => $dataTransactionItem) {
 
                         $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
                         $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
+                        
+                        $result['detail'][$i] = [];
+                        $result['detail'][$i]['menu'] = $dataTransactionItem['businessProduct']['name'];
+                        $result['detail'][$i]['price'] = $dataTransactionItem['price'];
+                        $result['detail'][$i]['amount'] = $dataTransactionItem['amount'];
+                        $result['detail'][$i]['note'] = $dataTransactionItem['note'];
                     }
 
                     $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
@@ -162,31 +172,30 @@ class OrderController extends base\BaseController
 
                 $transaction->commit();
                 
-                $result = [];
+                $result['header'] = [];
+                $result['header']['customer_id'] = $modelTransactionSession['user_ordered'];
+                $result['header']['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
+                $result['header']['customer_username'] = $modelTransactionSession['userOrdered']['username'];
+                $result['header']['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
+                $result['header']['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
                 
-                $result['customer_id'] = $modelTransactionSession['user_ordered'];
-                $result['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
-                $result['customer_username'] = $modelTransactionSession['userOrdered']['username'];
-                $result['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
-                $result['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
-                
-                $result['business_id'] = $modelTransactionSession['business_id'];
-                $result['business_name'] = $modelTransactionSession['business']['name'];
-                $result['business_phone'] = $modelTransactionSession['business']['phone3'];
-                $result['business_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
-                $result['business_address'] =
+                $result['header']['business_id'] = $modelTransactionSession['business_id'];
+                $result['header']['business_name'] = $modelTransactionSession['business']['name'];
+                $result['header']['business_phone'] = $modelTransactionSession['business']['phone3'];
+                $result['header']['business_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
+                $result['header']['business_address'] =
                     AddressType::widget([
                         'businessLocation' => $modelTransactionSession['business']['businessLocation'],
                         'showDetail' => false
                     ]);
-                
-                $result['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
-                $result['note'] = $modelTransactionSession['note'];
-                $result['total_price'] = $modelTransactionSession['total_price'];
-                $result['total_amount'] = $modelTransactionSession['total_amount'];
-                $result['total_distance'] = $modelTransactionSession['total_distance'];
-                $result['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
-                $result['order_status'] = $modelTransactionSession['order_status'];
+            
+                $result['header']['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
+                $result['header']['note'] = $modelTransactionSession['note'];
+                $result['header']['total_price'] = $modelTransactionSession['total_price'];
+                $result['header']['total_amount'] = $modelTransactionSession['total_amount'];
+                $result['header']['total_distance'] = $modelTransactionSession['total_distance'];
+                $result['header']['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
+                $result['header']['order_status'] = $modelTransactionSession['order_status'];
                 
                 $client = new Client(new Version2X('http://192.168.0.23:3000'));
                 
