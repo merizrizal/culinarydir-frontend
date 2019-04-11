@@ -63,14 +63,16 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 		<div class="row">
 			<div class="col-xs-12">
         		<div class="modal-header-search">
-                    <div class="row">
-                        <div class="col-sm-7 col-xs-7 text-right hidden-xs">
-                            <h1 id="modal-favorite-label" class="modal-title-search">Search</h1>
-                        </div>
-                        <div class="col-sm-offset-3 col-sm-2 col-xs-offset-11 col-xs-1 mt-10">
-                            <button type="button" class="close btn-close">×</button>
-                        </div>
-                    </div>
+        			<div class="row">
+        				<div class="col-md-offset-4 col-sm-offset-3 col-sm-2 col-xs-offset-1 col-xs-2">
+                            <div class="input-group">
+                            	<div class="input-group-addon">
+                            		<button type="button" class="close btn-close text-red"><i class="fas fa-arrow-left"></i></button>
+                            	</div>
+                            	<span id="modal-favorite-label" class="modal-title-search">Search</span>
+                        	</div>
+                    	</div>
+                	</div>
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
