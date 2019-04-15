@@ -40,7 +40,7 @@ class OrderActionController extends base\BaseController
 
         $modelTransactionSession = TransactionSession::find()
             ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['is_closed' => false])
+            ->andWhere(['status' => 'Open'])
             ->one();
 
         if (!empty($modelTransactionSession)) {
@@ -55,7 +55,7 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
             $modelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
-            $modelTransactionSession->order_status = 'New';
+            $modelTransactionSession->status = 'Open';
         }
         
         $result = [];

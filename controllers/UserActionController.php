@@ -216,7 +216,7 @@ class UserActionController extends base\BaseController
         
         $modelTransactionSession = TransactionSession::find()
             ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['is_closed' => false])
+            ->andWhere(['status' => 'Open'])
             ->asArray()->one();
         
         if (!empty($modelTransactionSession)) {
@@ -248,9 +248,8 @@ class UserActionController extends base\BaseController
             $newModelTransactionSession->note = !empty($oldModelTransaction->note) ? $oldModelTransaction->note : null;
             $newModelTransactionSession->total_price = $oldModelTransaction->total_price;
             $newModelTransactionSession->total_amount = $oldModelTransaction->total_amount;
-            $newModelTransactionSession->is_closed = false;
             $newModelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
-            $newModelTransactionSession->order_status = 'New';
+            $newModelTransactionSession->status = 'Open';
             
             if (($flag = $newModelTransactionSession->save())) {
                 

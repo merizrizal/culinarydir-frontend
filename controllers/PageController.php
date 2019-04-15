@@ -234,7 +234,7 @@ class PageController extends base\BaseHistoryUrlController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
-            ->andWhere(['transaction_session.is_closed' => false])
+            ->andWhere(['transaction_session.status' => 'Open'])
             ->asArray()->one();
 
         $modelUserReport = new UserReport();
@@ -475,7 +475,7 @@ class PageController extends base\BaseHistoryUrlController
                 'business'
             ])
             ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
-            ->andWhere(['transaction_session.is_closed' => false])
+            ->andWhere(['transaction_session.status' => 'Open'])
             ->asArray()->one();
                 
         $dataMenuCategorised = [];

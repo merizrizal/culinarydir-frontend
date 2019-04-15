@@ -68,7 +68,7 @@ $linkPager = LinkPager::widget([
                     'class' => 'btn btn-default btn-small btn-round-4'
                 ]);
                 
-                $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                $btnReorder = Html::a($dataTransactionSession['status'] != 'Open' ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                     'class' => 'btn btn-default btn-small btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
                 ]);
@@ -100,7 +100,7 @@ $linkPager = LinkPager::widget([
                     </div>
                     <div class="row mb-10">
                     	<div class="col-sm-7 col-tab-6 col-xs-12">
-                    		Total : <?= Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['is_closed'] ? 'text-success' : 'text-danger' ?>"></i>
+                    		Total : <?= Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) ?> | <i class="far fa-check-circle <?= $dataTransactionSession['status'] == 'Finish' ? 'text-success' : 'text-danger' ?>"></i>
                     	</div>
                     	<div class="col-sm-5 col-tab-6 text-right visible-lg visible-md visible-sm visible-tab">
                     		<ul class="list-inline list-review mt-0 mb-0">

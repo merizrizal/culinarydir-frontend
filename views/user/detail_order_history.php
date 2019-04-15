@@ -100,7 +100,7 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                     		
                                     		<?php
                                     		$subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
-                                    		$checkSymbol = ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
+                                    		$checkSymbol = ' | <i class="far fa-check-circle ' . ($modelTransactionSession['status'] == 'Finish' ? "text-success" : "text-danger") . '"></i>';
                                     		
                                     		if (!empty($modelTransactionSession['discount_value'])) {
                                     		    
@@ -115,7 +115,7 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                     	</div>
                                     	<div class="col-sm-4 col-tab-4 col-xs-12">
                                     	
-                                    		<?= Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                                    		<?= Html::a($modelTransactionSession['status'] != 'Open' ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                                                 'class' => 'btn btn-d btn-block btn-round btn-reorder',
                                                 'data-id' => $modelTransactionSession['id']
                                             ]); ?>

@@ -10,6 +10,7 @@ use core\models\TransactionSessionOrder;
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
 use frontend\components\AddressType;
+use Faker\Factory;
 
 /**
  * Order controller
@@ -52,11 +53,12 @@ class OrderController extends base\BaseController
                     $query->orderBy(['transaction_item.id' => SORT_ASC]);
                 },
                 'transactionItems.businessProduct',
+                'transactionSessionDelivery',
                 'userOrdered',
                 'userOrdered.userPerson.person'
             ])
             ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
-            ->andWhere(['transaction_session.is_closed' => false])
+            ->andWhere(['transaction_session.status' => 'Open'])
             ->one();
 
         $modelTransactionSessionOrder = new TransactionSessionOrder();
@@ -106,7 +108,7 @@ class OrderController extends base\BaseController
                 $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
                 $modelTransactionSessionOrder->business_payment_id = !empty($post['business_payment_id']) ? $post['business_payment_id'] : null;
 
-                $modelTransactionSession->is_closed = true;
+                $modelTransactionSession->status = 'New';
                 $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
 
                 if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
@@ -189,16 +191,18 @@ class OrderController extends base\BaseController
                         'businessLocation' => $modelTransactionSession['business']['businessLocation'],
                         'showDetail' => false
                     ]);
+                    
+                $faker = Factory::create();
             
                 $result['header']['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
                 $result['header']['note'] = $modelTransactionSession['note'];
                 $result['header']['total_price'] = $modelTransactionSession['total_price'];
                 $result['header']['total_amount'] = $modelTransactionSession['total_amount'];
-                $result['header']['total_distance'] = $modelTransactionSession['total_distance'];
-                $result['header']['total_delivery_fee'] = $modelTransactionSession['total_delivery_fee'];
-                $result['header']['order_status'] = $modelTransactionSession['order_status'];
+                $result['header']['total_distance'] = $faker->latitude . ',' . $faker->longitude;
+                $result['header']['total_delivery_fee'] = $faker->randomNumber(6);
+                $result['header']['order_status'] = $modelTransactionSession['status'];
                 
-                $client = new Client(new Version2X('http://192.168.0.23:3000'));
+                $client = new Client(new Version2X(Yii::$app->params['socketIO']));
                 
                 $client->initialize();
                 $client->emit('broadcast', $result);
