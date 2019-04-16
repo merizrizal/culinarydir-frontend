@@ -114,71 +114,60 @@ class OrderController extends base\BaseController
 
                 if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
                     
-                    $faker = Factory::create();
-                    
-                    $modelTransactionSessionDelivery = new TransactionSessionDelivery();
-                    $modelTransactionSessionDelivery->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionSessionDelivery->driver_id = Yii::$app->user->getIdentity()->id;
-                    $modelTransactionSessionDelivery->total_distance = $faker->randomNumber(2);
-                    $modelTransactionSessionDelivery->total_delivery_fee = $faker->randomNumber(6);
-                    
-                    if (($flag = $modelTransactionSessionDelivery->save())) {
-                            
-                        $dataDelivery = [];
-    
-                        foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
-    
-                            if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
-    
-                                $dataDelivery = $dataBusinessDelivery;
-                                break;
-                            }
+                    $dataDelivery = [];
+
+                    foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
+
+                        if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
+
+                            $dataDelivery = $dataBusinessDelivery;
+                            break;
                         }
-    
-                        $dataPayment = [];
-    
-                        foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
-    
-                            if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
-    
-                                $dataPayment = $dataBusinessPayment;
-                                break;
-                            }
-                        }
-                        
-                        $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
-    
-                        $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
-                        
-                        $result['detail'] = [];
-    
-                        foreach ($modelTransactionSession['transactionItems'] as $i => $dataTransactionItem) {
-    
-                            $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
-                            $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
-                            
-                            $result['detail'][$i] = [];
-                            $result['detail'][$i]['menu'] = $dataTransactionItem['businessProduct']['name'];
-                            $result['detail'][$i]['price'] = $dataTransactionItem['price'];
-                            $result['detail'][$i]['amount'] = $dataTransactionItem['amount'];
-                            $result['detail'][$i]['note'] = $dataTransactionItem['note'];
-                        }
-    
-                        $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
-                        
-                        if (!empty($modelTransactionSession['discount_value'])) {
-                            
-                            $subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
-                            $messageOrder .= '\n\n*Promo: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '*';
-                            $messageOrder .= '\n\n*Subtotal: ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . '*';
-                        }
-                        
-                        $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
-                        $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
-                        $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
-    
-                        $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
                     }
+
+                    $dataPayment = [];
+
+                    foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
+
+                        if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
+
+                            $dataPayment = $dataBusinessPayment;
+                            break;
+                        }
+                    }
+                    
+                    $businessPhone = '62' . substr(str_replace('-', '', $modelTransactionSession['business']['phone3']), 1);
+
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
+                    
+                    $result['detail'] = [];
+
+                    foreach ($modelTransactionSession['transactionItems'] as $i => $dataTransactionItem) {
+
+                        $messageOrder .= $dataTransactionItem['amount'] . 'x ' . $dataTransactionItem['businessProduct']['name'] . ' @' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']);
+                        $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
+                        
+                        $result['detail'][$i] = [];
+                        $result['detail'][$i]['menu'] = $dataTransactionItem['businessProduct']['name'];
+                        $result['detail'][$i]['price'] = $dataTransactionItem['price'];
+                        $result['detail'][$i]['amount'] = $dataTransactionItem['amount'];
+                        $result['detail'][$i]['note'] = $dataTransactionItem['note'];
+                    }
+
+                    $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
+                    
+                    if (!empty($modelTransactionSession['discount_value'])) {
+                        
+                        $subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
+                        $messageOrder .= '\n\n*Promo: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '*';
+                        $messageOrder .= '\n\n*Subtotal: ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . '*';
+                    }
+                    
+                    $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
+                    $messageOrder .= !empty($dataPayment['note']) ? '\n\n' . $dataPayment['note'] : '';
+                    $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
+
+                    $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
                 }
             }
             
@@ -204,12 +193,14 @@ class OrderController extends base\BaseController
                         'showDetail' => false
                     ]);
                     
+                $faker = Factory::create();
+                    
                 $result['header']['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
                 $result['header']['note'] = $modelTransactionSession['note'];
                 $result['header']['total_price'] = $modelTransactionSession['total_price'];
                 $result['header']['total_amount'] = $modelTransactionSession['total_amount'];
-                $result['header']['total_distance'] = $modelTransactionSessionDelivery['total_distance'];
-                $result['header']['total_delivery_fee'] = $modelTransactionSessionDelivery['total_delivery_fee'];
+                $result['header']['total_distance'] = $faker->randomNumber(2);
+                $result['header']['total_delivery_fee'] = $faker->randomNumber(6);
                 $result['header']['order_status'] = $modelTransactionSession['status'];
                 
                 $client = new Client(new Version2X(Yii::$app->params['socketIO']));
