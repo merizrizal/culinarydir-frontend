@@ -11,7 +11,6 @@ use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
 use frontend\components\AddressType;
 use Faker\Factory;
-use core\models\TransactionSessionDelivery;
 
 /**
  * Order controller
