@@ -143,7 +143,20 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                         break;
                                                                     }
                                                                 }
-                                                            } ?>
+                                                            }
+                                                            
+                                                            $orderbtn = Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
+                                                                'class' => 'btn btn-d btn-round btn-xs add-item',
+                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
+                                                                'data-product-id' => $dataBusinessProduct['id'],
+                                                                'data-product-price' => $dataBusinessProduct['price']
+                                                            ]);
+                                                            
+                                                            $notesField = Html::textInput('transaction_item_notes', $transactionItemNotes, [
+                                                                'class' => 'form-control transaction-item-notes',
+                                                                'placeholder' => Yii::t('app', 'Note'),
+                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                            ]); ?>
                                                             
                                                             <div class="business-menu-group">
                                                             
@@ -167,57 +180,51 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row <?= $addOrderClass ?>">
-                                                                    	<div class="col-xs-offset-8 col-xs-4">
-                                                                    	
-                                                                    		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
-                                                                    		    'class' => 'btn btn-d btn-round btn-xs add-item',
-                                                                    		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
-                                                                    		    'data-product-id' => $dataBusinessProduct['id'],
-                                                                    		    'data-product-price' => $dataBusinessProduct['price']
-                                                                    		]) ?>
-                                                                        	
-                                                                    	</div>
-                                                                    </div>
-                                                                    <div class="row input-order <?= $existOrderClass ?>">
-                                                                    	<div class="col-sm-8 col-tab-8">
-                                                                		
-                                                                			<div class="overlay" style="display: none;"></div>
-                                                                			<div class="loading-text" style="display: none;"></div>
-                                                                			
-                                                                			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
-                                                                                'class' => 'form-control transaction-item-notes',
-                                                                                'placeholder' => Yii::t('app', 'Note'),
-                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                            ]); ?>
-                                                                			
-                                                                		</div>
-                                                                    	<div class="col-lg-2 col-sm-3 col-tab-3">
-                                                                	
-                                                                			<div class="overlay" style="display: none;"></div>
-                                                                			<div class="loading-text" style="display: none;"></div>
-                                                                			
-                                                                            <?= TouchSpin::widget([
-                                                                                'name' => 'transaction_item_amount',
-                                                                                'value' => $transactionItemAmount,
-                                                                                'options' => [
-                                                                                    'class' => 'transaction-item-amount text-right input-sm',
-                                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                                ],
-                                                                                'pluginOptions' => [
-                                                                                    'style' => 'width: 30%',
-                                                                                    'min' => 1,
-                                                                                    'max' => 50,
-                                                                                    'step' => 1,
-                                                                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                                    'buttondown_class' => "btn btn-default text-center",
-                                                                                    'buttonup_class' => "btn btn-default text-center"
-                                                                                ],
-                                                                            ]); ?>
-                                                                            
-                                                                		</div>
-                                                                    </div>
+                                                                    
+                                                                    <?php
+                                                                    if (!empty($modelBusiness['membershipType'])): ?>
+                                                                    
+                                                                        <div class="row <?= $addOrderClass ?>">
+                                                                        	<div class="col-xs-offset-8 col-xs-4">
+                                                                        		<?= $orderbtn ?>
+                                                                        	</div>
+                                                                        </div>
+                                                                    
+                                                                        <div class="row input-order <?= $existOrderClass ?>">
+                                                                        	<div class="col-sm-8 col-tab-8">
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			<?= $notesField ?>
+                                                                    		</div>
+                                                                        	<div class="col-lg-2 col-sm-3 col-tab-3">
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			
+                                                                                <?= TouchSpin::widget([
+                                                                                    'name' => 'transaction_item_amount',
+                                                                                    'value' => $transactionItemAmount,
+                                                                                    'options' => [
+                                                                                        'class' => 'transaction-item-amount text-right input-sm',
+                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                    ],
+                                                                                    'pluginOptions' => [
+                                                                                        'style' => 'width: 30%',
+                                                                                        'min' => 1,
+                                                                                        'max' => 50,
+                                                                                        'step' => 1,
+                                                                                        'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                        'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                        'buttondown_class' => "btn btn-default text-center",
+                                                                                        'buttonup_class' => "btn btn-default text-center"
+                                                                                    ],
+                                                                                ]); ?>
+                                                                                
+                                                                    		</div>
+                                                                        </div>
+                                                                        
+                                                                    <?php
+                                                                    endif; ?>
+                                                                    
                                     							</div>
                                     							<div class="business-menu mb-20 visible-xs">
                                     								<div class="row mb-10">
@@ -237,60 +244,54 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <p class="mb-0"><?= $dataBusinessProduct['description'] ?></p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row <?= $addOrderClass ?>">
-                                                                    	<div class="col-xs-offset-7 col-xs-5">
-                                                                    	
-                                                                    		<?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
-                                                                    		    'class' => 'btn btn-d btn-round btn-xs add-item',
-                                                                    		    'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
-                                                                    		    'data-product-id' => $dataBusinessProduct['id'],
-                                                                    		    'data-product-price' => $dataBusinessProduct['price']
-                                                                    		]) ?>
-                                                                        	
-                                                                    	</div>
-                                                                    </div>
-                                                                    <div class="row input-order <?= $existOrderClass ?>">
-                                                                    	<div class="col-xs-12 mb-10">
-                                                                		
-                                                                			<div class="overlay" style="display: none;"></div>
-                                                                			<div class="loading-text" style="display: none;"></div>
-                                                                			
-                                                                			<?= Html::textInput('transaction_item_notes', $transactionItemNotes, [
-                                                                                'class' => 'form-control transaction-item-notes',
-                                                                                'placeholder' => Yii::t('app', 'Note'),
-                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
-                                                                            ]); ?>
-                                                                			
-                                                                		</div>
-                                                                        <div class="col-xs-7">
-                                                                            <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                    
+                                                                    <?php
+                                                                    if (!empty($modelBusiness['membershipType'])): ?>
+                                                                    
+                                                                        <div class="row <?= $addOrderClass ?>">
+                                                                        	<div class="col-xs-offset-7 col-xs-5">
+                                                                        		<?= $orderbtn ?>
+                                                                        	</div>
                                                                         </div>
-                                                                    	<div class="col-xs-5">
-                                                                	
-                                                                			<div class="overlay" style="display: none;"></div>
-                                                                			<div class="loading-text" style="display: none;"></div>
-                                                                
-                                                                            <?= TouchSpin::widget([
-                                                                                'name' => 'transaction_item_amount',
-                                                                                'value' => $transactionItemAmount,
-                                                                                'options' => [
-                                                                                    'class' => 'transaction-item-amount text-right input-sm',
-                                                                                    'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
-                                                                                ],
-                                                                                'pluginOptions' => [
-                                                                                    'style' => 'width: 30%',
-                                                                                    'min' => 1,
-                                                                                    'max' => 50,
-                                                                                    'step' => 1,
-                                                                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
-                                                                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
-                                                                                    'buttondown_class' => "btn btn-default text-center",
-                                                                                    'buttonup_class' => "btn btn-default text-center"
-                                                                                ],
-                                                                            ]); ?>
-                                                                            
-                                                                		</div>
-                                                                    </div>
+                                                                        <div class="row input-order <?= $existOrderClass ?>">
+                                                                        	<div class="col-xs-12 mb-10">
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    			<?= $notesField ?>
+                                                                    		</div>
+                                                                            <div class="col-xs-7">
+                                                                                <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            </div>
+                                                                        	<div class="col-xs-5">
+                                                                    	
+                                                                    			<div class="overlay" style="display: none;"></div>
+                                                                    			<div class="loading-text" style="display: none;"></div>
+                                                                    
+                                                                                <?= TouchSpin::widget([
+                                                                                    'name' => 'transaction_item_amount',
+                                                                                    'value' => $transactionItemAmount,
+                                                                                    'options' => [
+                                                                                        'class' => 'transaction-item-amount text-right input-sm',
+                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                    ],
+                                                                                    'pluginOptions' => [
+                                                                                        'style' => 'width: 30%',
+                                                                                        'min' => 1,
+                                                                                        'max' => 50,
+                                                                                        'step' => 1,
+                                                                                        'buttonup_txt' => '<i class="glyphicon glyphicon-plus"></i>',
+                                                                                        'buttondown_txt' => '<i class="glyphicon glyphicon-minus"></i>',
+                                                                                        'buttondown_class' => "btn btn-default text-center",
+                                                                                        'buttonup_class' => "btn btn-default text-center"
+                                                                                    ],
+                                                                                ]); ?>
+                                                                                
+                                                                    		</div>
+                                                                        </div>
+                                                                        
+                                                                    <?php
+                                                                    endif; ?>
+                                                                    
                                     							</div>
                                 							</div>
                             
