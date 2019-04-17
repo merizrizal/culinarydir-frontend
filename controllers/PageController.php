@@ -169,6 +169,10 @@ class PageController extends base\BaseHistoryUrlController
                     $query->andOnCondition(['>=', 'business_promo.date_end', Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
+                'membershipType' => function ($query) {
+                
+                    $query->andOnCondition(['ilike', 'membership_type.name', 'Order Online']);
+                },
                 'userLoves' => function ($query) {
 
                     $query->andOnCondition([
@@ -456,6 +460,10 @@ class PageController extends base\BaseHistoryUrlController
                 'businessProducts.businessProductCategory.productCategory' => function ($query) {
                     
                     $query->andOnCondition(['OR', ['product_category.type' => 'Menu'], ['product_category.type' => 'Specific-Menu']]);    
+                },
+                'membershipType' => function ($query) {
+                
+                    $query->andOnCondition(['ilike', 'membership_type.name', 'Order Online']);
                 },
             ])
             ->andWhere(['business.unique_name' => $uniqueName])

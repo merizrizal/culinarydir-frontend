@@ -168,7 +168,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                         <div class="tab-content box bg-white">
                                             <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                                 <div class="row">
-                                                    <div class="col-xs-12">
+                                                    <div class="col-sm-10 col-sm-offset-1">
 														<div class="ambience-gallery owl-carousel owl-theme">
 														
                                                             <?php
@@ -189,7 +189,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=565';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
 
                                                                     echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
@@ -197,7 +197,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                             } else {
                                                             
                                                                 echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $noImg]);
-                                                            }; ?>
+                                                            } ?>
                                                             
                                                         </div>
                                                     </div>
@@ -205,7 +205,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade in active" id="menu">
                                                 <div class="row">
-                                                    <div class="col-xs-12">
+                                                    <div class="col-sm-10 col-sm-offset-1">
                                                     	<div class="menu-gallery owl-carousel owl-theme">
 
                                                             <?php                                                        
@@ -226,7 +226,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                     
                                                                     if (!empty($businessImage['image'])) {
                                                                         
-                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=565';
+                                                                        $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $businessImage['image'] . '&w=1252&h=706';
                                                                     }
                                                                     
                                                                     echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]);
@@ -455,55 +455,51 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <?php
+                                            $orderbtn = Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), $ogUrlMenuDetail, [
+                                                'class' => 'btn btn-standard btn-d btn-block btn-round-4'
+                                            ]);
+                                            
+                                            if (empty($modelBusiness['membershipType'])) {
+                                                
+                                                $orderbtn = Html::a('<i class="fas fa-utensils"></i> ' . Yii::t('app', 'Menu List'), $ogUrlMenuDetail, [
+                                                    'class' => 'btn btn-standard btn-d btn-block btn-round-4'
+                                                ]);
+                                            }
+                                            
+                                            $reportbtn = Html::a('<i class="aicon aicon-warning aicon-1-2x"></i> ' .  Yii::t('app', 'Report'), '', [
+                                                'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
+                                            ]);
+                                            
+                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
+                                                'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
+                                            ]); ?>
 
                                             <div class="row mt-10 mb-10 visible-lg visible-md visible-sm visible-tab">
                                                 <div class="col-lg-2 col-sm-3 col-tab-3 col">
-                                                
-                                                    <?= Html::a('<i class="aicon aicon-warning aicon-1-2x"></i> ' .  Yii::t('app', 'Report'), '', [
-                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
-                                                    ]) ?>
-                                                    
+                                                    <?= $reportbtn ?>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-3 col-tab-3 col">
-                                                
-                                                    <?= Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
-                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
-                                                    ]) ?>
-                                                    
+                                                    <?= $messagebtn ?>
                                                 </div>
                                                 <div class="col-lg-4 col-offset-lg-4 col-sm-5 col-offset-sm-6 col-tab-5 col-offset-tab-6 pull-right">
-                                                
-                                                    <?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), $ogUrlMenuDetail, [
-                                                        'class' => 'btn btn-standard btn-d btn-block btn-round-4'
-                                                    ]) ?>
-                                                    
+                                                    <?= $orderbtn ?>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-10 mb-10 visible-xs">
                                                 <div class="col-xs-6 col">
-                                                
-                                                	<?= Html::a('<i class="aicon aicon-warning aicon-1-2x"></i> ' .  Yii::t('app', 'Report'), '', [
-                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
-                                                	]) ?>
-                                                	
+                                                	<?= $reportbtn ?>
                                             	</div>
                                             	<div class="col-xs-6 col">
-                                            	
-                                                	<?= Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
-                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
-                                                	]) ?>
-                                                	
+                                                	<?= $messagebtn ?>
                                                 </div>
                                                 
                                                 <div class="clearfix mb-10"></div>
                                                 
                                                 <div class="col-xs-12">
-                                                
-                                                	<?= Html::a('<i class="aicon aicon-icon-online-ordering aicon-1-2x"></i> ' . Yii::t('app', 'Online Order'), $ogUrlMenuDetail, [
-                                                	    'class' => 'btn btn-standard btn-d btn-block btn-round-4'
-                                                	]) ?>
-                                                	
+                                                	<?= $orderbtn ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -617,7 +613,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
 
                                             <div class="box-content">
                                                 <div class="row">
-                                                    <div class="col-sm-12 col-xs-12">
+                                                    <div class="col-xs-12">
 
                                                         <?php
                                                         foreach ($modelBusiness['businessPromos'] as $dataBusinessPromo): 
@@ -628,17 +624,17 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                                 'uniqueName' => $modelBusiness['unique_name'],
                                                             ];
                                                             
-                                                            $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=312&h=175';
+                                                            $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=1252&h=706';
                                                             
                                                             $dateStart = Yii::$app->formatter->asDate($dataBusinessPromo['date_start'], 'medium');
                                                             $dateEnd = Yii::$app->formatter->asDate($dataBusinessPromo['date_end'], 'medium'); ?>
 
                                                             <div class="row mb-10">
-                                                                <div class="col-sm-4 col-tab-12 col-xs-12">
+                                                                <div class="col-lg-4 col-sm-5 col-xs-12">
                                                                     <?= Html::a(Html::img($img, ['class' => 'img-responsive']), $urlPromoDetail); ?>
                                                                 </div>
                                                                 
-                                                                <div class="col-sm-8 col-tab-12 col-xs-12">
+                                                                <div class="col-lg-8 col-sm-7 col-xs-12 mt-10">
                                                                     <h4 class="promo-title">
                                                                         <?= Html::a($dataBusinessPromo['title'], $urlPromoDetail) ?>
                                                                     </h4>
