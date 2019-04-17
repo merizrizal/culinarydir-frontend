@@ -179,7 +179,7 @@ class OrderController extends base\BaseController
                 $result['header']['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
                 $result['header']['customer_username'] = $modelTransactionSession['userOrdered']['username'];
                 $result['header']['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
-                $result['header']['customer_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
+                $result['header']['customer_location'] = "-6.934074, 107.604858";
                 $result['header']['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
                 
                 $result['header']['business_id'] = $modelTransactionSession['business_id'];
