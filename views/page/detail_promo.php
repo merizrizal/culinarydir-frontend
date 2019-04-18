@@ -1,31 +1,29 @@
 <?php
 
+use frontend\components\GrowlCustom;
 use yii\helpers\Html;
-use yii\helpers\Inflector;
 use yii\web\View;
-use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
-/* @var $modelBusinessPromo core\models\BusinessPromo */
+/* @var $modelPromo core\models\BusinessPromo */
 
 common\assets\OwlCarouselAsset::register($this);
 
-$this->title = $modelBusinessPromo['title'];
+$this->title = $modelPromo['title'];
 
 $ogUrl = [
     'page/detail-promo',
-    'id' => $modelBusinessPromo['id'],
-    'uniqueName' => $modelBusinessPromo['business']['unique_name']
+    'id' => $modelPromo['id'],
 ];
 
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=&w=490&h=276';
+$ogImage = Yii::$app->params['endPointLoadImage'] . 'promo?image=&w=490&h=276';
 
-if (!empty($modelBusinessPromo['image'])) {
+if (!empty($modelPromo['image'])) {
     
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
+    $ogImage = Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image'];
 }
 
-$ogDescription = !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : $this->title;
+$ogDescription = !empty($modelPromo['description']) ? $modelPromo['description'] : $this->title;
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -49,7 +47,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:title',
-    'content' => !empty($modelBusinessPromo['title']) ? $modelBusinessPromo['title'] : 'Promo di Asikmakan'
+    'content' => !empty($modelPromo['title']) ? $modelPromo['title'] : 'Promo di Asikmakan'
 ]);
 
 $this->registerMetaTag([
@@ -68,77 +66,75 @@ $this->registerMetaTag([
         <div class="container detail place-detail">
 
             <div class="row mb-20">
-                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back'), [
-                        'page/detail',
-                        'city' => Inflector::slug($modelBusinessPromo['business']['businessLocation']['city']['name']),
-                        'uniqueName' => $modelBusinessPromo['business']['unique_name'],
-                        '#' => 'special',
-                    ]) ?>
-
+                <div class="col-md-10 col-md-offset-1 col-xs-12">
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']) ?>
                 </div>
             </div>
 
             <div class="row mb-20">
-                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-
-                    <div class="row">
-                        <div class="col-sm-12 col-xs-12">
-                            <div class="view">
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active">
-                                        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?></a>
-                                    </li>
-                                </ul>
-
-                                <div class="tab-content box bg-white">
-                                    <div role="tabpanel" class="tab-pane fade in active" id="photo">
-                                        <div class="row">
-                                            <div class="col-xs-12 text-center">
-                                            	<div class="promo-image-container owl-carousel owl-theme">
-                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']]); ?>
-                                                </div>
+                <div class="col-md-10 col-md-offset-1 col-xs-12">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="box bg-white">
+								<div class="box-title">
+									<h3 class="m-10 text-center"><?= Yii::t('app', 'Promo') . ' ' . $modelPromo['title']; ?></h3>
+								</div>
+								
+								<hr class="divider-w">
+								
+								<div class="box-content">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-center">
+                                        	<div class="promo-image-container owl-carousel owl-theme">
+                                                <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image']]); ?>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+								</div>
+							</div>
+						</div>
+					</div>
 
                     <div class="row mt-20">
-                        <div class="col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
                             <div class="box bg-white">
                                 <div class="box-title">
                                     <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-tab-12 col-xs-12">
-                                            <h4 class="m-0"><?= $modelBusinessPromo['title']; ?></h4>
+                                        <div class="col-xs-12">
+                                            <strong><?= Yii::t('app', 'Terms & Conditions') ?></strong>
                                         </div>
                                     </div>
                                 </div>
 
                                 <hr class="divider-w">
-								
-								<?php
-								$promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
-								    'dateStart' => Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'), 
-								    'dateEnd' => Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium')
-								]); ?>
+                                
+                                <?php
+                                $promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
+                                    'dateStart' => Yii::$app->formatter->asDate($modelPromo['date_start'], 'medium'),
+                                    'dateEnd' => Yii::$app->formatter->asDate($modelPromo['date_end'], 'medium')
+                                ]); ?>
 								
                                 <div class="box-content">
+                                	<div class="overlay" style="display:none"></div>
+                                	<div class="loading-img" style="display:none"></div>
+                                
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <h4 class="visible-lg visible-md visible-sm visible-tab m-0"><small><?= $promoRange ?></small></h4>
-                                            <small class="visible-xs"><?= $promoRange ?></small>
+                                            <?= $modelPromo['description'] ?>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <?= $modelBusinessPromo['description'] ?>
-                                        </div>
+                                    <div class="row mt-20 mb-20">
+                                    	<div class="col-xs-12">
+                                    		<h4 class="text-center visible-lg visible-md visible-sm visible-tab"><?= $promoRange ?></h4>
+                                    		<h5 class="text-center visible-xs"><?= $promoRange ?></h5>
+                                    	</div>
                                     </div>
+                                    
+                                    <?= Html::a('Claim Promo', ['action/claim-promo'], [
+                                        'class' => 'btn btn-block btn-round btn-d claim-promo-btn',
+                                        'data-promo' => $modelPromo['id']
+                                    ]) ?>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -153,6 +149,9 @@ $this->registerMetaTag([
 </div>
 
 <?php
+GrowlCustom::widget();
+$this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
+
 $jscript = '
     $(".promo-image-container").owlCarousel({
         lazyLoad: true,
@@ -160,35 +159,41 @@ $jscript = '
         mouseDrag: false,
         touchDrag: false
     });
+
+    $(".claim-promo-btn").on("click", function() {
+        
+        var thisObj = $(this);
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            data: {
+                "promo_id": thisObj.data("promo")
+            },
+            url: thisObj.attr("href"),
+            beforeSend: function(xhr) {
+
+                thisObj.siblings(".overlay").show();
+                thisObj.siblings(".loading-img").show();
+            },
+            success: function(response) {
+                
+                messageResponse(response.icon, response.title, response.message, response.type);
+
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-img").hide();
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                thisObj.siblings(".overlay").hide();
+                thisObj.siblings(".loading-img").hide();
+            }
+        });
+        
+        return false;
+    });
 ';
 
-$this->registerJs($jscript);
-
-$this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
-
-    echo '
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Event",
-            "name": "' . $modelBusinessPromo['title'] . '",
-            "startDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start']) . '",
-            "location": {
-                "@type": "Place",
-                "name": "' . $modelBusinessPromo['business']['name'] . '",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "' . AddressType::widget([
-                        'businessLocation' => $modelBusinessPromo['business']['businessLocation'],
-                        'showDetail' => true
-                    ]). '",
-                    "addressLocality": "' . $modelBusinessPromo['business']['businessLocation']['city']['name'] . '"
-                }
-            },
-            "image": "' . $ogImage . '",
-            "description": "' . $modelBusinessPromo['short_description'] . '",
-            "endDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end']) . '"
-        }
-        </script>
-    ';
-}); ?>
+$this->registerJs($jscript); ?>

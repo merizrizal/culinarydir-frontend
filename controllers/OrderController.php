@@ -63,7 +63,7 @@ class OrderController extends base\BaseController
             if (!empty($post['TransactionSession']['promo_item_id'])) {
 
                 $modelPromoItem = PromoItem::find()
-                    ->joinWith(['userPromoItems'])
+                    ->joinWith(['userPromoItem'])
                     ->andWhere(['SUBSTRING(promo_item.id, 1, 6)' => trim($post['TransactionSession']['promo_item_id'])])
                     ->andWhere(['promo_item.business_claimed' => null])
                     ->andWhere(['promo_item.not_active' => false])

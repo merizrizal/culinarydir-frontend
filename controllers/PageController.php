@@ -301,7 +301,7 @@ class PageController extends base\BaseHistoryUrlController
         ]);
     }
 
-    public function actionDetailPromo($id, $uniqueName)
+    public function actionDetailBusinessPromo($id, $uniqueName)
     {
         $modelBusinessPromo = BusinessPromo::find()
             ->joinWith([
@@ -318,7 +318,7 @@ class PageController extends base\BaseHistoryUrlController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        return $this->render('detail_promo', [
+        return $this->render('detail_business_promo', [
             'modelBusinessPromo' => $modelBusinessPromo
         ]);
     }
@@ -515,6 +515,22 @@ class PageController extends base\BaseHistoryUrlController
             'modelBusiness' => $modelBusiness,
             'modelTransactionSession' => $modelTransactionSession,
             'dataMenuCategorised' => $dataMenuCategorised
+        ]);
+    }
+    
+    public function actionDetailPromo($id)
+    {
+        $modelPromo = Promo::find()
+            ->andWhere(['id' => $id])
+            ->asArray()->one();
+        
+        if (empty($modelPromo)) {
+            
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
+        return $this->render('detail_promo', [
+           'modelPromo' => $modelPromo 
         ]);
     }
 
