@@ -75,23 +75,10 @@ $this->registerMetaTag([
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
 					<div class="row">
 						<div class="col-xs-12">
-							<div class="box bg-white">
-								<div class="box-title">
-									<h3 class="m-10 text-center"><?= Yii::t('app', 'Promo') . ' ' . $modelPromo['title']; ?></h3>
-								</div>
-								
-								<hr class="divider-w">
-								
-								<div class="box-content">
-                                    <div class="row">
-                                        <div class="col-xs-12 text-center">
-                                        	<div class="promo-image-container owl-carousel owl-theme">
-                                                <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image']]); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-								</div>
-							</div>
+							<hr class="divider-w">
+                        	<div class="promo-image-container owl-carousel owl-theme">
+                                <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image']]); ?>
+                            </div>
 						</div>
 					</div>
 
@@ -101,33 +88,49 @@ $this->registerMetaTag([
                                 <div class="box-title">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <strong><?= Yii::t('app', 'Terms & Conditions') ?></strong>
+                                        	<h4 class="m-10"><?= Yii::t('app', 'Promo') . ' ' . $modelPromo['title']; ?></h4>
                                         </div>
                                     </div>
                                 </div>
 
                                 <hr class="divider-w">
-                                
-                                <?php
-                                $promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
-                                    'dateStart' => Yii::$app->formatter->asDate($modelPromo['date_start'], 'medium'),
-                                    'dateEnd' => Yii::$app->formatter->asDate($modelPromo['date_end'], 'medium')
-                                ]); ?>
 								
                                 <div class="box-content">
                                 	<div class="overlay" style="display:none"></div>
                                 	<div class="loading-img" style="display:none"></div>
-                                
-                                    <div class="row">
+                                	
+                                	<div class="row mb-10">
+                                		<div class="col-xs-12">
+                                			<i class="fas fa-tag"></i> <?= $modelPromo['type'] ?>
+                                			<br>
+                                			<i class="aicon aicon-rupiah"></i> <?= Yii::$app->formatter->asCurrency($modelPromo['amount']) ?>
+                                			<br>
+                                			<i class="aicon aicon-clock"></i> 
+                                			<strong>
+                                			
+                                    			<?= Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
+                                                    'dateStart' => Yii::$app->formatter->asDate($modelPromo['date_start'], 'medium'),
+                                                    'dateEnd' => Yii::$app->formatter->asDate($modelPromo['date_end'], 'medium')
+                                                ]); ?>
+                                                
+                                            </strong>
+                                            <br>
+                                            <i class="fas fa-check"></i> <?= Yii::t('app', '{userClaimed} user have claimed this promo', ['userClaimed' => count($modelPromo['userPromoItems'])]) ?>
+                                		</div>
+                                	</div>
+                                	
+                                	<hr class="divider-w">
+                                	
+                                	<div class="row mt-10">
+                                		<div class="col-xs-12">
+                                        	<strong><?= Yii::t('app', 'Terms & Conditions') . ' : ' ?></strong>
+                                    	</div>
+                                	</div>
+                                	
+                                    <div class="row mt-10">
                                         <div class="col-xs-12">
                                             <?= $modelPromo['description'] ?>
                                         </div>
-                                    </div>
-                                    <div class="row mt-20 mb-20">
-                                    	<div class="col-xs-12">
-                                    		<h4 class="text-center visible-lg visible-md visible-sm visible-tab"><?= $promoRange ?></h4>
-                                    		<h5 class="text-center visible-xs"><?= $promoRange ?></h5>
-                                    	</div>
                                     </div>
                                     
                                     <?= Html::a('Claim Promo', ['action/claim-promo'], [
@@ -139,7 +142,6 @@ $this->registerMetaTag([
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -150,6 +152,7 @@ $this->registerMetaTag([
 
 <?php
 GrowlCustom::widget();
+
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
