@@ -234,7 +234,7 @@ $this->title = 'Checkout'; ?>
                                                                                     <div class="row mb-10">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                                Html::radio('business_delivery_id', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
+                                                                                                Html::radio('TransactionSessionOrder[business_delivery_id]', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
                                                                                             '</label>
                                                                                         </div>
                                                                                         <div class="col-sm-8 col-xs-12">
