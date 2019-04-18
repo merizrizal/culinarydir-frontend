@@ -246,7 +246,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                     </div>
                                                                     
                                                                     <?php
-                                                                    if (!empty($modelBusiness['membershipType'])): ?>
+                                                                    if (!empty($modelBusiness['membershipType']['membershipTypeProductServices'])): ?>
                                                                     
                                                                         <div class="row <?= $addOrderClass ?>">
                                                                         	<div class="col-xs-offset-7 col-xs-5">
