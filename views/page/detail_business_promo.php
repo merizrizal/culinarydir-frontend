@@ -97,7 +97,7 @@ $this->registerMetaTag([
                                     <div role="tabpanel" class="tab-pane fade in active" id="photo">
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
-                                            	<div class="promo-image-container owl-carousel owl-theme">
+                                            	<div class="business-promo-image-container owl-carousel owl-theme">
                                                     <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']]); ?>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@ $this->registerMetaTag([
 
 <?php
 $jscript = '
-    $(".promo-image-container").owlCarousel({
+    $(".business-promo-image-container").owlCarousel({
         lazyLoad: true,
         items: 1,
         mouseDrag: false,

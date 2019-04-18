@@ -521,6 +521,7 @@ class PageController extends base\BaseHistoryUrlController
     public function actionDetailPromo($id)
     {
         $modelPromo = Promo::find()
+            ->joinWith(['userPromoItems'])
             ->andWhere(['id' => $id])
             ->asArray()->one();
         
@@ -559,7 +560,6 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
         $keyword['price']['min'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
         $keyword['price']['max'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
-
         
         Yii::$app->session->set('keyword', $get);
 
