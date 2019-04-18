@@ -411,7 +411,7 @@ class ActionController extends base\BaseController
         
         $modelPromoItem = PromoItem::find()
             ->joinWith([
-                'userPromoItems',
+                'userPromoItem',
                 'promo'
             ])
             ->andWhere(['promo_item.promo_id' => $post['promo_id']])

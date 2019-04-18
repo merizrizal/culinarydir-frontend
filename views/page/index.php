@@ -72,9 +72,6 @@ $appComponent = new AppComponent(); ?>
     	
     	<div class="row mt-10">
         	<div class="col-xs-12">
-        		<div class="overlay" style="display: none;"></div>
-        		<div class="loading-img" style="display: none;"></div>
-        	
                 <div class="news-promo-section owl-carousel owl-theme">
                 
                 	<?php
@@ -82,9 +79,9 @@ $appComponent = new AppComponent(); ?>
                 	    
                 	    foreach ($modelPromo as $dataPromo) {
                 	        
-                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=350&h=154']), ['action/claim-promo'], [
-                	            'class' => 'claim-promo-btn',
-                	            'data-promo' => $dataPromo['id']
+                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=350&h=154']), [
+                	            'page/detail-promo',
+                	            'id' => $dataPromo['id']
                 	        ]);
                 	    }
                 	}
@@ -171,41 +168,6 @@ $jscript = '
             }
         });
 
-        return false;
-    });
-
-    $(".claim-promo-btn").on("click", function() {
-        
-        var thisObj = $(this);
-
-        $.ajax({
-            cache: false,
-            type: "POST",
-            data: {
-                "promo_id": thisObj.data("promo")
-            },
-            url: thisObj.attr("href"),
-            beforeSend: function(xhr) {
-
-                thisObj.parents(".news-promo-section").siblings(".overlay").show();
-                thisObj.parents(".news-promo-section").siblings(".loading-img").show();
-            },
-            success: function(response) {
-                
-                messageResponse(response.icon, response.title, response.message, response.type);
-
-                thisObj.parents(".news-promo-section").siblings(".overlay").hide();
-                thisObj.parents(".news-promo-section").siblings(".loading-img").hide();
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                
-                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                thisObj.parents(".news-promo-section").siblings(".overlay").hide();
-                thisObj.parents(".news-promo-section").siblings(".loading-img").hide();
-            }
-        });
-        
         return false;
     });
 

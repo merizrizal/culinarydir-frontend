@@ -619,7 +619,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                         foreach ($modelBusiness['businessPromos'] as $dataBusinessPromo): 
                                                         
                                                             $urlPromoDetail = [
-                                                                'page/detail-promo',
+                                                                'page/detail-business-promo',
                                                                 'id' => $dataBusinessPromo['id'],
                                                                 'uniqueName' => $modelBusiness['unique_name'],
                                                             ];

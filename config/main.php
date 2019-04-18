@@ -70,7 +70,7 @@ return [
                 'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>/' => 'page/detail',
                 
                 'menu-pesan-online/di/<uniqueName:\w+(-\w+)*>' => 'page/menu',
-                'promo-spesial-diskon/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/detail-promo',
+                'promo-spesial-diskon/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/detail-business-promo',
                 
                 'review-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-review',
                 'photo-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-photo',
