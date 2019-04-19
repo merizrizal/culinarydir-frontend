@@ -169,9 +169,18 @@ class PageController extends base\BaseHistoryUrlController
                     $query->andOnCondition(['>=', 'business_promo.date_end', Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
+                'membershipType' => function ($query) {
+                
+                    $query->andOnCondition(['membership_type.is_active' => true]);
+                },
+                'membershipType.membershipTypeProductServices' => function ($query) {
+                
+                    $query->andOnCondition(['membership_type_product_service.not_active' => false]);
+                },
                 'membershipType.membershipTypeProductServices.productService' => function ($query) {
                 
-                    $query->andOnCondition(['product_service.code_name' => 'order-online']);
+                    $query->andOnCondition(['product_service.code_name' => 'order-online'])
+                        ->andOnCondition(['product_service.not_active' => false]);
                 },
                 'userLoves' => function ($query) {
 
@@ -191,10 +200,24 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->asArray()->one();
+
+        $isOrderOnline = false;
         
         if (empty($modelBusiness)) {
             
             throw new NotFoundHttpException('The requested page does not exist.');
+        } else {
+            
+            if (!empty($modelBusiness['membershipType']['membershipTypeProductServices'])) {
+                
+                foreach ($modelBusiness['membershipType']['membershipTypeProductServices'] as $membershipTypeProductService) {
+                    
+                    if (($isOrderOnline = !empty($membershipTypeProductService['productService']))) {
+                        
+                        break;
+                    }
+                }
+            }
         }
 
         $modelUserPostMain = UserPostMain::find()
@@ -298,6 +321,7 @@ class PageController extends base\BaseHistoryUrlController
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => Yii::$app->request->getQueryParams(),
+            'isOrderOnline' => $isOrderOnline
         ]);
     }
 
@@ -461,19 +485,42 @@ class PageController extends base\BaseHistoryUrlController
                     
                     $query->andOnCondition(['OR', ['product_category.type' => 'Menu'], ['product_category.type' => 'Specific-Menu']]);    
                 },
+                'membershipType' => function ($query) {
+                
+                    $query->andOnCondition(['membership_type.is_active' => true]);
+                },
+                'membershipType.membershipTypeProductServices' => function ($query) {
+                    
+                    $query->andOnCondition(['membership_type_product_service.not_active' => false]);
+                },
                 'membershipType.membershipTypeProductServices.productService' => function ($query) {
                 
-                    $query->andOnCondition(['product_service.code_name' => 'order-online']);
+                    $query->andOnCondition(['product_service.code_name' => 'order-online'])
+                        ->andOnCondition(['product_service.not_active' => false]);
                 },
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->asArray()->one();
             
+        $isOrderOnline = false;
+
         if (empty($modelBusiness)) {
             
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
+        } else {
             
+            if (!empty($modelBusiness['membershipType']['membershipTypeProductServices'])) {
+                
+                foreach ($modelBusiness['membershipType']['membershipTypeProductServices'] as $membershipTypeProductService) {
+                    
+                    if (($isOrderOnline = !empty($membershipTypeProductService['productService']))) {
+                        
+                        break;
+                    }
+                }
+            }
+        }
+
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'transactionItems' => function ($query) {
@@ -514,7 +561,8 @@ class PageController extends base\BaseHistoryUrlController
         return $this->render('menu', [
             'modelBusiness' => $modelBusiness,
             'modelTransactionSession' => $modelTransactionSession,
-            'dataMenuCategorised' => $dataMenuCategorised
+            'dataMenuCategorised' => $dataMenuCategorised,
+            'isOrderOnline' => $isOrderOnline
         ]);
     }
     

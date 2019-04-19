@@ -21,6 +21,7 @@ use frontend\components\GrowlCustom;
 /* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
+/* @var $isOrderOnline boolean */
 
 common\assets\OwlCarouselAsset::register($this);
 
@@ -461,7 +462,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4'
                                             ]);
                                             
-                                            if (empty($modelBusiness['membershipType']['membershipTypeProductServices'])) {
+                                            if (!$isOrderOnline) {
                                                 
                                                 $orderbtn = Html::a('<i class="fas fa-utensils"></i> ' . Yii::t('app', 'Menu List'), $ogUrlMenuDetail, [
                                                     'class' => 'btn btn-standard btn-d btn-block btn-round-4'
