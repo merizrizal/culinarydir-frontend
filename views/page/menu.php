@@ -10,6 +10,7 @@ use frontend\components\GrowlCustom;
 /* @var $modelBusiness core\models\Business */
 /* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $dataMenuCategorised Array */
+/* @var $isOrderOnline boolean */
 
 $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 
@@ -182,7 +183,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                     </div>
                                                                     
                                                                     <?php
-                                                                    if (!empty($modelBusiness['membershipType']['membershipTypeProductServices'])): ?>
+                                                                    if ($isOrderOnline): ?>
                                                                     
                                                                         <div class="row <?= $addOrderClass ?>">
                                                                         	<div class="col-xs-offset-8 col-xs-4">
@@ -246,7 +247,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                     </div>
                                                                     
                                                                     <?php
-                                                                    if (!empty($modelBusiness['membershipType']['membershipTypeProductServices'])): ?>
+                                                                    if ($isOrderOnline): ?>
                                                                     
                                                                         <div class="row <?= $addOrderClass ?>">
                                                                         	<div class="col-xs-offset-7 col-xs-5">
