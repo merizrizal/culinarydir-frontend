@@ -99,17 +99,17 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                     	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
                                     		
                                     		<?php
-                                    		$subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
+                                    		$grandTotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
                                     		$checkSymbol = ' | <i class="far fa-check-circle ' . ($modelTransactionSession['status'] == 'Finish' ? "text-success" : "text-danger") . '"></i>';
                                     		
                                     		if (!empty($modelTransactionSession['discount_value'])) {
                                     		    
-                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '
+                                    		    echo 'Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '
                                                     <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '
-                                                    <br>Subtotal : ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . $checkSymbol;
+                                                    <br>Grand Total : ' . Yii::$app->formatter->asCurrency($grandTotal < 0 ? 0 : $grandTotal) . $checkSymbol;
                                     		} else {
                                     		
-                                    		    echo 'Total : ' . Yii::$app->formatter->asCurrency($subtotal) . $checkSymbol;
+                                    		    echo 'Grand Total : ' . Yii::$app->formatter->asCurrency($grandTotal) . $checkSymbol;
                                     		} ?>
                                 			
                                     	</div>
