@@ -71,13 +71,13 @@ class OrderController extends base\BaseController
                         ->andWhere(['promo_item.not_active' => false])
                         ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
                         ->one();
-    
+                    
                     if (!empty($modelPromoItem)) {
     
                         $modelPromoItem->business_claimed = $modelTransactionSession->business_id;
                         $modelPromoItem->not_active = true;
     
-                        if ($modelPromoItem->promo->minimum_amount_order <= $modelTransactionSession['total_price']) {
+                        if ($modelPromoItem->promo->minimum_amount_order <= $modelTransactionSession->total_price) {
                             
                             if (($flag = $modelPromoItem->save())) {
                                 
@@ -108,11 +108,7 @@ class OrderController extends base\BaseController
                 if ($flag) {
     
                     $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
-                    $modelTransactionSessionOrder->business_delivery_id = !empty($post['business_delivery_id']) ? $post['business_delivery_id'] : null;
-                    $modelTransactionSessionOrder->business_payment_id = !empty($post['business_payment_id']) ? $post['business_payment_id'] : null;
-    
                     $modelTransactionSession->is_closed = true;
-                    $modelTransactionSession->note = !empty($post['TransactionSession']['note']) ? $post['TransactionSession']['note'] : null;
     
                     if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
     
@@ -120,7 +116,7 @@ class OrderController extends base\BaseController
     
                         foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
     
-                            if ($dataBusinessDelivery['id'] == $post['business_delivery_id']) {
+                            if ($dataBusinessDelivery['id'] == $modelTransactionSessionOrder->business_delivery_id) {
     
                                 $dataDelivery = $dataBusinessDelivery;
                                 break;
@@ -131,7 +127,7 @@ class OrderController extends base\BaseController
     
                         foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
     
-                            if ($dataBusinessPayment['id'] == $post['business_payment_id']) {
+                            if ($dataBusinessPayment['id'] == $modelTransactionSessionOrder->business_payment_id) {
     
                                 $dataPayment = $dataBusinessPayment;
                                 break;
@@ -148,13 +144,13 @@ class OrderController extends base\BaseController
                             $messageOrder .= (!empty($dataTransactionItem['note']) ? '\n' . $dataTransactionItem['note'] : '') . '\n\n';
                         }
     
-                        $messageOrder .= '*Total: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
+                        $messageOrder .= '*Subtotal: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '*';
                         
                         if (!empty($modelTransactionSession['discount_value'])) {
                             
                             $subtotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
                             $messageOrder .= '\n\n*Promo: ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '*';
-                            $messageOrder .= '\n\n*Subtotal: ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . '*';
+                            $messageOrder .= '\n\n*Grand Total: ' . Yii::$app->formatter->asCurrency($subtotal < 0 ? 0 : $subtotal) . '*';
                         }
                         
                         $messageOrder .= !empty($dataDelivery['note']) ? '\n\n' . $dataDelivery['note'] : '';
@@ -162,6 +158,12 @@ class OrderController extends base\BaseController
                         $messageOrder .= !empty($modelTransactionSession['note']) ? '\n\nCatatan: ' . $modelTransactionSession['note'] : '';
     
                         $messageOrder = str_replace('%5Cn', '%0A', str_replace('+', '%20', urlencode($messageOrder)));
+                    } else {
+                        
+                        Yii::$app->session->setFlash('message', [
+                            'title' => 'Gagal Checkout',
+                            'message' => 'Terjadi kesalahan saat menyimpan data',
+                        ]);
                     }
                 }
     
@@ -173,11 +175,6 @@ class OrderController extends base\BaseController
                 } else {
     
                     $transaction->rollBack();
-    
-                    Yii::$app->session->setFlash('message', [
-                        'title' => 'Gagal Checkout',
-                        'message' => 'Terjadi kesalahan saat menyimpan data',
-                    ]);
                 }
             }
         }

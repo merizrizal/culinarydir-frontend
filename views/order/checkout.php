@@ -228,13 +228,13 @@ $this->title = 'Checkout'; ?>
                                                                         ArrayHelper::map(
                                                                             $modelTransactionSession['business']['businessDeliveries'],
                                                                             'id',
-                                                                            function ($data) {
+                                                                            function ($data) use ($form, $modelTransactionSessionOrder) {
 
                                                                                 return '
                                                                                     <div class="row mb-10">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                                Html::radio('TransactionSessionOrder[business_delivery_id]', false, ['value' => $data['id']]) . $data['deliveryMethod']['delivery_name'] .
+                                                                                                $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radio(['label' => $data['deliveryMethod']['delivery_name'], 'value' => $data['id'], 'uncheck' => null]) .
                                                                                             '</label>
                                                                                         </div>
                                                                                         <div class="col-sm-8 col-xs-12">
@@ -272,13 +272,13 @@ $this->title = 'Checkout'; ?>
                                                                         ArrayHelper::map(
                                                                             $modelTransactionSession['business']['businessPayments'],
                                                                             'id',
-                                                                            function ($data) {
+                                                                            function ($data) use ($form, $modelTransactionSessionOrder) {
 
                                                                                 return '
                                                                                     <div class="row mb-10">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                                Html::radio('business_payment_id', false, ['value' => $data['id']]) . $data['paymentMethod']['payment_name'] .
+                                                                                                $form->field($modelTransactionSessionOrder, 'business_payment_id')->radio(['label' => $data['paymentMethod']['payment_name'], 'value' => $data['id'], 'uncheck' => null]) .
                                                                                             '</label>
                                                                                         </div>
                                                                                         <div class="col-sm-8 col-xs-12">' .
