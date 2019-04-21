@@ -1,17 +1,17 @@
 <?php
 namespace frontend\components;
 
+use Yii;
 use yii\base\Widget;
 use yii\web\View;
 
 class FacebookShare extends Widget
 {
-
     public function init()
     {
         parent::init();
 
-        $jscript = '
+        $this->getView()->registerJs('
             function facebookShare(params) {
 
                 FB.ui({
@@ -33,8 +33,25 @@ class FacebookShare extends Widget
                     }
                 });
             }
-        ';
+        ', View::POS_HEAD);
 
-        $this->getView()->registerJs($jscript, View::POS_HEAD);
+        $this->getView()->registerJs('
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId            : "' . Yii::$app->params['facebook']['clientId'] . '",
+                    autoLogAppEvents : true,
+                    xfbml            : true,
+                    version          : "v3.1"
+                });
+            };
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, "script", "facebook-jssdk"));
+        ', \yii\web\View::POS_END);
     }
 }
