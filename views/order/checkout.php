@@ -4,12 +4,16 @@ use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
 use kartik\touchspin\TouchSpin;
+use core\models\PromoItem;
 use frontend\components\GrowlCustom;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $modelTransactionSessionOrder core\models\TransactionSessionOrder */
+
+kartik\select2\Select2Asset::register($this);
+kartik\select2\ThemeKrajeeAsset::register($this);
 
 $this->title = 'Checkout'; ?>
 
@@ -196,10 +200,34 @@ $this->title = 'Checkout'; ?>
                                                             </div>
                                                             <div class="col-sm-4 col-xs-12 mb-20">
 
-                                                                <?= $form->field($modelTransactionSession, 'promo_item_id')->textInput([
-                                                                    'class' => 'form-control',
-                                                                    'placeholder' => Yii::t('app', 'Promo Code')
-                                                                ]) ?>
+                                                                <?php
+                                                                Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+                                                                
+                                                                echo $form->field($modelTransactionSession, 'promo_item_id')->dropDownList(
+                                                                    ArrayHelper::map(
+                                                                        PromoItem::find()
+                                                                            ->joinWith([
+                                                                                'userPromoItem',
+                                                                                'promo'
+                                                                            ])
+                                                                            ->andWhere(['promo_item.not_active' => false])
+                                                                            ->andWhere(['promo_item.business_claimed' => null])
+                                                                            ->andWhere(['>=', 'promo.date_end', Yii::$app->formatter->asDate(time())])
+                                                                            ->andWhere(['promo.not_active' => false])
+                                                                            ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
+                                                                            ->asArray()->all(),
+                                                                        'id',
+                                                                        function ($data) {
+                                                                            
+                                                                            return substr($data['id'], 0, 6);
+                                                                        }
+                                                                    ),
+                                                                    [
+                                                                        'prompt' => '',
+                                                                        'class' => 'promo-code-field form-control',
+                                                                    ]);
+                                                                    
+                                                                Yii::$app->formatter->timeZone = 'UTC'; ?>
 
                                                             </div>
                                                         </div>
@@ -366,6 +394,12 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customic
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
+    $(".promo-code-field").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'Promo Code') . '",
+        minimumResultsForSearch: "Infinity"
+    });
+
     $(".transaction-item-amount").on("change", function() {
 
         var thisObj = $(this);
