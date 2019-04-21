@@ -3,9 +3,9 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use frontend\components\AppComponent;
+use yii\helpers\Html;
 
 AppAsset::register($this); ?>
 
@@ -25,7 +25,7 @@ AppAsset::register($this); ?>
 
         <title><?= Html::encode(Yii::$app->name) . ' - ' . Html::encode($this->title) ?></title>
         <?php $this->head(); ?>
-        <?php 
+        <?php
         if (Yii::$app->request->serverName == 'asikmakan.com' || Yii::$app->request->serverName == 'www.asikmakan.com') {
             echo '
                 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -34,7 +34,7 @@ AppAsset::register($this); ?>
         		  window.dataLayer = window.dataLayer || [];
         		  function gtag(){dataLayer.push(arguments);}
         		  gtag("js", new Date());
-        		
+
         		  gtag("config", "UA-118083293-1");
         		</script>
             ';
@@ -58,17 +58,17 @@ AppAsset::register($this); ?>
             <div class="main">
                 <?= $appComponent->appFooter() ?>
             </div>
-            
+
             <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up fa-2x"></i></a></div>
-            
+
         <?php
         else: ?>
-            
+
             <br><br>
-            
+
         <?php
         endif; ?>
-        
+
     </main>
 
     <?php
@@ -76,28 +76,7 @@ AppAsset::register($this); ?>
         foreach ($this->params['beforeEndBody'] as $value) {
             $value();
         }
-    }
-
-    $jscript = '
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId            : "' . Yii::$app->params['facebook']['clientId'] . '",
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : "v3.1"
-            });
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, "script", "facebook-jssdk"));
-    ';
-
-    $this->registerJs($jscript, \yii\web\View::POS_END); ?>
+    } ?>
 
 <?php $this->endBody() ?>
 </body>

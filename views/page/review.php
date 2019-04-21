@@ -33,14 +33,14 @@ $ogProductCategory = '';
 $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
 
 if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
-    
+
     $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['userPostMains'][0]['image'];
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
-    
+
     if ($dataBusinessProductCategory['productCategory']['is_active']) {
-        
+
         $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';
     }
 }
@@ -91,8 +91,8 @@ kartik\popover\PopoverXAsset::register($this); ?>
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
                     <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
-                        'page/detail', 
-                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']), 
+                        'page/detail',
+                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']),
                         'uniqueName' => $modelUserPostMain['business']['unique_name']
                     ], ['class' => 'btn btn-standard p-0']); ?>
 
@@ -109,9 +109,9 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                     <?php
                                     if (!empty($modelUserPostMain)):
-                                        
+
                                         $img = !empty($modelUserPostMain['user']['image']) ? $modelUserPostMain['user']['image'] . '&w=200&h=200' : 'default-avatar.png';
-										
+
 										$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0; ?>
 
                                         <div class="review-container">
@@ -122,13 +122,13 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                 <div class="col-md-4 col-sm-5 col-tab-7 col-xs-12">
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
-                                                        
+
         												    <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
         												        'class' => 'img-responsive img-circle img-profile-thumb img-component'
         												    ]), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
-        												    
+
                                                         </div>
-        
+
                                                         <div class="widget-posts-body">
                                                             <?= Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
                                                             <br>
@@ -152,17 +152,17 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                                                             <?php
                                                                             $ratingComponent = [];
-                                                                            
+
                                                                             foreach ($modelUserPostMain['userVotes'] as $dataUserVote) {
-                                                                                
+
                                                                                 if (!empty($dataUserVote['ratingComponent'])) {
-                                                                                    
+
                                                                                     $ratingComponent[$dataUserVote['rating_component_id']] = $dataUserVote;
                                                                                 }
                                                                             }
-                                                                            
+
                                                                             ksort($ratingComponent);
-                                                                            
+
                                                                             if (!empty($ratingComponent)):
 
                                                                                 foreach ($ratingComponent as $dataUserVote): ?>
@@ -206,7 +206,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                 	<ul class="list-inline mt-0 mb-0">
                                                         <li>
                                                             <div class="widget star-rating">
-                                
+
                                                                 <?= StarRating::widget([
                                                                     'id' => 'rating-' . $modelUserPostMain['id'],
                                                                     'name' => 'rating_' . $modelUserPostMain['id'],
@@ -218,7 +218,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                         'showCaption' => false,
                                                                     ]
                                                                 ]); ?>
-                                
+
                                                             </div>
                                                         </li>
                                                         <li>
@@ -272,17 +272,17 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                 </div>
                                             </div>
 
-                                            <?php                   
+                                            <?php
                         					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
                         					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
                         					$photoCount = !empty($modelUserPostMain['userPostMains']) ? count($modelUserPostMain['userPostMains']) : 0;
-                        					
-                        					$loveSpanCount = '<span class="total-likes-review">' . $loveCount . '</span>'; 
+
+                        					$loveSpanCount = '<span class="total-likes-review">' . $loveCount . '</span>';
                         					$commentSpanCount = '<span class="total-comments-review">' . $commentCount . '</span>';
                         					$photoSpanCount = '<span class="total-photos-review">' . $photoCount . '</span>';
-                        					
+
                         					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
-                                					
+
                                             <div class="row visible-xs">
                                                 <div class="col-xs-3">
                                                     <ul class="list-inline mt-0 mb-0">
@@ -302,7 +302,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                     </ul>
                                                 </div>
                                             </div>
-                                
+
                                             <div class="row">
                                                 <div class="col-sm-7 col-tab-7 col-xs-12">
                                                     <ul class="list-inline list-review mt-0 mb-0">
@@ -340,7 +340,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                                         <div class="overlay" style="display: none;"></div>
                                                         <div class="loading-img" style="display: none;"></div>
-                                                        
+
                                                         <div class="comment-section">
 
                                                             <?php
@@ -354,7 +354,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
 
                                                                                     <?php
                                                                                     $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=200&h=200' : 'default-avatar.png';
-                                                                                    
+
                                                                                     echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
                                                                                         'class' => 'img-responsive img-circle img-comment-thumb img-component'
                                                                                     ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
@@ -381,8 +381,6 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <hr class="divider-w mb-10">
                                         </div>
 
                                     <?php
@@ -567,10 +565,10 @@ $jscript = '
     });
 ';
 
-$this->registerJs($jscript); 
+$this->registerJs($jscript);
 
 $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogProductCategory, $ogOverallValue, $ogTitle, $ogPerson, $ogDescription) {
-    
+
     echo '
         <script type="application/ld+json">
         {
