@@ -66,7 +66,7 @@ class OrderController extends base\BaseController
         if (($post = Yii::$app->request->post())) {
             
             if ($modelTransactionSession->load($post) && $modelTransactionSessionOrder->load($post)) {
-            
+
                 $transaction = Yii::$app->db->beginTransaction();
                 $flag = true;
     
@@ -74,7 +74,7 @@ class OrderController extends base\BaseController
     
                     $modelPromoItem = PromoItem::find()
                         ->joinWith(['userPromoItem'])
-                        ->andWhere(['SUBSTRING(promo_item.id, 1, 6)' => trim($post['TransactionSession']['promo_item_id'])])
+                        ->andWhere(['promo_item.id' => $post['TransactionSession']['promo_item_id']])
                         ->andWhere(['promo_item.business_claimed' => null])
                         ->andWhere(['promo_item.not_active' => false])
                         ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
@@ -92,6 +92,12 @@ class OrderController extends base\BaseController
                                 $modelTransactionSession->promo_item_id = $modelPromoItem->id;
                                 $modelTransactionSession->discount_value = $modelPromoItem->amount;
                                 $modelTransactionSession->discount_type = 'Amount';
+                            } else {
+                                
+                                Yii::$app->session->setFlash('message', [
+                                    'title' => 'Gagal Checkout',
+                                    'message' => 'Terjadi kesalahan saat menyimpan data',
+                                ]);
                             }
                         } else {
                             
