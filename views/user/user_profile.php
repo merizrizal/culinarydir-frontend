@@ -128,7 +128,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <i class="aicon aicon-camera aicon-1-5x"></i>
+                                                <i class="aicon aicon-camera1 aicon-1-5x"></i>
                                                 <li><?= Yii::t('app', 'Photo') ?></li>
                                                 <span class="badge total-user-photo"></span>
                                             </ul>

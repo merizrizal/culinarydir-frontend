@@ -151,15 +151,15 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
                     <div class="row mb-20">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-xs-12">
 
                             <div class="row">
-                                <div class="col-sm-12 col-xs-12">
+                                <div class="col-xs-12">
                                     <div class="view">
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active">
-                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Ambience') ?></a>
+                                                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera1"></i> <?= Yii::t('app', 'Ambience') ?></a>
                                             </li>
                                             <li role="presentation">
                                                 <a href="#menu" aria-controls="menu" role="tab" data-toggle="tab"><i class="aicon aicon-icon-budicon"></i> Menu</a>
@@ -247,7 +247,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                             </div>
 
                             <div class="row mt-20">
-                                <div class="col-sm-12 col-xs-12">
+                                <div class="col-xs-12">
                                     <div class="box bg-white">
                                         <div class="box-title">
                                             <div class="row">
@@ -298,7 +298,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                             <div class="widget">
                                                                 <ul class="icon-list">
                                                                     <li>
-                                                                        <i class="aicon aicon-home"></i>
+                                                                        <i class="aicon aicon-home1"></i>
 
                                                                         <?php 
                                                                         echo AddressType::widget([
@@ -313,7 +313,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
 
                                                                     </li>
                                                                     <li>
-                                                                        <i class="aicon aicon-rupiah"></i>
+                                                                        <i class="aicon aicon-image2vector"></i>
                                                                         <?= $ogPriceRange; ?>
                                                                     </li>
                                                                     <li><i class="aicon aicon-icon-phone-fill"></i> <?= !empty($modelBusiness['phone1']) ? $modelBusiness['phone1'] : '-' ?></li>
@@ -700,7 +700,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                     <ul class="link-icon list-inline tab-detail">
                                                         <li>
                                                             <ul class="text-center">
-                                                                <li><i class="aicon aicon-camera aicon-1-5x"></i><span class="badge total-photo"></span></li>
+                                                                <li><i class="aicon aicon-camera1 aicon-1-5x"></i><span class="badge total-photo"></span></li>
                                                                 <li><?= Yii::t('app', 'Photo') ?></li>
                                                             </ul>
                                                         </li>
@@ -733,7 +733,7 @@ $noImg = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=75
                                                 <ul class="dropdown-menu pull-right">
                                                     <li role="presentation">
                                                         <a href="#view-photo" aria-controls="view-photo-xs" role="tab" data-toggle="tab">
-                                                        	<h6><i class="aicon aicon-camera"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6>
+                                                        	<h6><i class="aicon aicon-camera1"></i> <?= Yii::t('app', 'Photo') ?>(<span class="total-photo"></span>)</h6>
                                                         </a>
                                                     </li>
                                                     <li role="presentation">

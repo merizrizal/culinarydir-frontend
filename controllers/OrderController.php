@@ -114,7 +114,9 @@ class OrderController extends base\BaseController
                 if ($flag) {
     
                     $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+                    
                     $modelTransactionSession->is_closed = true;
+                    $modelTransactionSession->promo_item_id = !empty($modelTransactionSession->promo_item_id) ? $modelTransactionSession->promo_item_id : null;
     
                     if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
     
