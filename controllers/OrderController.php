@@ -124,7 +124,9 @@ class OrderController extends base\BaseController
                     $result = [];
     
                     $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+                    
                     $modelTransactionSession->status = 'New';
+                    $modelTransactionSession->promo_item_id = !empty($modelTransactionSession->promo_item_id) ? $modelTransactionSession->promo_item_id : null;
     
                     if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
     

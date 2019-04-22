@@ -84,13 +84,13 @@ $this->registerMetaTag([
                 	
                     $btnProfile =
                         '<div class="btn-group">' .
-                            Html::a('<i class="aicon aicon-pencil2"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
+                            Html::a('<i class="aicon aicon-pencil1"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
                             <a class="btn btn-d btn-standard dropdown-toggle-split" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                                 <span class="fa fa-ellipsis-h"></span>
                             </a>
                             <ul class="dropdown-menu pull-right profile-btn">
                                 <li>' .
-                                    Html::a('<i class="aicon aicon-key2"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) .
+                                    Html::a('<i class="aicon aicon-key1"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) .
                                 '</li>
                                 <li>' .
                                    	Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout']) .
@@ -159,7 +159,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <li><i class="aicon aicon-camera aicon-1-5x"></i><span class="badge total-user-photo"></span></li>
+                                                <li><i class="aicon aicon-camera1 aicon-1-5x"></i><span class="badge total-user-photo"></span></li>
                                                 <li><?= Yii::t('app', 'Photo') ?></li>
                                             </ul>
                                         </li>
@@ -183,7 +183,7 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <li><i class="aicon aicon-hot-promo aicon-1-5x"></i><span class="badge total-new-promo"></span></li>
+                                                <li><i class="aicon aicon-price-tags aicon-1-5x"></i><span class="badge total-new-promo"></span></li>
                                                 <li><?= Yii::t('app', 'New Promo') ?></li>
                                             </ul>
                                         </li>
@@ -209,7 +209,7 @@ $this->registerMetaTag([
                                     </li>
                                     <li role="presentation">
                                         <a href="#view-new-promo" aria-controls="view-new-promo" role="tab" data-toggle="tab">
-                                        	<h6><i class="aicon aicon-hot-promo"></i> <?= Yii::t('app', 'New Promo') ?> (<span class="total-new-promo"></span>)</h6>
+                                        	<h6><i class="aicon aicon-price-tags"></i> <?= Yii::t('app', 'New Promo') ?> (<span class="total-new-promo"></span>)</h6>
                                     	</a>
                                     </li>
                                 </ul>
