@@ -3,14 +3,15 @@
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use kartik\touchspin\TouchSpin;
-use core\models\PromoItem;
-use frontend\components\GrowlCustom;
 use yii\helpers\ArrayHelper;
+use kartik\touchspin\TouchSpin;
+use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $modelTransactionSessionOrder core\models\TransactionSessionOrder */
+/* @var $promoItemClaimed Array */
+/* @var $dataOption Array */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -204,19 +205,7 @@ $this->title = 'Checkout'; ?>
                                                                 Yii::$app->formatter->timeZone = 'Asia/Jakarta';
                                                                 
                                                                 echo $form->field($modelTransactionSession, 'promo_item_id')->dropDownList(
-                                                                    ArrayHelper::map(
-                                                                        PromoItem::find()
-                                                                            ->joinWith([
-                                                                                'userPromoItem',
-                                                                                'promo'
-                                                                            ])
-                                                                            ->andWhere(['promo_item.not_active' => false])
-                                                                            ->andWhere(['promo_item.business_claimed' => null])
-                                                                            ->andWhere(['>=', 'promo.date_end', Yii::$app->formatter->asDate(time())])
-                                                                            ->andWhere(['promo.not_active' => false])
-                                                                            ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
-                                                                            ->asArray()->all(),
-                                                                        'id',
+                                                                    ArrayHelper::map($promoItemClaimed, 'id',
                                                                         function ($data) {
                                                                             
                                                                             return substr($data['id'], 0, 6);
@@ -225,6 +214,7 @@ $this->title = 'Checkout'; ?>
                                                                     [
                                                                         'prompt' => '',
                                                                         'class' => 'promo-code-field form-control',
+                                                                        'options' => $dataOption
                                                                     ]);
                                                                     
                                                                 Yii::$app->formatter->timeZone = 'UTC'; ?>
@@ -234,9 +224,17 @@ $this->title = 'Checkout'; ?>
                                                         <div class="col-sm-offset-3 col-sm-5 col-xs-12">
                                                             <table class="table table-responsive table-striped table-border checkout-table">
                                                                 <tbody>
-                                                                    <tr>
+                                                                	<tr>
                                                                         <th class="font-alt">Total</th>
-                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) ?></td>
+                                                                        <td class="total-price"><?= $modelTransactionSession['total_price'] ?></td>
+                                                                    </tr>
+                                                                    <tr class="promo-amount" style="display:none">
+                                                                        <th class="font-alt">Promo</th>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr class="grand-total" style="display:none">
+                                                                        <th class="font-alt">Grand Total</th>
+                                                                        <td></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -350,7 +348,7 @@ $this->title = 'Checkout'; ?>
                                                                 <tbody>
                                                                     <tr>
                                                                         <th class="font-alt">Total</th>
-                                                                        <td class="total-price"><?= Yii::$app->formatter->asCurrency(0) ?></td>
+                                                                        <td class="total-price">0</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -390,10 +388,15 @@ GrowlCustom::widget();
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/jquery-currency/jquery.currency.js', ['depends' => 'yii\web\YiiAsset']);
 
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
+    var totalPrice = ' . $modelTransactionSession['total_price'] . ';
+
+    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
+
     $(".promo-code-field").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Promo Code') . '",
@@ -425,6 +428,17 @@ $jscript = '
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
 
                     $(".total-price").html(response.total_price);
+                    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
+
+                    totalPrice = response.total_price;
+
+                    if ($(".promo-amount").is(":visible")) {
+
+                        var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
+
+                        $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
+                        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                    }
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -510,11 +524,25 @@ $jscript = '
                         $(".promo-code-section").siblings().removeClass("col-sm-offset-3").addClass("col-sm-offset-7");
                         $(".promo-code-section").remove();
                         $(".order-online-form").remove();
+                        $(".promo-amount").remove();
+                        $(".grand-total").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-submit").prop("disabled", true);
+                    } else {
+
+                        totalPrice = response.total_price;
+    
+                        if ($(".promo-amount").is(":visible")) {
+    
+                            var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
+    
+                            $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
+                            $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                        }
                     }
 
                     $(".total-price").html(response.total_price);
+                    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -533,6 +561,21 @@ $jscript = '
         });
 
         return false;
+    });
+
+    $(".promo-code-field").on("select2:select", function() {
+
+        var amount = $(this).find(":selected").data("amount");
+
+        var grandTotal = totalPrice - amount < 0 ? 0 : totalPrice - amount;
+        
+        $(".promo-amount").show();
+        $(".promo-amount").children().last().html(amount);
+        $(".promo-amount").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+
+        $(".grand-total").show();
+        $(".grand-total").children().last().html(grandTotal);
+        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
     });
 ';
 

@@ -186,10 +186,31 @@ class OrderController extends base\BaseController
                 }
             }
         }
-
+        
+        $promoItemClaimed = PromoItem::find()
+            ->joinWith([
+                'userPromoItem',
+                'promo'
+            ])
+            ->andWhere(['promo_item.not_active' => false])
+            ->andWhere(['promo_item.business_claimed' => null])
+            ->andWhere(['>=', 'promo.date_end', Yii::$app->formatter->asDate(time())])
+            ->andWhere(['promo.not_active' => false])
+            ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
+            ->asArray()->all();
+        
+        $dataOption = [];
+        
+        foreach ($promoItemClaimed as $promoItem) {
+            
+            $dataOption[$promoItem['id']] = ['data-amount' => $promoItem['promo']['amount']];
+        }
+        
         return $this->render('checkout', [
             'modelTransactionSession' => $modelTransactionSession,
-            'modelTransactionSessionOrder' => $modelTransactionSessionOrder
+            'modelTransactionSessionOrder' => $modelTransactionSessionOrder,
+            'promoItemClaimed' => $promoItemClaimed,
+            'dataOption' => $dataOption
         ]);
     }
 }

@@ -147,7 +147,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = $modelTransactionSession->total_price;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
@@ -198,7 +198,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = $modelTransactionSession->total_price;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
