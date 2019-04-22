@@ -347,6 +347,7 @@ $this->registerCss($cssScript);
 
 GrowlCustom::widget();
 
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/jquery-currency/jquery.currency.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse(), View::POS_HEAD);
 
 $totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
@@ -450,7 +451,8 @@ $jscript .= '
             url: thisObj.data("url"),
             data: {
                 "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
-                "amount": amount
+                "amount": amount,
+                "page": "menu"
             },
             beforeSend: function(xhr) {
 
@@ -530,8 +532,9 @@ $jscript .= '
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
-            data: { 
-                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val()
+            data: {
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
+                "page": "menu"
             },
             beforeSend: function(xhr) {
 

@@ -187,6 +187,8 @@ class OrderController extends base\BaseController
             }
         }
         
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
         $promoItemClaimed = PromoItem::find()
             ->joinWith([
                 'userPromoItem',
@@ -199,6 +201,8 @@ class OrderController extends base\BaseController
             ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
             ->asArray()->all();
         
+        Yii::$app->formatter->timeZone = 'UTC';
+            
         $dataOption = [];
         
         foreach ($promoItemClaimed as $promoItem) {
