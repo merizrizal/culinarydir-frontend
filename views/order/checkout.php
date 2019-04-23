@@ -19,60 +19,60 @@ kartik\select2\ThemeKrajeeAsset::register($this);
 $this->title = 'Checkout'; ?>
 
 <div class="main">
-	
-	<?php
-    $form = ActiveForm::begin([
-        'id' => 'checkout-form',
-        'action' => ['order/checkout'],
-        'fieldConfig' => [
-            'template' => '{input}{error}',
-        ]
-    ]); ?>
 
-        <section class="module-extra-small bg-main">
-            <div class="container detail checkout-order">
-    
-                <div class="row mb-20">
-                    <div class="col-md-10 col-md-offset-1 col-xs-12">
-    
-                        <?php
-                        if (!empty($modelTransactionSession)) {
-    
-                            echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
-                        } else {
-    
-                            echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
-                        } ?>
-    
-                    </div>
+    <section class="module-extra-small bg-main">
+        <div class="container detail checkout-order">
+
+            <div class="row mb-20">
+                <div class="col-md-10 col-md-offset-1 col-xs-12">
+
+                    <?php
+                    if (!empty($modelTransactionSession)) {
+
+                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
+                    } else {
+
+                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
+                    } ?>
+
                 </div>
-    
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-xs-12">
-    
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="box bg-white">
-                                    <div class="box-title">
-                                        <h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
-                                    </div>
-    
-                                    <hr class="divider-w">
-    
-                                    <div class="box-content">
-    
+            </div>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-xs-12">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box bg-white">
+                                <div class="box-title">
+                                    <h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
+                                </div>
+
+                                <hr class="divider-w">
+
+                                <div class="box-content">
+                                
+                                	<?php
+                                    $form = ActiveForm::begin([
+                                        'id' => 'checkout-form',
+                                        'action' => ['order/checkout'],
+                                        'fieldConfig' => [
+                                            'template' => '{input}{error}',
+                                        ]
+                                    ]); ?>
+
                                         <div class="row">
                                             <div class="col-xs-12 order-list">
-
+    
                                                 <?php
                                                 if (!empty($modelTransactionSession)):
-
+    
                                                     foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): ?>
-
+    
                                                         <div class="business-menu-group">
-
+    
                                                             <?= Html::hiddenInput('transaction_item_id', $dataTransactionItem['id'], ['class' => 'transaction-item-id']); ?>
-
+    
                                                             <div class="business-menu mb-20 visible-lg visible-md visible-sm visible-tab">
                                                                 <div class="row">
                                                                     <div class="col-sm-8 col-tab-8">
@@ -93,22 +93,22 @@ $this->title = 'Checkout'; ?>
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-sm-8 col-tab-8">
-
+    
                                                                         <div class="overlay" style="display: none;"></div>
                                                                         <div class="loading-text" style="display: none;"></div>
-
+    
                                                                         <?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
                                                                             'class' => 'form-control transaction-item-notes',
                                                                             'placeholder' => Yii::t('app', 'Note'),
                                                                             'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                         ]); ?>
-
+    
                                                                     </div>
                                                                     <div class="col-lg-2 col-sm-3 col-tab-3">
-
+    
                                                                         <div class="overlay" style="display: none;"></div>
                                                                         <div class="loading-text" style="display: none;"></div>
-
+    
                                                                         <?= TouchSpin::widget([
                                                                             'name' => 'transaction_item_amount',
                                                                             'value' => $dataTransactionItem['amount'],
@@ -127,7 +127,7 @@ $this->title = 'Checkout'; ?>
                                                                                 'buttonup_class' => "btn btn-default text-center"
                                                                             ],
                                                                         ]); ?>
-
+    
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,25 +148,25 @@ $this->title = 'Checkout'; ?>
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-xs-12 mb-10">
-
+    
                                                                         <div class="overlay" style="display: none;"></div>
                                                                         <div class="loading-text" style="display: none;"></div>
-
+    
                                                                         <?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
                                                                             'class' => 'form-control transaction-item-notes',
                                                                             'placeholder' => Yii::t('app', 'Note'),
                                                                             'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                         ]); ?>
-
+    
                                                                     </div>
                                                                     <div class="col-xs-7">
                                                                         <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                                     </div>
                                                                     <div class="col-xs-5">
-
+    
                                                                         <div class="overlay" style="display: none;"></div>
                                                                         <div class="loading-text" style="display: none;"></div>
-
+    
                                                                         <?= TouchSpin::widget([
                                                                             'name' => 'transaction_item_amount',
                                                                             'value' => $dataTransactionItem['amount'],
@@ -185,22 +185,22 @@ $this->title = 'Checkout'; ?>
                                                                                 'buttonup_class' => "btn btn-default text-center"
                                                                             ],
                                                                         ]); ?>
-
+    
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-
+    
                                                     <?php
                                                     endforeach; ?>
-
+    
                                                     <div class="row mt-40">
                                                         <div class ="promo-code-section">
                                                             <div class="col-xs-12">
                                                                 <?= Yii::t('app', 'Got Promo Code?') ?>
                                                             </div>
                                                             <div class="col-sm-4 col-xs-12 mb-20">
-
+    
                                                                 <?= $form->field($modelTransactionSession, 'promo_item_id')->dropDownList(
                                                                     ArrayHelper::map($promoItemClaimed, 'id',
                                                                         function ($data) {
@@ -213,7 +213,7 @@ $this->title = 'Checkout'; ?>
                                                                         'class' => 'promo-code-field form-control',
                                                                         'options' => $dataOption
                                                                     ]); ?>
-
+    
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-offset-3 col-sm-5 col-xs-12">
@@ -235,22 +235,22 @@ $this->title = 'Checkout'; ?>
                                                             </table>
                                                         </div>
                                                     </div>
-
+    
                                                     <div class="order-online-form">
                                                         <div class="row mt-30">
                                                             <h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5>
                                                             <hr>
                                                             <div class="col-xs-12">
-
+    
                                                                 <?php
                                                                 if (!empty($modelTransactionSession['business']['businessDeliveries'])) {
-
+    
                                                                     echo $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radioList(
                                                                         ArrayHelper::map(
                                                                             $modelTransactionSession['business']['businessDeliveries'],
                                                                             'id',
                                                                             function ($data) use ($form, $modelTransactionSessionOrder) {
-
+    
                                                                                 return '
                                                                                     <div class="row mb-20">
                                                                                         <div class="col-sm-4 col-xs-12">
@@ -269,32 +269,32 @@ $this->title = 'Checkout'; ?>
                                                                         ),
                                                                         [
                                                                             'item' => function ($index, $label, $name, $checked, $value) {
-
+    
                                                                                 return $label;
                                                                             }
                                                                         ]);
                                                                 } else {
-
+    
                                                                     echo Yii::t('app', 'Currently there is no delivery method available in') . ' ' . $modelTransactionSession['business']['name'];
                                                                 } ?>
-
+    
                                                             </div>
                                                         </div>
-
+    
                                                         <div class="row mt-30">
                                                             <h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5>
                                                             <hr>
                                                             <div class="col-xs-12">
-
+    
                                                                 <?php
                                                                 if (!empty($modelTransactionSession['business']['businessPayments'])) {
-
+    
                                                                     echo $form->field($modelTransactionSessionOrder, 'business_payment_id')->radioList(
                                                                         ArrayHelper::map(
                                                                             $modelTransactionSession['business']['businessPayments'],
                                                                             'id',
                                                                             function ($data) use ($form, $modelTransactionSessionOrder) {
-
+    
                                                                                 return '
                                                                                     <div class="row mb-20">
                                                                                         <div class="col-sm-4 col-xs-12">
@@ -310,20 +310,20 @@ $this->title = 'Checkout'; ?>
                                                                         ),
                                                                         [
                                                                             'item' => function ($index, $label, $name, $checked, $value) {
-
+    
                                                                                 return $label;
                                                                             }
                                                                         ]);
-
+    
                                                                     echo '<i>*' . Yii::t('app', 'For transfer or online payments, please send a screenshot of proof of payment') . '</i>';
                                                                 } else {
-
+    
                                                                     echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
                                                                 } ?>
-
+    
                                                             </div>
                                                         </div>
-
+    
                                                         <div class="row mt-30">
                                                             <div class="col-xs-12">
                                                                 <strong><?= Yii::t('app', 'Order Information') ?></strong>
@@ -331,12 +331,12 @@ $this->title = 'Checkout'; ?>
                                                             </div>
                                                         </div>
                                                     </div>
-
+    
                                                 <?php
                                                 else:
-
+    
                                                     echo Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first'); ?>
-
+    
                                                     <div class="row mt-40">
                                                         <div class="col-sm-offset-7 col-sm-5 col-xs-12">
                                                             <table class="table table-responsive table-striped table-border checkout-table">
@@ -349,136 +349,138 @@ $this->title = 'Checkout'; ?>
                                                             </table>
                                                         </div>
                                                     </div>
-
+    
                                                 <?php
                                                 endif; ?>
-
+    
                                                 <div class="row">
                                                     <div class="col-sm-offset-7 col-sm-5 col-xs-12">
-                                                        <?= Html::button(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order', 'disabled' => empty($modelTransactionSession)]) ?>
+                                                        <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order', 'disabled' => empty($modelTransactionSession)]) ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        
+                                    <?php
+                                    ActiveForm::end(); ?>
+                                    
                                 </div>
                             </div>
                         </div>
-    
                     </div>
+
                 </div>
-    
             </div>
-        </section>
-        
-    </div>
+
+        </div>
+    </section>
     
-    <div class="order-confirmation-modal" style="display:none">
-    	<div class="row">
-    		<div class="col-xs-12">
-    			<div class="modal-header-search">
-        			<div class="row">
-        				<div class="col-md-offset-4 col-sm-offset-3 col-sm-5 col-xs-offset-1 col-xs-10">
-                            <div class="input-group">
-                            	<div class="input-group-addon">
-                            		<button type="button" class="close btn-close text-red"><i class="fas fa-arrow-left"></i></button>
-                            	</div>
-                            	<span class="modal-title-search">Order Summary</span>
+</div>
+    
+<div class="order-confirmation-modal" style="display:none">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="modal-header-search">
+    			<div class="row">
+    				<div class="col-md-offset-4 col-sm-offset-3 col-sm-5 col-xs-offset-1 col-xs-10">
+                        <div class="input-group">
+                        	<div class="input-group-addon">
+                        		<button type="button" class="close btn-close text-red"><i class="fas fa-arrow-left"></i></button>
                         	</div>
+                        	<span class="modal-title-search">Order Summary</span>
                     	</div>
                 	</div>
-                </div>
-    		</div>
-    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
-    		
-    			<?php
-    			if (!empty($modelTransactionSession)):
-    			
-        			foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): 
-        			
-        			    $amountPrice = '<span class="item-amount">' . $dataTransactionItem['amount'] . '</span> x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
-        				
-        				<div id=item-<?= $dataTransactionItem['id'] ?>>
-            				<div class="row">
-            					<div class="col-sm-6 col-tab-7 col-xs-12">
-            						<strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
-            					</div>
-            					<div class="col-sm-6 col-tab-5 visible-lg visible-md visible-sm visible-tab">
-            						<strong><?= $amountPrice ?></strong>
-            					</div>
-            				</div>
-            				
-            				<div class="row mb-10">
-            					<div class="col-xs-12 item-note">
-            						<?= $dataTransactionItem['note'] ?>
-            					</div>
-            					<div class="col-xs-12 visible-xs">
-            						<strong><?= $amountPrice ?></strong>
-            					</div>
-            				</div>
-        				</div>
-        			
-        			<?php
-        			endforeach;
-    			endif; ?>
-    			
-    		</div>
-    	</div>
-    	
-    	<div class="row">
-    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
-    			<div class="row">
-            		<div class="col-xs-12">
-            			<div class="delivery-method"></div>
-            		</div>
             	</div>
-            	<div class="row">
-            		<div class="col-xs-12">
-            			<div class="payment-method"></div>
-            		</div>
-            	</div>
-            	<div class="row" style="display:none">
-            		<div class="col-xs-12">
-            			<div class="promo-code"></div>
-            		</div>
-            	</div>
-    		</div>
-    	</div>
-    	
-    	<div class="row" style="display:none">
-    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
-    			<div class="transaction-note"></div>
-    		</div>
-    	</div>
-    	
-    	<div class="row mt-20">
-    		<div class="col-md-5 col-md-offset-4 col-sm-offset-3 col-sm-6 col-tab-10 col-xs-offset-1 col-xs-10">
-        		<table class="table table-responsive table-striped table-border checkout-table">
-                    <tbody>
-                    	<tr>
-                            <th class="font-alt">Total</th>
-                            <td class="total-price"><?= $modelTransactionSession['total_price'] ?></td>
-                        </tr>
-                        <tr class="promo-amount-confirm" style="display:none">
-                            <th class="font-alt">Promo</th>
-                            <td></td>
-                        </tr>
-                        <tr class="grand-total-confirm" style="display:none">
-                            <th class="font-alt">Grand Total</th>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-    
-                <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order']); ?>
-                
             </div>
-    	</div>
-    </div>
+		</div>
+		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+		
+			<?php
+			if (!empty($modelTransactionSession)):
+			
+    			foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): 
+    			
+    			    $amountPrice = '<span class="item-amount">' . $dataTransactionItem['amount'] . '</span> x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
+    				
+    				<div id=item-<?= $dataTransactionItem['id'] ?>>
+        				<div class="row">
+        					<div class="col-sm-6 col-tab-7 col-xs-12">
+        						<strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
+        					</div>
+        					<div class="col-sm-6 col-tab-5 visible-lg visible-md visible-sm visible-tab">
+        						<strong><?= $amountPrice ?></strong>
+        					</div>
+        				</div>
+        				
+        				<div class="row mb-10">
+        					<div class="col-xs-12 item-note">
+        						<?= $dataTransactionItem['note'] ?>
+        					</div>
+        					<div class="col-xs-12 visible-xs">
+        						<strong><?= $amountPrice ?></strong>
+        					</div>
+        				</div>
+    				</div>
+    			
+    			<?php
+    			endforeach;
+			endif; ?>
+			
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+			<div class="row">
+        		<div class="col-xs-12">
+        			<div class="delivery-method"></div>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-xs-12">
+        			<div class="payment-method"></div>
+        		</div>
+        	</div>
+        	<div class="row" style="display:none">
+        		<div class="col-xs-12">
+        			<div class="promo-code"></div>
+        		</div>
+        	</div>
+		</div>
+	</div>
+	
+	<div class="row" style="display:none">
+		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+			<div class="transaction-note"></div>
+		</div>
+	</div>
+	
+	<div class="row mt-20">
+		<div class="col-md-5 col-md-offset-4 col-sm-offset-3 col-sm-6 col-tab-10 col-xs-offset-1 col-xs-10">
+    		<table class="table table-responsive table-striped table-border checkout-table">
+                <tbody>
+                	<tr>
+                        <th class="font-alt">Total</th>
+                        <td class="total-price"><?= $modelTransactionSession['total_price'] ?></td>
+                    </tr>
+                    <tr class="promo-amount-confirm" style="display:none">
+                        <th class="font-alt">Promo</th>
+                        <td></td>
+                    </tr>
+                    <tr class="grand-total-confirm" style="display:none">
+                        <th class="font-alt">Grand Total</th>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <?= Html::button(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit-order']); ?>
+            
+        </div>
+	</div>
+</div>
 
 <?php
-ActiveForm::end();
-
 GrowlCustom::widget();
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
@@ -707,7 +709,9 @@ $jscript = '
         $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
     });
 
-    $(".btn-order").on("click", function() {
+    $(".btn-order").on("click", function(event) {
+        
+        event.preventDefault();
 
         $(".order-confirmation-modal").fadeIn("medium");
 
@@ -731,6 +735,11 @@ $jscript = '
 
             $(".transaction-note").parent().parent().hide();
         }
+    });
+
+    $(".btn-submit-order").on("click", function() {
+        
+        $(".btn-order").submit();
     });
 
     $(".btn-close").on("click", function() {
