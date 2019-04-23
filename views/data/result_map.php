@@ -128,11 +128,11 @@ $linkPager = LinkPager::widget([
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li>
-                                                                <i class="aicon aicon-home"></i>
+                                                                <i class="aicon aicon-home1"></i>
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
-                                                                <i class="aicon aicon-rupiah"></i>
+                                                                <i class="aicon aicon-image2vector"></i>
 
                                                                 <?php
                                                                 $businessPrice = '-';
@@ -299,10 +299,10 @@ $jscript = '
                                                 "<div class=\"widget\">" +
                                                     "<ul class=\"icon-list\">" +
                                                         "<li>" +
-                                                            "<i class=\"aicon aicon-home\"></i> " + value.businessAddress +
+                                                            "<i class=\"aicon aicon-home1\"></i> " + value.businessAddress +
                                                         "</li>" +
                                                         "<li>" +
-                                                            "<i class=\"aicon aicon-rupiah\"></i> " + value.businessPrice +
+                                                            "<i class=\"aicon aicon-image2vector\"></i> " + value.businessPrice +
                                                         "</li>" +
                                                     "</ul>" +
                                                 "</div>" +
