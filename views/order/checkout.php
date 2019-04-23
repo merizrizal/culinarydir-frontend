@@ -432,12 +432,12 @@ $this->title = 'Checkout'; ?>
 	<div class="row">
 		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
 			<div class="row">
-        		<div class="col-xs-12">
+        		<div class="col-xs-11">
         			<div class="delivery-method"></div>
         		</div>
         	</div>
         	<div class="row">
-        		<div class="col-xs-12">
+        		<div class="col-xs-11">
         			<div class="payment-method"></div>
         		</div>
         	</div>
