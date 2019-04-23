@@ -45,7 +45,7 @@ class OrderController extends base\BaseController
                 },
                 'transactionItems' => function ($query) {
 
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                    $query->orderBy(['transaction_item.created_at' => SORT_ASC]);
                 },
                 'transactionItems.businessProduct'
             ])

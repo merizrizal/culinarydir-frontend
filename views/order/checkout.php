@@ -19,48 +19,48 @@ kartik\select2\ThemeKrajeeAsset::register($this);
 $this->title = 'Checkout'; ?>
 
 <div class="main">
+	
+	<?php
+    $form = ActiveForm::begin([
+        'id' => 'checkout-form',
+        'action' => ['order/checkout'],
+        'fieldConfig' => [
+            'template' => '{input}{error}',
+        ]
+    ]); ?>
 
-    <section class="module-extra-small bg-main">
-        <div class="container detail checkout-order">
-
-            <div class="row mb-20">
-                <div class="col-md-10 col-md-offset-1 col-xs-12">
-
-                    <?php
-                    if (!empty($modelTransactionSession)) {
-
-                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
-                    } else {
-
-                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
-                    } ?>
-
+        <section class="module-extra-small bg-main">
+            <div class="container detail checkout-order">
+    
+                <div class="row mb-20">
+                    <div class="col-md-10 col-md-offset-1 col-xs-12">
+    
+                        <?php
+                        if (!empty($modelTransactionSession)) {
+    
+                            echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
+                        } else {
+    
+                            echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
+                        } ?>
+    
+                    </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-xs-12">
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box bg-white">
-                                <div class="box-title">
-                                    <h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
-                                </div>
-
-                                <hr class="divider-w">
-
-                                <div class="box-content">
-
-                                    <?php
-                                    $form = ActiveForm::begin([
-                                        'id' => 'checkout-form',
-                                        'action' => ['order/checkout'],
-                                        'fieldConfig' => [
-                                            'template' => '{input}{error}',
-                                        ]
-                                    ]); ?>
-
+    
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1 col-xs-12">
+    
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="box bg-white">
+                                    <div class="box-title">
+                                        <h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
+                                    </div>
+    
+                                    <hr class="divider-w">
+    
+                                    <div class="box-content">
+    
                                         <div class="row">
                                             <div class="col-xs-12 order-list">
 
@@ -360,72 +360,125 @@ $this->title = 'Checkout'; ?>
                                                 </div>
                                             </div>
                                         </div>
-
-                                    <?php
-                                    ActiveForm::end(); ?>
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
+    
                     </div>
-
                 </div>
+    
             </div>
-
-        </div>
-    </section>
-
-</div>
-
-<div class="order-confirmation-modal" style="display:none">
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="modal-header-search">
-    			<div class="row">
-    				<div class="col-md-offset-4 col-sm-offset-3 col-sm-5 col-xs-offset-1 col-xs-10">
-                        <div class="input-group">
-                        	<div class="input-group-addon">
-                        		<button type="button" class="close btn-close text-red"><i class="fas fa-arrow-left"></i></button>
+        </section>
+        
+    </div>
+    
+    <div class="order-confirmation-modal" style="display:none">
+    	<div class="row">
+    		<div class="col-xs-12">
+    			<div class="modal-header-search">
+        			<div class="row">
+        				<div class="col-md-offset-4 col-sm-offset-3 col-sm-5 col-xs-offset-1 col-xs-10">
+                            <div class="input-group">
+                            	<div class="input-group-addon">
+                            		<button type="button" class="close btn-close text-red"><i class="fas fa-arrow-left"></i></button>
+                            	</div>
+                            	<span class="modal-title-search">Order Summary</span>
                         	</div>
-                        	<span class="modal-title-search">Order Summary</span>
                     	</div>
                 	</div>
+                </div>
+    		</div>
+    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+    		
+    			<?php
+    			if (!empty($modelTransactionSession)):
+    			
+        			foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): 
+        			
+        			    $amountPrice = '<span class="item-amount">' . $dataTransactionItem['amount'] . '</span> x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
+        				
+        				<div id=item-<?= $dataTransactionItem['id'] ?>>
+            				<div class="row">
+            					<div class="col-sm-6 col-tab-7 col-xs-12">
+            						<strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
+            					</div>
+            					<div class="col-sm-6 col-tab-5 visible-lg visible-md visible-sm visible-tab">
+            						<strong><?= $amountPrice ?></strong>
+            					</div>
+            				</div>
+            				
+            				<div class="row mb-10">
+            					<div class="col-xs-12 item-note">
+            						<?= $dataTransactionItem['note'] ?>
+            					</div>
+            					<div class="col-xs-12 visible-xs">
+            						<strong><?= $amountPrice ?></strong>
+            					</div>
+            				</div>
+        				</div>
+        			
+        			<?php
+        			endforeach;
+    			endif; ?>
+    			
+    		</div>
+    	</div>
+    	
+    	<div class="row">
+    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+    			<div class="row">
+            		<div class="col-xs-12">
+            			<div class="delivery-method"></div>
+            		</div>
             	</div>
+            	<div class="row">
+            		<div class="col-xs-12">
+            			<div class="payment-method"></div>
+            		</div>
+            	</div>
+            	<div class="row" style="display:none">
+            		<div class="col-xs-12">
+            			<div class="promo-code"></div>
+            		</div>
+            	</div>
+    		</div>
+    	</div>
+    	
+    	<div class="row" style="display:none">
+    		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
+    			<div class="transaction-note"></div>
+    		</div>
+    	</div>
+    	
+    	<div class="row mt-20">
+    		<div class="col-md-5 col-md-offset-4 col-sm-offset-3 col-sm-6 col-tab-10 col-xs-offset-1 col-xs-10">
+        		<table class="table table-responsive table-striped table-border checkout-table">
+                    <tbody>
+                    	<tr>
+                            <th class="font-alt">Total</th>
+                            <td class="total-price"><?= $modelTransactionSession['total_price'] ?></td>
+                        </tr>
+                        <tr class="promo-amount-confirm" style="display:none">
+                            <th class="font-alt">Promo</th>
+                            <td></td>
+                        </tr>
+                        <tr class="grand-total-confirm" style="display:none">
+                            <th class="font-alt">Grand Total</th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order']); ?>
+                
             </div>
-		</div>
-		<div class="col-md-7 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
-		
-			<?php
-			foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): 
-			
-			    $amountPrice = $dataTransactionItem['amount'] . ' x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
-			
-				<div class="row">
-					<div class="col-sm-6 col-tab-7 col-xs-12">
-						<strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
-					</div>
-					<div class="col-sm-6 col-tab-5 visible-lg visible-md visible-sm visible-tab">
-						<strong><?= $amountPrice ?></strong>
-					</div>
-				</div>
-				
-				<div class="row mb-10">
-					<div class="col-xs-12">
-						<?= $dataTransactionItem['note'] ?>
-					</div>
-					<div class="col-xs-12 visible-xs">
-						<strong><?= $amountPrice ?></strong>
-					</div>
-				</div>
-			
-			<?php
-			endforeach; ?>
-			
-		</div>
-	</div>
-</div>
+    	</div>
+    </div>
 
 <?php
+ActiveForm::end();
+
 GrowlCustom::widget();
 
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
@@ -440,6 +493,25 @@ $jscript = '
 
     $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
 
+    if ($(".promo-code-field").val() != "") {
+
+        var amount = $(this).find(":selected").data("amount");
+
+        var grandTotal = totalPrice - amount < 0 ? 0 : totalPrice - amount;
+        
+        $(".promo-amount, .promo-amount-confirm").show();
+        $(".promo-amount").children().last().html(amount);
+        $(".promo-amount-confirm").children().last().html(amount);
+        $(".promo-amount").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+
+        $(".grand-total, .grand-total-confirm").show();
+        $(".grand-total").children().last().html(grandTotal);
+        $(".grand-total-confirm").children().last().html(grandTotal);
+        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+    }
+
     $(".promo-code-field").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Promo Code') . '",
@@ -450,13 +522,14 @@ $jscript = '
 
         var thisObj = $(this);
         var amount = parseInt(thisObj.val());
+        var transactionItemId = thisObj.parents(".business-menu-group").find(".transaction-item-id").val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
+                "id": transactionItemId,
                 "amount": amount
             },
             beforeSend: function(xhr) {
@@ -469,6 +542,7 @@ $jscript = '
                 if (response.success) {
 
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
+                    $("#item-" + transactionItemId).find(".item-amount").html(amount);
 
                     $(".total-price").html(response.total_price);
                     $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
@@ -480,7 +554,9 @@ $jscript = '
                         var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
 
                         $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
+                        $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal);
                         $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
                     }
                 } else {
 
@@ -504,13 +580,14 @@ $jscript = '
 
         var thisObj = $(this);
         var notes = thisObj.val();
+        var transactionItemId = thisObj.parents(".business-menu-group").find(".transaction-item-id").val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.data("url"),
             data: {
-                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
+                "id": transactionItemId,
                 "note": notes
             },
             beforeSend: function(xhr) {
@@ -526,6 +603,7 @@ $jscript = '
                 }
 
                 thisObj.parents(".business-menu-group").find(".transaction-item-notes").val(notes);
+                $("#item-" + transactionItemId).find(".item-note").html(notes);
 
                 thisObj.siblings(".overlay").hide();
                 thisObj.siblings(".loading-text").hide();
@@ -543,13 +621,14 @@ $jscript = '
     $(".remove-item").on("click", function() {
 
         var thisObj = $(this);
+        var transactionItemId = thisObj.parents(".business-menu-group").find(".transaction-item-id").val();
 
         $.ajax({
             cache: false,
             type: "POST",
             url: thisObj.attr("href"),
             data: {
-                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val()
+                "id": transactionItemId
             },
             beforeSend: function(xhr) {
 
@@ -561,6 +640,7 @@ $jscript = '
                 if (response.success) {
 
                     thisObj.parents(".business-menu-group").remove();
+                    $("#item-" + transactionItemId).remove();
 
                     if (!$(".business-menu-group").length) {
 
@@ -570,7 +650,7 @@ $jscript = '
                         $(".promo-amount").remove();
                         $(".grand-total").remove();
                         $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
-                        $(".btn-submit").prop("disabled", true);
+                        $(".btn-order").prop("disabled", true);
                     } else {
 
                         totalPrice = response.total_price;
@@ -580,7 +660,9 @@ $jscript = '
                             var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
     
                             $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
+                            $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal);
                             $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                            $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
                         }
                     }
 
@@ -612,18 +694,43 @@ $jscript = '
 
         var grandTotal = totalPrice - amount < 0 ? 0 : totalPrice - amount;
         
-        $(".promo-amount").show();
+        $(".promo-amount, .promo-amount-confirm").show();
         $(".promo-amount").children().last().html(amount);
+        $(".promo-amount-confirm").children().last().html(amount);
         $(".promo-amount").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
 
-        $(".grand-total").show();
+        $(".grand-total, .grand-total-confirm").show();
         $(".grand-total").children().last().html(grandTotal);
+        $(".grand-total-confirm").children().last().html(grandTotal);
         $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
     });
 
     $(".btn-order").on("click", function() {
 
         $(".order-confirmation-modal").fadeIn("medium");
+
+        var deliveryMethod = $("input[name=\'TransactionSessionOrder[business_delivery_id]\']:checked").parent().parent().text();
+        var paymentMethod = $("input[name=\'TransactionSessionOrder[business_payment_id]\']:checked").parent().parent().text();
+
+        $(".order-confirmation-modal").find(".delivery-method").html("<strong>Metode Pengiriman : </strong>" + ((deliveryMethod == "") ? "<span class=\"text-red\">metode pengiriman tidak boleh kosong</span>" : deliveryMethod));
+        $(".order-confirmation-modal").find(".payment-method").html("<strong>Metode Pembayaran : </strong>" + ((paymentMethod == "") ? "<span class=\"text-red\">metode pembayaran tidak boleh kosong</span>" : paymentMethod));
+        
+        if ($(".promo-code-field").find(":selected").text() != "") {
+
+            $(".promo-code").parent().parent().show();
+            $(".promo-code").html("<strong>Kode Promo : </strong>" + $(".promo-code-field").find(":selected").text());
+        }
+
+        if ($("#transactionsession-note").val() != "") {
+
+            $(".transaction-note").parent().parent().show();
+            $(".transaction-note").html("<strong>Catatan : </strong>" + $("#transactionsession-note").val());
+        } else {
+
+            $(".transaction-note").parent().parent().hide();
+        }
     });
 
     $(".btn-close").on("click", function() {
