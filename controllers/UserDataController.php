@@ -1,14 +1,14 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
-use core\models\UserVisit;
+use core\models\BusinessPromo;
+use core\models\TransactionSession;
 use core\models\UserLove;
 use core\models\UserPostMain;
-use core\models\BusinessPromo;
-use yii\filters\VerbFilter;
+use core\models\UserVisit;
+use Yii;
 use yii\data\ActiveDataProvider;
-use core\models\TransactionSession;
+use yii\filters\VerbFilter;
 
 /**
  * User Data Controller
@@ -23,7 +23,7 @@ class UserDataController extends base\BaseController
     public function behaviors()
     {
         return array_merge(
-            $this->getAccess(), 
+            $this->getAccess(),
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -36,9 +36,9 @@ class UserDataController extends base\BaseController
     public function actionUserVisit($username)
     {
         if (!Yii::$app->request->isAjax) {
-            
+
             $queryParams = Yii::$app->request->getQueryParams();
-            
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'visit',
@@ -46,7 +46,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -54,7 +54,7 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
+
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
                         'business_image.is_primary' => true
@@ -95,9 +95,9 @@ class UserDataController extends base\BaseController
     public function actionUserLove($username)
     {
         if (!Yii::$app->request->isAjax) {
-            
+
             $queryParams = Yii::$app->request->getQueryParams();
-            
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'love',
@@ -105,7 +105,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -113,7 +113,7 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
+
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
                         'business_image.is_primary' => true
@@ -156,9 +156,9 @@ class UserDataController extends base\BaseController
     public function actionUserPost($username)
     {
         if (!Yii::$app->request->isAjax) {
-            
+
             $queryParams = Yii::$app->request->getQueryParams();
-            
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'review',
@@ -166,7 +166,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -174,24 +174,28 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
+
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true]);
+                        'business_image.is_primary' => true
+                    ]);
                 },
                 'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
-                    
-                    $query->andOnCondition(['child.is_publish' => true]);
+
+                    $query->andOnCondition([
+                        'child.is_publish' => true,
+                        'child.type' => 'Photo'
+                    ]);
                 },
                 'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
-                    
+
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
                 'userPostLoves' => function ($query) {
-                    
+
                     $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
                 },
                 'userPostComments',
@@ -206,7 +210,7 @@ class UserDataController extends base\BaseController
             ->asArray();
 
         $provider = new ActiveDataProvider([
-            'query' => $modelUserPostMain,            
+            'query' => $modelUserPostMain,
         ]);
 
         $modelUserPostMain = $provider->getModels();
@@ -233,9 +237,9 @@ class UserDataController extends base\BaseController
     public function actionUserPostPhoto($username)
     {
         if (!Yii::$app->request->isAjax) {
-            
+
             $queryParams = Yii::$app->request->getQueryParams();
-            
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'photo',
@@ -243,7 +247,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -329,13 +333,13 @@ class UserDataController extends base\BaseController
             'totalCount' => $totalCount,
         ]);
     }
-    
+
     public function actionOrderHistory()
     {
         if (!Yii::$app->request->isAjax) {
-            
+
             $queryParams = Yii::$app->request->getQueryParams();
-            
+
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'order-history',
@@ -343,15 +347,15 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
-        
+
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                
+
                     $query->andOnCondition([
                         'business_image.type' => 'Profile',
                         'business_image.is_primary' => true
@@ -363,23 +367,23 @@ class UserDataController extends base\BaseController
             ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
-                
+
         $provider = new ActiveDataProvider([
             'query' => $modelTransactionSession,
         ]);
-        
+
         $modelTransactionSession = $provider->getModels();
         $pagination = $provider->getPagination();
-        
+
         $perpage = $pagination->pageSize;
         $totalCount = $pagination->totalCount;
         $offset = $pagination->offset;
-        
+
         $startItem = !empty($modelTransactionSession) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
-        
+
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
-        
+
         return $this->render('order_history', [
            'modelTransactionSession' => $modelTransactionSession,
            'pagination' => $pagination,
