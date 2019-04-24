@@ -72,17 +72,17 @@ $linkPager = LinkPager::widget([
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="box box-small">
-                            
+
                             	<?= Html::hiddenInput('business_id', $dataBusiness['id'], ['class' => 'business-id']) ?>
 
                                 <div class="row">
                                     <div class="col-md-5 col-sm-5 col-tab-7 col-xs-7 col direct-link">
                                     	<div class="result-list-image owl-carousel owl-theme">
-                                    	
+
                                     		<?php
                                     		$img = (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241';
                                             echo Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img]); ?>
-                                            
+
                                         </div>
                                     </div>
 
@@ -90,7 +90,7 @@ $linkPager = LinkPager::widget([
                                     $classLove = !empty($dataBusiness['userLoves'][0]) ? 'fas fa-heart' : 'far fa-heart';
                                     $voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
                                     $voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
-                                    
+
                                     $layoutRatings = '
                                         <div class="love love-' . $dataBusiness['id'] . '">
                                             <h2 class="mt-0 mb-20 text-red"><span class="' . $classLove . ' love-button" data-id="' . $dataBusiness['id'] . '"></span></h2>
@@ -116,8 +116,8 @@ $linkPager = LinkPager::widget([
                                                     <h4 class="m-0">
 
                                                         <?= Html::a($dataBusiness['name'], [
-                                                            'page/detail', 
-                                                            'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']), 
+                                                            'page/detail',
+                                                            'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']),
                                                             'uniqueName' => $dataBusiness['unique_name']
                                                         ], [
                                                             'class' => 'link-to-business-detail'
@@ -133,7 +133,7 @@ $linkPager = LinkPager::widget([
 
                                                         <?php
                                                         $categories = '';
-                                                        
+
                                                         foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
 
                                                             $categories .= $dataBusinessCategories['category']['name'] . ' / ';
@@ -149,7 +149,7 @@ $linkPager = LinkPager::widget([
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
-                                                                <i class="aicon aicon-image2vector"></i>
+                                                                <i class="aicon aicon-rupiah"></i>
 
                                                                 <?php
                                                                 if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
@@ -168,23 +168,23 @@ $linkPager = LinkPager::widget([
 
                                                             </li>
                                                             <li class="tag">
-                                                            
+
                                                                 <?php
                                                                 $businessProductCategoryLimit = 3;
                                                                 $businessProductCategoryList = '';
                                                                 $businessProductCategoryPopover = '';
 
                                                                 foreach ($dataBusiness['businessProductCategories'] as $i => $dataBusinessProductCategory) {
-                                                                    
+
                                                                     if (!empty($dataBusinessProductCategory['productCategory'])) {
-                                                                        
+
                                                                         $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
 
                                                                         if ($i < $businessProductCategoryLimit) {
-    
+
                                                                             $businessProductCategoryList .= $hashtagItem;
                                                                         } else {
-    
+
                                                                             $businessProductCategoryPopover .= $hashtagItem;
                                                                         }
                                                                     }
@@ -251,7 +251,7 @@ $linkPager = LinkPager::widget([
                 <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
                     <?= $linkPager; ?>
-            
+
                 </div>
                 <div class="col-xs-12 visible-xs">
 
@@ -264,7 +264,7 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$jscript = '    
+$jscript = '
     ratingColor($(".rating"), "span");
 
     $(".business-id").each(function() {

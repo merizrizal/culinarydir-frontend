@@ -1,11 +1,11 @@
 <?php
 
+use frontend\components\AddressType;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -68,7 +68,7 @@ $linkPager = LinkPager::widget([
                 $businessDetail = [];
 
                 foreach ($modelBusiness as $dataBusiness):
-                    
+
                     $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241'; ?>
 
                     <div class="row mb-10">
@@ -80,24 +80,24 @@ $linkPager = LinkPager::widget([
                                             <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
                                         </div>
                                     </div>
-									
-									<?php 
+
+									<?php
 									$voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
 									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
-									
+
 									$layoutRatings = '
                                         <div class="rating rating-top">
                                             <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
                                             Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                         </div>
                                     '; ?>
-									
+
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
                                         <?= $layoutRatings ?>
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
-                                        <?= $layoutRatings ?> 
+                                        <?= $layoutRatings ?>
                                     </div>
 
                                     <div class="col-md-7 col-sm-12 col-xs-12 col">
@@ -132,7 +132,7 @@ $linkPager = LinkPager::widget([
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
-                                                                <i class="aicon aicon-image2vector"></i>
+                                                                <i class="aicon aicon-rupiah"></i>
 
                                                                 <?php
                                                                 $businessPrice = '-';
@@ -302,7 +302,7 @@ $jscript = '
                                                             "<i class=\"aicon aicon-home1\"></i> " + value.businessAddress +
                                                         "</li>" +
                                                         "<li>" +
-                                                            "<i class=\"aicon aicon-image2vector\"></i> " + value.businessPrice +
+                                                            "<i class=\"aicon aicon-rupiah\"></i> " + value.businessPrice +
                                                         "</li>" +
                                                     "</ul>" +
                                                 "</div>" +
