@@ -45,7 +45,7 @@ class OrderController extends base\BaseController
                 },
                 'transactionItems' => function ($query) {
 
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                    $query->orderBy(['transaction_item.created_at' => SORT_ASC]);
                 },
                 'transactionItems.businessProduct'
             ])
@@ -114,7 +114,9 @@ class OrderController extends base\BaseController
                 if ($flag) {
     
                     $modelTransactionSessionOrder->transaction_session_id = $modelTransactionSession->id;
+                    
                     $modelTransactionSession->is_closed = true;
+                    $modelTransactionSession->promo_item_id = !empty($modelTransactionSession->promo_item_id) ? $modelTransactionSession->promo_item_id : null;
     
                     if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
     
@@ -184,10 +186,35 @@ class OrderController extends base\BaseController
                 }
             }
         }
-
+        
+        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        
+        $promoItemClaimed = PromoItem::find()
+            ->joinWith([
+                'userPromoItem',
+                'promo'
+            ])
+            ->andWhere(['promo_item.not_active' => false])
+            ->andWhere(['promo_item.business_claimed' => null])
+            ->andWhere(['>=', 'promo.date_end', Yii::$app->formatter->asDate(time())])
+            ->andWhere(['promo.not_active' => false])
+            ->andWhere(['user_promo_item.user_id' => Yii::$app->user->getIdentity()->id])
+            ->asArray()->all();
+        
+        Yii::$app->formatter->timeZone = 'UTC';
+            
+        $dataOption = [];
+        
+        foreach ($promoItemClaimed as $promoItem) {
+            
+            $dataOption[$promoItem['id']] = ['data-amount' => $promoItem['promo']['amount']];
+        }
+        
         return $this->render('checkout', [
             'modelTransactionSession' => $modelTransactionSession,
-            'modelTransactionSessionOrder' => $modelTransactionSessionOrder
+            'modelTransactionSessionOrder' => $modelTransactionSessionOrder,
+            'promoItemClaimed' => $promoItemClaimed,
+            'dataOption' => $dataOption
         ]);
     }
 }

@@ -22,9 +22,9 @@ use yii\helpers\Html; ?>
             <ul class="nav navbar-nav navbar-right">
             	<li>
 
-                    <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i>', ['page/index'], ['class' => 'icon hidden-xs']) ?>
-                    <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-tab']) ?>
-                    <?= Html::a('<i class="aicon aicon-home4 aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-xs']) ?>
+                    <?= Html::a('<i class="aicon aicon-home aicon-2x"></i>', ['page/index'], ['class' => 'icon hidden-xs']) ?>
+                    <?= Html::a('<i class="aicon aicon-home aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-tab']) ?>
+                    <?= Html::a('<i class="aicon aicon-home aicon-2x"></i> Home', ['page/index'], ['class' => 'icon visible-xs']) ?>
 
                 </li>
                 
@@ -43,9 +43,9 @@ use yii\helpers\Html; ?>
                     <li><a class="icon" href="#"><i class="aicon aicon-savedsearch aicon-2x"></i></a></li>-->
                     <li class="dropdown">
     
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i>', '#', ['class' => 'icon dropdown-toggle hidden-xs', 'data-toggle' => 'dropdown']) ?>
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-tab', 'data-toggle' => 'dropdown']) ?>
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-xs', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i>', '#', ['class' => 'icon dropdown-toggle hidden-xs', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-tab', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-xs', 'data-toggle' => 'dropdown']) ?>
     
                         <ul class="dropdown-menu dropdown-user">
                             <li>
@@ -76,7 +76,7 @@ use yii\helpers\Html; ?>
                                     </div>
                                 </a>
                             </li>
-                            <li><?= Html::a('<i class="aicon aicon-key2"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) ?></li>
+                            <li><?= Html::a('<i class="aicon aicon-key1"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) ?></li>
                             <li><?= Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout']) ?></li>
                         </ul>
                     </li>
@@ -86,9 +86,9 @@ use yii\helpers\Html; ?>
 
                     <li class="dropdown">
     
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i>', '#', ['class' => 'icon dropdown-toggle hidden-xs', 'data-toggle' => 'dropdown']) ?>
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-tab', 'data-toggle' => 'dropdown']) ?>
-                        <?= Html::a('<i class="aicon aicon-user2 aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-xs', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i>', '#', ['class' => 'icon dropdown-toggle hidden-xs', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-tab', 'data-toggle' => 'dropdown']) ?>
+                        <?= Html::a('<i class="aicon aicon-user aicon-2x"></i> User', '#', ['class' => 'icon dropdown-toggle visible-xs', 'data-toggle' => 'dropdown']) ?>
     
                         <ul class="dropdown-menu">
                             <li><?= Html::a(Yii::t('app', 'Register'), ['site/register']) ?></li>

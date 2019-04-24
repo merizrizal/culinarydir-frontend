@@ -103,7 +103,7 @@ $this->registerMetaTag([
                                 		<div class="col-xs-12">
                                 			<i class="fas fa-tag"></i> <?= $modelPromo['type'] ?>
                                 			<br>
-                                			<i class="aicon aicon-rupiah"></i> <?= Yii::$app->formatter->asCurrency($modelPromo['amount']) ?>
+                                			<i class="aicon aicon-image2vector"></i> <?= Yii::$app->formatter->asCurrency($modelPromo['amount']) ?>
                                 			<br>
                                 			<i class="aicon aicon-clock"></i> 
                                 			<strong>

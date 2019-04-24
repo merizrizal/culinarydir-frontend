@@ -145,11 +145,11 @@ $linkPager = LinkPager::widget([
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li>
-                                                                <i class="aicon aicon-home"></i>
+                                                                <i class="aicon aicon-home1"></i>
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
-                                                                <i class="aicon aicon-rupiah"></i>
+                                                                <i class="aicon aicon-image2vector"></i>
 
                                                                 <?php
                                                                 if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {

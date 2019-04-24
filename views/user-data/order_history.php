@@ -68,7 +68,7 @@ $linkPager = LinkPager::widget([
                     'class' => 'btn btn-default btn-small btn-round-4'
                 ]);
                 
-                $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+                $btnReorder = Html::a($dataTransactionSession['is_closed'] ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection_checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                     'class' => 'btn btn-default btn-small btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
                 ]);
