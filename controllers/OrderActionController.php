@@ -2,12 +2,12 @@
 
 namespace frontend\controllers;
 
+use core\models\TransactionItem;
+use core\models\TransactionSession;
 use Yii;
 use yii\filters\VerbFilter;
-use yii\web\Response;
-use core\models\TransactionSession;
-use core\models\TransactionItem;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * OrderAction controller

@@ -51,17 +51,13 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userVotes',
                 'userPostComments'
@@ -187,17 +183,13 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_love.is_active' => true]);
                 },
                 'userVisits' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_visit.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_visit.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_visit.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_visit.is_active' => true]);
                 }
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
@@ -228,11 +220,9 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ])
-                    ->orderBy(['child.created_at' => SORT_ASC]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo'])
+                        ->orderBy(['child.created_at' => SORT_ASC]);
                 },
                 'userVotes' => function ($query) {
 
@@ -244,10 +234,8 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment'
@@ -378,10 +366,8 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
@@ -390,10 +376,8 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment'
@@ -451,10 +435,8 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment'
