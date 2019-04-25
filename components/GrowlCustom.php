@@ -13,14 +13,14 @@ class GrowlCustom extends Widget
 
         \kartik\growl\GrowlAsset::register($this->getView());
     }
-    
+
     public static function messageResponse()
     {
         return '
             function messageResponse(icon, title, message, type) {
 
                 if (title != "302") {
-            
+
                     $.notify({
                         icon: icon,
                         title: title,
@@ -65,12 +65,12 @@ class GrowlCustom extends Widget
             }
         ';
     }
-    
+
     public static function stickyResponse()
     {
         return '
             function stickyGrowl(icon, title, message, type) {
-            
+
                 return $.notify({
                         icon: icon,
                         title: title,
