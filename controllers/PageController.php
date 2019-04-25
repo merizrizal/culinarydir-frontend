@@ -516,7 +516,7 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith([
                 'transactionItems' => function ($query) {
 
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+                    $query->orderBy(['transaction_item.created_at' => SORT_ASC]);
                 },
                 'business'
             ])

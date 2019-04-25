@@ -251,7 +251,7 @@ class UserDataController extends base\BaseController
             ->andWhere(['type' => 'Photo'])
             ->andWhere(['is_publish' => true])
             ->andWhere(['user.username' => $username])
-            ->orderBy(['id' => SORT_DESC])
+            ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
