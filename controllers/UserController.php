@@ -168,12 +168,12 @@ class UserController extends base\BaseHistoryUrlController
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
-                'business.businessImages' => function($query) {
+                'business.businessImages' => function ($query) {
 
                     $query->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city',
-                'transactionItems' => function($query) {
+                'transactionItems' => function ($query) {
 
                     $query->orderBy(['transaction_item.created_at' => SORT_ASC]);
                 },

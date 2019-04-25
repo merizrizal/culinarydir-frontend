@@ -244,7 +244,7 @@ class DataController extends base\BaseController
 
         $modelBusinessDetailVote = BusinessDetailVote::find()
             ->joinWith([
-                'ratingComponent' => function($query) {
+                'ratingComponent' => function ($query) {
 
                     $query->andOnCondition(['is_active' => true]);
                 }

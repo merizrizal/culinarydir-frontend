@@ -470,7 +470,7 @@ class SiteController extends base\BaseController
             ->joinWith([
                 'businessLocation',
                 'businessLocation.city',
-                'userPostMains' => function($query) {
+                'userPostMains' => function ($query) {
                     
                     $query->andOnCondition(['user_post_main.parent_id' => null])
                         ->andOnCondition(['user_post_main.type' => 'Review'])
