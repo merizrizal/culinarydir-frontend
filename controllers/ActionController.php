@@ -75,22 +75,22 @@ class ActionController extends base\BaseController
     public function actionSubmitComment()
     {
         if (!empty(($post = Yii::$app->request->post()))) {
-            
+
             $flag = false;
-            
+
             $modelUserPostMain = UserPostMain::find()
                 ->andWhere(['id' => $post['user_post_main_id']])
                 ->andWhere(['is_publish' => true])
                 ->asArray()->one();
-            
+
             if (!empty($modelUserPostMain)) {
 
                 $modelUserPostComment = new UserPostComment();
-    
+
                 $modelUserPostComment->user_post_main_id = $post['user_post_main_id'];
                 $modelUserPostComment->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserPostComment->text = $post['text'];
-                
+
                 $flag = $modelUserPostComment->save();
             }
 
@@ -120,41 +120,41 @@ class ActionController extends base\BaseController
 
             $transaction = Yii::$app->db->beginTransaction();
             $flag = false;
-            
+
             $modelUserPostMain = UserPostMain::find()
                 ->andWhere(['id' => $post['user_post_main_id']])
                 ->andWhere(['is_publish' => true])
                 ->one();
-            
+
             if (!empty($modelUserPostMain)) {
 
                 $modelUserPostLove = UserPostLove::find()
                     ->andWhere(['unique_id' => $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id])
                     ->one();
-    
+
                 if (!empty($modelUserPostLove)) {
-    
+
                     $modelUserPostLove->is_active = !$modelUserPostLove->is_active;
                 } else {
-    
+
                     $modelUserPostLove = new UserPostLove();
-    
+
                     $modelUserPostLove->user_post_main_id = $post['user_post_main_id'];
                     $modelUserPostLove->user_id = Yii::$app->user->getIdentity()->id;
                     $modelUserPostLove->is_active = true;
                     $modelUserPostLove->unique_id = $post['user_post_main_id'] . '-' . Yii::$app->user->getIdentity()->id;
                 }
-                
+
                 if (($flag = $modelUserPostLove->save())) {
-                    
+
                     if ($modelUserPostLove->is_active) {
-                        
+
                         $modelUserPostMain->love_value += 1;
                     } else {
-                        
+
                         $modelUserPostMain->love_value -= 1;
                     }
-                    
+
                     $flag = $modelUserPostMain->save();
                 }
             }
@@ -204,7 +204,7 @@ class ActionController extends base\BaseController
             $modelUserPostMainPhoto->love_value = 0;
 
             $flag = $modelUserPostMainPhoto->save();
-            
+
             $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image;
 
             $result = [];
@@ -258,7 +258,7 @@ class ActionController extends base\BaseController
             } else {
 
                 $modelUserLove = new UserLove();
-                
+
                 $modelUserLove->business_id = $post['business_id'];
                 $modelUserLove->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserLove->is_active = true;
@@ -275,7 +275,7 @@ class ActionController extends base\BaseController
 
                     $modelBusinessDetail->love_value += 1;
                 } else {
-                    
+
                     $modelBusinessDetail->love_value -= 1;
                 }
 
@@ -323,7 +323,7 @@ class ActionController extends base\BaseController
             } else {
 
                 $modelUserVisit = new UserVisit();
-                
+
                 $modelUserVisit->business_id = $post['business_id'];
                 $modelUserVisit->user_id = Yii::$app->user->getIdentity()->id;
                 $modelUserVisit->is_active = true;
@@ -340,7 +340,7 @@ class ActionController extends base\BaseController
 
                     $modelBusinessDetail->visit_value += 1;
                 } else {
-                    
+
                     $modelBusinessDetail->visit_value -= 1;
                 }
 
@@ -404,34 +404,34 @@ class ActionController extends base\BaseController
             return $result;
         }
     }
-    
+
     public function actionClaimPromo()
     {
         $post = Yii::$app->request->post();
-        
+
         $modelPromoItem = PromoItem::find()
             ->joinWith([
                 'userPromoItem',
-                'promo'
+                'promo',
             ])
             ->andWhere(['promo_item.promo_id' => $post['promo_id']])
             ->andWhere(['promo_item.business_claimed' => null])
             ->andWhere(['promo_item.not_active' => false])
             ->andWhere(['user_promo_item.user_id' => null])
             ->asArray()->one();
-            
+
         $result = [];
-        
+
         if (!empty($modelPromoItem)) {
-            
+
             $modelUserPromoItem = new UserPromoItem();
             $modelUserPromoItem->promo_item_id = $modelPromoItem['id'];
             $modelUserPromoItem->promo_id = $modelPromoItem['promo_id'];
             $modelUserPromoItem->user_id = Yii::$app->user->getIdentity()->id;
             $modelUserPromoItem->unique_id = $modelPromoItem['promo_id'] . '-' . $modelUserPromoItem->user_id;
-            
+
             if ($modelUserPromoItem->save()) {
-                
+
                 Yii::$app->mailer->compose(['html' => 'claim_promo'], [
                     'modelPromoItem' => $modelPromoItem,
                     'fullName' => Yii::$app->user->getIdentity()->full_name,
@@ -442,26 +442,29 @@ class ActionController extends base\BaseController
                 ->setTo(Yii::$app->user->getIdentity()->email)
                 ->setSubject(Yii::$app->name . ' Promo Code')
                 ->send();
-                
+
+                $result['success'] = true;
                 $result['icon'] = 'aicon aicon-icon-tick-in-circle';
                 $result['title'] = 'Claim Promo Berhasil';
                 $result['message'] = 'Harap periksa email anda untuk mendapatkan kode promo.';
                 $result['type'] = 'success';
             } else {
-                
+
+                $result['success'] = false;
                 $result['icon'] = 'aicon aicon-icon-info';
                 $result['title'] = 'Claim Promo Gagal';
                 $result['message'] = 'Anda gagal mengklaim promo ini.';
                 $result['type'] = 'danger';
             }
         } else {
-            
+
+            $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
             $result['title'] = 'Claim Promo Gagal';
             $result['message'] = 'Promo sudah habis.';
             $result['type'] = 'danger';
         }
-        
+
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
     }
@@ -518,13 +521,13 @@ class ActionController extends base\BaseController
                 $modelUserPostMainPhoto->love_value = 0;
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
-                    
+
                     $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
-                    
+
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
-                    
+
                     $modelUserPostPhoto = new UserPost();
-                    
+
                     $modelUserPostPhoto->parent_id = $modelUserPost->id;
                     $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
                     $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
@@ -532,13 +535,13 @@ class ActionController extends base\BaseController
                     $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
                     $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
                     $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
-                    
+
                     if (!($flag = $modelUserPostPhoto->save())) {
-                        
+
                         break;
                     }
                 } else {
-                    
+
                     break;
                 }
             }
@@ -555,7 +558,7 @@ class ActionController extends base\BaseController
                 $modelUserVote->user_post_main_id = $modelUserPostMain->id;
 
                 if (!($flag = $modelUserVote->save())) {
-                    
+
                     break;
                 }
             }
@@ -567,12 +570,12 @@ class ActionController extends base\BaseController
                 ->joinWith(['business'])
                 ->andWhere(['business_id' => $modelUserPostMain->business_id])
                 ->one();
-            
+
             foreach ($post['Post']['review']['rating'] as $votePoint) {
 
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
-            
+
             $modelBusinessDetail->voters += 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
@@ -599,9 +602,9 @@ class ActionController extends base\BaseController
 
                 $modelBusinessDetailVote->total_vote_points += $votePoint;
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
-                
+
                 if (!($flag = $modelBusinessDetailVote->save())) {
-                    
+
                     break;
                 }
             }
@@ -612,7 +615,7 @@ class ActionController extends base\BaseController
         if ($flag) {
 
             $transaction->commit();
-            
+
             $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan';
@@ -652,7 +655,7 @@ class ActionController extends base\BaseController
     {
         $transaction = Yii::$app->db->beginTransaction();
         $flag = false;
-        
+
         $isUpdate = $modelUserPostMain->is_publish;
 
         $modelUserPostMain->text = preg_replace("/\r\n/", " ", $post['Post']['review']['text']);
@@ -696,13 +699,13 @@ class ActionController extends base\BaseController
                 $modelUserPostMainPhoto->love_value = 0;
 
                 if (($flag = $modelUserPostMainPhoto->save())) {
-                    
+
                     $modelUserPostMainPhoto->image = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
-                    
+
                     array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
-                    
+
                     $modelUserPostPhoto = new UserPost();
-                    
+
                     $modelUserPostPhoto->parent_id = $modelUserPost->id;
                     $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
                     $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
@@ -710,9 +713,9 @@ class ActionController extends base\BaseController
                     $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
                     $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
                     $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
-                    
+
                     if (!($flag = $modelUserPostPhoto->save())) {
-                        
+
                         break;
                     }
                 } else {
@@ -720,24 +723,24 @@ class ActionController extends base\BaseController
                     break;
                 }
             }
-            
+
             if ($flag && !empty($post['ImageReviewDelete'])) {
-                
+
                 $modelUserPhoto = UserPostMain::findAll(['parent_id' => $modelUserPostMain->id]);
-                
+
                 foreach ($modelUserPhoto as $dataUserPhoto) {
-                    
+
                     foreach ($post['ImageReviewDelete'] as $deletedPhotoId) {
-                        
+
                         if ($deletedPhotoId == $dataUserPhoto->id) {
-                            
+
                             $dataUserPhoto->is_publish = false;
-                            
+
                             if (!($flag = $dataUserPhoto->save())) {
-                                
+
                                 break 2;
                             } else {
-                                
+
                                 break;
                             }
                         }
@@ -764,30 +767,30 @@ class ActionController extends base\BaseController
                 $modelUserVote->vote_value = $voteValue;
 
                 if (!($flag = $modelUserVote->save())) {
-                    
+
                     break;
                 }
             }
         }
 
         if ($flag) {
-            
+
             $modelBusinessDetail = BusinessDetail::find()
                 ->joinWith(['business'])
                 ->andWhere(['business_id' => $post['business_id']])
                 ->one();
-            
+
             $modelBusinessDetail->total_vote_points -= $prevUserVoteTotal;
-            
+
             foreach ($post['Post']['review']['rating'] as $votePoint) {
-                
+
                 $modelBusinessDetail->total_vote_points += $votePoint;
             }
-            
+
             $modelBusinessDetail->voters = (!$isUpdate) ? $modelBusinessDetail->voters + 1 : $modelBusinessDetail->voters;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
-            
+
             $flag = $modelBusinessDetail->save();
         }
 
@@ -804,9 +807,9 @@ class ActionController extends base\BaseController
 
                 $modelBusinessDetailVote->total_vote_points += $votePoint;
                 $modelBusinessDetailVote->vote_value = $modelBusinessDetailVote->total_vote_points / $modelBusinessDetail->voters;
-                
+
                 if (!($flag = $modelBusinessDetailVote->save())) {
-                    
+
                     break;
                 }
             }

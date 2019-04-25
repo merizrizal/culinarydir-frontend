@@ -199,7 +199,7 @@ $this->title = 'Checkout'; ?>
                                                             <div class="col-xs-12">
                                                                 <?= Yii::t('app', 'Got Promo Code?') ?>
                                                             </div>
-                                                            <div class="col-sm-4 col-xs-12 mb-20">
+                                                            <div class="col-sm-5 col-xs-12 mb-20">
 
                                                                 <?= $form->field($modelTransactionSession, 'promo_item_id')->dropDownList(
                                                                     ArrayHelper::map($promoItemClaimed, 'id',
@@ -214,9 +214,11 @@ $this->title = 'Checkout'; ?>
                                                                         'options' => $dataOption
                                                                     ]); ?>
 
+                                                                <span class="text-red"></span>
+
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-offset-3 col-sm-5 col-xs-12">
+                                                        <div class="col-sm-offset-2 col-sm-5 col-xs-12">
                                                             <table class="table table-responsive table-striped table-border checkout-table">
                                                                 <tbody>
                                                                 	<tr>
@@ -255,7 +257,13 @@ $this->title = 'Checkout'; ?>
                                                                                     <div class="row mb-20">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                                $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radio(['label' => $data['deliveryMethod']['delivery_name'], 'value' => $data['id'], 'uncheck' => null]) .
+
+                                                                                                $form->field($modelTransactionSessionOrder, 'business_delivery_id')->radio([
+                                                                                                    'label' => $data['deliveryMethod']['delivery_name'],
+                                                                                                    'value' => $data['id'],
+                                                                                                    'uncheck' => null
+                                                                                                ])->error(false) .
+
                                                                                             '</label>
                                                                                         </div>
                                                                                         <div class="col-sm-8 col-xs-12">
@@ -299,7 +307,13 @@ $this->title = 'Checkout'; ?>
                                                                                     <div class="row mb-20">
                                                                                         <div class="col-sm-4 col-xs-12">
                                                                                             <label>' .
-                                                                                                $form->field($modelTransactionSessionOrder, 'business_payment_id')->radio(['label' => $data['paymentMethod']['payment_name'], 'value' => $data['id'], 'uncheck' => null]) .
+
+                                                                                                $form->field($modelTransactionSessionOrder, 'business_payment_id')->radio([
+                                                                                                    'label' => $data['paymentMethod']['payment_name'],
+                                                                                                    'value' => $data['id'],
+                                                                                                    'uncheck' => null
+                                                                                                ])->error(false) .
+
                                                                                             '</label>
                                                                                         </div>
                                                                                         <div class="col-sm-8 col-xs-12">' .
@@ -481,9 +495,9 @@ $this->title = 'Checkout'; ?>
 </div>
 
 <?php
-GrowlCustom::widget();
-
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.css', ['depends' => 'yii\web\YiiAsset']);
+
+GrowlCustom::widget();
 
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/customicheck/customicheck.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/jquery-currency/jquery.currency.js', ['depends' => 'yii\web\YiiAsset']);
@@ -493,6 +507,8 @@ $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 $jscript = '
     var totalPrice = ' . $modelTransactionSession['total_price'] . ';
 
+    var formIsValid = false;
+
     $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
 
     if ($(".promo-code-field").val() != "") {
@@ -501,17 +517,15 @@ $jscript = '
 
         var grandTotal = totalPrice - amount < 0 ? 0 : totalPrice - amount;
 
-        $(".promo-amount, .promo-amount-confirm").show();
-        $(".promo-amount").children().last().html(amount);
-        $(".promo-amount-confirm").children().last().html(amount);
-        $(".promo-amount").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".promo-amount-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount").show();
+        $(".grand-total").show();
+        $(".promo-amount").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
 
-        $(".grand-total, .grand-total-confirm").show();
-        $(".grand-total").children().last().html(grandTotal);
-        $(".grand-total-confirm").children().last().html(grandTotal);
-        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").show();
+        $(".grand-total-confirm").show();
+        $(".promo-amount-confirm").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
     }
 
     $(".promo-code-field").select2({
@@ -546,8 +560,7 @@ $jscript = '
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
                     $("#item-" + transactionItemId).find(".item-amount").html(amount);
 
-                    $(".total-price").html(response.total_price);
-                    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
+                    $(".total-price").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '});
 
                     totalPrice = response.total_price;
 
@@ -555,10 +568,8 @@ $jscript = '
 
                         var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
 
-                        $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
-                        $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal);
-                        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-                        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                        $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+                        $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
                     }
                 } else {
 
@@ -661,15 +672,12 @@ $jscript = '
 
                             var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
 
-                            $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal);
-                            $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal);
-                            $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-                            $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+                            $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+                            $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
                         }
                     }
 
-                    $(".total-price").html(response.total_price);
-                    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
+                    $(".total-price").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '});
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -696,30 +704,34 @@ $jscript = '
 
         var grandTotal = totalPrice - amount < 0 ? 0 : totalPrice - amount;
 
-        $(".promo-amount, .promo-amount-confirm").show();
-        $(".promo-amount").children().last().html(amount);
-        $(".promo-amount-confirm").children().last().html(amount);
-        $(".promo-amount").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".promo-amount-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount").show();
+        $(".grand-total").show();
+        $(".promo-amount").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
 
-        $(".grand-total, .grand-total-confirm").show();
-        $(".grand-total").children().last().html(grandTotal);
-        $(".grand-total-confirm").children().last().html(grandTotal);
-        $(".grand-total").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total-confirm").children().last().currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").show();
+        $(".grand-total-confirm").show();
+        $(".promo-amount-confirm").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+
+        var minOrder = $("<span>").html($(this).find(":selected").data("minimum-order")).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+        $(this).parent().siblings("span").html("*Minimal pembelian sebesar " + minOrder);
     });
 
-    $(".btn-order").on("click", function(event) {
+    $("#checkout-form").on("beforeSubmit", function(event) {
 
-        event.preventDefault();
+        if ($(".order-online-form").find(".has-error").length) {
+
+            return false;
+        }
 
         $(".order-confirmation-modal").fadeIn("medium");
 
         var deliveryMethod = $("input[name=\'TransactionSessionOrder[business_delivery_id]\']:checked").parent().parent().text();
         var paymentMethod = $("input[name=\'TransactionSessionOrder[business_payment_id]\']:checked").parent().parent().text();
 
-        $(".order-confirmation-modal").find(".delivery-method").html("<strong>Metode Pengiriman : </strong>" + ((deliveryMethod == "") ? "<span class=\"text-red\">metode pengiriman tidak boleh kosong</span>" : deliveryMethod));
-        $(".order-confirmation-modal").find(".payment-method").html("<strong>Metode Pembayaran : </strong>" + ((paymentMethod == "") ? "<span class=\"text-red\">metode pembayaran tidak boleh kosong</span>" : paymentMethod));
+        $(".order-confirmation-modal").find(".delivery-method").html("<strong>Metode Pengiriman : </strong>" + deliveryMethod);
+        $(".order-confirmation-modal").find(".payment-method").html("<strong>Metode Pembayaran : </strong>" + paymentMethod);
 
         if ($(".promo-code-field").find(":selected").text() != "") {
 
@@ -735,11 +747,32 @@ $jscript = '
 
             $(".transaction-note").parent().parent().hide();
         }
+
+        return formIsValid;
     });
 
     $(".btn-submit-order").on("click", function() {
 
-        $(".btn-order").submit();
+        var selectedPromoMinOrder = $(".promo-code-field").find(":selected").data("minimum-order");
+
+        if ($(".promo-amount").is(":visible")) {
+
+            if (selectedPromoMinOrder <= totalPrice) {
+
+                formIsValid = true;
+                $("#checkout-form").submit();
+            } else {
+
+                $(".order-confirmation-modal").fadeOut("medium");
+
+                var minOrder = $("<span>").html(selectedPromoMinOrder).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                messageResponse("aicon aicon-icon-info", "Gagal Checkout", "Minimal memesan sebesar " + minOrder + " untuk mendapatkan promo", "danger");
+            }
+        } else {
+
+            formIsValid = true;
+            $("#checkout-form").submit();
+        }
     });
 
     $(".btn-close").on("click", function() {

@@ -350,8 +350,6 @@ GrowlCustom::widget();
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/jquery-currency/jquery.currency.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJs(GrowlCustom::messageResponse() . GrowlCustom::stickyResponse(), View::POS_HEAD);
 
-$totalPrice = !empty($modelTransactionSession['total_price']) ? Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) : '';
-
 $jscript .= '
     $(window).scroll(function() {
 
@@ -383,9 +381,11 @@ $jscript .= '
 
     if ($(".transaction-session-id").length) {
 
+        var totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
-            "' . $modelTransactionSession['total_amount'] . '" + " menu | total : " + "' . $totalPrice . '",
+            "' . $modelTransactionSession['total_amount'] . '" + " menu | total : " + totalPrice,
             "' . $modelTransactionSession['business']['name'] . '",
             "info"
         );
@@ -408,14 +408,16 @@ $jscript .= '
 
                 if (response.success) {
 
+                    totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+
                     if (cart != null) {
 
-                        cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
+                        cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + totalPrice + "</b>");
                     } else {
 
                         cart = stickyGrowl(
                             "aicon aicon-icon-online-ordering aicon-1x",
-                            "<b>" + response.total_amount + " menu | total : " + response.total_price + "</b>",
+                            "<b>" + response.total_amount + " menu | total : " + totalPrice + "</b>",
                             $(".business-name").val(),
                             "info"
                         );
@@ -451,8 +453,7 @@ $jscript .= '
             url: thisObj.data("url"),
             data: {
                 "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
-                "amount": amount,
-                "page": "menu"
+                "amount": amount
             },
             beforeSend: function(xhr) {
 
@@ -463,7 +464,7 @@ $jscript .= '
 
                 if (response.success) {
 
-                    var totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                    totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
                     cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + totalPrice + "</b>");
 
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
@@ -534,8 +535,7 @@ $jscript .= '
             type: "POST",
             url: thisObj.attr("href"),
             data: {
-                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val(),
-                "page": "menu"
+                "id": thisObj.parents(".business-menu-group").find(".transaction-item-id").val()
             },
             beforeSend: function(xhr) {
 
@@ -552,7 +552,8 @@ $jscript .= '
                         cart = null;
                     } else {
 
-                        cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + response.total_price + "</b>");
+                        totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                        cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + totalPrice + "</b>");
                     }
 
                     var parentClass = thisObj.parents(".business-menu-group");
