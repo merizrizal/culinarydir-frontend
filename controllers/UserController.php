@@ -1,19 +1,19 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
 use core\models\TransactionSession;
-use core\models\UserPerson;
 use core\models\User;
+use core\models\UserPerson;
 use frontend\models\ChangePassword;
+use Yii;
 use sycomponent\Tools;
+use yii\base\InvalidArgumentException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\web\Response;
 use yii\web\BadRequestHttpException;
-use yii\widgets\ActiveForm;
-use yii\base\InvalidArgumentException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * User Controller
@@ -42,7 +42,7 @@ class UserController extends base\BaseHistoryUrlController
             ->joinWith(['userPerson.person'])
             ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
             ->asArray()->one();
-    
+
         return $this->render('index', [
             'modelUser' => $modelUser,
             'queryParams' => Yii::$app->request->getQueryParams(),
@@ -55,14 +55,14 @@ class UserController extends base\BaseHistoryUrlController
 
             return $this->redirect(ArrayHelper::merge(['user/index'], Yii::$app->request->getQueryParams()));
         } else {
-            
+
             $modelUser = User::find()
                 ->joinWith(['userPerson.person'])
                 ->andWhere(['username' => $user])
                 ->asArray()->one();
-            
+
             if (empty($modelUser)) {
-                
+
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
 
@@ -84,8 +84,8 @@ class UserController extends base\BaseHistoryUrlController
             ->one();
 
         $modelUser = $modelUserPerson->user;
-        $modelPerson = $modelUserPerson->person;        
-        
+        $modelPerson = $modelUserPerson->person;
+
         if (Yii::$app->request->isAjax && $modelUser->load(Yii::$app->request->post())) {
 
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -95,9 +95,9 @@ class UserController extends base\BaseHistoryUrlController
         if (!empty(($post = Yii::$app->request->post())) && $modelPerson->load($post) && $modelUser->load($post)) {
 
             $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;            
+            $flag = false;
 
-            if (($flag = $modelPerson->save())) { 
+            if (($flag = $modelPerson->save())) {
 
                 if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
 
@@ -139,7 +139,7 @@ class UserController extends base\BaseHistoryUrlController
         return $this->render('update_profile', [
             'modelUserPerson' => $modelUserPerson,
             'modelUser' => $modelUser,
-            'modelPerson' => $modelPerson,            
+            'modelPerson' => $modelPerson,
         ]);
     }
 
@@ -162,33 +162,33 @@ class UserController extends base\BaseHistoryUrlController
             'modelChangePassword' => $modelChangePassword,
         ]);
     }
-    
+
     public function actionDetailOrderHistory($id)
     {
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
                 'business.businessImages' => function($query) {
-                
+
                     $query->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city',
                 'transactionItems' => function($query) {
-                
-                    $query->orderBy(['transaction_item.id' => SORT_ASC]);
+
+                    $query->orderBy(['transaction_item.created_at' => SORT_ASC]);
                 },
                 'transactionItems.businessProduct',
             ])
             ->andWhere(['transaction_session.id' => $id])
             ->asArray()->one();
-                
+
         if (empty($modelTransactionSession)) {
-            
+
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        
+
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
-        
+
         return $this->render('detail_order_history', [
             'modelTransactionSession' => $modelTransactionSession,
         ]);

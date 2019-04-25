@@ -1,17 +1,17 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
-use core\models\ProductCategory;
 use core\models\Business;
 use core\models\BusinessDetail;
 use core\models\BusinessDetailVote;
-use core\models\UserPostMain;
-use core\models\UserPostComment;
-use core\models\RatingComponent;
 use core\models\BusinessPromo;
-use yii\filters\VerbFilter;
+use core\models\ProductCategory;
+use core\models\RatingComponent;
+use core\models\UserPostComment;
+use core\models\UserPostMain;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -104,10 +104,8 @@ class DataController extends base\BaseController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
@@ -116,20 +114,18 @@ class DataController extends base\BaseController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment',
             ])
+            ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
-            ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
             ->orderBy(['user_post_main.created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
@@ -286,17 +282,13 @@ class DataController extends base\BaseController
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition([
-                        'user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                        'user_post_love.is_active' => true
-                    ]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userVotes',
                 'userPostComments',
@@ -361,14 +353,11 @@ class DataController extends base\BaseController
                     'businessDetail',
                     'userLoves' => function ($query) {
 
-                        $query->andOnCondition([
-                            'user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null,
-                            'user_love.is_active' => true
-                        ]);
+                        $query->andOnCondition(['user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                            ->andOnCondition(['user_love.is_active' => true]);
                     },
                     'membershipType.membershipTypeProductServices.productService',
                 ])
-                ->andWhere(['membership_type.as_archive' => false])
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
                 ->andFilterWhere([
@@ -376,7 +365,8 @@ class DataController extends base\BaseController
                     ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']],
                     ['ilike', 'business_location.address', $get['nm']], ['ilike', 'business_location.address_info', $get['nm']]
                 ])
-                ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']]);
+                ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
+                ->andWhere(['membership_type.as_archive' => false]);
 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
 

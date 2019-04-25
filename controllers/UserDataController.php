@@ -55,16 +55,14 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function ($query) {
 
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.village',
                 'business.businessLocation.city',
                 'user',
             ])
-            ->where(['user_visit.is_active' => true])
+            ->andWhere(['user_visit.is_active' => true])
             ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
@@ -114,16 +112,14 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function ($query) {
 
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.village',
                 'business.businessLocation.city',
                 'user',
             ])
-            ->where(['user_love.is_active' => true])
+            ->andWhere(['user_love.is_active' => true])
             ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
@@ -175,19 +171,15 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function ($query) {
 
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
 
-                    $query->andOnCondition([
-                        'child.is_publish' => true,
-                        'child.type' => 'Photo'
-                    ]);
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
@@ -259,7 +251,7 @@ class UserDataController extends base\BaseController
             ->andWhere(['type' => 'Photo'])
             ->andWhere(['is_publish' => true])
             ->andWhere(['user.username' => $username])
-            ->orderBy(['id' => SORT_DESC])
+            ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
@@ -299,11 +291,9 @@ class UserDataController extends base\BaseController
                 'business.userLoves',
                 'business.businessLocation.city'
             ])
-            ->andWhere([
-                'user_love.is_active' => true,
-                'user_love.user_id' => Yii::$app->user->getIdentity()->id,
-                'not_active' => false
-            ])
+            ->andWhere(['user_love.is_active' => true])
+            ->andWhere(['user_love.user_id' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['not_active' => false])
             ->andWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
             ->orderBy('business_id')
             ->distinct()
@@ -356,10 +346,8 @@ class UserDataController extends base\BaseController
                 'business',
                 'business.businessImages' => function ($query) {
 
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city'
             ])
