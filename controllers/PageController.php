@@ -77,8 +77,6 @@ class PageController extends base\BaseHistoryUrlController
             ]
         ]);
 
-        $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
-
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $modelPromo = Promo::find()
@@ -86,6 +84,8 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['OR', ['>=', 'date_end', Yii::$app->formatter->asDate(time())], ['date_end' => null]])
             ->orderBy(['created_at' => SORT_DESC])
             ->asArray()->all();
+
+        $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
 
         Yii::$app->formatter->timeZone = 'UTC';
 

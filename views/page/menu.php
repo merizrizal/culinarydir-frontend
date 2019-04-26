@@ -378,10 +378,11 @@ $jscript .= '
     });
 
     var cart = null;
+    var totalPrice = "";
 
     if ($(".transaction-session-id").length) {
 
-        var totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+        totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . Yii::$app->params['currencyOptions'] . '}).html();
 
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
