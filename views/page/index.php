@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ListView;
-use yii\widgets\LinkPager;
-use yii\web\View;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
+use yii\web\View;
+use yii\widgets\LinkPager;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
@@ -63,31 +63,32 @@ $appComponent = new AppComponent(); ?>
                 <?= $appComponent->search([
                     'keyword' => $keyword,
                 ]); ?>
-                
+
             </div>
         </div>
         <div class="row mt-30">
             <div class="col-xs-12 font-alt"><strong><?= Yii::t('app', 'News And Promo'); ?></strong></div>
         </div>
-    	
+
     	<div class="row mt-10">
         	<div class="col-xs-12">
                 <div class="news-promo-section owl-carousel owl-theme">
-                
+
                 	<?php
+                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385']));
+                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
+
                 	if (!empty($modelPromo)) {
-                	    
+
                 	    foreach ($modelPromo as $dataPromo) {
-                	        
-                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=350&h=154']), [
+
+                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=875&h=385']), [
                 	            'page/detail-promo',
                 	            'id' => $dataPromo['id']
                 	        ]);
                 	    }
-                	}
-                
-                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => 'https://play.google.com/intl/en_us/badges/images/generic/id_badge_web_generic.png']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app'); ?>
-                	
+                	} ?>
+
                 </div>
             </div>
         </div>

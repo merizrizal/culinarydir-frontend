@@ -1,19 +1,19 @@
 <?php
 
-use yii\web\View;
-use yii\helpers\Html;
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
-use kartik\rating\StarRating;
 use common\components\Helper;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
+use kartik\rating\StarRating;
+use yii\helpers\Html;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $dataUserVoteReview array */
 
-$this->title = 'Review ' . $modelUserPostMain['business']['name'];
+$this->title = Yii::t('app', 'Review') . ' ' . $modelUserPostMain['business']['name'];
 
 $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
     'page/review',
