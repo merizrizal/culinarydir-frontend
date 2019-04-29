@@ -1,14 +1,14 @@
 <?php
 
+use frontend\components\AddressType;
+use frontend\components\GrowlCustom;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Inflector;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use frontend\components\AddressType;
-use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
