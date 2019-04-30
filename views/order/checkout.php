@@ -211,7 +211,7 @@ $this->title = 'Checkout'; ?>
                                                                     [
                                                                         'prompt' => '',
                                                                         'class' => 'promo-code-field form-control',
-                                                                        'options' => $dataOption
+                                                                        'options' => $dataOption,
                                                                     ]); ?>
 
                                                                 <span class="text-red"></span>
@@ -531,7 +531,8 @@ $jscript = '
     $(".promo-code-field").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Promo Code') . '",
-        minimumResultsForSearch: "Infinity"
+        minimumResultsForSearch: "Infinity",
+        allowClear: true
     });
 
     $(".transaction-item-amount").on("change", function() {
@@ -716,6 +717,24 @@ $jscript = '
 
         var minOrder = $("<span>").html($(this).find(":selected").data("minimum-order")).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
         $(this).parent().siblings("span").html("*Minimal pembelian sebesar " + minOrder);
+    });
+
+    $(".promo-code-field").on("select2:unselect", function() {
+
+        var thisObj = $(this);
+
+        $(".promo-amount").hide();
+        $(".grand-total").hide();
+
+        $(".promo-amount-confirm").hide();
+        $(".grand-total-confirm").hide();
+
+        thisObj.parent().siblings("span").html("");
+
+        setTimeout(function() {
+
+            thisObj.select2("close");
+        }, 0);
     });
 
     $("#checkout-form").on("beforeSubmit", function(event) {
