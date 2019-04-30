@@ -575,7 +575,7 @@ class PageController extends base\BaseHistoryUrlController
 
         if ($countUserClaimed == 0) {
 
-            $claimInfo = Yii::t('app', 'No user have claimed this promo yet');
+            $claimInfo = Yii::t('app', 'No user has claimed this promo yet');
         }
 
         if (!empty(Yii::$app->user->getIdentity()->id)) {
