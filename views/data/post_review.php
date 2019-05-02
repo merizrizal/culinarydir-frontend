@@ -1,10 +1,10 @@
 <?php
 
+use common\components\Helper;
+use kartik\rating\StarRating;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use common\components\Helper;
-use kartik\rating\StarRating;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -35,7 +35,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -52,48 +52,48 @@ $linkPager = LinkPager::widget([
 
 <div class="row" style="position: relative;">
 	<div class="post-review-container">
-	
+
 		<div class="overlay" style="display: none;"></div>
 		<div class="loading-img" style="display: none;"></div>
 
         <?php
         if (!empty($modelUserPostMain)):
-        
+
             foreach ($modelUserPostMain as $dataUserPostMain):
-        
+
                 $img = !empty($dataUserPostMain['user']['image']) ? $dataUserPostMain['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
-        
+
                 $totalVoteValue = 0;
                 $ratingComponent = [];
-        
+
                 if (!empty($dataUserPostMain['userVotes'])) {
-        
+
                     foreach ($dataUserPostMain['userVotes'] as $dataUserVote) {
-        
+
                         if (!empty($dataUserVote['ratingComponent'])) {
-        
+
                             $totalVoteValue += $dataUserVote['vote_value'];
-        
+
                             $ratingComponent[$dataUserVote['rating_component_id']] = $dataUserVote;
                         }
                     }
                 }
-        
+
                 $overallValue = !empty($totalVoteValue) && !empty($ratingComponent) ? ($totalVoteValue / count($ratingComponent)) : 0;
-        
+
                 ksort($ratingComponent); ?>
-        
+
                 <div class="col-lg-12 review-post">
-        
+
                     <?= Html::hiddenInput('user_post_main_id', $dataUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
-        
+
                     <div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget">
                                 <div class="widget-posts-image">
-                                    <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
+                                    <?= Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
                                 </div>
-                    
+
                                 <div class="widget-posts-body">
                                     <?= Html::a($dataUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostMain['user']['username']]) ?>
                                     <br>
@@ -114,16 +114,16 @@ $linkPager = LinkPager::widget([
                                         <div class="col-xs-12">
                                             <div class="widget star-rating">
                                                 <ul class="icon-list">
-        
+
                                                     <?php
                                                     if (!empty($ratingComponent)):
-        
+
                                                         foreach ($ratingComponent as $dataUserVote): ?>
-        
+
                                                             <li>
                                                                 <div class="row">
                                                                     <div class="col-xs-5">
-        
+
                                                                         <?= StarRating::widget([
                                                                             'id' => 'user-' . $dataUserPostMain['id'] . '-' . $dataUserVote['ratingComponent']['name'] . '-rating',
                                                                             'name' => 'user-' . $dataUserPostMain['id'] . '-' . $dataUserVote['ratingComponent']['name'] . '-rating',
@@ -135,19 +135,19 @@ $linkPager = LinkPager::widget([
                                                                                 'showCaption' => false,
                                                                             ]
                                                                         ]); ?>
-        
+
                                                                     </div>
-        
+
                                                                     <div class="col-xs-7">
-                                                                        <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
+                                                                        <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . \Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
                                                                     </div>
                                                                 </div>
                                                             </li>
-        
+
                                                         <?php
                                                         endforeach;
                                                     endif; ?>
-        
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -159,7 +159,7 @@ $linkPager = LinkPager::widget([
                         	<ul class="list-inline mt-0 mb-0">
                                 <li>
                                     <div class="widget star-rating">
-        
+
                                         <?= StarRating::widget([
                                             'id' => 'rating-' . $dataUserPostMain['id'],
                                             'name' => 'rating_' . $dataUserPostMain['id'],
@@ -171,7 +171,7 @@ $linkPager = LinkPager::widget([
                                                 'showCaption' => false,
                                             ]
                                         ]); ?>
-        
+
                                     </div>
                                 </li>
                                 <li>
@@ -184,7 +184,7 @@ $linkPager = LinkPager::widget([
                             </ul>
                         </div>
                     </div>
-        
+
                     <div class="row">
                         <div class="col-xs-12">
                             <p class="review-description">
@@ -192,60 +192,60 @@ $linkPager = LinkPager::widget([
                             </p>
                         </div>
                     </div>
-        
+
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
                             <ul class="works-grid works-grid-gut works-grid-5">
-        
+
                                 <?php
                                 if (!empty($dataUserPostMain['userPostMains'])):
-        
+
                                     foreach ($dataUserPostMain['userPostMains'] as $i => $dataUserPostMainChild): ?>
-        
+
                                         <li class="work-item gallery-photo-review <?= $i > 4 ? 'hidden' : '' ?>">
                                             <div class="gallery-item post-gallery">
                                                 <div class="gallery-image">
                                                     <div class="work-image">
-                                                        <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
+                                                        <?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'] . '&w=72&h=72', ['class' => 'img-component']); ?>
                                                     </div>
                                                     <div class="work-caption">
                                                         <div class="work-descr">
-                                                        
+
                                                         	<?php
                                                         	if ($i == 4) {
-                                                        	    
+
                                                         	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                         	} else {
-                                                        	    
-                                                        	    echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
+
+                                                        	    echo Html::a('<i class="fa fa-search"></i>', \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']);
                                                         	} ?>
-                                                        	
+
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
-        
+
                                     <?php
                                     endforeach;
                                 endif; ?>
-        
+
                             </ul>
                         </div>
                     </div>
-                    
-                    <?php 
+
+                    <?php
                     $loveCount = !empty($dataUserPostMain['love_value']) ? $dataUserPostMain['love_value'] : 0;
                     $commentCount = !empty($dataUserPostMain['userPostComments']) ? count($dataUserPostMain['userPostComments']) : 0;
                     $photoCount = !empty($dataUserPostMain['userPostMains']) ? count($dataUserPostMain['userPostMains']) : 0;
-                    
+
                     $loveSpanCount = '<span class="total-likes-review">' . $loveCount . '</span>';
                     $commentSpanCount = '<span class="total-comments-review">' . $commentCount . '</span>';
                     $photoSpanCount = '<span class="total-photos-review">' . $photoCount . '</span>';
-                    
+
                     $selected = !empty($dataUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
-        
+
                     <div class="row visible-xs">
                         <div class="col-xs-3">
                             <ul class="list-inline mt-0 mb-0">
@@ -265,7 +265,7 @@ $linkPager = LinkPager::widget([
                             </ul>
                         </div>
                     </div>
-        
+
                     <div class="row">
                         <div class="col-sm-7 col-tab-7 col-xs-12">
                             <ul class="list-inline list-review mt-0 mb-0">
@@ -278,67 +278,67 @@ $linkPager = LinkPager::widget([
                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-small btn-round-4 user-comments-review-trigger visible-xs']); ?>
                                 </li>
                                 <li class="visible-xs-inline-block">
-                                    
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', Yii::$app->urlManager->createAbsoluteUrl([
-                                        'page/review', 
+
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> ', \Yii::$app->urlManager->createAbsoluteUrl([
+                                        'page/review',
                                         'id' => $dataUserPostMain['id'],
                                         'uniqueName' => $dataUserPostMain['business']['unique_name'],
                                     ]), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
-                                    
+
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-                                
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', Yii::$app->urlManager->createAbsoluteUrl([
-                                        'page/review', 
+
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', \Yii::$app->urlManager->createAbsoluteUrl([
+                                        'page/review',
                                         'id' => $dataUserPostMain['id'],
                                         'uniqueName' => $dataUserPostMain['business']['unique_name'],
                                     ]), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
-                                    
+
                                 </li>
                             </ul>
                         </div>
                     </div>
-        
+
                     <hr class="divider-w mt-10">
-        
+
                     <div class="row">
                         <div class="user-comment-review">
                             <div class="col-xs-12">
                                 <div class="input-group mt-10 mb-10">
                                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-        
+
                                     <?= Html::textInput('comment_input', null, [
                                         'class' => 'form-control input-comments-review',
-                                        'placeholder' => Yii::t('app', 'Write a Comment')
+                                        'placeholder' => \Yii::t('app', 'Write a Comment')
                                     ]); ?>
-        
+
                                 </div>
-        
+
                                 <div class="overlay" style="display: none;"></div>
                                 <div class="loading-img" style="display: none;"></div>
-                                
+
                                 <div class="comment-section">
                                     <div class="comment-container">
-        
+
                                         <?php
                                         foreach ($dataUserPostMain['userPostComments'] as $dataUserPostComment): ?>
-        
+
                                             <div class="comment-post">
                                                 <div class="row mb-10">
                                                     <div class="col-xs-12">
                                                         <div class="widget">
                                                             <div class="widget-comments-image">
-    
+
                                                                 <?php
                                                                 $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
-                                                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
-                                                                
+                                                                echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-comment-thumb img-component']), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
+
                                                             </div>
-    	
+
                                                             <div class="widget-comments-body">
                                                                 <?= Html::a($dataUserPostComment['user']['full_name'], ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>&nbsp;&nbsp;&nbsp;
                                                                 <small><?= Helper::asRelativeTime($dataUserPostComment['created_at']) ?></small>
@@ -351,30 +351,30 @@ $linkPager = LinkPager::widget([
                                                     </div>
                                                 </div>
                                             </div>
-        
+
                                         <?php
                                         endforeach; ?>
-        
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-        
+
                     <hr class="divider-w mb-10">
                 </div>
-        
+
             <?php
             endforeach;
         endif; ?>
-        
+
     </div>
 </div>
 
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -390,7 +390,7 @@ $linkPager = LinkPager::widget([
 </div>
 
 <?php
-$jscript = '    
+$jscript = '
     $(".user-comment-review").hide();
 
     ratingColor($(".rating"), "a");

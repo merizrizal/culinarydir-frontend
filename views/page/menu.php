@@ -12,7 +12,7 @@ use yii\web\View;
 /* @var $dataMenuCategorised Array */
 /* @var $isOrderOnline boolean */
 
-$this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
+$this->title = \Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
 
 <div class="main">
     <section class="module-extra-small bg-main">
@@ -20,7 +20,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back to Place Detail'), [
                         'page/detail',
                         'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']),
                         'uniqueName' => $modelBusiness['unique_name']
@@ -35,7 +35,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
             			<div class="col-xs-12">
             				<div class="box bg-white">
             					<div class="box-title">
-    								<h4 class="font-alt text-center"><?= Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
+    								<h4 class="font-alt text-center"><?= \Yii::t('app', 'Product') . ' ' . $modelBusiness['name'] ?></h4>
             					</div>
 
             					<?php
@@ -49,7 +49,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                         					<ul class="nav nav-tabs widget mb-10" role="tablist">
                         						<li class="active" role="presentation">
                         							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                                        <?= Yii::t('app', 'Category') ?> <i class="fas fa-chevron-circle-down"></i>
+                                                        <?= \Yii::t('app', 'Category') ?> <i class="fas fa-chevron-circle-down"></i>
                                                     </a>
 
                                 					<?php
@@ -104,7 +104,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
         											foreach ($data as $productCategory => $dataMenu):
 
                                                         $productCategoryId = 'uncategorized';
-                                                        $productCategoryName = Yii::t('app', 'Uncategorized');
+                                                        $productCategoryName = \Yii::t('app', 'Uncategorized');
 
                                                         if ($productCategory != 'emptyCategory') {
 
@@ -146,17 +146,17 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                 }
                                                             }
 
-                                                            $orderbtn = Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Order This'), [
+                                                            $orderbtn = Html::button('<i class="fa fa-plus"></i> ' . \Yii::t('app', 'Order This'), [
                                                                 'class' => 'btn btn-d btn-round btn-xs add-item',
-                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-order']),
+                                                                'data-url' => \Yii::$app->urlManager->createUrl(['order-action/save-order']),
                                                                 'data-product-id' => $dataBusinessProduct['id'],
                                                                 'data-product-price' => $dataBusinessProduct['price']
                                                             ]);
 
                                                             $notesField = Html::textInput('transaction_item_notes', $transactionItemNotes, [
                                                                 'class' => 'form-control transaction-item-notes',
-                                                                'placeholder' => Yii::t('app', 'Note'),
-                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                'placeholder' => \Yii::t('app', 'Note'),
+                                                                'data-url' => \Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                             ]); ?>
 
                                                             <div class="business-menu-group">
@@ -169,7 +169,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                                         </div>
                                                                         <div class="col-sm-3 col-tab-3">
-                                                                            <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            <strong><?= \Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                                                         </div>
                                                                         <div class="col-sm-1 col-tab-1 text-right <?= $existOrderClass ?>">
                                                                 			<div class="overlay" style="display: none;"></div>
@@ -206,7 +206,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                                     'value' => $transactionItemAmount,
                                                                                     'options' => [
                                                                                         'class' => 'transaction-item-amount text-right input-sm',
-                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                        'data-url' => \Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                                     ],
                                                                                     'pluginOptions' => [
                                                                                         'style' => 'width: 30%',
@@ -233,7 +233,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                             <strong><?= $dataBusinessProduct['name'] ?></strong>
                                                                         </div>
                                                                         <div class="col-xs-5 product-price <?= $addOrderClass ?>">
-                                                                            <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                            <strong><?= \Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                                                         </div>
                                                                         <div class="col-xs-5 text-right <?= $existOrderClass ?>">
                                                                 			<div class="overlay" style="display: none;"></div>
@@ -261,7 +261,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                     			<?= $notesField ?>
                                                                     		</div>
                                                                             <div class="col-xs-7">
-                                                                                <strong><?= Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
+                                                                                <strong><?= \Yii::$app->formatter->asCurrency($dataBusinessProduct['price']) ?></strong>
                                                                             </div>
                                                                         	<div class="col-xs-5">
 
@@ -273,7 +273,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                                                     'value' => $transactionItemAmount,
                                                                                     'options' => [
                                                                                         'class' => 'transaction-item-amount text-right input-sm',
-                                                                                        'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                        'data-url' => \Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                                     ],
                                                                                     'pluginOptions' => [
                                                                                         'style' => 'width: 30%',
@@ -302,7 +302,7 @@ $this->title = Yii::t('app', 'Product') . ' ' . $modelBusiness['name']; ?>
                                                 endforeach;
                                             else:
 
-                                                echo '<p>' . Yii::t('app', 'Currently there is no menu available') . '.</p>';
+                                                echo '<p>' . \Yii::t('app', 'Currently there is no menu available') . '.</p>';
                                             endif; ?>
 
 										</div>
@@ -326,7 +326,7 @@ $jscript = '
     var navMenuOffsetTop = 0;
 ';
 
-if (Yii::$app->request->getUserAgent() == 'com.asikmakan.app') {
+if (\Yii::$app->request->getUserAgent() == 'com.asikmakan.app') {
 
     $cssScript .= '
         .nav-tabs-fixed {
@@ -382,7 +382,7 @@ $jscript .= '
 
     if ($(".transaction-session-id").length) {
 
-        totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+        totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
 
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
@@ -409,7 +409,7 @@ $jscript .= '
 
                 if (response.success) {
 
-                    totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                    totalPrice = $("<span>").html(response.total_price).currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
 
                     if (cart != null) {
 
@@ -465,7 +465,7 @@ $jscript .= '
 
                 if (response.success) {
 
-                    totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                    totalPrice = $("<span>").html(response.total_price).currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
                     cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + totalPrice + "</b>");
 
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
@@ -553,7 +553,7 @@ $jscript .= '
                         cart = null;
                     } else {
 
-                        totalPrice = $("<span>").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                        totalPrice = $("<span>").html(response.total_price).currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
                         cart.update("title", "<b>" + response.total_amount + " menu" + " | total : " + totalPrice + "</b>");
                     }
 

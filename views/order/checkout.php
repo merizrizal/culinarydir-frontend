@@ -29,10 +29,10 @@ $this->title = 'Checkout'; ?>
                     <?php
                     if (!empty($modelTransactionSession)) {
 
-                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
+                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Continue Ordering'), ['page/menu', 'uniqueName' => $modelTransactionSession['business']['unique_name']], ['class' => 'btn btn-standard p-0']);
                     } else {
 
-                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
+                        echo Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back To Home Page'), ['page/index'], ['class' => 'btn btn-standard p-0']);
                     } ?>
 
                 </div>
@@ -45,7 +45,7 @@ $this->title = 'Checkout'; ?>
                         <div class="col-xs-12">
                             <div class="box bg-white">
                                 <div class="box-title">
-                                    <h4 class="font-alt text-center"><?= Yii::t('app', 'Order Confirmation') ?></h4>
+                                    <h4 class="font-alt text-center"><?= \Yii::t('app', 'Order Confirmation') ?></h4>
                                 </div>
 
                                 <hr class="divider-w">
@@ -79,7 +79,7 @@ $this->title = 'Checkout'; ?>
                                                                         <strong><?= $dataTransactionItem['businessProduct']['name'] ?></strong>
                                                                     </div>
                                                                     <div class="col-sm-3 col-tab-3">
-                                                                        <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                                        <strong><?= \Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                                     </div>
                                                                     <div class="col-sm-1 col-tab-1 text-right">
                                                                         <div class="overlay" style="display: none;"></div>
@@ -99,8 +99,8 @@ $this->title = 'Checkout'; ?>
 
                                                                         <?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
                                                                             'class' => 'form-control transaction-item-notes',
-                                                                            'placeholder' => Yii::t('app', 'Note'),
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                            'placeholder' => \Yii::t('app', 'Note'),
+                                                                            'data-url' => \Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                         ]); ?>
 
                                                                     </div>
@@ -114,7 +114,7 @@ $this->title = 'Checkout'; ?>
                                                                             'value' => $dataTransactionItem['amount'],
                                                                             'options' => [
                                                                                 'class' => 'transaction-item-amount text-right input-sm',
-                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                'data-url' => \Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                             ],
                                                                             'pluginOptions' => [
                                                                                 'style' => 'width: 30%',
@@ -154,13 +154,13 @@ $this->title = 'Checkout'; ?>
 
                                                                         <?= Html::textInput('transaction_item_notes', $dataTransactionItem['note'], [
                                                                             'class' => 'form-control transaction-item-notes',
-                                                                            'placeholder' => Yii::t('app', 'Note'),
-                                                                            'data-url' => Yii::$app->urlManager->createUrl(['order-action/save-notes'])
+                                                                            'placeholder' => \Yii::t('app', 'Note'),
+                                                                            'data-url' => \Yii::$app->urlManager->createUrl(['order-action/save-notes'])
                                                                         ]); ?>
 
                                                                     </div>
                                                                     <div class="col-xs-7">
-                                                                        <strong><?= Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
+                                                                        <strong><?= \Yii::$app->formatter->asCurrency($dataTransactionItem['price']) ?></strong>
                                                                     </div>
                                                                     <div class="col-xs-5">
 
@@ -172,7 +172,7 @@ $this->title = 'Checkout'; ?>
                                                                             'value' => $dataTransactionItem['amount'],
                                                                             'options' => [
                                                                                 'class' => 'transaction-item-amount text-right input-sm',
-                                                                                'data-url' => Yii::$app->urlManager->createUrl(['order-action/change-qty'])
+                                                                                'data-url' => \Yii::$app->urlManager->createUrl(['order-action/change-qty'])
                                                                             ],
                                                                             'pluginOptions' => [
                                                                                 'style' => 'width: 30%',
@@ -197,7 +197,7 @@ $this->title = 'Checkout'; ?>
                                                     <div class="row mt-40">
                                                         <div class ="promo-code-section">
                                                             <div class="col-xs-12">
-                                                                <?= Yii::t('app', 'Got Promo Code?') ?>
+                                                                <?= \Yii::t('app', 'Got Promo Code?') ?>
                                                             </div>
                                                             <div class="col-sm-5 col-xs-12 mb-20">
 
@@ -240,7 +240,7 @@ $this->title = 'Checkout'; ?>
 
                                                     <div class="order-online-form">
                                                         <div class="row mt-30">
-                                                            <h5 class="font-alt text-center"><?= Yii::t('app', 'Delivery Methods') ?></h5>
+                                                            <h5 class="font-alt text-center"><?= \Yii::t('app', 'Delivery Methods') ?></h5>
                                                             <hr>
                                                             <div class="col-xs-12">
 
@@ -283,14 +283,14 @@ $this->title = 'Checkout'; ?>
                                                                         ]);
                                                                 } else {
 
-                                                                    echo Yii::t('app', 'Currently there is no delivery method available in') . ' ' . $modelTransactionSession['business']['name'];
+                                                                    echo \Yii::t('app', 'Currently there is no delivery method available in') . ' ' . $modelTransactionSession['business']['name'];
                                                                 } ?>
 
                                                             </div>
                                                         </div>
 
                                                         <div class="row mt-30">
-                                                            <h5 class="font-alt text-center"><?= Yii::t('app', 'Payment Methods') ?></h5>
+                                                            <h5 class="font-alt text-center"><?= \Yii::t('app', 'Payment Methods') ?></h5>
                                                             <hr>
                                                             <div class="col-xs-12">
 
@@ -329,10 +329,10 @@ $this->title = 'Checkout'; ?>
                                                                             }
                                                                         ]);
 
-                                                                    echo '<i>*' . Yii::t('app', 'For transfer or online payments, please send a screenshot of proof of payment') . '</i>';
+                                                                    echo '<i>*' . \Yii::t('app', 'For transfer or online payments, please send a screenshot of proof of payment') . '</i>';
                                                                 } else {
 
-                                                                    echo Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
+                                                                    echo \Yii::t('app', 'Currently there is no payment method available in') . ' ' . $modelTransactionSession['business']['name'];
                                                                 } ?>
 
                                                             </div>
@@ -340,8 +340,8 @@ $this->title = 'Checkout'; ?>
 
                                                         <div class="row mt-30">
                                                             <div class="col-xs-12">
-                                                                <strong><?= Yii::t('app', 'Order Information') ?></strong>
-                                                                <?= $form->field($modelTransactionSession, 'note')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Add Notes to Seller (Optional)')]) ?>
+                                                                <strong><?= \Yii::t('app', 'Order Information') ?></strong>
+                                                                <?= $form->field($modelTransactionSession, 'note')->textarea(['rows' => 3, 'placeholder' => \Yii::t('app', 'Add Notes to Seller (Optional)')]) ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -349,7 +349,7 @@ $this->title = 'Checkout'; ?>
                                                 <?php
                                                 else:
 
-                                                    echo Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first'); ?>
+                                                    echo \Yii::t('app', 'Your order list is empty') . '. ' . \Yii::t('app', 'Please order the item you want first'); ?>
 
                                                     <div class="row mt-40">
                                                         <div class="col-sm-offset-7 col-sm-5 col-xs-12">
@@ -369,7 +369,7 @@ $this->title = 'Checkout'; ?>
 
                                                 <div class="row">
                                                     <div class="col-sm-offset-7 col-sm-5 col-xs-12">
-                                                        <?= Html::submitButton(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order', 'disabled' => empty($modelTransactionSession)]) ?>
+                                                        <?= Html::submitButton(\Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-order', 'disabled' => empty($modelTransactionSession)]) ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -414,7 +414,7 @@ $this->title = 'Checkout'; ?>
 
     			foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem):
 
-    			    $amountPrice = '<span class="item-amount">' . $dataTransactionItem['amount'] . '</span> x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
+    			    $amountPrice = '<span class="item-amount">' . $dataTransactionItem['amount'] . '</span> x ' . \Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
 
     				<div id=item-<?= $dataTransactionItem['id'] ?>>
         				<div class="row">
@@ -488,7 +488,7 @@ $this->title = 'Checkout'; ?>
                 </tbody>
             </table>
 
-            <?= Html::button(Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit-order']); ?>
+            <?= Html::button(\Yii::t('app', 'Order Now'), ['class' => 'btn btn-d btn-round btn-block btn-submit-order']); ?>
 
         </div>
 	</div>
@@ -509,7 +509,7 @@ $jscript = '
 
     var formIsValid = false;
 
-    $(".total-price").currency({' . Yii::$app->params['currencyOptions'] . '});
+    $(".total-price").currency({' . \Yii::$app->params['currencyOptions'] . '});
 
     if ($(".promo-code-field").val() != "") {
 
@@ -519,18 +519,18 @@ $jscript = '
 
         $(".promo-amount").show();
         $(".grand-total").show();
-        $(".promo-amount").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount").children().last().html(amount).currency({' . \Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total").children().last().html(grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
 
         $(".promo-amount-confirm").show();
         $(".grand-total-confirm").show();
-        $(".promo-amount-confirm").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").children().last().html(amount).currency({' . \Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
     }
 
     $(".promo-code-field").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Promo Code') . '",
+        placeholder: "' . \Yii::t('app', 'Promo Code') . '",
         minimumResultsForSearch: "Infinity",
         allowClear: true
     });
@@ -561,7 +561,7 @@ $jscript = '
                     thisObj.parents(".business-menu-group").find(".transaction-item-amount").val(amount);
                     $("#item-" + transactionItemId).find(".item-amount").html(amount);
 
-                    $(".total-price").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '});
+                    $(".total-price").html(response.total_price).currency({' . \Yii::$app->params['currencyOptions'] . '});
 
                     totalPrice = response.total_price;
 
@@ -569,8 +569,8 @@ $jscript = '
 
                         var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
 
-                        $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
-                        $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+                        $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
+                        $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
                     }
                 } else {
 
@@ -663,7 +663,7 @@ $jscript = '
                         $(".order-online-form").remove();
                         $(".promo-amount").remove();
                         $(".grand-total").remove();
-                        $(".order-list").prepend("' . Yii::t('app', 'Your order list is empty') . '. ' . Yii::t('app', 'Please order the item you want first') . '");
+                        $(".order-list").prepend("' . \Yii::t('app', 'Your order list is empty') . '. ' . \Yii::t('app', 'Please order the item you want first') . '");
                         $(".btn-order").prop("disabled", true);
                     } else {
 
@@ -673,12 +673,12 @@ $jscript = '
 
                             var grandTotal = totalPrice - $(".promo-code-field").find(":selected").data("amount");
 
-                            $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
-                            $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+                            $(".grand-total").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
+                            $(".grand-total-confirm").children().last().html(grandTotal < 0 ? 0 : grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
                         }
                     }
 
-                    $(".total-price").html(response.total_price).currency({' . Yii::$app->params['currencyOptions'] . '});
+                    $(".total-price").html(response.total_price).currency({' . \Yii::$app->params['currencyOptions'] . '});
                 } else {
 
                     messageResponse(response.icon, response.title, response.text, response.type);
@@ -707,15 +707,15 @@ $jscript = '
 
         $(".promo-amount").show();
         $(".grand-total").show();
-        $(".promo-amount").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount").children().last().html(amount).currency({' . \Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total").children().last().html(grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
 
         $(".promo-amount-confirm").show();
         $(".grand-total-confirm").show();
-        $(".promo-amount-confirm").children().last().html(amount).currency({' . Yii::$app->params['currencyOptions'] . '});
-        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . Yii::$app->params['currencyOptions'] . '});
+        $(".promo-amount-confirm").children().last().html(amount).currency({' . \Yii::$app->params['currencyOptions'] . '});
+        $(".grand-total-confirm").children().last().html(grandTotal).currency({' . \Yii::$app->params['currencyOptions'] . '});
 
-        var minOrder = $("<span>").html($(this).find(":selected").data("minimum-order")).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+        var minOrder = $("<span>").html($(this).find(":selected").data("minimum-order")).currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
         $(this).parent().siblings("span").html("*Minimal pembelian sebesar " + minOrder);
     });
 
@@ -784,7 +784,7 @@ $jscript = '
 
                 $(".order-confirmation-modal").fadeOut("medium");
 
-                var minOrder = $("<span>").html(selectedPromoMinOrder).currency({' . Yii::$app->params['currencyOptions'] . '}).html();
+                var minOrder = $("<span>").html(selectedPromoMinOrder).currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
                 messageResponse("aicon aicon-icon-info", "Gagal Checkout", "Minimal memesan sebesar " + minOrder + " untuk mendapatkan promo", "danger");
             }
         } else {
@@ -800,7 +800,7 @@ $jscript = '
     });
 ';
 
-if (!empty(($message = Yii::$app->session->getFlash('message')))) {
+if (!empty(($message = \Yii::$app->session->getFlash('message')))) {
 
     $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . $message['title'] . '" , "' . $message['message'] . '", "danger");';
 }

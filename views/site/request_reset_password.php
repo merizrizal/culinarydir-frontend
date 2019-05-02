@@ -1,9 +1,9 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\web\View;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
+use yii\web\View;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\RequestResetPassword */
@@ -42,50 +42,50 @@ $this->registerMetaTag([
                                         'fieldConfig' => [
                                             'template' => '{input}{error}',
                                         ]
-                                    ]); 
+                                    ]);
                                         if (!$verification): ?>
-                                        
-                                            <?= Yii::t('app', 'Please enter your email.') ?>
+
+                                            <?= \Yii::t('app', 'Please enter your email.') ?>
 
                                             <div class="row">
                                                 <div class="col-md-12">
-        
+
                                                     <?= $form->field($model, 'email', [
                                                         'enableAjaxValidation' => true
                                                     ])->textInput([
                                                         'class' => 'form-control',
                                                         'placeholder' => $model->getAttributeLabel('email'),
                                                     ]) ?>
-        
+
                                                 </div>
                                             </div>
-                                            
-                                        <?php 
+
+                                        <?php
                                         else: ?>
-                                        
-                                        	<?= Yii::t('app', 'We have sent a verification code to') . ' ' . $model->email . '.<br>' .  Yii::t('app', 'Please check.') ?>
+
+                                        	<?= \Yii::t('app', 'We have sent a verification code to') . ' ' . $model->email . '.<br>' .  \Yii::t('app', 'Please check.') ?>
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                
+
                                                 	<?= $form->field($model, 'verificationCode', [
                                                         'enableAjaxValidation' => true
                                                     ])->textInput([
                                                         'class' => 'form-control',
                                                 	    'placeholder' => $model->getAttributeLabel('verificationCode'),
                                                     ]) ?>
-        
+
                                                 </div>
                                             </div>
-                                        
+
                                         <?php
                                         endif; ?>
-    
+
                                         <div class="row">
                                             <div class="form-group col-md-12">
-    
-                                                <?= Html::submitButton(Yii::t('app', !$verification ? 'Next' : 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
-    
+
+                                                <?= Html::submitButton(\Yii::t('app', !$verification ? 'Next' : 'Send Request'), ['class' => 'btn btn-round btn-d']) ?>
+
                                             </div>
                                         </div>
 
@@ -108,10 +108,10 @@ $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '';
 
-if (!empty(($message = Yii::$app->session->getFlash('resetSuccess')))) {
+if (!empty(($message = \Yii::$app->session->getFlash('resetSuccess')))) {
 
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "Reset Berhasil", "' . $message . '", "success");';
-} else if (!empty(($message = Yii::$app->session->getFlash('resetError')))) {
+} else if (!empty(($message = \Yii::$app->session->getFlash('resetError')))) {
 
     $jscript = 'messageResponse("aicon aicon-icon-info", "Reset Gagal", "' . $message . '", "danger");';
 }

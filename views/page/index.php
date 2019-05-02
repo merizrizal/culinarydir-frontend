@@ -16,7 +16,7 @@ common\assets\OwlCarouselAsset::register($this);
 
 $this->title = 'Home';
 
-$background = Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg';
+$background = \Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-home-bg.jpg';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -30,7 +30,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl('')
+    'content' => \Yii::$app->urlManager->createAbsoluteUrl('')
 ]);
 
 $this->registerMetaTag([
@@ -50,7 +50,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:image',
-    'content' => Yii::$app->urlManager->getHostInfo() . $background
+    'content' => \Yii::$app->urlManager->getHostInfo() . $background
 ]);
 
 $appComponent = new AppComponent(); ?>
@@ -67,7 +67,7 @@ $appComponent = new AppComponent(); ?>
             </div>
         </div>
         <div class="row mt-30">
-            <div class="col-xs-12 font-alt"><strong><?= Yii::t('app', 'News And Promo'); ?></strong></div>
+            <div class="col-xs-12 font-alt"><strong><?= \Yii::t('app', 'News And Promo'); ?></strong></div>
         </div>
 
     	<div class="row mt-10">
@@ -75,14 +75,14 @@ $appComponent = new AppComponent(); ?>
                 <div class="news-promo-section owl-carousel owl-theme">
 
                 	<?php
-                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385']));
-                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
+                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385']));
+                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
 
                 	if (!empty($modelPromo)) {
 
                 	    foreach ($modelPromo as $dataPromo) {
 
-                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=875&h=385']), [
+                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=875&h=385']), [
                 	            'page/detail-promo',
                 	            'id' => $dataPromo['id']
                 	        ]);
@@ -99,7 +99,7 @@ $appComponent = new AppComponent(); ?>
     <div class="container detail">
         <div class="view">
             <div class="row mt-10 mb-20">
-                <div class="col-lg-12 font-alt"><?= Yii::t('app', 'Recent Activity'); ?></div>
+                <div class="col-lg-12 font-alt"><?= \Yii::t('app', 'Recent Activity'); ?></div>
             </div>
 
             <?= ListView::widget([
@@ -119,7 +119,7 @@ $appComponent = new AppComponent(); ?>
                     'class' => LinkPager::class,
                     'maxButtonCount' => 0,
                     'prevPageLabel' => false,
-                    'nextPageLabel' => Yii::t('app', 'Load More'),
+                    'nextPageLabel' => \Yii::t('app', 'Load More'),
                     'options' => ['id' => 'pagination-recent-post', 'class' => 'pagination'],
                 ]
             ]); ?>

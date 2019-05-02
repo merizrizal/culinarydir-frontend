@@ -1,13 +1,13 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
-use yii\widgets\MaskedInput;
-use yii\web\View;
-use kartik\file\FileInput;
 use core\models\City;
 use frontend\components\GrowlCustom;
+use kartik\file\FileInput;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\View;
+use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $modelUserPerson core\models\UserPerson */
@@ -40,7 +40,7 @@ $this->registerMetaTag([
                         <div class="box-content">
                             <div class="row mt-10">
                                 <div class="col-md-12 text-center">
-                                    <h4 class="font-alt"><?= Yii::t('app', 'Update Profile') ?></h4>
+                                    <h4 class="font-alt"><?= \Yii::t('app', 'Update Profile') ?></h4>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <div class="widget">
@@ -56,10 +56,10 @@ $this->registerMetaTag([
                                         ]); ?>
 
                                             <div class="profile-img-container img-circle mb-20">
-                                            	
-                                            	<?php 
-                                            	$img = !empty(Yii::$app->user->getIdentity()->image) ? Yii::$app->user->getIdentity()->image . '&w=200&h=200' : 'default-avatar.png';
-    
+
+                                            	<?php
+                                            	$img = !empty(\Yii::$app->user->getIdentity()->image) ? \Yii::$app->user->getIdentity()->image . '&w=200&h=200' : 'default-avatar.png';
+
                                                 echo $form->field($modelUser, 'image')->widget(FileInput::classname(), [
                                                     'options' => [
                                                         'id' => 'input-img-profile',
@@ -67,7 +67,7 @@ $this->registerMetaTag([
                                                     ],
                                                     'pluginOptions' => [
                                                         'initialPreview' => [
-                                                            Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-component img-profile']),
+                                                            Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-component img-profile']),
                                                         ],
                                                         'showRemove' => false,
                                                         'showUpload' => false,
@@ -100,27 +100,27 @@ $this->registerMetaTag([
                                                         ]
                                                     ]
                                                 ]); ?>
-    
+
                                             </div>
-    
+
                                             <div class="widget-posts-body">
-    
+
                                                 <?= $form->field($modelPerson, 'first_name')->textInput([
                                                     'class' => 'form-control',
-                                                    'placeholder' => Yii::t('app', 'First Name'),
+                                                    'placeholder' => \Yii::t('app', 'First Name'),
                                                 ]) ?>
-    
-    
+
+
                                                 <?= $form->field($modelPerson, 'last_name')->textInput([
                                                     'class' => 'form-control',
-                                                    'placeholder' => Yii::t('app', 'Last Name'),
+                                                    'placeholder' => \Yii::t('app', 'Last Name'),
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelPerson, 'about_me')->textarea([
                                                     'rows' => 3,
-                                                    'placeholder' => Yii::t('app', 'About Me')
+                                                    'placeholder' => \Yii::t('app', 'About Me')
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelPerson, 'city_id')->dropDownList(
                                                     ArrayHelper::map(
                                                         City::find()->orderBy('name')->asArray()->all(),
@@ -133,27 +133,27 @@ $this->registerMetaTag([
                                                         'prompt' => '',
                                                         'style' => 'width: 100%'
                                                     ]) ?>
-    
+
                                                 <?= $form->field($modelPerson, 'address')->textarea([
                                                     'rows' => 3,
-                                                    'placeholder' => Yii::t('app', 'Address')
+                                                    'placeholder' => \Yii::t('app', 'Address')
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelPerson, 'phone')->widget(MaskedInput::className(), [
                                                     'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
                                                     'options' => [
                                                         'class' => 'form-control',
-                                                        'placeholder' => Yii::t('app', 'Phone'),
+                                                        'placeholder' => \Yii::t('app', 'Phone'),
                                                     ],
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelUser, 'email', [
                                                     'enableAjaxValidation' => true
                                                 ])->textInput([
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Email',
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelUser, 'username', [
                                                     'enableAjaxValidation' => true
                                                 ])->textInput([
@@ -161,10 +161,10 @@ $this->registerMetaTag([
                                                     'placeholder' => 'Username',
                                                     'readonly' => 'readonly',
                                                 ]) ?>
-    
+
                                                 <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d mb-30']) ?>
-                                                <?= Html::a(Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
-    
+                                                <?= Html::a(\Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default mb-30']) ?>
+
                                             </div>
 
                                         <?php
@@ -210,14 +210,14 @@ $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 $jscript = '
     $("#person-city_id").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'City') . '",
+        placeholder: "' . \Yii::t('app', 'City') . '",
         minimumResultsForSearch: -1
     });
 ';
 
-if (!empty(($message = Yii::$app->session->getFlash('message')))) {
-    
-    $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Update Profile Successful') . '", "' . $message['message'] . '", "success");';
+if (!empty(($message = \Yii::$app->session->getFlash('message')))) {
+
+    $jscript .= 'messageResponse("aicon aicon-icon-tick-in-circle", "' . \Yii::t('app', 'Update Profile Successful') . '", "' . $message['message'] . '", "success");';
 }
 
 $this->registerJs($jscript); ?>

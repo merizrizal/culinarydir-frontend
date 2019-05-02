@@ -3,9 +3,9 @@
 use core\models\Category;
 use core\models\City;
 use core\models\Facility;
+use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $keyword Array */
@@ -16,7 +16,7 @@ kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
 $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFacilityFilter) {
-	
+
 	$keywordType = $keyword['searchType'];
 	$keywordName = $keyword['name'];
 	$keywordCity = $keyword['city'];
@@ -28,37 +28,37 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 	$keywordFacility = $keyword['facility'];
 	$keywordPriceMin = $keyword['price']['min'];
 	$keywordPriceMax = $keyword['price']['max'];
-	
+
 	$spanClear = '<span class="search-field-box-clear">×</span>';
-	
+
 	$styleProductLabel = !empty($keywordProductId) ? 'color: #555555;' : null;
 	$stylePriceLabel = $keywordPriceMin !== null && $keywordPriceMax !== null ? 'color: #555555;' : null;
 	$styleRadiusLabel = !empty($keywordCoordinate) && !empty($keywordRadius) ? 'color: #555555;' : null;
-	
-	$productLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-	$priceLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-	$radiusLabel = '<span class="search-field-box-placeholder">' . Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
-	
+
+	$productLabel = '<span class="search-field-box-placeholder">' . \Yii::t('app', 'Product Category') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+	$priceLabel = '<span class="search-field-box-placeholder">' . \Yii::t('app', 'Price') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+	$radiusLabel = '<span class="search-field-box-placeholder">' . \Yii::t('app', 'Region') . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+
 	if (!empty($keywordProductId)) {
-	    
+
 	    $productLabel = '<span class="search-field-box-placeholder">' . $keywordProductName . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
 	}
-	
+
 	if ($keywordPriceMin !== null && $keywordPriceMax !== null) {
-	    
-	    $priceMinLabel = $keywordPriceMin == 0 ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMin);
-	    $priceMaxLabel = $keywordPriceMax == 0 ? 'Any' : Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMax);
+
+	    $priceMinLabel = $keywordPriceMin == 0 ? 'Any' : \Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMin);
+	    $priceMaxLabel = $keywordPriceMax == 0 ? 'Any' : \Yii::$app->formatter->asNoSymbolCurrency($keywordPriceMax);
 	    $priceLabel = '<span class="search-field-box-placeholder">' . $priceMinLabel . ' - ' . $priceMaxLabel . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
 	}
-	
+
 	if (!empty($keywordCoordinate) && !empty($keywordRadius)) {
-	    
-	    $radiusLabel = '<span class="search-field-box-placeholder">' . Yii::$app->formatter->asShortLength($keywordRadius) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
+
+	    $radiusLabel = '<span class="search-field-box-placeholder">' . \Yii::$app->formatter->asShortLength($keywordRadius) . '</span><span class="search-field-box-arrow"><i class="fa fa-caret-right"></i></span>';
 	}
-	
+
 	$btnSubmit = Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search']);
 	$btnClear = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'btn btn-block btn-default search-label lbl-clear']); ?>
-	
+
 	<div class="search-box-modal" style="display:none">
 		<div class="row">
 			<div class="col-xs-12">
@@ -78,32 +78,32 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong><?= Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong><?= Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong><?= Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                	<div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
-                        
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
+                	<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
+
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
                     	    'class' => 'search-favorite'
                     	]) ?>
-                    	
+
                         	<div class="row">
                             	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
-                            
+
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
                                                 City::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 function($data) {
-                                                    
+
                                                     return $data['name'];
                                                 }
                                             ),
@@ -112,15 +112,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                 'class' => 'form-control city-id',
                                                 'style' => 'width: 100%',
                                             ]) ?>
-                
+
                                     </div>
                                 </div>
                             </div>
-                			
+
                 			<div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    									
+
     									<?php
                                         echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
@@ -129,34 +129,34 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                             'data-type' => 'favorit'
                                         ]);
                                         echo !empty($keywordName) ? $spanClear : null; ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-                                    
+
                                     	<?php
                                     	echo !empty($keywordProductId) ? $spanClear : null;
                                     	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
                                     	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-    						
+
     						<div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?= Html::dropDownList('ctg', $keywordCategory,
                                             ArrayHelper::map(
                                                 Category::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 function($data) {
-                                                    
+
                                                     return $data['name'];
                                                 }
                                             ),
@@ -165,63 +165,63 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                 'class' => 'form-control category-id',
                                                 'style' => 'width: 100%'
                                             ]) ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
                                         echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
                                         echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
                                         echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
                                         echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
                                         echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
                                         echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                                                        
+
                             <?php
                             if ($showFacilityFilter):
-                            
+
                                 $modelFacility = Facility::find()
                                     ->orderBy('name')
                                     ->asArray()->all();
-    
+
                                 $colDivider = ceil(count($modelFacility) / 3);
-    
+
                                 $column = '<div class="col-sm-4 col-tab-6 col-xs-6 col">'; ?>
-    
+
                                 <a class="search-label more-option" data-toggle="collapse" href=".facility-collapse">More Options
                                     <span class="fa fa-chevron-circle-down"></span>
                                 </a>
                                 <div class="facility-collapse collapse <?= !empty($keywordFacility) ? 'in' : '' ?>">
                                 	<div class="form-group">
-                                    	<div class="row mt-10">                                            
+                                    	<div class="row mt-10">
 
                                             <?= Html::checkboxList('fct', $keywordFacility,
                                                 ArrayHelper::map(
                                                     $modelFacility,
                                                     'id',
                                                     function($data) {
-                                                        
+
                                                         return $data['name'];
                                                     }
                                                 ),
@@ -242,7 +242,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                         ';
 
                                                         $index++;
-                                                        
+
                                                         if ($index === 1) {
 
                                                             return $column . $checkboxes;
@@ -262,10 +262,10 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                         </div>
                                     </div>
                                 </div>
-    
+
                             <?php
                             endif; ?>
-                            
+
                             <div class="row mt-10">
                             	<div class="col-sm-4 col-tab-4 col-xs-5">
                                     <div class="form-group">
@@ -283,27 +283,27 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                     </div>
                                 </div>
                             </div>
-                            
+
                         <?= Html::endForm(); ?>
-                            
+
                     </div>
-                
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
-                        
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
+
+                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
+
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-special'
                         ]) ?>
-                    
+
                         	<div class="row">
                             	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
-                            
+
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
                                                 City::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 function($data) {
-                                                    
+
                                                     return $data['name'];
                                                 }
                                             ),
@@ -312,15 +312,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                 'class' => 'form-control city-id',
                                                 'style' => 'width: 100%',
                                             ]) ?>
-                
+
                                     </div>
                                 </div>
                             </div>
-                			
+
                 			<div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
@@ -329,34 +329,34 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                             'data-type' => 'promo'
                                         ]);
                                         echo !empty($keywordName) ? $spanClear : null; ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-                                    
+
                                     	<?php
                                     	echo !empty($keywordProductId) ? $spanClear : null;
                                     	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
                                     	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-    						
+
     						<div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?= Html::dropDownList('ctg', $keywordCategory,
                                             ArrayHelper::map(
                                                 Category::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 function($data) {
-                                                    
+
                                                     return $data['name'];
                                                 }
                                             ),
@@ -365,25 +365,25 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                 'class' => 'form-control category-id',
                                                 'style' => 'width: 100%'
                                             ]) ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
                                         echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
                                         echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
                                         echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                             	<div class="col-sm-4 col-tab-4 col-xs-5">
                                     <div class="form-group">
@@ -401,27 +401,27 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                     </div>
                                 </div>
                             </div>
-                        
+
                         <?= Html::endForm(); ?>
-                            
+
                     </div>
-                    
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
-                        
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
+
+                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
+
+                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-order'
                         ]) ?>
-                    
+
                         	<div class="row">
                             	<div class="col-sm-9 col-tab-10 col-xs-11">
                             		<div class="form-group">
-                            
+
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
                                                 City::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 function($data) {
-                                                    
+
                                                     return $data['name'];
                                                 }
                                             ),
@@ -430,15 +430,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                                 'class' => 'form-control city-id',
                                                 'style' => 'width: 100%',
                                             ]) ?>
-                
+
                                     </div>
                                 </div>
                             </div>
-                			
+
                 			<div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo Html::textInput('nm', $keywordName, [
                                             'class' => 'form-control input-name',
@@ -447,52 +447,52 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                             'data-type' => 'pesan-online'
                                         ]);
                                         echo !empty($keywordName) ? $spanClear : null; ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-                                    
+
                                     	<?php
                                     	echo !empty($keywordProductId) ? $spanClear : null;
                                     	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
                                     	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
                                         echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
                                         echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
                                         echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-sm-9 col-tab-10 col-xs-11">
                                     <div class="form-group">
-    
+
                                         <?php
                                         echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
                                         echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
                                         echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
                                         echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-    
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                             	<div class="col-sm-4 col-tab-4 col-xs-5">
                                     <div class="form-group">
@@ -510,15 +510,15 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                     </div>
                                 </div>
                             </div>
-                        
+
                         <?= Html::endForm(); ?>
-                            
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
 	<?php
     Modal::begin([
         'header' => 'Coming Soon',
@@ -531,7 +531,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
     Modal::end();
 
     Modal::begin([
-        'header' => Yii::t('app', 'Product Category'),
+        'header' => \Yii::t('app', 'Product Category'),
         'id' => 'modal-product-category',
     ]);
 
@@ -553,7 +553,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
     Modal::end();
 
     Modal::begin([
-        'header' => Yii::t('app', 'Average Spending'),
+        'header' => \Yii::t('app', 'Average Spending'),
         'id' => 'modal-price',
         'footer' => '
             <div class="row">
@@ -565,7 +565,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
     ]);
 
         $priceItems = [
-            '0' => Yii::t('app', 'Any Price'), '20000' => '20.000', '40000' => '40.000', '60000' => '60.000', '80000' => '80.000',
+            '0' => \Yii::t('app', 'Any Price'), '20000' => '20.000', '40000' => '40.000', '60000' => '60.000', '80000' => '80.000',
             '100000' => '100.000', '120000' => '120.000', '140000' => '140.000', '160000' => '160.000',
             '180000' => '180.000', '200000' => '200.000', '220000' => '220.000', '240000' => '240.000',
             '260000' => '260.000', '280000' => '280.000', '300000' => '300.000'
@@ -574,9 +574,9 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
         echo '
             <div class="row">
                 <div class="col-sm-5 col-tab-5 col-xs-12">'
-                
-                    . Yii::t('app', Yii::t('app', 'Price Min'))
-                    
+
+                    . \Yii::t('app', \Yii::t('app', 'Price Min'))
+
                     . Html::dropDownList('price_min', null, $priceItems, [
                         'prompt' => '',
                         'class' => 'form-control price-min-select',
@@ -584,13 +584,13 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                     ]) . '
 
                 </div>
-                
+
                 <div class="col-sm-2 col-tab-2 col-xs-12 mt-30 visible-lg visible-md visible-sm visible-tab hidden-xs text-center"> - </div>
-                
+
                 <div class="col-sm-5 col-tab-5 col-xs-12">'
-                        
-                    . Yii::t('app', Yii::t('app', 'Price Max')) 
-                    
+
+                    . \Yii::t('app', \Yii::t('app', 'Price Max'))
+
                     . Html::dropDownList('price_max', null, $priceItems, [
                         'prompt' => '',
                         'class' => 'form-control price-max-select',
@@ -604,7 +604,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
     Modal::end();
 
     Modal::begin([
-        'header' => Yii::t('app', 'Region'),
+        'header' => \Yii::t('app', 'Region'),
         'id' => 'modal-region',
         'footer' => '
             <div class="row">
@@ -638,7 +638,7 @@ $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/customi
 $cssScript = '
     #map .map-marker {
         position: absolute;
-        background: url(' . Yii::$app->request->baseUrl . '/media/img/marker.png) no-repeat;
+        background: url(' . \Yii::$app->request->baseUrl . '/media/img/marker.png) no-repeat;
         background-size: 100% 100%;
         height: 32px;
         width: 32px;
@@ -672,7 +672,7 @@ $jscript = '
     function initMap(btnRegion, coordinateMap, radiusMap) {
 
         var executeMap = function(defaultLatLng) {
-    
+
             var mapOptions = {
                 center: defaultLatLng,
                 zoom: 15,
@@ -680,26 +680,26 @@ $jscript = '
                 gestureHandling: "greedy",
                 styles: [ { "featureType": "poi.business", "stylers": [ { "visibility": "off" } ] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [ { "visibility": "off" } ] } ],
             }
-    
+
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    
+
             var icon = {
-                url: "' . Yii::$app->request->baseUrl . '/media/img/marker.png",
+                url: "' . \Yii::$app->request->baseUrl . '/media/img/marker.png",
                 scaledSize: new google.maps.Size(32, 32),
                 origin: new google.maps.Point(0,0),
                 anchor: new google.maps.Point(15, 32)
             };
-    
+
             var marker = new google.maps.Marker({
                 position: defaultLatLng,
                 map: map,
                 icon: icon
             });
-    
+
             var radius = 500;
             var latitude = map.getCenter().lat();
             var longitude = map.getCenter().lng();
-    
+
             var circleRadius = new google.maps.Circle({
                 strokeColor: "#FF0000",
                 strokeOpacity: 0.8,
@@ -708,105 +708,105 @@ $jscript = '
                 fillOpacity: 0.35,
                 radius: radius,
             });
-    
+
             $("<div/>").addClass("map-marker").appendTo(map.getDiv());
-    
+
             circleRadius.setMap(map);
             circleRadius.bindTo("center", marker, "position");
-    
+
             google.maps.event.addListener(map, "dragstart", function() {
-    
+
                 marker.setMap(null);
                 circleRadius.setMap(null);
             });
-    
+
             google.maps.event.addListener(map, "dragend", function() {
-    
+
                 latitude = map.getCenter().lat();
                 longitude = map.getCenter().lng();
-    
+
                 map.panTo(new google.maps.LatLng(latitude, longitude));
-    
+
                 marker.setPosition({lat: latitude, lng: longitude});
                 circleRadius.setMap(map);
                 circleRadius.bindTo("center", marker, "position");
             });
-    
+
             google.maps.event.addListener(map, "zoom_changed", function() {
-    
+
                 marker.setMap(null);
                 circleRadius.setMap(null);
-    
+
                 latitude = map.getCenter().lat();
                 longitude = map.getCenter().lng();
-    
+
                 map.panTo(new google.maps.LatLng(latitude, longitude));
-    
+
                 marker.setPosition({lat: latitude, lng: longitude});
                 circleRadius.setMap(map);
                 circleRadius.bindTo("center", marker, "position");
             });
-    
+
             $(".radius-500").on("change", function() {
-    
+
                 radius = parseInt($(this).data("radius"));
-    
+
                 map.setZoom(15);
                 circleRadius.setRadius(radius);
             });
-    
+
             $(".radius-1000").on("change", function() {
-    
+
                 radius = parseInt($(this).data("radius"));
-    
+
                 map.setZoom(14);
                 circleRadius.setRadius(radius);
             });
-    
+
             $(".radius-2000").on("change", function() {
-    
+
                 radius = parseInt($(this).data("radius"));
-    
+
                 map.setZoom(13);
                 circleRadius.setRadius(radius);
             });
-    
+
             if (radiusMap.val() != "") {
-    
+
                 radius = parseInt(radiusMap.val());
-    
+
                 if (radius == 2000) {
-    
+
                     map.setZoom(13);
                     circleRadius.setRadius(radius);
                 } else if (radius == 1000) {
-    
+
                     map.setZoom(14);
                     circleRadius.setRadius(radius);
                 } else {
-    
+
                     map.setZoom(15);
                     circleRadius.setRadius(500);
                 }
-    
+
                 $(".btn-radius-" + radiusMap.val()).trigger("click");
             }
-    
+
             $(".btn-coordinate-confirm").on("click", function() {
-    
+
                 radiusMap.val(radius);
                 coordinateMap.val(latitude + ", " + longitude);
-    
+
                 if (coordinateMap.val() != "" && radiusMap.val() != "") {
-    
+
                     btnRegion.html($(".btn-radius-" + radiusMap.val()).text() + " <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
-    
+
                     if (btnRegion.parent().find(".search-field-box-clear").length == 0) {
-    
+
                         btnRegion.parent().append("<span class=\"search-field-box-clear\">×</span>");
                     }
                 }
-    
+
                 $("#modal-region").modal("hide");
             });
         };
@@ -840,27 +840,27 @@ $jscript = '
 
     $(".city-id").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'City') . '",
+        placeholder: "' . \Yii::t('app', 'City') . '",
         minimumResultsForSearch: Infinity
     });
 
     $(".category-id").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Business Category') . '",
+        placeholder: "' . \Yii::t('app', 'Business Category') . '",
         minimumResultsForSearch: Infinity,
         allowClear: true
     });
 
     $(".price-min-select").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Price Min') . '",
+        placeholder: "' . \Yii::t('app', 'Price Min') . '",
         minimumResultsForSearch: -1,
         allowClear: true
     });
 
     $(".price-max-select").select2({
         theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Price Max') . '",
+        placeholder: "' . \Yii::t('app', 'Price Max') . '",
         minimumResultsForSearch: -1,
         allowClear: true
     });
@@ -881,7 +881,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "POST",
-            url: "' . Yii::$app->urlManager->createUrl(['data/product-category']) . '",
+            url: "' . \Yii::$app->urlManager->createUrl(['data/product-category']) . '",
             success: function(response) {
 
                 $("#modal-product-category").find("#modal-content").html(response);
@@ -907,7 +907,7 @@ $jscript = '
         if (btnProductCategory.siblings(".product-category-id").val() != "") {
 
             btnProductCategory.html("<span class=\"search-field-box-placeholder\">" + $(this).html() + " </span><span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#555555");
-        
+
             if (btnProductCategory.parent().find(".search-field-box-clear").length == 0) {
 
                 btnProductCategory.parent().append("<span class=\"search-field-box-clear\">×</span>");
@@ -920,7 +920,7 @@ $jscript = '
     });
 
     $(".input-product-category").on("keyup", function() {
-        
+
         thisObj = $(this);
 
         clearTimeout(typingTimer);
@@ -934,7 +934,7 @@ $jscript = '
                 cache: false,
                 type: "POST",
                 data: {keyword: thisObj.val()},
-                url: "' . Yii::$app->urlManager->createUrl(['data/product-category']) . '",
+                url: "' . \Yii::$app->urlManager->createUrl(['data/product-category']) . '",
                 success: function(response) {
 
                     $("#modal-product-category").find("#modal-content").html(response);
@@ -1042,7 +1042,7 @@ $jscript = '
     $(".btn-product-category").parent().on("click", ".search-field-box-clear", function() {
 
         $(".product-category-id").val("");
-        $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-product-category").html("' . \Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-product-category").siblings(".search-field-box-clear").remove();
 
         return false;
@@ -1051,7 +1051,7 @@ $jscript = '
     $(".btn-price").parent().on("click", ".search-field-box-clear", function() {
 
         $(".price-min, .price-max").val("");
-        $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-price").html("' . \Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-price").siblings(".search-field-box-clear").remove();
 
         return false;
@@ -1060,7 +1060,7 @@ $jscript = '
     $(".btn-region").parent().on("click", ".search-field-box-clear", function() {
 
         $(".coordinate-map, .radius-map").val("");
-        $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-region").html("' . \Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".btn-radius-500").trigger("click");
         $(".btn-region").siblings(".search-field-box-clear").remove();
 
@@ -1068,7 +1068,7 @@ $jscript = '
     });
 
     $(".input-name").parent().on("click", ".search-field-box-clear", function() {
-        
+
         $(".input-name, .search-input").val("");
         $(".input-name").siblings(".search-field-box-clear").remove();
 
@@ -1088,9 +1088,9 @@ $jscript = '
         $(".category-id").val(null).trigger("change");
         $(".facility").prop("checked", false).trigger("change");
 
-        $(".btn-product-category").html("' . Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(".btn-price").html("' . Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
-        $(".btn-region").html("' . Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-product-category").html("' . \Yii::t('app', 'Product Category') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-price").html("' . \Yii::t('app', 'Price') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
+        $(".btn-region").html("' . \Yii::t('app', 'Region') . ' <span class=\"search-field-box-arrow\"><i class=\"fa fa-caret-right\"></i></span>").css("color", "#aaa");
         $(".search-field-box-clear").remove();
 
         return false;
@@ -1099,37 +1099,37 @@ $jscript = '
     $(".search-input").on("click", function() {
 
         var href;
-        
+
         $(".search-input").attr("disabled", "disabled");
 
         $(".search-box > .nav-tabs").children("li").each(function() {
-            
+
             if ($(this).hasClass("active")) {
-                
+
                 href = $(this).children().attr("href");
                 return false;
             }
         });
-        
+
         $(".search-box-modal").find(".nav-tabs").children("li").each(function() {
 
             var thisObj = $(this);
             var navTab = thisObj.children("a").attr("href");
-        
+
             if (navTab != ("#" + href)) {
 
                 thisObj.removeClass("active");
             }
 
             thisObj.on("click", function() {
-                
+
                 $(".search-box > .nav-tabs").children("li").each(function() {
-    
+
                     if ($(this).children().attr("href") != navTab) {
-    
+
                         $(this).removeClass("active");
                     } else {
-    
+
                         $(this).addClass("active");
                     }
                 });
@@ -1143,38 +1143,38 @@ $jscript = '
     if ($(".btn-search-map-toggle").length) {
 
         var keyword = $(".btn-search-map-toggle").data("keyword");
-        
+
         if (keyword == "favorit") {
 
             keyword = "favorite";
         } else if (keyword == "promo") {
-            
+
             keyword = "special";
         } else if (keyword == "pesan-online") {
 
             keyword = "order";
         }
-        
+
         $(".search-box-modal").find("#" + keyword + "-id").parent().addClass("active");
     }
 
     $(".btn-search-map-toggle").on("click", function() {
-        
+
         $(".search-box-modal").fadeIn("medium");
     });
 
     $(".btn-close").on("click", function() {
-        
+
         $(".search-input").removeAttr("disabled");
         $(".search-box-modal").fadeOut("medium");
     });
 
     $(".input-name").on("keyup", function() {
-        
+
         if ($(this).val() != "") {
 
             if ($(this).siblings(".search-field-box-clear").length == 0) {
-            
+
                 $(this).parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 

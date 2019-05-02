@@ -15,7 +15,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl([
+        url: "' . \Yii::$app->urlManager->createUrl([
             'user-data/user-love',
             'username' => $username
         ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'love' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
@@ -43,25 +43,25 @@ $jscript = '
             success: function(response) {
 
                 if (response.success) {
-                    
+
                     var count = parseInt($(".total-user-love").html());
 
                     if (response.is_active) {
-                        
+
                         thisObj.html("<h2 class=\"mt-0 mb-0 text-red fas fa-heart\"></h2>");
                         $(".total-user-love").html(count + 1);
                     } else {
-                        
+
                         thisObj.html("<h2 class=\"mt-0 mb-0 text-red far fa-heart\"></h2>");
                         $(".total-user-love").html(count - 1);
                     }
                 } else {
-                    
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                
+
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });

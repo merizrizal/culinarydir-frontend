@@ -13,18 +13,18 @@ common\assets\OwlCarouselAsset::register($this);
 
 $this->title = $modelPromo['title'];
 
-$ogTitle = $modelPromo['title'] . ' ' . $modelPromo['type'] . ' sebesar ' . Yii::$app->formatter->asCurrency($modelPromo['amount']);
+$ogTitle = $modelPromo['title'] . ' ' . $modelPromo['type'] . ' sebesar ' . \Yii::$app->formatter->asCurrency($modelPromo['amount']);
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+$ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
     'page/detail-promo',
     'id' => $modelPromo['id'],
 ]);
 
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'promo?image=&w=490&h=276';
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'promo?image=&w=490&h=276';
 
 if (!empty($modelPromo['image'])) {
 
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image'];
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image'];
 }
 
 $ogDescription = $this->title;
@@ -41,7 +41,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl($ogUrl)
+    'content' => \Yii::$app->urlManager->createAbsoluteUrl($ogUrl)
 ]);
 
 $this->registerMetaTag([
@@ -71,7 +71,7 @@ $this->registerMetaTag([
 
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Home Page'), ['page/index']) ?>
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back To Home Page'), ['page/index']) ?>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@ $this->registerMetaTag([
 							<div class="view">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active">
-                                        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera1"></i> <?= Yii::t('app', 'Photo') ?></a>
+                                        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera1"></i> <?= \Yii::t('app', 'Photo') ?></a>
                                     </li>
                                 </ul>
                                 <div class="tab-content box bg-white">
@@ -90,7 +90,7 @@ $this->registerMetaTag([
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                             	<div class="promo-image-container owl-carousel owl-theme">
-                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image']]); ?>
+                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $modelPromo['image']]); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,14 +127,14 @@ $this->registerMetaTag([
                                 		<div class="col-xs-12">
                                 			<i class="fas fa-tag"></i> <?= $modelPromo['type'] ?>
                                 			<br>
-                                			<i class="aicon aicon-rupiah"></i> <?= Yii::$app->formatter->asCurrency($modelPromo['amount']) ?>
+                                			<i class="aicon aicon-rupiah"></i> <?= \Yii::$app->formatter->asCurrency($modelPromo['amount']) ?>
                                 			<br>
                                 			<i class="aicon aicon-clock"></i>
                                 			<strong>
 
-                                    			<?= Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
-                                                    'dateStart' => Yii::$app->formatter->asDate($modelPromo['date_start'], 'medium'),
-                                                    'dateEnd' => Yii::$app->formatter->asDate($modelPromo['date_end'], 'medium')
+                                    			<?= \Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
+                                                    'dateStart' => \Yii::$app->formatter->asDate($modelPromo['date_start'], 'medium'),
+                                                    'dateEnd' => \Yii::$app->formatter->asDate($modelPromo['date_end'], 'medium')
                                                 ]); ?>
 
                                             </strong>
@@ -206,10 +206,10 @@ $jscript = '
 
                     if (countUserClaimed == 0) {
 
-                        $(".claim-info").html(" ' . Yii::t('app', 'You have claimed this promo') . '");
+                        $(".claim-info").html(" ' . \Yii::t('app', 'You have claimed this promo') . '");
                     } else {
 
-                        $(".claim-info").html(" ' . Yii::t('app', 'You and {userClaimed} other user have claimed this promo', ['userClaimed' => $countUserClaimed]) . '");
+                        $(".claim-info").html(" ' . \Yii::t('app', 'You and {userClaimed} other user have claimed this promo', ['userClaimed' => $countUserClaimed]) . '");
                     }
                 }
 

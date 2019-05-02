@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* @var $this yii\web\View */
 /* @var $username string */
@@ -12,7 +12,7 @@
                 <!-- Nav tabs -->
                 <ul class="view-journey nav nav-tabs mb-10" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#view-review" aria-controls="view-review" role="tab" data-toggle="tab"><i class="aicon aicon-document-edit"></i> <?= Yii::t('app', 'Review') ?> (<span class="total-user-post"></span>)</a>
+                        <a href="#view-review" aria-controls="view-review" role="tab" data-toggle="tab"><i class="aicon aicon-document-edit"></i> <?= \Yii::t('app', 'Review') ?> (<span class="total-user-post"></span>)</a>
                     </li>
                     <li role="presentation">
                         <a href="#view-love" aria-controls="view-love" role="tab" data-toggle="tab"><i class="fa fa-heart"></i> Love (<span class="total-user-love"></span>)</a>

@@ -1,7 +1,6 @@
 <?php
 namespace frontend\components;
 
-use Yii;
 use yii\base\Widget;
 
 class GrowlCustom extends Widget
@@ -38,7 +37,7 @@ class GrowlCustom extends Widget
                         },
                         offset: {
                             x: 0,
-                            y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                            y: ' . (\Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
                         },
                         spacing: 0,
                         z_index: 1031,
@@ -75,7 +74,7 @@ class GrowlCustom extends Widget
                         icon: icon,
                         title: title,
                         message: message,
-                        url: "' . Yii::$app->urlManager->createUrl(['order/checkout']) . '"
+                        url: "' . \Yii::$app->urlManager->createUrl(['order/checkout']) . '"
                     },{
                         element: "body",
                         position: null,
@@ -89,7 +88,7 @@ class GrowlCustom extends Widget
                         },
                         offset: {
                             x: 0,
-                            y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                            y: ' . (\Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
                         },
                         spacing: 0,
                         z_index: 1031,

@@ -1,10 +1,10 @@
 <?php
 
+use frontend\components\AddressType;
+use frontend\components\GrowlCustom;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\web\View;
-use frontend\components\AddressType;
-use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessPromo core\models\BusinessPromo */
@@ -15,17 +15,17 @@ $this->title = $modelBusinessPromo['title'];
 
 $ogTitle = $modelBusinessPromo['title'] . ' di ' . $modelBusinessPromo['business']['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+$ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
     'page/detail-business-promo',
     'id' => $modelBusinessPromo['id'],
     'uniqueName' => $modelBusinessPromo['business']['unique_name']
 ]);
 
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=&w=490&h=276';
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'business-promo?image=&w=490&h=276';
 
 if (!empty($modelBusinessPromo['image'])) {
 
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image'];
 }
 
 $ogDescription = !empty($modelBusinessPromo['short_description']) ? $modelBusinessPromo['short_description'] : $this->title;
@@ -42,7 +42,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl($ogUrl)
+    'content' => \Yii::$app->urlManager->createAbsoluteUrl($ogUrl)
 ]);
 
 $this->registerMetaTag([
@@ -73,7 +73,7 @@ $this->registerMetaTag([
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back'), [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back'), [
                         'page/detail',
                         'city' => Inflector::slug($modelBusinessPromo['business']['businessLocation']['city']['name']),
                         'uniqueName' => $modelBusinessPromo['business']['unique_name'],
@@ -90,7 +90,7 @@ $this->registerMetaTag([
                             <div class="view">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active">
-                                        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera1"></i> <?= Yii::t('app', 'Photo') ?></a>
+                                        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab"><i class="aicon aicon-camera1"></i> <?= \Yii::t('app', 'Photo') ?></a>
                                     </li>
                                 </ul>
                                 <div class="tab-content box bg-white">
@@ -98,7 +98,7 @@ $this->registerMetaTag([
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                             	<div class="business-promo-image-container owl-carousel owl-theme">
-                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']]); ?>
+                                                    <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $modelBusinessPromo['image']]); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,9 +128,9 @@ $this->registerMetaTag([
                                 <hr class="divider-w">
 
 								<?php
-								$promoRange = Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
-								    'dateStart' => Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'),
-								    'dateEnd' => Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium')
+								$promoRange = \Yii::t('app', 'Valid from {dateStart} until {dateEnd}', [
+								    'dateStart' => \Yii::$app->formatter->asDate($modelBusinessPromo['date_start'], 'medium'),
+								    'dateEnd' => \Yii::$app->formatter->asDate($modelBusinessPromo['date_end'], 'medium')
 								]); ?>
 
                                 <div class="box-content">
@@ -197,7 +197,7 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
             "@context": "https://schema.org",
             "@type": "Event",
             "name": "' . $modelBusinessPromo['title'] . '",
-            "startDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_start']) . '",
+            "startDate": "' . \Yii::$app->formatter->asDate($modelBusinessPromo['date_start']) . '",
             "location": {
                 "@type": "Place",
                 "name": "' . $modelBusinessPromo['business']['name'] . '",
@@ -212,7 +212,7 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusinessPromo, $ogImage) {
             },
             "image": "' . $ogImage . '",
             "description": "' . $modelBusinessPromo['short_description'] . '",
-            "endDate": "' . Yii::$app->formatter->asDate($modelBusinessPromo['date_end']) . '"
+            "endDate": "' . \Yii::$app->formatter->asDate($modelBusinessPromo['date_end']) . '"
         }
         </script>
     ';

@@ -1,15 +1,15 @@
 <?php
 
-use yii\web\View;
-use yii\helpers\Html;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
 use yii\helpers\Inflector;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
 
-$this->title = Yii::t('app', 'Order Details'); 
+$this->title = \Yii::t('app', 'Order Details');
 
 $urlBusinessDetail = [
     'page/detail',
@@ -22,27 +22,27 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
 <div class="main">
     <section class="module-extra-small bg-main">
         <div class="container detail user-profile">
-        	
+
         	<div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
-                	<?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back To Profile'), ['user/index']); ?>
+                	<?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back To Profile'), ['user/index']); ?>
                 </div>
             </div>
-        	
+
         	<div class="row">
                 <div class="col-md-10 col-md-offset-1 col-xs-12">
                     <div class="box bg-white">
                         <div class="box-content">
-                    
+
                             <div class="row">
                             	<div class="col-xs-12">
                             		<div class="row mt-10 mb-10">
                                         <div class="col-sm-6 col-tab-7 col-xs-12">
                                             <div class="widget-posts-image image-order-history">
-                                                <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
+                                                <?= Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
                                             </div>
                                         	<small>
-                                        		<?= Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
+                                        		<?= \Yii::$app->formatter->asDate($modelTransactionSession['created_at'], 'long') . ', ' . \Yii::$app->formatter->asTime($modelTransactionSession['created_at'], 'short') ?>
                                     		</small>
                                         	<br>
                                         		<?= Html::a($modelTransactionSession['business']['name'], $urlBusinessDetail) ?>
@@ -52,19 +52,19 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                             </small>
                                         </div>
                                     </div>
-                                    
+
                                     <hr class="divider-w mb-10">
-                                    
-                                    <p><strong><?= Yii::t('app', 'Order Details') ?></strong></p>
-                                    
+
+                                    <p><strong><?= \Yii::t('app', 'Order Details') ?></strong></p>
+
                                     <div class="row mb-10">
                                     	<div class="col-xs-12">
-                                    		
+
                                     		<?php
-                                    		foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem): 
-                                    		
-                                    		    $amountPrice = $dataTransactionItem['amount'] . ' x ' . Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
-                                    		
+                                    		foreach ($modelTransactionSession['transactionItems'] as $dataTransactionItem):
+
+                                    		    $amountPrice = $dataTransactionItem['amount'] . ' x ' . \Yii::$app->formatter->asCurrency($dataTransactionItem['price']); ?>
+
                                         		<div class="row mb-10">
                                         			<div class="col-xs-12">
                                             			<div class="row">
@@ -75,7 +75,7 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                                                 <strong><?= $amountPrice ?></strong>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="row">
                                                         	<div class="col-xs-12">
                                                         		<small><?= $dataTransactionItem['note'] ?></small>
@@ -86,40 +86,40 @@ $img = (!empty($modelTransactionSession['business']['businessImages']) ? $modelT
                                                         </div>
                                                     </div>
                                                 </div>
-                                    		
-        	   	                            <?php    
+
+        	   	                            <?php
                                     		endforeach; ?>
-                                    		
+
                                     	</div>
                                     </div>
-                                    
+
                                     <hr class="divider-w mb-10">
-                                    
+
                                     <div class="row">
                                     	<div class="col-sm-8 col-tab-8 col-xs-12 mb-10">
-                                    		
+
                                     		<?php
                                     		$grandTotal = $modelTransactionSession['total_price'] - $modelTransactionSession['discount_value'];
                                     		$checkSymbol = ' | <i class="far fa-check-circle ' . ($modelTransactionSession['is_closed'] ? "text-success" : "text-danger") . '"></i>';
-                                    		
+
                                     		if (!empty($modelTransactionSession['discount_value'])) {
-                                    		    
-                                    		    echo 'Subtotal : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '
-                                                    <br>Promo : ' . Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '
-                                                    <br>Grand Total : ' . Yii::$app->formatter->asCurrency($grandTotal < 0 ? 0 : $grandTotal) . $checkSymbol;
+
+                                    		    echo 'Subtotal : ' . \Yii::$app->formatter->asCurrency($modelTransactionSession['total_price']) . '
+                                                    <br>Promo : ' . \Yii::$app->formatter->asCurrency($modelTransactionSession['discount_value']) . '
+                                                    <br>Grand Total : ' . \Yii::$app->formatter->asCurrency($grandTotal < 0 ? 0 : $grandTotal) . $checkSymbol;
                                     		} else {
-                                    		
-                                    		    echo 'Grand Total : ' . Yii::$app->formatter->asCurrency($grandTotal) . $checkSymbol;
+
+                                    		    echo 'Grand Total : ' . \Yii::$app->formatter->asCurrency($grandTotal) . $checkSymbol;
                                     		} ?>
-                                			
+
                                     	</div>
                                     	<div class="col-sm-4 col-tab-4 col-xs-12">
-                                    	
-                                    		<?= Html::a($modelTransactionSession['is_closed'] ? Yii::t('app', 'Reorder') : Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
+
+                                    		<?= Html::a($modelTransactionSession['is_closed'] ? \Yii::t('app', 'Reorder') : \Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                                                 'class' => 'btn btn-d btn-block btn-round btn-reorder',
                                                 'data-id' => $modelTransactionSession['id']
                                             ]); ?>
-                                    	
+
                                     	</div>
                                     </div>
                             	</div>
@@ -165,4 +165,3 @@ $jscript = '
 ';
 
 $this->registerJs($jscript); ?>
-        

@@ -37,7 +37,7 @@ $linkPager = LinkPager::widget([
         <div class="row mt-10">
             <div class="col-lg-6 col-md-12 col-tab-6 col-xs-12 mb-10">
 
-                <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+                <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
             </div>
             <div class="col-lg-6 col-tab-6 visible-lg visible-tab text-right">
@@ -67,13 +67,13 @@ $linkPager = LinkPager::widget([
                 $businessPromoDetail = [];
 
                 foreach ($modelBusinessPromo as $dataBusinessPromo):
-                
-                    $img = Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319'; ?>
+
+                    $img = \Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319'; ?>
 
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="box box-small promo-<?= $dataBusinessPromo['business']['id']; ?>" role="button">
-                            
+
                         		<?= Html::hiddenInput('business_promo_id', $dataBusinessPromo['id'], ['class' => 'business-promo-id']) ?>
 
                                 <div class="row">
@@ -108,16 +108,16 @@ $linkPager = LinkPager::widget([
                                                                 $businessProductCategoryPopover = '';
 
                                                                 foreach ($dataBusinessPromo['business']['businessProductCategories'] as $i => $dataBusinessProductCategory) {
-                                                                    
+
                                                                     if (!empty($dataBusinessProductCategory['productCategory'])) {
-                                                                        
+
                                                                         $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        
+
                                                                         if ($i < $businessProductCategoryLimit) {
-    
+
                                                                             $businessProductCategoryList .= $hashtagItem;
                                                                         } else {
-    
+
                                                                             $businessProductCategoryPopover .= $hashtagItem;
                                                                         }
                                                                     }
@@ -167,7 +167,7 @@ $linkPager = LinkPager::widget([
                         'businessName' => $dataBusinessPromo['business']['name'],
                         'businessLatitude' => $businessLatitude,
                         'businessLongitude' => $businessLongitude,
-                        'businessPromoUrl' => Yii::$app->urlManager->createUrl([
+                        'businessPromoUrl' => \Yii::$app->urlManager->createUrl([
                             'page/detail',
                             'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
                             'uniqueName' => $dataBusinessPromo['business']['unique_name'],
@@ -251,7 +251,7 @@ $jscript = '
                         position: businessLatLng[keyCoordinate],
                         gestureHandling: "greedy",
                         icon: {
-                            url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
+                            url: "' . \Yii::$app->request->baseUrl . '/media/img/dot.png",
                             scaledSize: new google.maps.Size(28, 28),
                             origin: new google.maps.Point(0,0),
                             anchor: new google.maps.Point(10, 25)
@@ -280,7 +280,7 @@ $jscript = '
                                             "<div class=\"col-sm-12 col-xs-12\">" +
                                                 value.businessName +
                                                 "<br>" +
-                                                "<a class=\"text-main pull-right\" href=\"" + value.businessPromoUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
+                                                "<a class=\"text-main pull-right\" href=\"" + value.businessPromoUrl + "\">' . \Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +

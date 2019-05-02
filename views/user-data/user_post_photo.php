@@ -31,7 +31,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -48,7 +48,7 @@ $linkPager = LinkPager::widget([
 
 <div class="row" style="position: relative;">
     <div class="col-xs-12 user-post-photo-container">
-    
+
 		<div class="overlay" style="display: none;"></div>
 		<div class="loading-img" style="display: none;"></div>
 
@@ -66,22 +66,22 @@ $linkPager = LinkPager::widget([
                         <div class="gallery-item place-gallery">
                             <div class="gallery-image">
                                 <div class="work-image">
-                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
+                                    <?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMainPhoto['id']]) ?>
                                 </div>
                                 <div class="work-caption">
                                     <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMainPhoto['text']) ? $dataUserPostMainPhoto['text'] : '' ?></div>
                                     <div class="work-descr">
-                                    	
+
                                     	<?php
-                                    	echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
-                                    	
-                                    	echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl([
+                                    	echo Html::a('<i class="fa fa-search"></i>', \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainPhoto['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+
+                                    	echo Html::a('<i class="fa fa-share-alt"></i>', \Yii::$app->urlManager->createAbsoluteUrl([
                                     	    'page/photo',
                                     	    'id' => $dataUserPostMainPhoto['id'],
                                     	    'uniqueName' => $dataUserPostMainPhoto['business']['unique_name'],
                                     	]), ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp';
 
-                                        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']) {
+                                        if (!empty(\Yii::$app->user->getIdentity()->id) && \Yii::$app->user->getIdentity()->id == $dataUserPostMainPhoto['user_id']) {
 
                                             echo Html::a('<i class="fa fa-trash"></i>', ['user-action/delete-photo', 'id' => $dataUserPostMainPhoto['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle delete-image']);
                                         } ?>
@@ -103,7 +103,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">

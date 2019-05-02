@@ -5,7 +5,6 @@ use core\models\TransactionSession;
 use core\models\User;
 use core\models\UserPerson;
 use frontend\models\ChangePassword;
-use Yii;
 use sycomponent\Tools;
 use yii\base\InvalidArgumentException;
 use yii\filters\VerbFilter;
@@ -40,20 +39,20 @@ class UserController extends base\BaseHistoryUrlController
     {
         $modelUser = User::find()
             ->joinWith(['userPerson.person'])
-            ->andWhere(['user.id' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['user.id' => \Yii::$app->user->getIdentity()->id])
             ->asArray()->one();
 
         return $this->render('index', [
             'modelUser' => $modelUser,
-            'queryParams' => Yii::$app->request->getQueryParams(),
+            'queryParams' => \Yii::$app->request->getQueryParams(),
         ]);
     }
 
     public function actionUserProfile($user)
     {
-        if (!empty(Yii::$app->user->getIdentity()->id) && Yii::$app->user->getIdentity()->username == $user) {
+        if (!empty(\Yii::$app->user->getIdentity()->id) && \Yii::$app->user->getIdentity()->username == $user) {
 
-            return $this->redirect(ArrayHelper::merge(['user/index'], Yii::$app->request->getQueryParams()));
+            return $this->redirect(ArrayHelper::merge(['user/index'], \Yii::$app->request->getQueryParams()));
         } else {
 
             $modelUser = User::find()
@@ -68,7 +67,7 @@ class UserController extends base\BaseHistoryUrlController
 
             return $this->render('user_profile', [
                 'modelUser' => $modelUser,
-                'queryParams' => Yii::$app->request->getQueryParams(),
+                'queryParams' => \Yii::$app->request->getQueryParams(),
             ]);
         }
     }
@@ -80,21 +79,21 @@ class UserController extends base\BaseHistoryUrlController
                 'user',
                 'person',
             ])
-            ->andWhere(['user_person.user_id' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['user_person.user_id' => \Yii::$app->user->getIdentity()->id])
             ->one();
 
         $modelUser = $modelUserPerson->user;
         $modelPerson = $modelUserPerson->person;
 
-        if (Yii::$app->request->isAjax && $modelUser->load(Yii::$app->request->post())) {
+        if (\Yii::$app->request->isAjax && $modelUser->load(\Yii::$app->request->post())) {
 
-            Yii::$app->response->format = Response::FORMAT_JSON;
+            \Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($modelUser);
         }
 
-        if (!empty(($post = Yii::$app->request->post())) && $modelPerson->load($post) && $modelUser->load($post)) {
+        if (!empty(($post = \Yii::$app->request->post())) && $modelPerson->load($post) && $modelUser->load($post)) {
 
-            $transaction = Yii::$app->db->beginTransaction();
+            $transaction = \Yii::$app->db->beginTransaction();
             $flag = false;
 
             if (($flag = $modelPerson->save())) {
@@ -113,7 +112,7 @@ class UserController extends base\BaseHistoryUrlController
 
                 $transaction->commit();
 
-                Yii::$app->session->setFlash('message', [
+                \Yii::$app->session->setFlash('message', [
                     'type' => 'success',
                     'delay' => 1000,
                     'icon' => 'aicon aicon-icon-tick-in-circle',
@@ -126,7 +125,7 @@ class UserController extends base\BaseHistoryUrlController
 
                 $transaction->rollBack();
 
-                Yii::$app->session->setFlash('message', [
+                \Yii::$app->session->setFlash('message', [
                     'type' => 'danger',
                     'delay' => 1000,
                     'icon' => 'aicon aicon-icon-info',
@@ -146,14 +145,14 @@ class UserController extends base\BaseHistoryUrlController
     public function actionChangePassword()
     {
         try {
-            $modelChangePassword = new ChangePassword(Yii::$app->user->getIdentity()->id);
+            $modelChangePassword = new ChangePassword(\Yii::$app->user->getIdentity()->id);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        if ($modelChangePassword->load(Yii::$app->request->post()) && $modelChangePassword->validate() && $modelChangePassword->changePassword()) {
+        if ($modelChangePassword->load(\Yii::$app->request->post()) && $modelChangePassword->validate() && $modelChangePassword->changePassword()) {
 
-            Yii::$app->session->setFlash('message', [
+            \Yii::$app->session->setFlash('message', [
                 'message' => 'Anda berhasil mengubah password baru di Asikmakan',
             ]);
         }
@@ -187,7 +186,7 @@ class UserController extends base\BaseHistoryUrlController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('detail_order_history', [
             'modelTransactionSession' => $modelTransactionSession,

@@ -31,7 +31,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-    	<?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+    	<?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -48,10 +48,10 @@ $linkPager = LinkPager::widget([
 
 <div class="row" style="position: relative;">
     <div class="col-md-12 post-photo-container">
-    
+
     	<div class="overlay" style="display: none;"></div>
 		<div class="loading-img" style="display: none;"></div>
-    	
+
         <ul class="works-grid works-grid-gut works-grid-4" id="photo-gallery">
 
             <?php
@@ -63,21 +63,21 @@ $linkPager = LinkPager::widget([
                         <div class="gallery-item place-gallery">
                             <div class="gallery-image">
                                 <div class="work-image">
-                                    <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMain['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMain['id']]) ?>
+                                    <?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMain['image'] . '&w=200&h=200', ['class' => 'img-component', 'data-id' => $dataUserPostMain['id']]) ?>
                                 </div>
                                 <div class="work-caption">
                                     <div class="work-descr photo-caption hidden-xs"><?= !empty($dataUserPostMain['text']) ? $dataUserPostMain['text'] : '' ?></div>
                                     <div class="work-descr">
-                                        
+
                                         <?php
-                                        echo Html::a('<i class="fa fa-search"></i>', Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMain['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
-                                    	
-                                        echo Html::a('<i class="fa fa-share-alt"></i>', Yii::$app->urlManager->createAbsoluteUrl([
+                                        echo Html::a('<i class="fa fa-search"></i>', \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMain['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image']) . '&nbsp';
+
+                                        echo Html::a('<i class="fa fa-share-alt"></i>', \Yii::$app->urlManager->createAbsoluteUrl([
                                             'page/photo',
                                             'id' => $dataUserPostMain['id'],
                                             'uniqueName' => $dataUserPostMain['business']['unique_name'],
                                         ]), ['class' => 'btn btn-d btn-small btn-xs btn-circle share-image-trigger']) . '&nbsp'; ?>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">

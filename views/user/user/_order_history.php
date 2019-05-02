@@ -19,7 +19,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl(['user-data/order-history']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'order-history' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
+        url: "' . \Yii::$app->urlManager->createUrl(['user-data/order-history']) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'order-history' ? '?username=' . $queryParams['user'] . '&page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '?username=' . $username) . '",
         success: function(response) {
 
             $(".order-history").html(response);

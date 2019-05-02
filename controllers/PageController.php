@@ -12,7 +12,6 @@ use core\models\TransactionSession;
 use core\models\UserPostMain;
 use core\models\UserReport;
 use frontend\models\Post;
-use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -56,7 +55,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userVotes',
@@ -77,20 +76,20 @@ class PageController extends base\BaseHistoryUrlController
             ]
         ]);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $modelPromo = Promo::find()
             ->andWhere(['not_active' => false])
-            ->andWhere(['OR', ['>=', 'date_end', Yii::$app->formatter->asDate(time())], ['date_end' => null]])
+            ->andWhere(['OR', ['>=', 'date_end', \Yii::$app->formatter->asDate(time())], ['date_end' => null]])
             ->orderBy(['created_at' => SORT_DESC])
             ->asArray()->all();
 
         $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
 
-        Yii::$app->formatter->timeZone = 'UTC';
+        \Yii::$app->formatter->timeZone = 'UTC';
 
         $keyword = [];
-        $keyword['searchType'] = Yii::t('app', 'favorite');
+        $keyword['searchType'] = \Yii::t('app', 'favorite');
         $keyword['city'] = $city['id'];
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
@@ -121,7 +120,7 @@ class PageController extends base\BaseHistoryUrlController
 
     public function actionDetail($city, $uniqueName)
     {
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $modelBusiness = Business::find()
             ->joinWith([
@@ -166,7 +165,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'businessPromos' => function ($query) {
 
-                    $query->andOnCondition(['>=', 'business_promo.date_end', Yii::$app->formatter->asDate(time())])
+                    $query->andOnCondition(['>=', 'business_promo.date_end', \Yii::$app->formatter->asDate(time())])
                         ->andOnCondition(['business_promo.not_active' => false]);
                 },
                 'membershipType' => function ($query) {
@@ -184,12 +183,12 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_love.is_active' => true]);
                 },
                 'userVisits' => function ($query) {
 
-                    $query->andOnCondition(['user_visit.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_visit.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_visit.is_active' => true]);
                 }
             ])
@@ -235,7 +234,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
@@ -243,7 +242,7 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.business_id' => $modelBusiness['id']])
-            ->andWhere(['user_post_main.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['user_post_main.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
             ->asArray()->one();
@@ -255,7 +254,7 @@ class PageController extends base\BaseHistoryUrlController
 
         $modelTransactionSession = TransactionSession::find()
             ->joinWith(['business'])
-            ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
 
@@ -303,7 +302,7 @@ class PageController extends base\BaseHistoryUrlController
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
 
-        Yii::$app->formatter->timeZone = 'UTC';
+        \Yii::$app->formatter->timeZone = 'UTC';
 
         return $this->render('detail', [
             'modelBusiness' => $modelBusiness,
@@ -315,7 +314,7 @@ class PageController extends base\BaseHistoryUrlController
             'modelRatingComponent' => $modelRatingComponent,
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
-            'queryParams' => Yii::$app->request->getQueryParams(),
+            'queryParams' => \Yii::$app->request->getQueryParams(),
             'isOrderOnline' => $isOrderOnline
         ]);
     }
@@ -377,7 +376,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
@@ -436,7 +435,7 @@ class PageController extends base\BaseHistoryUrlController
                 'user',
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
@@ -521,7 +520,7 @@ class PageController extends base\BaseHistoryUrlController
                 },
                 'business'
             ])
-            ->andWhere(['transaction_session.user_ordered' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
             ->asArray()->one();
 
@@ -571,24 +570,24 @@ class PageController extends base\BaseHistoryUrlController
         }
 
         $countUserClaimed = count($modelPromo['userPromoItems']);
-        $claimInfo = Yii::t('app', '{userClaimed} user have claimed this promo', ['userClaimed' => $countUserClaimed]);
+        $claimInfo = \Yii::t('app', '{userClaimed} user have claimed this promo', ['userClaimed' => $countUserClaimed]);
 
         if ($countUserClaimed == 0) {
 
-            $claimInfo = Yii::t('app', 'No user has claimed this promo yet');
+            $claimInfo = \Yii::t('app', 'No user has claimed this promo yet');
         }
 
-        if (!empty(Yii::$app->user->getIdentity()->id)) {
+        if (!empty(\Yii::$app->user->getIdentity()->id)) {
 
             foreach ($modelPromo['userPromoItems'] as $dataUserPromoItem) {
 
-                if ($dataUserPromoItem['user_id'] == Yii::$app->user->getIdentity()->id) {
+                if ($dataUserPromoItem['user_id'] == \Yii::$app->user->getIdentity()->id) {
 
-                    $claimInfo = Yii::t('app', 'You and {userClaimed} other user have claimed this promo', ['userClaimed' => $countUserClaimed - 1]);
+                    $claimInfo = \Yii::t('app', 'You and {userClaimed} other user have claimed this promo', ['userClaimed' => $countUserClaimed - 1]);
 
                     if (($countUserClaimed - 1) == 0) {
 
-                        $claimInfo = Yii::t('app', 'You have claimed this promo');
+                        $claimInfo = \Yii::t('app', 'You have claimed this promo');
                     }
 
                     break;
@@ -605,7 +604,7 @@ class PageController extends base\BaseHistoryUrlController
 
     private function getResult($fileRender)
     {
-        $get = Yii::$app->request->get();
+        $get = \Yii::$app->request->get();
 
         if (!empty($get['pct'])) {
 
@@ -617,7 +616,7 @@ class PageController extends base\BaseHistoryUrlController
         $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
 
         $keyword = [];
-        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : Yii::t('app', 'favorite');;
+        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : \Yii::t('app', 'favorite');;
         $keyword['city'] = !empty($get['cty']) ? $get['cty'] : $city['id'];
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
@@ -626,10 +625,10 @@ class PageController extends base\BaseHistoryUrlController
         $keyword['map']['coordinate'] = !empty($get['cmp']) ? $get['cmp'] : null;
         $keyword['map']['radius'] = !empty($get['rmp']) ? $get['rmp'] : null;
         $keyword['facility'] = !empty($get['fct']) ? $get['fct'] : null;
-        $keyword['price']['min'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
-        $keyword['price']['max'] = ($keyword['searchType'] == Yii::t('app', 'favorite') || $keyword['searchType'] == Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
+        $keyword['price']['min'] = ($keyword['searchType'] == \Yii::t('app', 'favorite') || $keyword['searchType'] == \Yii::t('app', 'online-order')) && $get['pmn'] !== null && $get['pmn'] !== '' ? $get['pmn'] : null;
+        $keyword['price']['max'] = ($keyword['searchType'] == \Yii::t('app', 'favorite') || $keyword['searchType'] == \Yii::t('app', 'online-order')) && $get['pmx'] !== null && $get['pmx'] !== '' ? $get['pmx'] : null;
 
-        Yii::$app->session->set('keyword', $get);
+        \Yii::$app->session->set('keyword', $get);
 
         return $this->render($fileRender, [
             'keyword' => $keyword,

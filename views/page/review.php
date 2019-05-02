@@ -13,9 +13,9 @@ use yii\web\View;
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $dataUserVoteReview array */
 
-$this->title = Yii::t('app', 'Review') . ' ' . $modelUserPostMain['business']['name'];
+$this->title = \Yii::t('app', 'Review') . ' ' . $modelUserPostMain['business']['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+$ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
     'page/review',
     'id' => $modelUserPostMain['id'],
     'uniqueName' => $modelUserPostMain['business']['unique_name'],
@@ -30,11 +30,11 @@ $ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescrip
 
 $ogProductCategory = '';
 
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
 
 if (!empty($modelUserPostMain['userPostMains'][0]['image'])) {
 
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['userPostMains'][0]['image'];
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['userPostMains'][0]['image'];
 }
 
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
@@ -90,7 +90,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back to Place Detail'), [
                         'page/detail',
                         'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']),
                         'uniqueName' => $modelUserPostMain['business']['unique_name']
@@ -123,7 +123,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
 
-        												    <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+        												    <?= Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
         												        'class' => 'img-responsive img-circle img-profile-thumb img-component'
         												    ]), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
 
@@ -186,7 +186,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                             </div>
 
                                                                                             <div class="col-sm-7 col-xs-7">
-                                                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
+                                                                                                <?= $dataUserVote['vote_value'] . ' &nbsp;&nbsp;&nbsp;' . \Yii::t('app', $dataUserVote['ratingComponent']['name']); ?>
                                                                                             </div>
                                                                                         </div>
                                                                                     </li>
@@ -253,11 +253,11 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                     <div class="gallery-item post-gallery">
                                                                         <div class="gallery-image">
                                                                             <div class="work-image">
-                                                                                <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'] . '&w=200&h=200', ['class' => 'img-component']); ?>
+                                                                                <?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image'] . '&w=200&h=200', ['class' => 'img-component']); ?>
                                                                             </div>
                                                                             <div class="work-caption">
                                                                                 <div class="work-descr">
-                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
+                                                                                	<a class="btn btn-d btn-small btn-xs btn-circle show-image" href="<?= \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainChild['image']; ?>"><i class="fa fa-search"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -335,7 +335,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                     <div class="col-sm-12">
                                                         <div class="input-group mt-10 mb-10">
                                                             <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                                                            <?= Html::textInput('comment_input', null, ['id' => 'input-comments-review', 'class' => 'form-control', 'placeholder' => Yii::t('app', 'Write a Comment')]); ?>
+                                                            <?= Html::textInput('comment_input', null, ['id' => 'input-comments-review', 'class' => 'form-control', 'placeholder' => \Yii::t('app', 'Write a Comment')]); ?>
                                                         </div>
 
                                                         <div class="overlay" style="display: none;"></div>
@@ -355,7 +355,7 @@ kartik\popover\PopoverXAsset::register($this); ?>
                                                                                     <?php
                                                                                     $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=200&h=200' : 'default-avatar.png';
 
-                                                                                    echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+                                                                                    echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
                                                                                         'class' => 'img-responsive img-circle img-comment-thumb img-component'
                                                                                     ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
@@ -487,7 +487,7 @@ $jscript = '
                     "user_post_main_id": reviewId.val(),
                     "text": $(this).val(),
                 },
-                url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
+                url: "' . \Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                 beforeSend: function(xhr) {
 
                     $(".comment-section").siblings(".overlay").show();
@@ -505,7 +505,7 @@ $jscript = '
                             data: {
                                 "user_post_main_id": response.user_post_main_id
                             },
-                            url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
+                            url: "' . \Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                             success: function(response) {
 
                                 $(".comment-section").html(response);
@@ -578,7 +578,7 @@ $this->on(View::EVENT_END_BODY, function() use ($modelBusiness, $ogImage, $ogPro
                 "@type": "Restaurant",
                 "name": "' . $modelBusiness['name'] . '",
                 "image": "' . $ogImage . '",
-                "menu": "' . Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'uniqueName' => $modelBusiness['unique_name']]) . '",
+                "menu": "' . \Yii::$app->urlManager->createAbsoluteUrl(['page/menu', 'uniqueName' => $modelBusiness['unique_name']]) . '",
                 "servesCuisine": "' . trim($ogProductCategory, ',') . '",
                 "address": {
                     "@type": "PostalAddress",

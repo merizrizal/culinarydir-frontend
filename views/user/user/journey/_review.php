@@ -17,16 +17,16 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            url: "' . Yii::$app->urlManager->createUrl([
+            url: "' . \Yii::$app->urlManager->createUrl([
                 'user-data/user-post',
                 'username' => $username
             ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'review' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
             success: function(response) {
-    
+
                 $(".user-post-section").html(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
-    
+
                 messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
             }
         });
@@ -80,7 +80,7 @@ $jscript = '
     });
 
     $(".user-post-section").on("click", ".user-comments-review-trigger", function() {
-        
+
         $(this).parents(".user-post-item").find(".user-comment-review").slideToggle();
         $(this).parents(".user-post-item").find(".input-comments-review").trigger("focus");
 
@@ -100,9 +100,9 @@ $jscript = '
                     "user_post_main_id": thisObj.parents(".user-post-item").find(".user-post-main-id").val(),
                     "text": thisObj.val(),
                 },
-                url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
+                url: "' . \Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                 beforeSend: function(xhr) {
-                    
+
                     thisObj.parent().siblings(".overlay").show();
                     thisObj.parent().siblings(".loading-img").show();
                 },
@@ -118,9 +118,9 @@ $jscript = '
                             data: {
                                 "user_post_main_id": response.user_post_main_id
                             },
-                            url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
+                            url: "' . \Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                             success: function(response) {
-                                
+
                                 thisObj.parent().siblings(".comment-section").html(response);
 
                                 thisObj.parents(".user-post-item").find("span.total-comments-review").html(commentCount);
@@ -148,18 +148,18 @@ $jscript = '
             });
         }
     });
-    
+
     $(".user-post-section").on("click", ".share-review-trigger", function() {
 
         var url = $(this).attr("href");
         var title = "Rating " + $(this).parents(".user-post-item").find(".rating > h3").text().trim() + " untuk " + $(this).parents(".user-post-item").find(".business-review > a").text();
         var description = $(this).parents(".user-post-item").find(".review-description").text();
-        var image = "' . Yii::$app->params['endPointLoadImage'] . 'user-post?image=";
-    
+        var image = "' . \Yii::$app->params['endPointLoadImage'] . 'user-post?image=";
+
         var userPhotoList = $(this).parents(".user-post-item").find(".gallery-photo-review");
 
         if (userPhotoList.length) {
-        
+
             image = window.location.protocol + "//" + window.location.hostname + userPhotoList.eq(0).find(".work-image").children().attr("src").replace("72x72", "");
         }
 
@@ -185,30 +185,30 @@ $jscript = '
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
 
             $("#modal-confirmation").find("#btn-delete").off("click");
-            
+
             $.ajax({
                 cache: false,
                 type: "POST",
                 url: $(this).data("href"),
                 beforeSend: function(xhr) {
-                    
+
                     $(".user-post-section").find(".overlay").show();
                     $(".user-post-section").find(".loading-img").show();
                 },
                 success: function(response) {
 
                     $("#modal-confirmation").modal("hide");
-    
+
                     if (response.success) {
 
                         getUserPostReview();
-                        
+
                         var totalUserPost = parseInt($(".total-user-post").html());
                         $(".total-user-post").html(totalUserPost - 1);
 
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
-    
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
 
@@ -220,7 +220,7 @@ $jscript = '
                     messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
 
                     $("#modal-confirmation").modal("hide");
-    
+
                     $(".user-post-section").find(".overlay").hide();
                     $(".user-post-section").find(".loading-img").hide();
                 }

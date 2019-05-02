@@ -1,14 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\web\View;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
+use yii\web\View;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $modelChangePassword frontend\models\ChangePassword */
 
-$this->title = Yii::t('app', 'Change Password');
+$this->title = \Yii::t('app', 'Change Password');
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -29,7 +29,7 @@ $this->registerMetaTag([
                         <div class="box-content">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4 class="font-alt"><?= Yii::t('app', 'Change Password') ?></h4>
+                                    <h4 class="font-alt"><?= \Yii::t('app', 'Change Password') ?></h4>
                                     <hr class="divider-w mb-20">
 
                                     <?php
@@ -43,15 +43,15 @@ $this->registerMetaTag([
 
                                         <div class="row">
                                             <div class="col-md-12">
-    
+
                                                 <?= $form->field($modelChangePassword, 'current_pass')->passwordInput([
                                                     'placeholder' => 'Current Password'
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelChangePassword, 'new_pass')->passwordInput([
                                                     'placeholder' => 'New Password'
                                                 ]) ?>
-    
+
                                                 <?= $form->field($modelChangePassword, 'confirm_pass')->passwordInput([
                                                     'placeholder' => 'Confirm Password'
                                                 ]) ?>
@@ -60,10 +60,10 @@ $this->registerMetaTag([
                                         </div>
                                         <div class="row mb-30">
                                             <div class="col-md-12">
-    
+
                                                 <?= Html::submitButton('Update', ['class' => 'btn btn-round btn-d']) ?>
-                                            	<?= Html::a(Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default']) ?>
-    
+                                            	<?= Html::a(\Yii::t('app', 'Cancel'), ['user/index'], ['class' => 'btn btn-round btn-default']) ?>
+
                                             </div>
                                         </div>
 
@@ -80,16 +80,16 @@ $this->registerMetaTag([
     </section>
 </div>
 
-<?php 
+<?php
 GrowlCustom::widget();
 
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '';
 
-if (!empty(($message = Yii::$app->session->getFlash('message')))) {
-    
-    $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . Yii::t('app', 'Change Password Successful') . '" , "' . $message['message'] . '", "success");';
+if (!empty(($message = \Yii::$app->session->getFlash('message')))) {
+
+    $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "' . \Yii::t('app', 'Change Password Successful') . '" , "' . $message['message'] . '", "success");';
 }
 
 $this->registerJs($jscript); ?>

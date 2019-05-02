@@ -1,7 +1,6 @@
 <?php
 namespace frontend\components;
 
-use Yii;
 use yii\base\Widget;
 use yii\web\View;
 
@@ -38,7 +37,7 @@ class FacebookShare extends Widget
         $this->getView()->registerJs('
             window.fbAsyncInit = function() {
                 FB.init({
-                    appId            : "' . Yii::$app->params['facebook']['clientId'] . '",
+                    appId            : "' . \Yii::$app->params['facebook']['clientId'] . '",
                     autoLogAppEvents : true,
                     xfbml            : true,
                     version          : "v3.1"

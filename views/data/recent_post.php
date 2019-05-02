@@ -1,7 +1,7 @@
 <?php
 
-use yii\widgets\ListView;
 use yii\widgets\LinkPager;
+use yii\widgets\ListView;
 
 /* @var $dataProviderUserPostMain yii\data\ActiveDataProvider */
 
@@ -22,7 +22,7 @@ echo ListView::widget([
         'class' => LinkPager::class,
         'maxButtonCount' => 0,
         'prevPageLabel' => false,
-        'nextPageLabel' => Yii::t('app', 'Load More'),
+        'nextPageLabel' => \Yii::t('app', 'Load More'),
         'options' => ['id' => 'pagination-recent-post', 'class' => 'pagination'],
     ]
 ]); ?>

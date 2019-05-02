@@ -9,7 +9,6 @@ use core\models\ProductCategory;
 use core\models\RatingComponent;
 use core\models\UserPostComment;
 use core\models\UserPostMain;
-use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -44,7 +43,7 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelProductCategory = ProductCategory::find()
-            ->andFilterWhere(['ilike', 'name', Yii::$app->request->post('keyword')])
+            ->andFilterWhere(['ilike', 'name', \Yii::$app->request->post('keyword')])
             ->andWhere(['<>', 'type', 'Menu'])
             ->andWhere(['is_active' => true])
             ->orderBy(['name' => SORT_ASC])
@@ -80,9 +79,9 @@ class DataController extends base\BaseController
 
     public function actionPostReview($city, $uniqueName)
     {
-        if (!Yii::$app->request->isAjax) {
+        if (!\Yii::$app->request->isAjax) {
 
-            $queryParams = Yii::$app->request->getQueryParams();
+            $queryParams = \Yii::$app->request->getQueryParams();
 
             $this->redirect(['page/detail',
                 'city' => $city,
@@ -114,13 +113,13 @@ class DataController extends base\BaseController
                 },
                 'userPostLoves' => function ($query) {
 
-                $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                     ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment',
             ])
-            ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+            ->andFilterWhere(['<>', 'user_post_main.user_id', !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.parent_id' => null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
@@ -144,7 +143,7 @@ class DataController extends base\BaseController
         $startItem = !empty($modelUserPostMain) ? $offset + 1 : 0;
         $endItem = min(($offset + $pageSize), $totalCount);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('post_review', [
             'modelUserPostMain' => $modelUserPostMain,
@@ -157,9 +156,9 @@ class DataController extends base\BaseController
 
     public function actionPostPhoto($city, $uniqueName)
     {
-        if (!Yii::$app->request->isAjax) {
+        if (!\Yii::$app->request->isAjax) {
 
-            $queryParams = Yii::$app->request->getQueryParams();
+            $queryParams = \Yii::$app->request->getQueryParams();
 
             $this->redirect(['page/detail',
                 'city' => $city,
@@ -201,7 +200,7 @@ class DataController extends base\BaseController
         $startItem = !empty($modelUserPostMain) ? $offset + 1 : 0;
         $endItem = min(($offset + $pageSize), $totalCount);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('post_photo', [
             'modelUserPostMain' => $modelUserPostMain,
@@ -221,15 +220,15 @@ class DataController extends base\BaseController
                 'user',
                 'userPostMain',
             ])
-            ->andWhere(['user_post_comment.user_post_main_id' => Yii::$app->request->post('user_post_main_id')])
+            ->andWhere(['user_post_comment.user_post_main_id' => \Yii::$app->request->post('user_post_main_id')])
             ->orderBy(['user_post_comment.id' => SORT_ASC])
             ->distinct()
             ->asArray()->all();
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('post_comment', [
-            'userPostId' => Yii::$app->request->post('user_post_main_id'),
+            'userPostId' => \Yii::$app->request->post('user_post_main_id'),
             'modelUserPostComment' => $modelUserPostComment,
         ]);
     }
@@ -239,7 +238,7 @@ class DataController extends base\BaseController
         $this->layout = 'ajax';
 
         $modelBusinessDetail = BusinessDetail::find()
-            ->andWhere(['business_detail.business_id' => Yii::$app->request->post('business_id')])
+            ->andWhere(['business_detail.business_id' => \Yii::$app->request->post('business_id')])
             ->asArray()->one();
 
         $modelBusinessDetailVote = BusinessDetailVote::find()
@@ -249,7 +248,7 @@ class DataController extends base\BaseController
                     $query->andOnCondition(['is_active' => true]);
                 }
             ])
-            ->andWhere(['business_detail_vote.business_id' => Yii::$app->request->post('business_id')])
+            ->andWhere(['business_detail_vote.business_id' => \Yii::$app->request->post('business_id')])
             ->asArray()->all();
 
         $modelRatingComponent = RatingComponent::find()
@@ -266,7 +265,7 @@ class DataController extends base\BaseController
 
     public function actionRecentPost()
     {
-        if (!Yii::$app->request->isAjax) {
+        if (!\Yii::$app->request->isAjax) {
 
             $this->redirect(['page/index']);
         } else {
@@ -287,7 +286,7 @@ class DataController extends base\BaseController
                 },
                 'userPostLoves' => function ($query) {
 
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                         ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userVotes',
@@ -315,18 +314,18 @@ class DataController extends base\BaseController
 
     private function getResult($fileRender)
     {
-        if (!Yii::$app->request->isAjax) {
+        if (!\Yii::$app->request->isAjax) {
 
-            $this->redirect(str_replace('/data-kuliner/', '/kuliner/', Yii::$app->request->getUrl()));
+            $this->redirect(str_replace('/data-kuliner/', '/kuliner/', \Yii::$app->request->getUrl()));
         } else {
 
             $this->layout = 'ajax';
         }
 
-        $get = Yii::$app->request->get();
+        $get = \Yii::$app->request->get();
         $paramsView = [];
 
-        if ($get['searchType'] == Yii::t('app', 'favorite') || $get['searchType'] == Yii::t('app', 'online-order')) {
+        if ($get['searchType'] == \Yii::t('app', 'favorite') || $get['searchType'] == \Yii::t('app', 'online-order')) {
 
             $modelBusiness = Business::find()
                 ->joinWith([
@@ -353,7 +352,7 @@ class DataController extends base\BaseController
                     'businessDetail',
                     'userLoves' => function ($query) {
 
-                        $query->andOnCondition(['user_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null])
+                        $query->andOnCondition(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
                             ->andOnCondition(['user_love.is_active' => true]);
                     },
                     'membershipType.membershipTypeProductServices.productService',
@@ -389,7 +388,7 @@ class DataController extends base\BaseController
                 $modelBusiness = $modelBusiness->andWhere('(acos(sin(radians(split_part("business_location"."coordinate" , \',\', 1)::double precision)) * sin(radians(' . $latitude . ')) + cos(radians(split_part("business_location"."coordinate" , \',\', 1)::double precision)) * cos(radians(' . $latitude . ')) * cos(radians(split_part("business_location"."coordinate" , \',\', 2)::double precision) - radians(' . $longitude . '))) * 6356 * 1000) <= ' . $radius);
             }
 
-            if ($get['searchType'] == Yii::t('app', 'favorite')) {
+            if ($get['searchType'] == \Yii::t('app', 'favorite')) {
 
                 $modelBusiness = $modelBusiness->andFilterWhere(['business_category.category_id' => $get['ctg']]);
 
@@ -411,7 +410,7 @@ class DataController extends base\BaseController
 
                     $modelBusiness = $modelBusiness->andFilterWhere([$facilityCondition => count($get['fct'])]);
                 }
-            } else if ($get['searchType'] == Yii::t('app', 'online-order')) {
+            } else if ($get['searchType'] == \Yii::t('app', 'online-order')) {
 
                 $modelBusiness = $modelBusiness->andFilterWhere(['product_service.code_name' => 'order-online']);
             }
@@ -435,9 +434,9 @@ class DataController extends base\BaseController
             $endItem = min(($offset + $pageSize), $totalCount);
 
             $paramsView['modelBusiness'] = $modelBusiness;
-        } else if ($get['searchType'] == Yii::t('app', 'promo')) {
+        } else if ($get['searchType'] == \Yii::t('app', 'promo')) {
 
-            Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+            \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
             $fileRender .= '_special';
 
@@ -469,10 +468,10 @@ class DataController extends base\BaseController
                 ])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
                 ->andFilterWhere(['business_category.category_id' => $get['ctg']])
-                ->andFilterWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+                ->andFilterWhere(['>=', 'date_end', \Yii::$app->formatter->asDate(time())])
                 ->andFilterWhere(['business_promo.not_active' => false]);
 
-            Yii::$app->formatter->timeZone = 'UTC';
+            \Yii::$app->formatter->timeZone = 'UTC';
 
             if (!empty($get['cmp'])) {
 

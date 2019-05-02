@@ -1,17 +1,17 @@
 <?php
 
-use yii\web\View;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\ArrayHelper;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
 /* @var $params array */
 
-$this->title = Yii::t('app', 'Search Result') . ' - Map';
+$this->title = \Yii::t('app', 'Search Result') . ' - Map';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -30,9 +30,9 @@ $appComponent = new AppComponent(); ?>
         <div class="row">
 
             <?php
-            $urlResultList = ArrayHelper::merge(['result-list'], $params); 
+            $urlResultList = ArrayHelper::merge(['result-list'], $params);
             $btnResultList = Html::a('<i class="fa fa-list"></i> List', $urlResultList, ['class' => 'btn btn-round btn-default btn-list']);
-            $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), '', ['class' => 'btn btn-round btn-d btn-map']); ?>
+            $btnResultMap = Html::a('<i class="fa fa-location-arrow"></i> ' . \Yii::t('app', 'Map'), '', ['class' => 'btn btn-round btn-d btn-map']); ?>
 
             <div class="col-sm-7 mt-10 mb-10 visible-lg visible-md visible-sm text-right">
 
@@ -89,8 +89,8 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        data: ' . Json::encode(Yii::$app->request->get()) . ',
-        url: "' . Yii::$app->urlManager->createUrl(['data/result-map']) . '",
+        data: ' . Json::encode(\Yii::$app->request->get()) . ',
+        url: "' . \Yii::$app->urlManager->createUrl(['data/result-map']) . '",
         success: function(response) {
 
             $(".result-map").html(response);
