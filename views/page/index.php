@@ -75,14 +75,14 @@ $appComponent = new AppComponent(); ?>
                 <div class="news-promo-section owl-carousel owl-theme">
 
                 	<?php
-                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385']));
-                	echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385']), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
+                	echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385'));
+                	echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
 
                 	if (!empty($modelPromo)) {
 
                 	    foreach ($modelPromo as $dataPromo) {
 
-                	        echo Html::a(Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=875&h=385']), [
+                	        echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'promo?image=' . $dataPromo['image'] . '&w=875&h=385'), [
                 	            'page/detail-promo',
                 	            'id' => $dataPromo['id']
                 	        ]);
@@ -174,7 +174,8 @@ $jscript = '
 
     $(".news-promo-section").owlCarousel({
         margin: 10,
-        lazyLoad: true,
+        stagePadding: 50,
+        loop:true,
         responsive: {
             0: {
                 items: 1
