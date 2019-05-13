@@ -87,11 +87,6 @@ $this->title = 'Checkout'; ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <div class="col-sm-12 col-tab-12">
-                                                                        <p class="mb-0"><?= $dataTransactionItem['businessProduct']['description'] ?></p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
                                                                     <div class="col-sm-8 col-tab-8">
 
                                                                         <div class="overlay" style="display: none;"></div>
