@@ -92,6 +92,7 @@ class OrderController extends base\BaseController
                     if (($flag = ($modelTransactionSessionOrder->save() && $modelTransactionSession->save()))) {
 
                         $dataDelivery = [];
+                        $dataPayment = [];
 
                         foreach ($modelTransactionSession['business']['businessDeliveries'] as $dataBusinessDelivery) {
 
@@ -101,8 +102,6 @@ class OrderController extends base\BaseController
                                 break;
                             }
                         }
-
-                        $dataPayment = [];
 
                         foreach ($modelTransactionSession['business']['businessPayments'] as $dataBusinessPayment) {
 
