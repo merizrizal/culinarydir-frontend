@@ -1,10 +1,10 @@
 <?php
 
+use frontend\components\AddressType;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -39,13 +39,13 @@ $linkPager = LinkPager::widget([
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+                    <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
                     <?= $linkPager; ?>
-            
+
                 </div>
                 <div class="col-xs-12 visible-xs">
 
@@ -72,13 +72,13 @@ $linkPager = LinkPager::widget([
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="box box-small">
-                            
+
                             	<?= Html::hiddenInput('business_promo_id', $dataBusinessPromo['id'], ['class' => 'business-promo-id']) ?>
 
                                 <div class="row">
-                                    <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
+                                    <div class="col-md-5 col-sm-5 col-tab-6 col-xs-12 col direct-link" data-link="<?= \Yii::$app->urlManager->createUrl(['page/detail', 'id' => $dataBusinessPromo['business']['id'], '#' => 'special']) ?>">
                                     	<div class="result-list-special-image owl-carousel owl-theme">
-                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319']); ?>
+                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'business-promo?image=' . $dataBusinessPromo['image'] . '&w=567&h=319']); ?>
                                         </div>
                                     </div>
 
@@ -87,7 +87,7 @@ $linkPager = LinkPager::widget([
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12 col">
                                                     <h4 class="m-0">
-                                                    
+
                                                         <?= Html::a($dataBusinessPromo['title'], [
                                                             'page/detail',
                                                             'city' => Inflector::slug($dataBusinessPromo['business']['businessLocation']['city']['name']),
@@ -96,7 +96,7 @@ $linkPager = LinkPager::widget([
                                                         ], [
                                                             'class' => 'link-to-business-detail'
                                                         ]); ?>
-                                                        
+
                                                     </h4>
                                                 </div>
                                             </div>
@@ -112,7 +112,7 @@ $linkPager = LinkPager::widget([
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li>
-                                                            	<i class="aicon aicon-home"></i>
+                                                            	<i class="aicon aicon-home1"></i>
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusinessPromo['business']['businessLocation']]) ?>
                                                             </li>
                                                         </ul>
@@ -132,16 +132,16 @@ $linkPager = LinkPager::widget([
                                                                 $businessProductCategoryPopover = '';
 
                                                                 foreach ($dataBusinessPromo['business']['businessProductCategories'] as $i => $dataBusinessProductCategory) {
-                                                                    
+
                                                                     if (!empty($dataBusinessProductCategory['productCategory'])) {
-                                                                        
+
                                                                         $hashtagItem = '<strong class="text-red">#</strong>' . $dataBusinessProductCategory['productCategory']['name'] . ' ';
-                                                                        
+
                                                                         if ($i < $businessProductCategoryLimit) {
-    
+
                                                                             $businessProductCategoryList .= $hashtagItem;
                                                                         } else {
-    
+
                                                                             $businessProductCategoryPopover .= $hashtagItem;
                                                                         }
                                                                     }
@@ -191,13 +191,13 @@ $linkPager = LinkPager::widget([
             <div class="row mt-10">
                 <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-                    <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+                    <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
                 </div>
                 <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
 
                     <?= $linkPager; ?>
-            
+
                 </div>
                 <div class="col-xs-12 visible-xs">
 

@@ -1,14 +1,13 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
-use core\models\UserVisit;
+use core\models\BusinessPromo;
+use core\models\TransactionSession;
 use core\models\UserLove;
 use core\models\UserPostMain;
-use core\models\BusinessPromo;
-use yii\filters\VerbFilter;
+use core\models\UserVisit;
 use yii\data\ActiveDataProvider;
-use core\models\TransactionSession;
+use yii\filters\VerbFilter;
 
 /**
  * User Data Controller
@@ -23,7 +22,7 @@ class UserDataController extends base\BaseController
     public function behaviors()
     {
         return array_merge(
-            $this->getAccess(), 
+            $this->getAccess(),
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -35,10 +34,10 @@ class UserDataController extends base\BaseController
 
     public function actionUserVisit($username)
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $queryParams = Yii::$app->request->getQueryParams();
-            
+        if (!\Yii::$app->request->isAjax) {
+
+            $queryParams = \Yii::$app->request->getQueryParams();
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'visit',
@@ -46,7 +45,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -54,17 +53,15 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.village',
                 'business.businessLocation.city',
                 'user',
             ])
-            ->where(['user_visit.is_active' => true])
+            ->andWhere(['user_visit.is_active' => true])
             ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
@@ -94,10 +91,10 @@ class UserDataController extends base\BaseController
 
     public function actionUserLove($username)
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $queryParams = Yii::$app->request->getQueryParams();
-            
+        if (!\Yii::$app->request->isAjax) {
+
+            $queryParams = \Yii::$app->request->getQueryParams();
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'love',
@@ -105,7 +102,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -113,17 +110,15 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.village',
                 'business.businessLocation.city',
                 'user',
             ])
-            ->where(['user_love.is_active' => true])
+            ->andWhere(['user_love.is_active' => true])
             ->andWhere(['user.username' => $username])
             ->distinct()
             ->asArray();
@@ -142,7 +137,7 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelUserLove) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('journey/user_love', [
             'modelUserLove' => $modelUserLove,
@@ -155,10 +150,10 @@ class UserDataController extends base\BaseController
 
     public function actionUserPost($username)
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $queryParams = Yii::$app->request->getQueryParams();
-            
+        if (!\Yii::$app->request->isAjax) {
+
+            $queryParams = \Yii::$app->request->getQueryParams();
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'review',
@@ -166,7 +161,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -174,25 +169,25 @@ class UserDataController extends base\BaseController
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                    
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true]);
+
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city',
                 'user',
                 'userPostMains child' => function ($query) {
-                    
-                    $query->andOnCondition(['child.is_publish' => true]);
+
+                    $query->andOnCondition(['child.is_publish' => true])
+                        ->andOnCondition(['child.type' => 'Photo']);
                 },
                 'userVotes',
                 'userVotes.ratingComponent rating_component' => function ($query) {
-                    
+
                     $query->andOnCondition(['rating_component.is_active' => true]);
                 },
                 'userPostLoves' => function ($query) {
-                    
-                    $query->andOnCondition(['user_post_love.user_id' => !empty(Yii::$app->user->getIdentity()->id) ? Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
+
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null , 'user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment',
@@ -206,7 +201,7 @@ class UserDataController extends base\BaseController
             ->asArray();
 
         $provider = new ActiveDataProvider([
-            'query' => $modelUserPostMain,            
+            'query' => $modelUserPostMain,
         ]);
 
         $modelUserPostMain = $provider->getModels();
@@ -219,7 +214,7 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelUserPostMain) ? $offset + 1 : 0;
         $endItem = min(($offset + $pageSize), $totalCount);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('journey/user_post', [
             'modelUserPostMain' => $modelUserPostMain,
@@ -232,10 +227,10 @@ class UserDataController extends base\BaseController
 
     public function actionUserPostPhoto($username)
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $queryParams = Yii::$app->request->getQueryParams();
-            
+        if (!\Yii::$app->request->isAjax) {
+
+            $queryParams = \Yii::$app->request->getQueryParams();
+
             $this->redirect(['user/user-profile',
                 'user' => $username,
                 'redirect' => 'photo',
@@ -243,7 +238,7 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
 
@@ -255,7 +250,7 @@ class UserDataController extends base\BaseController
             ->andWhere(['type' => 'Photo'])
             ->andWhere(['is_publish' => true])
             ->andWhere(['user.username' => $username])
-            ->orderBy(['id' => SORT_DESC])
+            ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
 
@@ -273,7 +268,7 @@ class UserDataController extends base\BaseController
         $startItem = !empty($modelUserPostMainPhoto) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         return $this->render('user_post_photo', [
             'modelUserPostMainPhoto' => $modelUserPostMainPhoto,
@@ -288,24 +283,22 @@ class UserDataController extends base\BaseController
     {
         $this->layout = 'ajax';
 
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $modelBusinessPromo = BusinessPromo::find()
             ->joinWith([
                 'business.userLoves',
                 'business.businessLocation.city'
             ])
-            ->andWhere([
-                'user_love.is_active' => true,
-                'user_love.user_id' => Yii::$app->user->getIdentity()->id,
-                'not_active' => false
-            ])
-            ->andWhere(['>=', 'date_end', Yii::$app->formatter->asDate(time())])
+            ->andWhere(['user_love.is_active' => true])
+            ->andWhere(['user_love.user_id' => \Yii::$app->user->getIdentity()->id])
+            ->andWhere(['not_active' => false])
+            ->andWhere(['>=', 'date_end', \Yii::$app->formatter->asDate(time())])
             ->orderBy('business_id')
             ->distinct()
             ->asArray();
 
-        Yii::$app->formatter->timeZone = 'UTC';
+        \Yii::$app->formatter->timeZone = 'UTC';
 
         $provider = new ActiveDataProvider([
             'query' => $modelBusinessPromo,
@@ -329,13 +322,13 @@ class UserDataController extends base\BaseController
             'totalCount' => $totalCount,
         ]);
     }
-    
+
     public function actionOrderHistory()
     {
-        if (!Yii::$app->request->isAjax) {
-            
-            $queryParams = Yii::$app->request->getQueryParams();
-            
+        if (!\Yii::$app->request->isAjax) {
+
+            $queryParams = \Yii::$app->request->getQueryParams();
+
             $this->redirect(['user/user-profile',
                 'user' => $queryParams['username'],
                 'redirect' => 'order-history',
@@ -343,43 +336,41 @@ class UserDataController extends base\BaseController
                 'per-page' => !empty($queryParams['per-page']) ? $queryParams['per-page'] : '',
             ]);
         } else {
-            
+
             $this->layout = 'ajax';
         }
-        
+
         $modelTransactionSession = TransactionSession::find()
             ->joinWith([
                 'business',
                 'business.businessImages' => function ($query) {
-                
-                    $query->andOnCondition([
-                        'business_image.type' => 'Profile',
-                        'business_image.is_primary' => true
-                    ]);
+
+                    $query->andOnCondition(['business_image.type' => 'Profile'])
+                        ->andOnCondition(['business_image.is_primary' => true]);
                 },
                 'business.businessLocation.city'
             ])
-            ->andWhere(['transaction_session.user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['transaction_session.user_ordered' => \Yii::$app->user->getIdentity()->id])
             ->orderBy(['created_at' => SORT_DESC])
             ->distinct()
             ->asArray();
-                
+
         $provider = new ActiveDataProvider([
             'query' => $modelTransactionSession,
         ]);
-        
+
         $modelTransactionSession = $provider->getModels();
         $pagination = $provider->getPagination();
-        
+
         $perpage = $pagination->pageSize;
         $totalCount = $pagination->totalCount;
         $offset = $pagination->offset;
-        
+
         $startItem = !empty($modelTransactionSession) ? $offset + 1 : 0;
         $endItem = min(($offset + $perpage), $totalCount);
-        
-        Yii::$app->formatter->timeZone = 'Asia/Jakarta';
-        
+
+        \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
+
         return $this->render('order_history', [
            'modelTransactionSession' => $modelTransactionSession,
            'pagination' => $pagination,

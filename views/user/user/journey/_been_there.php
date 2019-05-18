@@ -15,7 +15,7 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        url: "' . Yii::$app->urlManager->createUrl([
+        url: "' . \Yii::$app->urlManager->createUrl([
             'user-data/user-visit',
             'username' => $username
         ]) . (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'visit' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",

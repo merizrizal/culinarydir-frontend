@@ -1,17 +1,17 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\ArrayHelper;
-use yii\web\View;
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $keyword array */
 /* @var $params array */
 
-$this->title = Yii::t('app', 'Search Result');
+$this->title = \Yii::t('app', 'Search Result');
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -46,7 +46,7 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
                     $urlResultMap = ArrayHelper::merge(['result-map'], $params);
 
                     echo Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) . '&nbsp';
-                    echo Html::a('<i class="fa fa-location-arrow"></i> ' . Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
+                    echo Html::a('<i class="fa fa-location-arrow"></i> ' . \Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
             </div>
@@ -68,8 +68,8 @@ $jscript = '
     $.ajax({
         cache: false,
         type: "GET",
-        data: ' . Json::encode(Yii::$app->request->get()) . ',
-        url: "' . Yii::$app->urlManager->createUrl(['data/result-list']) . '",
+        data: ' . Json::encode(\Yii::$app->request->get()) . ',
+        url: "' . \Yii::$app->urlManager->createUrl(['data/result-list']) . '",
         success: function(response) {
 
             $(".result-list").html(response);
@@ -96,7 +96,7 @@ $jscript = '
 
         $.ajax({
             cache: false,
-            url: "'. Yii::$app->urlManager->createUrl('action/submit-user-love').'",
+            url: "'. \Yii::$app->urlManager->createUrl('action/submit-user-love').'",
             type: "POST",
             data: {
                 "business_id": thisObj.data("id")

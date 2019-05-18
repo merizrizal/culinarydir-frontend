@@ -1,10 +1,10 @@
 <?php
 
-use yii\helpers\Html;
 use common\components\Helper;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $modelUserPostComment core\models\UserPostComment */ 
+/* @var $modelUserPostComment core\models\UserPostComment */
 /* @var $userPostId frontend\controllers\DataController */
 
 if (!empty($modelUserPostComment)): ?>
@@ -22,8 +22,8 @@ if (!empty($modelUserPostComment)): ?>
 
                                 <?php
                                 $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
-                                
-                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+
+                                echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
                                     'class' => 'img-responsive img-circle img-comment-thumb img-component'
                                 ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 

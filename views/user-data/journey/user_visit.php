@@ -1,9 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use yii\helpers\Inflector;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -32,7 +32,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -49,15 +49,15 @@ $linkPager = LinkPager::widget([
 
 <div class="row" style="position: relative;">
     <div class="user-visit-container">
-    
+
     	<div class="overlay" style="display: none;"></div>
 		<div class="loading-img" style="display: none;"></div>
 
         <?php
         if (!empty($modelUserVisit)):
 
-            foreach ($modelUserVisit as $dataUserVisit): 
-                
+            foreach ($modelUserVisit as $dataUserVisit):
+
                 $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataUserVisit['business']['businessLocation']['city']['name']),
@@ -71,7 +71,7 @@ $linkPager = LinkPager::widget([
 
                                 <?php
                                 $img = (!empty($dataUserVisit['business']['businessImages']) ? $dataUserVisit['business']['businessImages'][0]['image'] : '') . '&w=565&h=350';
-                                echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img), $urlBusinessDetail); ?>
+                                echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img), $urlBusinessDetail); ?>
 
                             </div>
                         </div>
@@ -108,7 +108,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">

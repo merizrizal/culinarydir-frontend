@@ -1,11 +1,11 @@
 <?php
 
+use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\widgets\ActiveForm;
-use kartik\file\FileInput; 
 
-/* @var $this yii\web\View */ 
+/* @var $this yii\web\View */
 /* @var $modelBusiness core\models\Business */
 /* @var $modelPostPhoto frontend\models\Post */ ?>
 
@@ -26,26 +26,26 @@ use kartik\file\FileInput;
             ]); ?>
 
                 <?= Html::hiddenInput('business_id', $modelBusiness['id'], ['id' => 'business_id']); ?>
-    
+
                 <div class="box-title" id="title-post-photo">
-                    <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'Add Photo') ?></h4>
-                    <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i><?= Yii::t('app', 'Cancel') ?></a></span>
+                    <h4 class="mt-0 mb-0 inline-block"><?= \Yii::t('app', 'Add Photo') ?></h4>
+                    <span class="pull-right inline-block" id="close-post-photo-container"><a class="text-main" href=""><i class="fa fa-close"></i><?= \Yii::t('app', 'Cancel') ?></a></span>
                 </div>
-    
+
                 <div class="box-content">
-    
+
                     <div class="form-group">
-                        <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i><?= Yii::t('app', 'Add Photo') ?></button>
+                        <button id="post-photo-trigger" type="button" class="btn btn-round btn-d"><i class="fa fa-plus"></i><?= \Yii::t('app', 'Add Photo') ?></button>
                     </div>
-    
+
                     <div class="row" id="post-photo-container">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    
+
                             <?= $form->field($modelPostPhoto, 'text')->textInput([
                                 'class' => 'form-control',
-                                'placeholder' => Yii::t('app', 'Photo Caption'),
+                                'placeholder' => \Yii::t('app', 'Photo Caption'),
                             ]); ?>
-    
+
                             <?= $form->field($modelPostPhoto, 'image')->widget(FileInput::classname(), [
                                 'options' => [
                                     'id' => 'add-photo-input',
@@ -59,16 +59,16 @@ use kartik\file\FileInput;
                                     'layoutTemplates' => [
                                         'footer' => '',
                                     ],
-                                    'dropZoneTitle' => Yii::t('app', 'Drag and drop photos here')
+                                    'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here')
                                 ]
                             ]); ?>
-    
+
                             <div class="form-group">
-    
-                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload ' . Yii::t('app', 'Photo'), ['id' => 'submit-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
-    
-                                <?= Html::a('<i class="fa fa-times"></i> ' . Yii::t('app', 'Cancel'), null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
-    
+
+                                <?= Html::submitButton('<i class="fa fa-share-square"></i> Upload ' . \Yii::t('app', 'Photo'), ['id' => 'submit-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
+
+                                <?= Html::a('<i class="fa fa-times"></i> ' . \Yii::t('app', 'Cancel'), null, ['id' => 'cancel-post-photo', 'class' => 'btn btn-default btn-standard btn-round']) ?>
+
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            url: "' . Yii::$app->urlManager->createUrl([
+            url: "' . \Yii::$app->urlManager->createUrl([
                 'data/post-photo',
                 'city' => Inflector::slug($modelBusiness['businessLocation']['city']['name']),
                 'uniqueName' => $modelBusiness['unique_name']
@@ -144,7 +144,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "POST",
-            url: "' . Yii::$app->urlManager->createUrl(['redirect/add-photo']) . '",
+            url: "' . \Yii::$app->urlManager->createUrl(['redirect/add-photo']) . '",
             success: function(response) {
 
                 thisObj.fadeOut(100, function() {

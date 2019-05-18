@@ -68,33 +68,35 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>/' => 'page/detail',
-                
+
                 'menu-pesan-online/di/<uniqueName:\w+(-\w+)*>' => 'page/menu',
                 'promo-spesial-diskon/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/detail-business-promo',
-                
+
                 'review-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-review',
                 'photo-kuliner/di/<city:\w+(-\w+)*>/<uniqueName:\w+(-\w+)*>' => 'data/post-photo',
-                
+
                 'review/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/review',
                 'photo/<id:\w+(-\w+)*>/di/<uniqueName:\w+(-\w+)*>' => 'page/photo',
-                
+
+                'promo-asikmakan/<id:\w+(-\w+)*>' => 'page/detail-promo',
+
                 'user-profile/<user:\w+(-\w+)*>' => 'user/user-profile',
-                
+
                 'review-kuliner-oleh/<username:\w+(-\w+)*>' => 'user-data/user-post',
                 'love-kuliner-oleh/<username:\w+(-\w+)*>' => 'user-data/user-love',
                 'kuliner-dikunjungi-oleh/<username:\w+(-\w+)*>' => 'user-data/user-visit',
                 'photo-kuliner-oleh/<username:\w+(-\w+)*>' => 'user-data/user-post-photo',
-                
+
                 '<searchType:\w+(-\w+)*>/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-list',
                 '<searchType:\w+(-\w+)*>/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-list',
-                
+
                 'map/<searchType:\w+(-\w+)*>/kuliner/di/<city:\w+(-\w+)*>' => 'page/result-map',
                 'map/<searchType:\w+(-\w+)*>/data-kuliner/di/<city:\w+(-\w+)*>' => 'data/result-map',
-                
+
                 '' => 'page/index',
-                
+
                 'asikmakan-smap.xml' => 'site/sitemap',
-                
+
                 '<controller:\w+>/<action:\w+>/<id:\w+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]

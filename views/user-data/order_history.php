@@ -1,12 +1,12 @@
 <?php
 
-use yii\web\View;
-use yii\helpers\Html;
-use yii\widgets\LinkPager;
-use yii\widgets\Pjax;
 use frontend\components\AddressType;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
 use yii\helpers\Inflector;
+use yii\web\View;
+use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $modelTransactionSession core\models\TransactionSession */
@@ -35,7 +35,7 @@ $linkPager = LinkPager::widget([
 <div class="row mt-10 mb-20">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">
@@ -53,42 +53,42 @@ $linkPager = LinkPager::widget([
 
 <div class="row" style="position: relative;">
     <div class="order-history-container">
-    
+
     	<div class="overlay" style="display: none;"></div>
 		<div class="loading-img" style="display: none;"></div>
-		
+
         <?php
         if (!empty($modelTransactionSession)):
-        
+
             foreach ($modelTransactionSession as $dataTransactionSession):
-            
+
                 $img = (!empty($dataTransactionSession['business']['businessImages']) ? $dataTransactionSession['business']['businessImages'][0]['image'] : '') . '&w=88&h=88';
-                
+
                 $btnDetail = Html::a('<i class="fas fa-search"></i> Detail', ['user/detail-order-history', 'id' => $dataTransactionSession['id']], [
                     'class' => 'btn btn-default btn-small btn-round-4'
                 ]);
-                
+
                 $btnReorder = Html::a($dataTransactionSession['status'] != 'Open' ? '<i class="aicon aicon-icon-online-ordering"></i> ' . Yii::t('app', 'Reorder') : '<i class="aicon aicon-inspection-checklist"></i> ' . Yii::t('app', 'Confirmation'), ['user-action/reorder'], [
                     'class' => 'btn btn-default btn-small btn-round-4 btn-reorder',
                     'data-id' => $dataTransactionSession['id']
                 ]);
-                
+
                 $urlBusinessDetail = [
                     'page/detail',
                     'city' => Inflector::slug($dataTransactionSession['business']['businessLocation']['city']['name']),
                     'uniqueName' => $dataTransactionSession['business']['unique_name']
                 ];
-                
+
                 $grandTotal = $dataTransactionSession['total_price'] - $dataTransactionSession['discount_value']; ?>
-        
+
             	<div class="col-xs-12">
             		<div class="row mb-10">
                         <div class="col-sm-6 col-tab-7 col-xs-12">
                             <div class="widget-posts-image image-order-history">
-                                <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
+                                <?= Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . $img, ['class' => 'img-rounded']), $urlBusinessDetail) ?>
                             </div>
                         	<small>
-                        		<?= Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
+                        		<?= \Yii::$app->formatter->asDate($dataTransactionSession['created_at'], 'long') . ', ' . \Yii::$app->formatter->asTime($dataTransactionSession['created_at'], 'short') ?>
                     		</small>
                         	<br>
                             	<?= Html::a($dataTransactionSession['business']['name'], $urlBusinessDetail) ?>
@@ -115,21 +115,21 @@ $linkPager = LinkPager::widget([
                             </ul>
                     	</div>
                     </div>
-                    
+
                     <hr class="divider-w mt-10 mb-10">
             	</div>
-            	
+
         	<?php
             endforeach;
         endif; ?>
-        
+
     </div>
 </div>
 
 <div class="row mt-20 mb-10">
     <div class="col-sm-6 col-tab-6 col-xs-12 mb-10">
 
-        <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+        <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
     </div>
     <div class="col-sm-6 col-tab-6 visible-lg visible-md visible-sm visible-tab text-right">

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* @var $businessName string */
 /* @var $businessAbout string */ ?>
@@ -9,7 +9,7 @@
             <div class="box-title">
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
-                        <h4 class="mt-0 mb-0 inline-block"><?= Yii::t('app', 'About') . ' ' . $businessName ?> </h4>
+                        <h4 class="mt-0 mb-0 inline-block"><?= \Yii::t('app', 'About') . ' ' . $businessName ?> </h4>
                     </div>
                 </div>
             </div>
@@ -20,8 +20,8 @@
             	<div class="row">
             		<div class="col-md-12 col-xs-12">
 
-                        <?= !empty($businessAbout) ? $businessAbout : '<p>' . Yii::t('app', 'Data Not Available') . '.</p>' ?>
-        
+                        <?= !empty($businessAbout) ? $businessAbout : '<p>' . \Yii::t('app', 'Data Not Available') . '.</p>' ?>
+
             		</div>
             	</div>
             </div>

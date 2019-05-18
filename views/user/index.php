@@ -1,9 +1,9 @@
 <?php
 
-use yii\helpers\Html;
-use yii\bootstrap\Modal;
-use yii\web\View;
 use frontend\components\GrowlCustom;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $modelUser core\models\User */
@@ -11,17 +11,17 @@ use frontend\components\GrowlCustom;
 
 $this->title = $modelUser['full_name'];
 
-$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
+$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . \Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
 
 if (!empty($modelUser['userPerson']['person']['about_me'])) {
-    
+
     $ogDescription = $modelUser['userPerson']['person']['about_me'];
 }
 
 if (!empty($modelUser['image'])) {
-    
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
+
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -36,7 +36,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl(['user/user-profile', 'user' => $modelUser['username']])
+    'content' => \Yii::$app->urlManager->createAbsoluteUrl(['user/user-profile', 'user' => $modelUser['username']])
 ]);
 
 $this->registerMetaTag([
@@ -66,34 +66,34 @@ $this->registerMetaTag([
 
             <div class="row mb-50">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-                
+
                 	<?php
-                	$img = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
-                	
+                	$img = \Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
+
                 	if (!empty($modelUser['image'])) {
-                	    
-                	    $img = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'] . '&w=160&h=160';
+
+                	    $img = \Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'] . '&w=160&h=160';
                 	}
-                	
+
                 	$userName = '
                         <h3>' .
                             $modelUser['full_name'] . '<br>
                             <small>' . $modelUser['email'] . '</small>
                         </h3>
                     ';
-                	
+
                     $btnProfile =
                         '<div class="btn-group">' .
-                            Html::a('<i class="aicon aicon-pencil1"></i> ' . Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
+                            Html::a('<i class="aicon aicon-pencil1"></i> ' . \Yii::t('app', 'Update Profile'), ['user/update-profile'], ['class' => 'btn btn-d btn-standard']) . '
                             <a class="btn btn-d btn-standard dropdown-toggle-split" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                                 <span class="fa fa-ellipsis-h"></span>
                             </a>
                             <ul class="dropdown-menu pull-right profile-btn">
                                 <li>' .
-                                    Html::a('<i class="aicon aicon-key1"></i> ' . Yii::t('app', 'Change Password'), ['user/change-password']) .
+                                    Html::a('<i class="aicon aicon-key1"></i> ' . \Yii::t('app', 'Change Password'), ['user/change-password']) .
                                 '</li>
                                 <li>' .
-                                   	Html::a('<i class="aicon aicon-logout"></i> ' . Yii::t('app', 'Logout'), ['site/logout']) .
+                                   	Html::a('<i class="aicon aicon-logout"></i> ' . \Yii::t('app', 'Logout'), ['site/logout']) .
                                 '</li>
                             </ul>
                         </div>
@@ -107,10 +107,10 @@ $this->registerMetaTag([
                                         <?= Html::img($img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body">
-                                    
+
                                         <?= $userName ?>
                                         <?= $btnProfile ?>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -125,15 +125,15 @@ $this->registerMetaTag([
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 text-center">
-                                
+
                                     <?= $userName ?>
                                     <?= $btnProfile ?>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -160,7 +160,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <li><i class="aicon aicon-camera1 aicon-1-5x"></i><span class="badge total-user-photo"></span></li>
-                                                <li><?= Yii::t('app', 'Photo') ?></li>
+                                                <li><?= \Yii::t('app', 'Photo') ?></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -172,7 +172,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <li><i class="aicon aicon-history aicon-1-5x"></i><span class="badge total-order-history">0</span></li>
-                                                <li><?= Yii::t('app', 'Order History') ?></li>
+                                                <li><?= \Yii::t('app', 'Order History') ?></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -183,8 +183,8 @@ $this->registerMetaTag([
                                     <ul class="link-icon list-inline">
                                         <li>
                                             <ul class="text-center">
-                                                <li><i class="aicon aicon-price-tags aicon-1-5x"></i><span class="badge total-new-promo"></span></li>
-                                                <li><?= Yii::t('app', 'New Promo') ?></li>
+                                                <li><i class="aicon aicon-promo aicon-1-5x"></i><span class="badge total-new-promo"></span></li>
+                                                <li><?= \Yii::t('app', 'New Promo') ?></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -204,12 +204,12 @@ $this->registerMetaTag([
                                 <ul class="dropdown-menu pull-right">
                                     <li role="presentation">
                                         <a href="#view-order-history" aria-controls="view-order-history" role="tab" data-toggle="tab">
-                                        	<h6><i class="aicon aicon-history"></i> <?= Yii::t('app', 'Order History') ?> (<span class="total-order-history">0</span>)</h6>
+                                        	<h6><i class="aicon aicon-history"></i> <?= \Yii::t('app', 'Order History') ?> (<span class="total-order-history">0</span>)</h6>
                                     	</a>
                                     </li>
                                     <li role="presentation">
                                         <a href="#view-new-promo" aria-controls="view-new-promo" role="tab" data-toggle="tab">
-                                        	<h6><i class="aicon aicon-price-tags"></i> <?= Yii::t('app', 'New Promo') ?> (<span class="total-new-promo"></span>)</h6>
+                                        	<h6><i class="aicon aicon-promo"></i> <?= \Yii::t('app', 'New Promo') ?> (<span class="total-new-promo"></span>)</h6>
                                     	</a>
                                     </li>
                                 </ul>
@@ -219,36 +219,36 @@ $this->registerMetaTag([
                         <div class="tab-content">
 
                             <div role="tabpanel" class="tab-pane fade in active p-0" id="view-journey">
-                            
+
                                 <?= $this->render('user/_journey', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
-                                
+
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-photo">
-                            
+
                                 <?= $this->render('user/_photo', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
-                                
+
                             </div>
-							
+
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-order-history">
-                            
+
                                 <?= $this->render('user/_order_history', [
                                     'username' => $modelUser['username'],
                                     'queryParams' => $queryParams,
                                 ]) ?>
-                                
+
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade p-0" id="view-new-promo">
                                 <?= $this->render('user/_new_promo') ?>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -274,16 +274,16 @@ $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 $this->params['beforeEndBody'][] = function() {
 
     Modal::begin([
-        'header' => Yii::t('app', 'Confirmation'),
+        'header' => \Yii::t('app', 'Confirmation'),
         'id' => 'modal-confirmation',
         'size' => Modal::SIZE_SMALL,
         'footer' => '
-            <button id="btn-delete" class="btn btn-danger" type="button">' . Yii::t('app', 'Delete') .'</button>
-            <button class="btn btn-default" data-dismiss="modal" type="button">' . Yii::t('app', 'Cancel') .'</button>
+            <button id="btn-delete" class="btn btn-danger" type="button">' . \Yii::t('app', 'Delete') .'</button>
+            <button class="btn btn-default" data-dismiss="modal" type="button">' . \Yii::t('app', 'Cancel') .'</button>
         ',
     ]);
 
-        echo Yii::t('app', 'Are you sure want to delete this?');
+        echo \Yii::t('app', 'Are you sure want to delete this?');
 
     Modal::end();
 }; ?>

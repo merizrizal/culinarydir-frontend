@@ -1,7 +1,6 @@
 <?php
 namespace frontend\components;
 
-use Yii;
 use yii\base\Widget;
 
 class GrowlCustom extends Widget
@@ -13,14 +12,14 @@ class GrowlCustom extends Widget
 
         \kartik\growl\GrowlAsset::register($this->getView());
     }
-    
+
     public static function messageResponse()
     {
         return '
             function messageResponse(icon, title, message, type) {
 
                 if (title != "302") {
-            
+
                     $.notify({
                         icon: icon,
                         title: title,
@@ -38,7 +37,7 @@ class GrowlCustom extends Widget
                         },
                         offset: {
                             x: 0,
-                            y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                            y: ' . (\Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
                         },
                         spacing: 0,
                         z_index: 1031,
@@ -65,17 +64,17 @@ class GrowlCustom extends Widget
             }
         ';
     }
-    
+
     public static function stickyResponse()
     {
         return '
             function stickyGrowl(icon, title, message, type) {
-            
+
                 return $.notify({
                         icon: icon,
                         title: title,
                         message: message,
-                        url: "' . Yii::$app->urlManager->createUrl(['order/checkout']) . '"
+                        url: "' . \Yii::$app->urlManager->createUrl(['order/checkout']) . '"
                     },{
                         element: "body",
                         position: null,
@@ -89,7 +88,7 @@ class GrowlCustom extends Widget
                         },
                         offset: {
                             x: 0,
-                            y: ' . (Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
+                            y: ' . (\Yii::$app->request->getUserAgent() == 'com.asikmakan.app' ? 60 : 0) . '
                         },
                         spacing: 0,
                         z_index: 1031,

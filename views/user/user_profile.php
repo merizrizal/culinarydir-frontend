@@ -1,9 +1,9 @@
 <?php
 
+use frontend\components\GrowlCustom;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\web\View;
-use frontend\components\GrowlCustom;
 
 /* @var $this yii\web\View */
 /* @var $modelUser core\models\User */
@@ -11,19 +11,19 @@ use frontend\components\GrowlCustom;
 
 $this->title = $modelUser['full_name'];
 
-$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
+$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . \Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
 
 if (!empty($modelUser['userPerson']['person']['about_me'])) {
-    
+
     $ogDescription = $modelUser['userPerson']['person']['about_me'];
 }
 
 $ogDescription = StringHelper::truncate(preg_replace('/[\r\n]+/','' , $ogDescription), 300);
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
 
 if (!empty($modelUser['image'])) {
-    
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
+
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user?image=' . $modelUser['image'];
 }
 
 $this->registerMetaTag([
@@ -38,7 +38,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:url',
-    'content' => Yii::$app->urlManager->createAbsoluteUrl(['user/user-profile', 'user' => $modelUser['username']])
+    'content' => \Yii::$app->urlManager->createAbsoluteUrl(['user/user-profile', 'user' => $modelUser['username']])
 ]);
 
 $this->registerMetaTag([
@@ -68,7 +68,7 @@ $this->registerMetaTag([
 
             <div class="row user-profile-header mb-50">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-                
+
                 	<?php
                 	$img = !empty($modelUser['image']) ? $modelUser['image'] . '&w=200&h=200' : 'default-avatar.png';
                 	$userName = '<h3>' . $modelUser['full_name'] . ' </h3>'; ?>
@@ -78,7 +78,7 @@ $this->registerMetaTag([
                             <div class="row ">
                                 <div class="widget">
                                     <div class="widget-posts-image">
-                                        <?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
+                                        <?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']) ?>
                                     </div>
                                     <div class="widget-posts-body user-profile-identity">
                                         <?= $userName ?>
@@ -91,7 +91,7 @@ $this->registerMetaTag([
                         <div class="col-xs-12">
                             <div class="row">
                                 <div class="col-xs-12 text-center">
-                                	<?= Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
+                                	<?= Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component center-block']) ?>
                                 </div>
                             </div>
                             <div class="row">
@@ -101,7 +101,7 @@ $this->registerMetaTag([
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -129,7 +129,7 @@ $this->registerMetaTag([
                                         <li>
                                             <ul class="text-center">
                                                 <i class="aicon aicon-camera1 aicon-1-5x"></i>
-                                                <li><?= Yii::t('app', 'Photo') ?></li>
+                                                <li><?= \Yii::t('app', 'Photo') ?></li>
                                                 <span class="badge total-user-photo"></span>
                                             </ul>
                                         </li>
@@ -175,7 +175,7 @@ frontend\components\FacebookShare::widget();
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $this->on(View::EVENT_END_BODY, function() use ($modelUser, $ogDescription, $ogImage) {
-    
+
     echo '
         <script type="application/ld+json">
         {

@@ -2,12 +2,11 @@
 
 namespace frontend\controllers;
 
-use Yii;
-use yii\filters\VerbFilter;
-use yii\web\Response;
-use core\models\TransactionSession;
 use core\models\TransactionItem;
+use core\models\TransactionSession;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * OrderAction controller
@@ -36,10 +35,10 @@ class OrderActionController extends base\BaseController
 
     public function actionSaveOrder()
     {
-        $post = Yii::$app->request->post();
+        $post = \Yii::$app->request->post();
 
         $modelTransactionSession = TransactionSession::find()
-            ->andWhere(['user_ordered' => Yii::$app->user->getIdentity()->id])
+            ->andWhere(['user_ordered' => \Yii::$app->user->getIdentity()->id])
             ->andWhere(['status' => 'Open'])
             ->one();
 
@@ -50,23 +49,23 @@ class OrderActionController extends base\BaseController
         } else {
 
             $modelTransactionSession = new TransactionSession();
-            $modelTransactionSession->user_ordered = Yii::$app->user->getIdentity()->id;
+            $modelTransactionSession->user_ordered = \Yii::$app->user->getIdentity()->id;
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
             $modelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
             $modelTransactionSession->status = 'Open';
         }
-        
+
         $result = [];
 
         if ($modelTransactionSession->business_id == $post['business_id']) {
-            
-            $transaction = Yii::$app->db->beginTransaction();
+
+            $transaction = \Yii::$app->db->beginTransaction();
             $flag = false;
 
             if (($flag = $modelTransactionSession->save())) {
-                
+
                 $modelTransactionItem = TransactionItem::find()
                     ->andWhere(['transaction_session_id' => $modelTransactionSession->id])
                     ->andWhere(['business_product_id' => $post['product_id']])
@@ -87,7 +86,7 @@ class OrderActionController extends base\BaseController
 
                 $result['success'] = true;
                 $result['item_id'] = $modelTransactionItem->id;
-                $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+                $result['total_price'] = $modelTransactionSession->total_price;
                 $result['total_amount'] = $modelTransactionSession->total_amount;
             } else {
 
@@ -108,13 +107,13 @@ class OrderActionController extends base\BaseController
             $result['text'] = 'Mohon maaf anda tidak dapat memesan dari dua tempat secara bersamaan';
         }
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
     }
 
     public function actionChangeQty()
     {
-        $post = Yii::$app->request->post();
+        $post = \Yii::$app->request->post();
 
         $modelTransactionItem = TransactionItem::find()
             ->joinWith(['transactionSession'])
@@ -126,7 +125,7 @@ class OrderActionController extends base\BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $transaction = Yii::$app->db->beginTransaction();
+        $transaction = \Yii::$app->db->beginTransaction();
         $flag = false;
 
         $amountPrior = $modelTransactionItem->amount;
@@ -149,7 +148,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = $modelTransactionSession->total_price;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
@@ -162,7 +161,7 @@ class OrderActionController extends base\BaseController
             $result['text'] = 'Terjadi kesalahan saat proses perubahan jumlah pesanan, silahkan ulangi kembali';
         }
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
     }
 
@@ -170,7 +169,7 @@ class OrderActionController extends base\BaseController
     {
         $modelTransactionItem = TransactionItem::find()
             ->joinWith(['transactionSession'])
-            ->andWhere(['transaction_item.id' => !empty(Yii::$app->request->post('id')) ? Yii::$app->request->post('id') : null])
+            ->andWhere(['transaction_item.id' => !empty(\Yii::$app->request->post('id')) ? \Yii::$app->request->post('id') : null])
             ->one();
 
         if (empty($modelTransactionItem)) {
@@ -178,7 +177,7 @@ class OrderActionController extends base\BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $transaction = Yii::$app->db->beginTransaction();
+        $transaction = \Yii::$app->db->beginTransaction();
         $flag = false;
 
         $modelTransactionSession = $modelTransactionItem->transactionSession;
@@ -200,7 +199,7 @@ class OrderActionController extends base\BaseController
             $transaction->commit();
 
             $result['success'] = true;
-            $result['total_price'] = Yii::$app->formatter->asCurrency($modelTransactionSession->total_price);
+            $result['total_price'] = $modelTransactionSession->total_price;
             $result['total_amount'] = $modelTransactionSession->total_amount;
         } else {
 
@@ -213,13 +212,13 @@ class OrderActionController extends base\BaseController
             $result['text'] = 'Terjadi kesalahan saat menghapus pesanan, silahkan ulangi kembali';
         }
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
     }
 
     public function actionSaveNotes()
     {
-        $post = Yii::$app->request->post();
+        $post = \Yii::$app->request->post();
 
         $modelTransactionItem = TransactionItem::find()
             ->andWhere(['transaction_item.id' => !empty($post['id']) ? $post['id'] : null])
@@ -246,7 +245,7 @@ class OrderActionController extends base\BaseController
             $result['text'] = 'Harap input kembali keterangan untuk pesanan ini.';
         }
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
     }
 }

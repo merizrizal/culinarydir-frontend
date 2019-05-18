@@ -1,19 +1,19 @@
 <?php
 
-use yii\web\View;
-use yii\helpers\Html;
-use yii\helpers\Inflector;
 use common\components\Helper;
 use frontend\components\GrowlCustom;
+use yii\helpers\Html;
+use yii\helpers\Inflector;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $modelUserPostMain core\models\UserPostMain */
 
 common\assets\OwlCarouselAsset::register($this);
 
-$this->title = Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
+$this->title = \Yii::t('app', 'Photo') . ' ' . $modelUserPostMain['business']['name'];
 
-$ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
+$ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
     'page/photo',
     'id' => $modelUserPostMain['id'],
     'uniqueName' => $modelUserPostMain['business']['unique_name'],
@@ -21,11 +21,11 @@ $ogUrl = Yii::$app->urlManager->createAbsoluteUrl([
 
 $ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Asikmakan';
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;
-$ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
+$ogImage = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
 
 if (!empty($modelUserPostMain['image'])) {
-    
-    $ogImage = Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image'];
+
+    $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image'];
 }
 
 $this->registerMetaTag([
@@ -71,9 +71,9 @@ $this->registerMetaTag([
             <div class="row mb-20">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . Yii::t('app', 'Back to Place Detail'), [
-                        'page/detail', 
-                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']), 
+                    <?= Html::a('<i class="fa fa-angle-double-left"></i> ' . \Yii::t('app', 'Back to Place Detail'), [
+                        'page/detail',
+                        'city' => Inflector::slug($modelUserPostMain['business']['businessLocation']['city']['name']),
                         'uniqueName' => $modelUserPostMain['business']['unique_name']
                     ], ['class' => 'btn btn-standard p-0']); ?>
 
@@ -90,64 +90,64 @@ $this->registerMetaTag([
 
                                     <?php
                                     if (!empty($modelUserPostMain)):
-                                    
+
                                         $img = !empty($modelUserPostMain['user']['image']) ? $modelUserPostMain['user']['image'] . '&w=200&h=200' : 'default-avatar.png'; ?>
 
                                         <div class="photo-container">
-    
+
                                             <?= Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'user-post-main-id']) ?>
-    
+
                                             <div class="row mb-10">
                                                 <div class="col-md-4 col-sm-5 col-tab-7 col-xs-9">
-                                                
+
                                                     <div class="widget">
                                                         <div class="widget-posts-image">
-                                                        
-                    									   <?= Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+
+                    									   <?= Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
                     									       'class' => 'img-responsive img-circle img-profile-thumb img-component'
                     									   ]), ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
-                    									   
+
                                                         </div>
-                                
+
                                                         <div class="widget-posts-body">
                                                             <?= Html::a($modelUserPostMain['user']['full_name'], ['user/user-profile', 'user' => $modelUserPostMain['user']['username']]) ?>
                                                             <br>
                                                             <small><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
-    
+
                                             <div class="row">
                                                 <div class="col-sm-12 col-xs-12">
                                                     <div class="photo-review mt-10 mb-10">
                                                         <div class="row">
                                                             <div class="col-sm-offset-1 col-sm-10">
                                                             	<div class="owl-carousel owl-theme">
-                                                                	<?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image']]) ?>
+                                                                	<?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMain['image']]) ?>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-    
+
                                                     <p class="review-description">
                                                         <?= $modelUserPostMain['text']; ?>
                                                     </p>
-    												
-    												<?php                   
+
+    												<?php
                                 					$loveCount = !empty($modelUserPostMain['love_value']) ? $modelUserPostMain['love_value'] : 0;
-                                					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0; 
-                                					
+                                					$commentCount = !empty($modelUserPostMain['userPostComments']) ? count($modelUserPostMain['userPostComments']) : 0;
+
                                 					$loveSpanCount = '<span class="total-likes-photo">' . $loveCount . '</span>';
                                 					$commentSpanCount = '<span class="total-comments-photo">' . $commentCount . '</span>';
-                                					
+
                                 					$selected = !empty($modelUserPostMain['userPostLoves'][0]) ? 'selected' : ''; ?>
-    												
+
                                                     <div class="row visible-xs">
                                                         <div class="col-xs-3">
                                                             <ul class="list-inline mt-0 mb-0">
-                                                                <li>    
+                                                                <li>
                                                                     <small><?= '<i class="fa fa-thumbs-up"></i> <span class="total-likes-photo">' . $loveCount . '</span>' ?></small>
                                                                 </li>
                                                             </ul>
@@ -160,21 +160,21 @@ $this->registerMetaTag([
                                                             </ul>
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="row">
                                                         <div class="col-sm-7 col-tab-7 col-xs-12">
                                                             <ul class="list-inline list-review mt-0 mb-0">
                                                                 <li>
-                                                                
+
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> ' . $loveSpanCount . ' Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-small btn-round-4 likes-photo-trigger ' . $selected . ' visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> Like', ['action/submit-likes'], ['class' => 'btn btn-default btn-small btn-round-4 likes-photo-trigger ' . $selected . ' visible-xs']); ?>
-                                                                    
+
                                                                 </li>
                                                                 <li>
-                                                                
+
                                                                     <?= Html::a('<i class="fa fa-comments"></i> ' . $commentSpanCount . ' Comment', '', ['class' => 'btn btn-default btn-small btn-round-4 comments-photo-trigger visible-lg visible-md visible-sm visible-tab']); ?>
                                                                     <?= Html::a('<i class="fa fa-comments"></i> Comment', '', ['class' => 'btn btn-default btn-small btn-round-4 comments-photo-trigger visible-xs']); ?>
-                                                                    
+
                                                                 </li>
                                                                 <li class="visible-xs-inline-block">
                                                                     <?= Html::a('<i class="fa fa-share-alt"></i> ', '', ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
@@ -189,23 +189,23 @@ $this->registerMetaTag([
                                                             </ul>
                                                     	</div>
                                                     </div>
-    
+
                                                     <hr class="divider-w mt-10">
-    
+
                                                     <div class="row">
                                                         <div class="user-comment-review" id="comments-photo-container">
                                                             <div class="col-sm-12">
                                                                 <div class="input-group mt-10 mb-10">
                                                                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                                                                    <?= Html::textInput('comment_input', null, ['id' => 'input-comments-photo', 'class' => 'form-control', 'placeholder' => Yii::t('app', 'Write a Comment')]); ?>
+                                                                    <?= Html::textInput('comment_input', null, ['id' => 'input-comments-photo', 'class' => 'form-control', 'placeholder' => \Yii::t('app', 'Write a Comment')]); ?>
                                                                 </div>
-    
+
                                                                 <div class="overlay" style="display: none;"></div>
                                                                 <div class="loading-img" style="display: none;"></div>
-                                                                
+
                                                                 <div class="comment-section">
-    
-                                                                    <?php                                                                    
+
+                                                                    <?php
                                                                     foreach ($modelUserPostMain['userPostComments'] as $dataUserPostComment): ?>
 
                                                                         <div class="comment-post">
@@ -216,8 +216,8 @@ $this->registerMetaTag([
 
                                                                                             <?php
                                                                                             $img = !empty($dataUserPostComment['user']['image']) ? $dataUserPostComment['user']['image'] . '&w=200&h=200' : 'default-avatar.png';
-                                                                                            
-                                                                                            echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
+
+                                                                                            echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, [
                                                                                                 'class' => 'img-responsive img-circle img-comment-thumb img-component'
                                                                                             ]), ['user/user-profile', 'user' => $dataUserPostComment['user']['username']]); ?>
 
@@ -238,14 +238,14 @@ $this->registerMetaTag([
 
                                                                     <?php
                                                                     endforeach; ?>
-                                                                        
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <hr class="divider-w mb-10">
                                         </div>
 
@@ -331,7 +331,7 @@ $jscript = '
                     "user_post_main_id": photoId.val(),
                     "text": $(this).val(),
                 },
-                url: "' . Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
+                url: "' . \Yii::$app->urlManager->createUrl(['action/submit-comment']) . '",
                 beforeSend: function(xhr) {
 
                     $(".comment-section").siblings(".overlay").show();
@@ -349,7 +349,7 @@ $jscript = '
                             data: {
                                 "user_post_main_id": response.user_post_main_id
                             },
-                            url: "' . Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
+                            url: "' . \Yii::$app->urlManager->createUrl(['data/post-comment']) . '",
                             success: function(response) {
 
                                 $(".comment-section").html(response);

@@ -1,5 +1,5 @@
 <?php
-use kartik\rating\StarRating; 
+use kartik\rating\StarRating;
 
 /* @var $this yii\web\View */
 /* @var $modelBusinessDetail core\models\BusinessDetail */
@@ -7,10 +7,10 @@ use kartik\rating\StarRating;
 /* @var $modelRatingComponent core\models\RatingComponent */ ?>
 
 <div class="row">
-    <div class="col-sm-6 col-xs-6 text-center">
+    <div class="col-sm-6 col-xs-6 text-right">
         <div class="rating">
             <h2 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format(!empty($modelBusinessDetail['vote_value']) ? $modelBusinessDetail['vote_value'] : 0, 1) ?></span></h2>
-            <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($modelBusinessDetail['voters']) ? $modelBusinessDetail['voters'] : 0]) ?>
+            <?= \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => !empty($modelBusinessDetail['voters']) ? $modelBusinessDetail['voters'] : 0]) ?>
         </div>
     </div>
     <div class="col-sm-6 col-xs-6">
@@ -62,7 +62,7 @@ use kartik\rating\StarRating;
 
                                 <div class="col-sm-6 col-xs-6 business-rating-components">
 
-                                    <?= number_format($ratingValue, 1) . ' &nbsp; ' . Yii::t('app', $dataBusinessDetailVote['ratingComponent']['name']) ?>
+                                    <?= number_format($ratingValue, 1) . ' &nbsp; ' . \Yii::t('app', $dataBusinessDetailVote['ratingComponent']['name']) ?>
 
                                 </div>
                             </div>
@@ -95,7 +95,7 @@ use kartik\rating\StarRating;
 
                                 <div class="col-sm-6 col-xs-6 business-rating-components">
 
-                                    <?= 0 . ' &nbsp; ' . Yii::t('app', $dataRatingComponent['name']) ?>
+                                    <?= 0 . ' &nbsp; ' . \Yii::t('app', $dataRatingComponent['name']) ?>
 
                                 </div>
                             </div>

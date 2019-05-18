@@ -1,10 +1,10 @@
 <?php
 
+use common\components\Helper;
+use kartik\rating\StarRating;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-use kartik\rating\StarRating;
-use common\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\UserPostMain */
@@ -24,13 +24,13 @@ $urlReviewDetail = [
                         <div class="col-xs-12">
                         	<div class="widget">
                         		<div class="widget-posts-image">
-                        		
+
                         			<?php
                         			$img = !empty($model['user']['image']) ? $model['user']['image'] . '&w=100&h=100' : 'default-avatar.png';
-                        			echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
-                                	
+                        			echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user?image=' . $img, ['class' => 'img-responsive img-circle img-profile-thumb img-component']), ['/user/user-profile', 'user' => $model['user']['username']]) ?>
+
                         		</div>
-                        		
+
                         		<div class="widget-posts-body">
                                     <?= Html::a($model['user']['full_name'], ['user/user-profile', 'user' => $model['user']['username']]); ?>
                                     <br>
@@ -46,28 +46,28 @@ $urlReviewDetail = [
 
                             <?php
                             $img = (!empty($model['userPostMains'][0]['image']) ? $model['userPostMains'][0]['image'] : '') . '&w=478&h=165';
-                            echo Html::a(Html::img(Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
+                            echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $img, ['class' => 'img-responsive img-component']), $urlReviewDetail); ?>
 
                         </div>
                     </div>
                 </div>
-                
-                <?php 
+
+                <?php
                 $loveCount = !empty($model['love_value']) ? $model['love_value'] : 0;
                 $commentCount = !empty($model['userPostComments']) ? count($model['userPostComments']) : 0;
-                
+
                 $selected = !empty($model['userPostLoves'][0]) ? 'selected' : ''; ?>
-                
+
                 <div class="post-header">
                     <div class="row">
                         <div class="col-xs-12 col">
                             <ul class="list-inline mt-0 mb-10">
                                 <li>
-                                
+
                                     <?= Html::a('<i class="fa fa-thumbs-up"></i> <span class="total-likes-review">' . $loveCount . '</span> Like', ['action/submit-likes'], [
                                         'class' => 'btn btn-default btn-small btn-round-4 user-likes-review-' . $model['id'] . '-trigger ' . $selected,
                                     ]) ?>
-                                    
+
                                 </li>
                                 <li>
                                     <?= Html::a('<i class="fa fa-comments"></i> ' . $commentCount . ' Comment', $urlReviewDetail, ['class' => 'btn btn-default btn-small btn-round-4']) ?>
@@ -83,13 +83,13 @@ $urlReviewDetail = [
                     <div class="row">
                         <div class="col-sm-12 col-xs-12 col">
                             <h4 class="m-0">
-                            
+
                                 <?= Html::a($model['business']['name'], [
-                                    'page/detail', 
-                                    'city' => Inflector::slug($model['business']['businessLocation']['city']['name']), 
+                                    'page/detail',
+                                    'city' => Inflector::slug($model['business']['businessLocation']['city']['name']),
                                     'uniqueName' => $model['business']['unique_name']
                                 ]); ?>
-                            
+
                             </h4>
                         </div>
                     </div>
@@ -98,15 +98,15 @@ $urlReviewDetail = [
                         	<ul class="list-inline mt-0 mb-10">
                                 <li>
                                     <div class="widget star-rating">
-        
+
                                         <?php
                                         $ratingValue = 0;
-        
+
                                         foreach ($model['userVotes'] as $dataUserVotes) {
-                                            
+
                                             $ratingValue += !empty($dataUserVotes['vote_value']) && !empty($model['userVotes']) ? ($dataUserVotes['vote_value'] / count($model['userVotes'])) : 0;
                                         }
-        
+
                                         echo StarRating::widget([
                                             'id' => 'rating-' . $model['id'],
                                             'name' => 'rating_' . $model['id'],
@@ -118,7 +118,7 @@ $urlReviewDetail = [
                                                 'showCaption' => false,
                                             ]
                                         ]); ?>
-        
+
                                     </div>
                                 </li>
                                 <li>
@@ -136,7 +136,7 @@ $urlReviewDetail = [
 
                             <?php
                             $textReview = !empty($model['text']) ? StringHelper::truncate($model['text'], 80, '. . .') . '<br>' : '';
-                            $textReview .= Html::a('<span class="text-red"> ' . Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', $urlReviewDetail);
+                            $textReview .= Html::a('<span class="text-red"> ' . \Yii::t('app', 'View Details') . ' <i class="fa fa-angle-double-right"></i></span>', $urlReviewDetail);
 
                             echo $textReview; ?>
 
@@ -154,7 +154,7 @@ $jscript = '
 
     $(".share-feature-' . $model['id'] . '-trigger").on("click", function() {
 
-        var url = "' . Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail) . '";
+        var url = "' . \Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail) . '";
         var title = "Rating " + $(".rating-' . $model['id'] . '").text().trim() + " untuk " + "' . $model['business']['name'] . '";
         var description = "' . addslashes($model['text']) . '";
         var image = window.location.protocol + "//" + window.location.hostname + "'. $img . '";
@@ -188,11 +188,11 @@ $jscript = '
                     var loveValue = parseInt(thisObj.find(".total-likes-review").html());
 
                     if (response.is_active) {
-                        
+
                         thisObj.addClass("selected");
                         thisObj.find(".total-likes-review").html(loveValue + 1);
                     } else {
-                        
+
                         thisObj.removeClass("selected");
                         thisObj.find(".total-likes-review").html(loveValue - 1);
                     }

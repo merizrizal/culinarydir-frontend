@@ -31,13 +31,13 @@ $this->registerMetaTag([
                                 <div class="col-md-12">
                                     <h4 class="font-alt"><?= $title ?></h4>
                                     <hr class="divider-w mb-20">
-                                    
-                                    <?php 
+
+                                    <?php
                                     if (!empty($fullname)): ?>
 
-                                    	<h5><?= Yii::t('app', 'Hello') . ', ' . $fullname ?> !</h5>
-                                	
-                                	<?php 
+                                    	<h5><?= \Yii::t('app', 'Hello') . ', ' . $fullname ?> !</h5>
+
+                                	<?php
                                 	endif; ?>
 
                                     <div class="mb-10"><small><?= $messages ?></small></div>

@@ -1,11 +1,11 @@
 <?php
 
+use frontend\components\AddressType;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use frontend\components\AddressType;
 
 /* @var $this yii\web\View */
 /* @var $pagination yii\data\Pagination */
@@ -38,7 +38,7 @@ $linkPager = LinkPager::widget([
         <div class="row mt-10">
             <div class="col-lg-6 col-md-12 col-tab-6 col-xs-12 mb-10">
 
-                <?= Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
+                <?= \Yii::t('app', 'Showing {startItem} - {endItem} of {totalCount} results', ['startItem' => $startItem, 'endItem' => $endItem, 'totalCount' => $totalCount]) ?>
 
             </div>
             <div class="col-lg-6 col-tab-6 visible-lg visible-tab text-right">
@@ -68,8 +68,8 @@ $linkPager = LinkPager::widget([
                 $businessDetail = [];
 
                 foreach ($modelBusiness as $dataBusiness):
-                    
-                    $img = Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241'; ?>
+
+                    $img = \Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241'; ?>
 
                     <div class="row mb-10">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -80,24 +80,24 @@ $linkPager = LinkPager::widget([
                                             <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
                                         </div>
                                     </div>
-									
-									<?php 
+
+									<?php
 									$voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
 									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
-									
+
 									$layoutRatings = '
                                         <div class="rating rating-top">
                                             <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
-                                            Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
+                                            \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
                                         </div>
                                     '; ?>
-									
+
                                     <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
                                         <?= $layoutRatings ?>
                                     </div>
 
                                     <div class="col-xs-5 col visible-xs text-center">
-                                        <?= $layoutRatings ?> 
+                                        <?= $layoutRatings ?>
                                     </div>
 
                                     <div class="col-md-7 col-sm-12 col-xs-12 col">
@@ -128,7 +128,7 @@ $linkPager = LinkPager::widget([
                                                     <div class="widget">
                                                         <ul class="icon-list">
                                                             <li>
-                                                                <i class="aicon aicon-home"></i>
+                                                                <i class="aicon aicon-home1"></i>
                                                                 <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
                                                             </li>
                                                             <li>
@@ -139,13 +139,13 @@ $linkPager = LinkPager::widget([
 
                                                                 if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
 
-                                                                    $businessPrice = Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
+                                                                    $businessPrice = \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
                                                                 } else if (empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
 
-                                                                    $businessPrice = Yii::t('app', 'Under') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
+                                                                    $businessPrice = \Yii::t('app', 'Under') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
                                                                 } else if (empty($dataBusiness['businessDetail']['price_max']) && !empty($dataBusiness['businessDetail']['price_min'])) {
 
-                                                                    $businessPrice = Yii::t('app', 'Above') . ' ' . Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
+                                                                    $businessPrice = \Yii::t('app', 'Above') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
                                                                 }
 
                                                                 echo $businessPrice ?>
@@ -158,7 +158,7 @@ $linkPager = LinkPager::widget([
                                                 <div class="col-md-3 col visible-lg visible-md text-center">
                                                     <div class="rating pull-right">
                                                         <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($voteValue, 1); ?></span></h3>
-                                                        <?= Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
+                                                        <?= \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -185,7 +185,7 @@ $linkPager = LinkPager::widget([
                         'businessPrice' => $businessPrice,
                         'businessLatitude' => $businessLatitude,
                         'businessLongitude' => $businessLongitude,
-                        'businessUrl' => Yii::$app->urlManager->createUrl([
+                        'businessUrl' => \Yii::$app->urlManager->createUrl([
                             'page/detail',
                             'city' => Inflector::slug($dataBusiness['businessLocation']['city']['name']),
                             'uniqueName' => $dataBusiness['unique_name']
@@ -268,7 +268,7 @@ $jscript = '
                         position: businessLatLng[keyCoordinate],
                         gestureHandling: "greedy",
                         icon: {
-                            url: "' . Yii::$app->request->baseUrl . '/media/img/dot.png",
+                            url: "' . \Yii::$app->request->baseUrl . '/media/img/dot.png",
                             scaledSize: new google.maps.Size(28, 28),
                             origin: new google.maps.Point(0,0),
                             anchor: new google.maps.Point(10, 25)
@@ -299,14 +299,14 @@ $jscript = '
                                                 "<div class=\"widget\">" +
                                                     "<ul class=\"icon-list\">" +
                                                         "<li>" +
-                                                            "<i class=\"aicon aicon-home\"></i> " + value.businessAddress +
+                                                            "<i class=\"aicon aicon-home1\"></i> " + value.businessAddress +
                                                         "</li>" +
                                                         "<li>" +
                                                             "<i class=\"aicon aicon-rupiah\"></i> " + value.businessPrice +
                                                         "</li>" +
                                                     "</ul>" +
                                                 "</div>" +
-                                                "<a class=\"text-main pull-right\" href=\"" + value.businessUrl + "\">' . Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
+                                                "<a class=\"text-main pull-right\" href=\"" + value.businessUrl + "\">' . \Yii::t('app', 'View Details') . ' <i class=\"fa fa-angle-double-right\"></i></a>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +

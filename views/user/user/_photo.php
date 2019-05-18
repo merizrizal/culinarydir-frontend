@@ -21,7 +21,7 @@ $jscript = '
         $.ajax({
             cache: false,
             type: "GET",
-            url: "' . Yii::$app->urlManager->createUrl([
+            url: "' . \Yii::$app->urlManager->createUrl([
                 'user-data/user-post-photo',
                 'username' => $username
             ]). (!empty($queryParams['redirect']) && $queryParams['redirect'] == 'photo' ? '?page=' . $queryParams['page'] . '&per-page=' . $queryParams['per-page'] : '') . '",
@@ -69,24 +69,24 @@ $jscript = '
                 type: "POST",
                 url: $(this).data("href"),
                 beforeSend: function(xhr) {
-    
+
                     $(".user-post-photo-container").children(".overlay").show();
                     $(".user-post-photo-container").children(".loading-img").show();
                 },
                 success: function(response) {
-    
+
                     $("#modal-confirmation").modal("hide");
-    
+
                     if (response.success) {
-    
+
                         getUserPostPhoto();
-    
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     } else {
-    
+
                         messageResponse(response.icon, response.title, response.message, response.type);
                     }
-    
+
                     $(".user-post-photo-container").children(".overlay").hide();
                     $(".user-post-photo-container").children(".loading-img").hide();
                 },
@@ -97,7 +97,7 @@ $jscript = '
                     $("#modal-confirmation").modal("hide");
 
                     $(".user-post-photo-container").children(".overlay").hide();
-                    $(".user-post-photo-container").children(".loading-img").hide();                                
+                    $(".user-post-photo-container").children(".loading-img").hide();
                 }
             });
         });
