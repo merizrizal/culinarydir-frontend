@@ -2,13 +2,13 @@
 
 namespace frontend\controllers;
 
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
+use Faker\Factory;
 use core\models\PromoItem;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
-use ElephantIO\Client;
-use ElephantIO\Engine\SocketIO\Version2X;
 use frontend\components\AddressType;
-use Faker\Factory;
 use yii\filters\VerbFilter;
 
 /**
@@ -189,7 +189,7 @@ class OrderController extends base\BaseController
                     $result['header']['total_delivery_fee'] = $faker->randomNumber(6);
                     $result['header']['order_status'] = $modelTransactionSession['status'];
 
-                    $client = new Client(new Version2X(\Yii::$app->params['socketIO']));
+                    $client = new Client(new Version2X(\Yii::$app->params['socketIOServiceAddress']));
 
                     $client->initialize();
                     $client->emit('broadcast', $result);
