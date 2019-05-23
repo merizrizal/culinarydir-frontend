@@ -188,7 +188,6 @@ class OrderController extends base\BaseController
                     $result['header']['order_status'] = $modelTransactionSession['status'];
 
                     $client = new \ElephantIO\Client(new \ElephantIO\Engine\SocketIO\Version2X(\Yii::$app->params['socketIOServiceAddress']));
-
                     $client->initialize();
                     $client->emit('broadcast', $result);
                     $client->close();
