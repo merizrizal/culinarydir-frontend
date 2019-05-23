@@ -653,7 +653,7 @@ $jscript = '
 
                     if (!$(".business-menu-group").length) {
 
-                        $(".promo-code-section").siblings().removeClass("col-sm-offset-3").addClass("col-sm-offset-7");
+                        $(".promo-code-section").siblings().removeClass("col-sm-offset-2").addClass("col-sm-offset-7");
                         $(".promo-code-section").remove();
                         $(".order-online-form").remove();
                         $(".promo-amount").remove();
