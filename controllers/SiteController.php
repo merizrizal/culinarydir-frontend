@@ -92,19 +92,13 @@ class SiteController extends base\BaseController
                     ->asArray()->one();
 
                 $modelUserRegister->user_level_id = $userLevel['id'];
-                $modelUserRegister->email = $post['UserRegister']['email'];
-                $modelUserRegister->username = $post['UserRegister']['username'];
                 $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
                 $modelUserRegister->setPassword($post['UserRegister']['password']);
                 $modelUserRegister->password_repeat = $modelUserRegister->password;
 
-                if (($flag = $modelUserRegister->save())) {
+                if (($flag = $modelUserRegister->save()) && $modelPerson->load($post)) {
 
-                    $modelPerson->first_name = $post['Person']['first_name'];
-                    $modelPerson->last_name = $post['Person']['last_name'];
                     $modelPerson->email = $post['UserRegister']['email'];
-                    $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
-                    $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
                     if (($flag = $modelPerson->save())) {
 
