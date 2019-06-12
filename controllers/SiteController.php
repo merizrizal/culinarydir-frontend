@@ -75,123 +75,126 @@ class SiteController extends base\BaseController
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
 
-        if ($modelUserRegister->load(($post = \Yii::$app->request->post()))) {
+        if (!empty(($post = \Yii::$app->request->post()))) {
 
-            if (\Yii::$app->request->isAjax) {
+            if ($modelUserRegister->load($post) && $modelPerson->load($post)) {
 
-                \Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($modelUserRegister);
-            } else {
+                if (\Yii::$app->request->isAjax) {
 
-                $transaction = \Yii::$app->db->beginTransaction();
-                $flag = false;
-                $socmedFLag = false;
+                    \Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($modelUserRegister);
+                } else {
 
-                $userLevel = UserLevel::find()
-                    ->andWhere(['nama_level' => 'User'])
-                    ->asArray()->one();
+                    $transaction = \Yii::$app->db->beginTransaction();
+                    $flag = false;
+                    $socmedFLag = false;
 
-                $modelUserRegister->user_level_id = $userLevel['id'];
-                $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
-                $modelUserRegister->setPassword($post['UserRegister']['password']);
-                $modelUserRegister->password_repeat = $modelUserRegister->password;
+                    $userLevel = UserLevel::find()
+                        ->andWhere(['nama_level' => 'User'])
+                        ->asArray()->one();
 
-                if (($flag = $modelUserRegister->save()) && $modelPerson->load($post)) {
+                    $modelUserRegister->user_level_id = $userLevel['id'];
+                    $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
+                    $modelUserRegister->setPassword($post['UserRegister']['password']);
+                    $modelUserRegister->password_repeat = $modelUserRegister->password;
 
-                    $modelPerson->email = $post['UserRegister']['email'];
+                    if (($flag = $modelUserRegister->save())) {
 
-                    if (($flag = $modelPerson->save())) {
+                        $modelPerson->email = $post['UserRegister']['email'];
 
-                        $modelUserPerson = new UserPerson();
-                        $modelUserPerson->user_id = $modelUserRegister->id;
-                        $modelUserPerson->person_id = $modelPerson->id;
+                        if (($flag = $modelPerson->save())) {
 
-                        if (($flag = $modelUserPerson->save())) {
+                            $modelUserPerson = new UserPerson();
+                            $modelUserPerson->user_id = $modelUserRegister->id;
+                            $modelUserPerson->person_id = $modelPerson->id;
 
-                            if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
+                            if (($flag = $modelUserPerson->save())) {
 
-                                $socmedFLag = true;
+                                if (!empty($post['UserSocialMedia']['facebook_id']) || !empty($post['UserSocialMedia']['google_id'])) {
 
-                                $modelUserSocialMedia->user_id = $modelUserRegister->id;
+                                    $socmedFLag = true;
 
-                                if (!empty($post['UserSocialMedia']['google_id'])) {
+                                    $modelUserSocialMedia->user_id = $modelUserRegister->id;
 
-                                    $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
-                                } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
+                                    if (!empty($post['UserSocialMedia']['google_id'])) {
 
-                                    $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
-                                }
+                                        $modelUserSocialMedia->google_id = $post['UserSocialMedia']['google_id'];
+                                    } else if (!empty($post['UserSocialMedia']['facebook_id'])) {
 
-                                if (($flag = $modelUserSocialMedia->save())) {
+                                        $modelUserSocialMedia->facebook_id = $post['UserSocialMedia']['facebook_id'];
+                                    }
 
-                                    \Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
-                                        'email' => $post['UserRegister']['email'],
-                                        'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                        'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
-                                    ])
-                                    ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' Support'])
-                                    ->setTo($post['UserRegister']['email'])
-                                    ->setSubject('Welcome to ' . \Yii::$app->name)
-                                    ->send();
-                                }
-                            } else {
+                                    if (($flag = $modelUserSocialMedia->save())) {
 
-                                $randomString = \Yii::$app->security->generateRandomString();
-                                $randomStringHalf = substr($randomString, 16);
-                                $modelUserRegister->not_active = true;
-                                $modelUserRegister->account_activation_token = substr($randomString, 0, 15) . $modelUserRegister->id . $randomStringHalf . '_' . time();
+                                        \Yii::$app->mailer->compose(['html' => 'register_confirmation'], [
+                                            'email' => $post['UserRegister']['email'],
+                                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                            'socmed' => !empty($post['UserSocialMedia']['google_id']) ? 'Google' : 'Facebook',
+                                        ])
+                                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' Support'])
+                                        ->setTo($post['UserRegister']['email'])
+                                        ->setSubject('Welcome to ' . \Yii::$app->name)
+                                        ->send();
+                                    }
+                                } else {
 
-                                if (($flag = $modelUserRegister->save())) {
+                                    $randomString = \Yii::$app->security->generateRandomString();
+                                    $randomStringHalf = substr($randomString, 16);
+                                    $modelUserRegister->not_active = true;
+                                    $modelUserRegister->account_activation_token = substr($randomString, 0, 15) . $modelUserRegister->id . $randomStringHalf . '_' . time();
 
-                                    \Yii::$app->mailer->compose(['html' => 'account_activation'], [
-                                        'email' => $post['UserRegister']['email'],
-                                        'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                                        'userToken' => $modelUserRegister->account_activation_token
-                                    ])
-                                    ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' Support'])
-                                    ->setTo($post['UserRegister']['email'])
-                                    ->setSubject(\Yii::$app->name . ' Account Activation')
-                                    ->send();
+                                    if (($flag = $modelUserRegister->save())) {
+
+                                        \Yii::$app->mailer->compose(['html' => 'account_activation'], [
+                                            'email' => $post['UserRegister']['email'],
+                                            'full_name' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                            'userToken' => $modelUserRegister->account_activation_token
+                                        ])
+                                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' Support'])
+                                        ->setTo($post['UserRegister']['email'])
+                                        ->setSubject(\Yii::$app->name . ' Account Activation')
+                                        ->send();
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                if ($flag) {
+                    if ($flag) {
 
-                    $transaction->commit();
+                        $transaction->commit();
 
-                    if (!$socmedFLag) {
+                        if (!$socmedFLag) {
 
-                        return $this->render('message', [
-                            'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                            'title' => \Yii::t('app', 'You Have Registered to {app}', ['app' => \Yii::$app->name]),
-                            'messages' => \Yii::t('app', 'Please activate your account by clicking the link that we sent to your email at {email}.', ['email' => $post['UserRegister']['email']]),
-                            'links' => '',
-                        ]);
+                            return $this->render('message', [
+                                'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'title' => \Yii::t('app', 'You Have Registered to {app}', ['app' => \Yii::$app->name]),
+                                'messages' => \Yii::t('app', 'Please activate your account by clicking the link that we sent to your email at {email}.', ['email' => $post['UserRegister']['email']]),
+                                'links' => '',
+                            ]);
+                        } else {
+
+                            return $this->render('message', [
+                                'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
+                                'title' => \Yii::t('app', 'You Have Successfully Registered to {app}', ['app' => \Yii::$app->name]),
+                                'messages' => \Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
+                                'links' => ['name' => \Yii::t('app', 'Login to {app}', ['app' => \Yii::$app->name]), 'url' => ['site/login']],
+                            ]);
+                        }
                     } else {
 
-                        return $this->render('message', [
-                            'fullname' => $post['Person']['first_name'] . ' ' . $post['Person']['last_name'],
-                            'title' => \Yii::t('app', 'You Have Successfully Registered to {app}', ['app' => \Yii::$app->name]),
-                            'messages' => \Yii::t('app', 'Please login with your Email / Username by clicking the button below.'),
-                            'links' => ['name' => \Yii::t('app', 'Login to {app}', ['app' => \Yii::$app->name]), 'url' => ['site/login']],
+                        $transaction->rollBack();
+
+                        $modelUserRegister->password = '';
+
+                        \Yii::$app->session->setFlash('message', [
+                            'type' => 'danger',
+                            'delay' => 1000,
+                            'icon' => 'aicon aicon-icon-info',
+                            'message' => 'Gagal mendaftar di Asikmakan',
+                            'title' => 'Gagal Mendaftar',
                         ]);
                     }
-                } else {
-
-                    $transaction->rollBack();
-
-                    $modelUserRegister->password = '';
-
-                    \Yii::$app->session->setFlash('message', [
-                        'type' => 'danger',
-                        'delay' => 1000,
-                        'icon' => 'aicon aicon-icon-info',
-                        'message' => 'Gagal mendaftar di Asikmakan',
-                        'title' => 'Gagal Mendaftar',
-                    ]);
                 }
             }
         }
