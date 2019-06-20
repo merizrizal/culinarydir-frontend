@@ -211,7 +211,7 @@ class UserActionController extends base\BaseController
 
     public function actionReorder()
     {
-        $return = [];
+        $result = [];
 
         $modelTransactionSession = TransactionSession::find()
             ->andWhere(['user_ordered' => \Yii::$app->user->getIdentity()->id])
@@ -225,11 +225,11 @@ class UserActionController extends base\BaseController
                 return $this->redirect(['order/checkout']);
             }
 
-            $return['success'] = false;
-            $return['type'] = 'danger';
-            $return['icon'] = 'aicon aicon-icon-info';
-            $return['title'] = 'Pesan Ulang Gagal';
-            $return['text'] = 'Silahkan selesaikan pesanan anda terlebih dahulu.';
+            $result['success'] = false;
+            $result['type'] = 'danger';
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Pesan Ulang Gagal';
+            $result['text'] = 'Silahkan selesaikan pesanan anda terlebih dahulu.';
         } else {
 
             $transaction = \Yii::$app->db->beginTransaction();
@@ -277,15 +277,15 @@ class UserActionController extends base\BaseController
 
                 $transaction->rollBack();
 
-                $return['success'] = false;
-                $return['type'] = 'danger';
-                $return['icon'] = 'aicon aicon-icon-info';
-                $return['title'] = 'Pesan Ulang Gagal';
-                $return['text'] = 'Silahkan ulangi kembali proses pemesanan anda.';
+                $result['success'] = false;
+                $result['type'] = 'danger';
+                $result['icon'] = 'aicon aicon-icon-info';
+                $result['title'] = 'Pesan Ulang Gagal';
+                $result['text'] = 'Silahkan ulangi kembali proses pemesanan anda.';
             }
         }
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return $return;
+        return $result;
     }
 }
