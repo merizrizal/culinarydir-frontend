@@ -616,7 +616,7 @@ class PageController extends base\BaseHistoryUrlController
         $city = City::find()->andWhere(['name' => 'Bandung'])->asArray()->one();
 
         $keyword = [];
-        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : \Yii::t('app', 'favorite');;
+        $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : \Yii::t('app', 'favorite');
         $keyword['city'] = !empty($get['cty']) ? $get['cty'] : $city['id'];
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;
