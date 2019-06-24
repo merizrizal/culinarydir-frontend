@@ -2,11 +2,9 @@
 
 namespace frontend\controllers;
 
-use Faker\Factory;
 use core\models\PromoItem;
 use core\models\TransactionSession;
 use core\models\TransactionSessionOrder;
-use frontend\components\AddressType;
 use yii\filters\VerbFilter;
 
 /**
@@ -159,39 +157,6 @@ class OrderController extends base\BaseController
                 if ($flag) {
 
                     $transaction->commit();
-
-                    $result['header'] = [];
-                    $result['header']['customer_id'] = $modelTransactionSession['user_ordered'];
-                    $result['header']['customer_name'] = $modelTransactionSession['userOrdered']['full_name'];
-                    $result['header']['customer_username'] = $modelTransactionSession['userOrdered']['username'];
-                    $result['header']['customer_phone'] = $modelTransactionSession['userOrdered']['userPerson']['person']['phone'];
-                    $result['header']['customer_location'] = "-6.934074, 107.604858";
-                    $result['header']['customer_address'] = $modelTransactionSession['userOrdered']['userPerson']['person']['address'];
-
-                    $result['header']['business_id'] = $modelTransactionSession['business_id'];
-                    $result['header']['business_name'] = $modelTransactionSession['business']['name'];
-                    $result['header']['business_phone'] = $modelTransactionSession['business']['phone3'];
-                    $result['header']['business_location'] = $modelTransactionSession['business']['businessLocation']['coordinate'];
-                    $result['header']['business_address'] =
-                        AddressType::widget([
-                            'businessLocation' => $modelTransactionSession['business']['businessLocation'],
-                            'showDetail' => false
-                        ]);
-
-                    $faker = Factory::create();
-
-                    $result['header']['order_id'] = substr($modelTransactionSession['order_id'], 0, 6);
-                    $result['header']['note'] = $modelTransactionSession['note'];
-                    $result['header']['total_price'] = $modelTransactionSession['total_price'];
-                    $result['header']['total_amount'] = $modelTransactionSession['total_amount'];
-                    $result['header']['total_distance'] = $faker->randomNumber(2);
-                    $result['header']['total_delivery_fee'] = $faker->randomNumber(6);
-                    $result['header']['order_status'] = $modelTransactionSession['status'];
-
-                    $client = new \ElephantIO\Client(new \ElephantIO\Engine\SocketIO\Version2X(\Yii::$app->params['socketIOServiceAddress']));
-                    $client->initialize();
-                    $client->emit('broadcast', $result);
-                    $client->close();
 
                     return $this->redirect('https://api.whatsapp.com/send?phone=' . $businessPhone . '&text=' . $messageOrder);
                 } else {
