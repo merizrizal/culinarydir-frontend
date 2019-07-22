@@ -1,8 +1,8 @@
 <?php
 namespace frontend\controllers\base;
 
-use common\models\LoginForm;
 use yii\filters\AccessControl;
+use common\models\LoginForm;
 
 class BaseController extends \yii\web\Controller
 {
@@ -17,23 +17,29 @@ class BaseController extends \yii\web\Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
 
-                            if (\Yii::$app->session->get('user_data')['user_level']['is_super_admin']) {
+                            $userData = \Yii::$app->session->get('user_data');
 
-                                return true;
-                            }
+                            if (!empty($userData['user_level']) && !empty($userData['user_akses'])) {
 
-                            $userAkses = \Yii::$app->session->get('user_data')['user_level']['userAkses'];
+                                foreach ($userData['user_level'] as $dataLevel) {
 
-                            foreach ($userAkses as $value) {
+                                    if ($dataLevel['is_super_admin']) {
 
-                                if (
-                                        $value['userAppModule']['nama_module'] === $action->controller->id
-                                        && $value['userAppModule']['module_action'] === $action->id
-                                        && $value['userAppModule']['sub_program'] === \Yii::$app->params['subprogramLocal']
-                                        && $value['is_active']
+                                        return true;
+                                    }
+                                }
+
+                                foreach ($userData['user_akses'] as $dataAkses) {
+
+                                    if (
+                                            $dataAkses['userAppModule']['nama_module'] === $action->controller->id
+                                            && $dataAkses['userAppModule']['module_action'] === $action->id
+                                            && $dataAkses['userAppModule']['sub_program'] === \Yii::$app->params['subprogramLocal']
+                                            && $dataAkses['is_active']
                                     ) {
 
-                                    return true;
+                                        return true;
+                                    }
                                 }
                             }
 
@@ -49,6 +55,7 @@ class BaseController extends \yii\web\Controller
                         'allow' => true,
                         'roles' => ['?'],
                         'matchCallback' => function ($rule, $action) {
+
                             if ($action->controller->id === 'site') {
 
                                 return true;
@@ -59,10 +66,10 @@ class BaseController extends \yii\web\Controller
                                 foreach ($userAppModule as $value) {
 
                                     if (
-                                        $value['nama_module'] === $action->controller->id
-                                        && $value['module_action'] === $action->id
-                                        && $value['sub_program'] === \Yii::$app->params['subprogramLocal']
-                                        && $value['guest_can_access']
+                                            $value['nama_module'] === $action->controller->id
+                                            && $value['module_action'] === $action->id
+                                            && $value['sub_program'] === \Yii::$app->params['subprogramLocal']
+                                            && $value['guest_can_access']
                                     ) {
 
                                         return true;
