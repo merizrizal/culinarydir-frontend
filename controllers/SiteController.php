@@ -73,7 +73,6 @@ class SiteController extends base\BaseController
         $get = \Yii::$app->request->get();
 
         $modelUserRegister = new UserRegister();
-        $modelUserRole = new UserRole();
         $modelPerson = new Person();
         $modelUserSocialMedia = new UserSocialMedia();
 
@@ -91,16 +90,17 @@ class SiteController extends base\BaseController
                     $flag = false;
                     $socmedFLag = false;
 
-                    $userLevel = UserLevel::find()
-                        ->andWhere(['nama_level' => 'User'])
-                        ->asArray()->one();
-
                     $modelUserRegister->full_name = $post['Person']['first_name'] . ' ' . $post['Person']['last_name'];
                     $modelUserRegister->setPassword($post['UserRegister']['password']);
                     $modelUserRegister->password_repeat = $modelUserRegister->password;
 
                     if (($flag = $modelUserRegister->save())) {
 
+                        $userLevel = UserLevel::find()
+                            ->andWhere(['nama_level' => 'User'])
+                            ->asArray()->one();
+
+                        $modelUserRole = new UserRole();
                         $modelUserRole->user_id = $modelUserRegister->id;
                         $modelUserRole->user_level_id = $userLevel['id'];
                         $modelUserRole->unique_id = $modelUserRegister->id . '-' . $userLevel['id'];
