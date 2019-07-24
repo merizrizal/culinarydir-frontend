@@ -112,6 +112,7 @@ class SiteController extends base\BaseController
 
                             $modelUserAkses = UserAkses::find()
                                 ->andWhere(['user_level_id' => $modelUserRole->user_level_id])
+                                ->andWhere(['is_active' => true])
                                 ->asArray()->all();
 
                             foreach ($modelUserAkses as $dataUserAkses) {
@@ -121,6 +122,7 @@ class SiteController extends base\BaseController
                                 $modelUserAksesAppModule->user_id = $modelUserRegister->id;
                                 $modelUserAksesAppModule->user_app_module_id = $dataUserAkses['user_app_module_id'];
                                 $modelUserAksesAppModule->is_active = true;
+                                $modelUserAksesAppModule->used_by_user_role = [$modelUserRole->unique_id];
 
                                 if (!($flag = $modelUserAksesAppModule->save())) {
 
