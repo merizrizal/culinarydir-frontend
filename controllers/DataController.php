@@ -417,6 +417,7 @@ class DataController extends base\BaseController
 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
                 ->distinct()
+                ->cache(7200)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
