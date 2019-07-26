@@ -194,6 +194,7 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
+            ->cache(7200)
             ->asArray()->one();
 
         $isOrderOnline = false;
