@@ -101,7 +101,7 @@ class BaseController extends \yii\web\Controller
                     'token' => \Yii::$app->request->get('token')
                 ]);
 
-                $modelLoginForm->login();
+                $modelLoginForm->login(\Yii::$app->params['appName']['frontend']);
             }
         }
 

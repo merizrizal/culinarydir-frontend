@@ -270,7 +270,7 @@ class SiteController extends base\BaseController
         $post = \Yii::$app->request->post();
         $model = new LoginForm();
 
-        if (!empty($post['loginButton']) && $model->load($post) && $model->login()) {
+        if (!empty($post['loginButton']) && $model->load($post) && $model->login(\Yii::$app->params['appName']['frontend'])) {
 
             return $this->goBack();
         } else {
@@ -435,7 +435,7 @@ class SiteController extends base\BaseController
                 $model->useSocmed = true;
                 $model->login_id = $socmedEmail;
 
-                if ($model->login()) {
+                if ($model->login(\Yii::$app->params['appName']['frontend'])) {
 
                     return $this->goBack();
                 }
