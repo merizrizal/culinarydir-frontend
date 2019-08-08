@@ -13,7 +13,6 @@ use core\models\UserPostMain;
 use core\models\UserReport;
 use frontend\models\Post;
 use yii\data\ActiveDataProvider;
-use yii\db\Transaction;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
@@ -124,7 +123,6 @@ class PageController extends base\BaseHistoryUrlController
         \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
         $transaction = \Yii::$app->db->beginTransaction();
-        $transaction->setIsolationLevel(Transaction::REPEATABLE_READ);
 
         $modelBusiness = Business::find()
             ->joinWith([
@@ -201,7 +199,7 @@ class PageController extends base\BaseHistoryUrlController
             ->cache(60)
             ->asArray()->one();
 
-        $transaction->rollback();
+        $transaction->commit();
 
         $isOrderOnline = false;
 
@@ -221,6 +219,8 @@ class PageController extends base\BaseHistoryUrlController
                 }
             }
         }
+
+        $transaction = \Yii::$app->db->beginTransaction();
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -252,6 +252,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->cache(60)
             ->asArray()->one();
 
         $modelRatingComponent = RatingComponent::find()
@@ -263,7 +264,10 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.status' => 'Open'])
+            ->cache(60)
             ->asArray()->one();
+
+        $transaction->commit();
 
         $modelUserReport = new UserReport();
 
