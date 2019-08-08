@@ -13,6 +13,7 @@ use core\models\UserPostMain;
 use core\models\UserReport;
 use frontend\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\db\Transaction;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
@@ -122,6 +123,9 @@ class PageController extends base\BaseHistoryUrlController
     {
         \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
+        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction->setIsolationLevel(Transaction::REPEATABLE_READ);
+
         $modelBusiness = Business::find()
             ->joinWith([
                 'businessCategories' => function ($query) {
@@ -194,8 +198,10 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
-            ->cache(7200)
+            ->cache(60)
             ->asArray()->one();
+
+        $transaction->rollback();
 
         $isOrderOnline = false;
 
