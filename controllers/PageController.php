@@ -182,7 +182,12 @@ class PageController extends base\BaseHistoryUrlController
             ->asArray()->one();
 
         $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
-            ->joinWith(['productCategory'])
+            ->joinWith([
+                'productCategory' => function ($query) {
+
+                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                }
+            ])
             ->andWhere(['business_product_category.business_id' => $modelBusiness['id']])
             ->andWhere(['business_product_category.is_active' => true])
             ->cache(60)
