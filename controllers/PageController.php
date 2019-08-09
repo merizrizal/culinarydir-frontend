@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use core\models\Business;
+use core\models\BusinessHour;
+use core\models\BusinessProductCategory;
 use core\models\BusinessPromo;
 use core\models\City;
 use core\models\ProductCategory;
@@ -122,8 +124,6 @@ class PageController extends base\BaseHistoryUrlController
     {
         \Yii::$app->formatter->timeZone = 'Asia/Jakarta';
 
-        $transaction = \Yii::$app->db->beginTransaction();
-
         $modelBusiness = Business::find()
             ->joinWith([
                 'businessCategories' => function ($query) {
@@ -141,21 +141,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessLocation.city',
                 'businessLocation.district',
                 'businessLocation.village',
-                'businessProductCategories' => function ($query) {
-
-                    $query->andOnCondition(['business_product_category.is_active' => true]);
-                },
-                'businessProductCategories.productCategory' => function ($query) {
-
-                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
-                },
                 'businessDetail',
-                'businessHours' => function ($query) {
-
-                    $query->andOnCondition(['business_hour.is_open' => true])
-                        ->orderBy(['business_hour.day' => SORT_ASC]);
-                },
-                'businessHours.businessHourAdditionals',
                 'businessDetailVotes',
                 'businessDetailVotes.ratingComponent rating_component' => function ($query) {
 
@@ -195,7 +181,20 @@ class PageController extends base\BaseHistoryUrlController
             ->cache(60)
             ->asArray()->one();
 
-        $transaction->commit();
+        $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
+            ->joinWith(['productCategory'])
+            ->andWhere(['business_product_category.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_product_category.is_active' => true])
+            ->cache(60)
+            ->asArray()->all();
+
+        $modelBusiness['businessHours'] = BusinessHour::find()
+            ->joinWith(['businessHourAdditionals'])
+            ->andWhere(['business_hour.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_hour.is_open' => true])
+            ->orderBy(['business_hour.day' => SORT_ASC])
+            ->cache(60)
+            ->asArray()->all();
 
         $isOrderOnline = false;
 
@@ -215,8 +214,6 @@ class PageController extends base\BaseHistoryUrlController
                 }
             }
         }
-
-        $transaction = \Yii::$app->db->beginTransaction();
 
         $modelUserPostMain = UserPostMain::find()
             ->joinWith([
@@ -262,8 +259,6 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['transaction_session.status' => 'Open'])
             ->cache(60)
             ->asArray()->one();
-
-        $transaction->commit();
 
         $modelUserReport = new UserReport();
 
