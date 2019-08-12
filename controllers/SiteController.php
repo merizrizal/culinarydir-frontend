@@ -2,23 +2,24 @@
 
 namespace frontend\controllers;
 
-use yii\filters\VerbFilter;
-use yii\helpers\Inflector;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 use common\models\LoginForm;
 use core\models\Business;
 use core\models\Person;
 use core\models\User;
+use core\models\UserAkses;
+use core\models\UserAksesAppModule;
 use core\models\UserLevel;
 use core\models\UserPerson;
-use core\models\UserSocialMedia;
 use core\models\UserRole;
-use core\models\UserAkses;
+use core\models\UserSocialMedia;
 use frontend\models\RequestResetPassword;
 use frontend\models\ResetPassword;
 use frontend\models\UserRegister;
-use core\models\UserAksesAppModule;
+use yii\filters\VerbFilter;
+use yii\helpers\Inflector;
+use function yii\i18n\Formatter\asDate as time;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * Site controller
@@ -71,8 +72,6 @@ class SiteController extends base\BaseController
 
             return $this->goBack();
         }
-
-        $get = \Yii::$app->request->get();
 
         $modelUserRegister = new UserRegister();
         $modelPerson = new Person();
@@ -132,6 +131,8 @@ class SiteController extends base\BaseController
                             if ($flag) {
 
                                 $modelPerson->email = $post['UserRegister']['email'];
+                                $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
+                                $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
                                 if (($flag = $modelPerson->save())) {
 
@@ -232,7 +233,7 @@ class SiteController extends base\BaseController
             }
         }
 
-        if (!empty($get['socmed'])) {
+        if (($get = \Yii::$app->request->get()) && !empty($get['socmed'])) {
 
             $modelUserRegister->email = $get['email'];
             $modelPerson->first_name = $get['first_name'];
@@ -438,6 +439,17 @@ class SiteController extends base\BaseController
                 if ($model->login(\Yii::$app->params['appName']['frontend'])) {
 
                     return $this->goBack();
+                } else {
+
+                    \Yii::$app->session->setFlash('message', [
+                        'type' => 'danger',
+                        'delay' => 1000,
+                        'icon' => 'aicon aicon-icon-info',
+                        'message' => \Yii::t('app', 'You are not allowed to login'),
+                        'title' => 'Gagal Login',
+                    ]);
+
+                    return $this->redirect(['login']);
                 }
             } else {
 

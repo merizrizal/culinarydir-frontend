@@ -162,6 +162,9 @@ $jscript = '';
 if (!empty(($message = \Yii::$app->session->getFlash('resetSuccess')))) {
 
     $jscript = 'messageResponse("aicon aicon-icon-tick-in-circle", "Reset Berhasil", "' . $message . '", "success");';
+} else if (!empty(($message = \Yii::$app->session->getFlash('message')))) {
+
+    $jscript = 'messageResponse("aicon ' . $message['icon'] . '", "' . $message['title'] . '", "' . $message['message'] . '", "' . $message['type'] . '");';
 }
 
 $this->registerJs($jscript); ?>
