@@ -1096,7 +1096,7 @@ $jscript = '
         return false;
     });
 
-    $(".search-input").on("click", function() {
+    $(".filter-input").on("click", function() {
 
         var href;
 
