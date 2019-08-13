@@ -17,7 +17,6 @@ use frontend\models\ResetPassword;
 use frontend\models\UserRegister;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
-use function yii\i18n\Formatter\asDate as time;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -57,7 +56,7 @@ class SiteController extends base\BaseController
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'fixedVerifyCode' => YII_ENV_TEST ? 'asdasd' : null,
             ],
             'auth' => [
                 'class' => \yii\authclient\AuthAction::class,
@@ -271,6 +270,11 @@ class SiteController extends base\BaseController
         $post = \Yii::$app->request->post();
         $model = new LoginForm();
 
+        if (!empty(($loginError = \Yii::$app->session->getFlash('loginError')))) {
+
+            $model->addError('login_id', $loginError);
+        }
+
         if (!empty($post['loginButton']) && $model->load($post) && $model->login(\Yii::$app->params['appName']['frontend'])) {
 
             return $this->goBack();
@@ -441,25 +445,13 @@ class SiteController extends base\BaseController
                     return $this->goBack();
                 } else {
 
-                    \Yii::$app->session->setFlash('message', [
-                        'type' => 'danger',
-                        'delay' => 1000,
-                        'icon' => 'aicon aicon-icon-info',
-                        'message' => \Yii::t('app', 'You are not allowed to login'),
-                        'title' => 'Gagal Login',
-                    ]);
+                    \Yii::$app->session->setFlash('loginError', \Yii::t('app', 'You are not allowed to login'));
 
                     return $this->redirect(['login']);
                 }
             } else {
 
-                \Yii::$app->session->setFlash('message', [
-                    'type' => 'danger',
-                    'delay' => 1000,
-                    'icon' => 'aicon aicon-icon-info',
-                    'message' => 'Gagal Login',
-                    'title' => 'Gagal Login',
-                ]);
+                \Yii::$app->session->setFlash('loginError', \Yii::t('app', 'Login unsuccessful'));
 
                 return $this->redirect(['login']);
             }
