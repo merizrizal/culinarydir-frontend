@@ -78,17 +78,17 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite-modal" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id" class="favorite-class"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="special-id"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special-modal" aria-controls="special" role="tab" data-toggle="tab" id="special-id" class="special-class"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="order-id"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order-modal" aria-controls="order" role="tab" data-toggle="tab" id="order-id" class="order-class"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                	<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
+                	<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
                     	    'class' => 'search-favorite'
@@ -100,7 +100,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->all(),
+                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
                                                 'id',
                                                 function($data) {
 
@@ -123,7 +123,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
     									<?php
                                         echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control input-name',
+                                            'class' => 'form-control search-input-modal',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'favorit'
@@ -288,7 +288,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                     </div>
 
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
+                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-special'
@@ -323,7 +323,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                                         <?php
                                         echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control input-name',
+                                            'class' => 'form-control search-input-modal',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'promo'
@@ -406,7 +406,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                     </div>
 
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
+                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
                             'class' => 'search-order'
@@ -441,7 +441,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                                         <?php
                                         echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control input-name',
+                                            'class' => 'form-control search-input-modal',
                                             'placeholder' => 'Nama Tempat / Makanan / Alamat',
                                             'data-keyword' => $keyword,
                                             'data-type' => 'pesan-online'
@@ -1067,10 +1067,10 @@ $jscript = '
         return false;
     });
 
-    $(".input-name").parent().on("click", ".search-field-box-clear", function() {
+    $(".search-input-modal").parent().on("click", ".search-field-box-clear", function() {
 
-        $(".input-name, .search-input").val("");
-        $(".input-name").siblings(".search-field-box-clear").remove();
+        $(".search-input-modal, .search-input").val("");
+        $(".search-input-modal").siblings(".search-field-box-clear").remove();
 
         return false;
     });
@@ -1084,7 +1084,7 @@ $jscript = '
 
     $(".lbl-clear").on("click", function() {
 
-        $(".search-input, .input-name, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
+        $(".search-input, .search-input-modal, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
         $(".category-id").val(null).trigger("change");
         $(".facility").prop("checked", false).trigger("change");
 
@@ -1098,7 +1098,7 @@ $jscript = '
 
     $(".filter-input").on("click", function() {
 
-        var href;
+        var navTab;
 
         $(".search-input").attr("disabled", "disabled");
 
@@ -1106,7 +1106,7 @@ $jscript = '
 
             if ($(this).hasClass("active")) {
 
-                href = $(this).children().attr("href");
+                navTab = $(this).children().attr("class");
                 return false;
             }
         });
@@ -1114,18 +1114,21 @@ $jscript = '
         $(".search-box-modal").find(".nav-tabs").children("li").each(function() {
 
             var thisObj = $(this);
-            var navTab = thisObj.children("a").attr("href");
+            var navTabModal = thisObj.children("a").attr("class");
 
-            if (navTab != ("#" + href)) {
+            if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
+            } else {
+
+                thisObj.addClass("active");
             }
 
             thisObj.on("click", function() {
 
                 $(".search-box > .nav-tabs").children("li").each(function() {
 
-                    if ($(this).children().attr("href") != navTab) {
+                    if ($(this).children().attr("class") != navTabModal) {
 
                         $(this).removeClass("active");
                     } else {
@@ -1136,7 +1139,6 @@ $jscript = '
             });
         });
 
-        $(".search-box-modal").find(href + "-id").parent().addClass("active");
         $(".search-box-modal").fadeIn("medium");
     });
 
@@ -1169,20 +1171,41 @@ $jscript = '
         $(".search-box-modal").fadeOut("medium");
     });
 
-    $(".input-name").on("keyup", function() {
+    $(".search-input-modal").on("keyup", function() {
 
         if ($(this).val() != "") {
 
             if ($(this).siblings(".search-field-box-clear").length == 0) {
 
-                $(this).parent().append("<span class=\"search-field-box-clear\">×</span>");
+                $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
             $(".search-input").val($(this).val());
+            $(".search-input-modal").val($(this).val());
         } else {
 
-            $(".input-name, .search-input").val("");
-            $(".input-name").siblings(".search-field-box-clear").remove();
+            $(".search-input-modal, .search-input").val("");
+            $(".search-input-modal").siblings(".search-field-box-clear").remove();
+        }
+
+        return false;
+    });
+
+    $(".search-input").on("keyup", function() {
+
+        if ($(this).val() != "") {
+
+            if ($(".search-input-modal").siblings(".search-field-box-clear").length == 0) {
+
+                $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
+            }
+
+            $(".search-input-modal").val($(this).val());
+            $(".search-input").val($(this).val());
+        } else {
+
+            $(".search-input, .search-input-modal").val("");
+            $(".search-input").siblings(".search-field-box-clear").remove();
         }
 
         return false;
