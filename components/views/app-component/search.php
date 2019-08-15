@@ -8,10 +8,36 @@ use yii\helpers\Html;
 /* @var $type string */
 
 $keywordType = $keyword['searchType'];
-$btnFilter = Html::Button('<i class="fa fa-filter"></i> Filter', ['class' => 'btn btn-block btn-round btn-d btn-search filter-input']);
-$btnSearch = Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search']);
-$btnClear = Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'btn btn-block btn-default search-label lbl-clear']);
-$inputSearch = Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
+
+$widgetSearchInput ='
+    <div class="form-group">
+        <div class="input-group">
+        	<div class="input-group-addon">
+        		<i class="fa fa-search"></i>
+        	</div>
+        	' . Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']) . '
+    	</div>
+    	<div class="row mt-20">
+            <div class="btn-widget-search">
+            	<div class="col-sm-2 col-sm-offset-6 col-xs-offset-0 col-xs-4 p-5">
+                    <div class="form-group">
+                        ' . Html::Button('<i class="fa fa-filter"></i> Filter', ['class' => 'btn btn-block btn-round btn-d btn-search filter-input']) . '
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-4 p-5">
+                    <div class="form-group">
+                        ' . Html::submitButton('<i class="fa fa-search"></i> Search', ['class' => 'btn btn-block btn-round btn-d btn-search']) . '
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-4 p-5">
+                    <div class="form-group">
+                        ' . Html::a('<i class="fa fa-times"></i> Clear', '', ['class' => 'btn btn-block btn-default search-label lbl-clear']) . '
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>'
+;
 
 if (!empty($type) && $type == 'result-map-page'):
 
@@ -34,130 +60,58 @@ else: ?>
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
 
             	<?= Html::beginForm(['page/result-list', 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'bandung',
-                        'cty' => $keyword['city'],
-                        'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
-                        'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
-                        'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
-                        'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
-                        'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
-                        'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 
-                    'get', [
-                        'class' => 'search-favorite'
-                ]) ?>
+                    'cty' => $keyword['city'],
+                    'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
+                    'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
+                    'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
+                    'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
+                    'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
+                    'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
+        	    [
+                    'class' => 'search-favorite'
+                ]);
 
-                	<div class="form-group">
-                        <div class="input-group">
-                        	<div class="input-group-addon">
-                        		<i class="fa fa-search"></i>
-                        	</div>
-                        	<?= $inputSearch ?>
-                    	</div>
-                    	<div class="row mt-20">
-                        	<div class="col-sm-2 col-sm-offset-6 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnFilter ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnSearch ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-3">
-                                <div class="form-group">
-                                    <?= $btnClear ?>
-                                </div>
-                            </div>
-                        </div>
-                	</div>
+                echo $widgetSearchInput;
 
-        		<?= Html::endForm(); ?>
+        		echo Html::endForm(); ?>
 
     		</div>
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
 
             	<?= Html::beginForm(['page/result-list', 'searchType' => \Yii::t('app', 'promo'), 'city' => 'bandung',
-                        'cty' => $keyword['city'],
-                        'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
-                        'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
-                        'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
-                        'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
-                        'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
-                        'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 
-                    'get', [
-                        'class' => 'search-special'
-                ]) ?>
+                    'cty' => $keyword['city'],
+                    'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
+                    'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
+                    'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
+                    'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
+                    'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
+                    'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
+        	    [
+                    'class' => 'search-special'
+                ]);
 
-                	<div class="form-group">
-                        <div class="input-group">
-                        	<div class="input-group-addon">
-                        		<i class="fa fa-search"></i>
-                        	</div>
-                        	<?= $inputSearch ?>
-                    	</div>
-                    	<div class="row mt-20">
-                        	<div class="col-sm-2 col-sm-offset-6 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnFilter ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnSearch ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-3">
-                                <div class="form-group">
-                                    <?= $btnClear ?>
-                                </div>
-                            </div>
-                        </div>
-                	</div>
+            	echo $widgetSearchInput;
 
-        		<?= Html::endForm(); ?>
+            	echo Html::endForm(); ?>
 
     		</div>
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
 
     			<?= Html::beginForm(['page/result-list', 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'bandung',
-                        'cty' => $keyword['city'],
-                        'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
-                        'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
-                        'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
-                        'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
-                        'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
-                        'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 
-                    'get', [
-                        'class' => 'search-order'
-                ]) ?>
+                    'cty' => $keyword['city'],
+                    'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
+                    'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
+                    'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
+                    'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
+                    'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
+                    'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
+			    [
+                    'class' => 'search-order'
+                ]);
 
-        			<div class="form-group">
-                        <div class="input-group">
-                        	<div class="input-group-addon">
-                        		<i class="fa fa-search"></i>
-                        	</div>
-                        	<?= $inputSearch ?>
-                    	</div>
-                    	<div class="row mt-20">
-                        	<div class="col-sm-2 col-sm-offset-6 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnFilter ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-5">
-                                <div class="form-group">
-                                    <?= $btnSearch ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-3">
-                                <div class="form-group">
-                                    <?= $btnClear ?>
-                                </div>
-                            </div>
-                        </div>
-                	</div>
+        		echo $widgetSearchInput;
 
-            	<?= Html::endForm(); ?>
+            	echo Html::endForm(); ?>
 
     		</div>
     	</div>

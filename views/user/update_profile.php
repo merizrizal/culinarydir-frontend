@@ -110,7 +110,6 @@ $this->registerMetaTag([
                                                     'placeholder' => \Yii::t('app', 'First Name'),
                                                 ]) ?>
 
-
                                                 <?= $form->field($modelPerson, 'last_name')->textInput([
                                                     'class' => 'form-control',
                                                     'placeholder' => \Yii::t('app', 'Last Name'),

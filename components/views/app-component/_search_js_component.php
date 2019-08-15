@@ -128,6 +128,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                                             'data-keyword' => $keyword,
                                             'data-type' => 'favorit'
                                         ]);
+
                                         echo !empty($keywordName) ? $spanClear : null; ?>
 
                                     </div>
@@ -300,7 +301,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->all(),
+                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
                                                 'id',
                                                 function($data) {
 
@@ -418,7 +419,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
 
                                         <?= Html::dropDownList('cty', $keywordCity,
                                             ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->all(),
+                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
                                                 'id',
                                                 function($data) {
 
@@ -1100,7 +1101,6 @@ $jscript = '
 
         var navTab;
 
-        $(".search-input").attr("disabled", "disabled");
         $(".search-box > .nav-tabs").children("li").each(function() {
 
             if ($(this).hasClass("active")) {
@@ -1114,13 +1114,16 @@ $jscript = '
 
             var thisObj = $(this);
             var navTabModal = thisObj.children("a").attr("class");
+            var hrefTabModal = thisObj.children("a").attr("href");
 
             if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
+                $(".search-box-modal").find(hrefTabModal).removeClass("active");
             } else {
 
                 thisObj.addClass("active");
+                $(".search-box-modal").find(hrefTabModal).addClass("active");
             }
 
             thisObj.on("click", function() {
@@ -1130,9 +1133,11 @@ $jscript = '
                     if ($(this).children().attr("class") != navTabModal) {
 
                         $(this).removeClass("active");
+                        $(".search-box").find(hrefTabModal).removeClass("active");
                     } else {
 
                         $(this).addClass("active");
+                        $(".search-box-modal").find(hrefTabModal).addClass("active");
                     }
                 });
             });
@@ -1179,11 +1184,10 @@ $jscript = '
                 $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
-            $(".search-input").val($(this).val());
-            $(".search-input-modal").val($(this).val());
+            $(".search-input, .search-input-modal").val($(this).val());
         } else {
 
-            $(".search-input-modal, .search-input").val("");
+            $(".search-input, .search-input-modal").val("");
             $(".search-input-modal").siblings(".search-field-box-clear").remove();
         }
 
@@ -1199,8 +1203,7 @@ $jscript = '
                 $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
-            $(".search-input-modal").val($(this).val());
-            $(".search-input").val($(this).val());
+            $(".search-input, .search-input-modal").val($(this).val());
         } else {
 
             $(".search-input, .search-input-modal").val("");
