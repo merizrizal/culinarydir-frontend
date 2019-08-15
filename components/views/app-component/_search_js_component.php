@@ -1101,7 +1101,6 @@ $jscript = '
         var navTab;
 
         $(".search-input").attr("disabled", "disabled");
-
         $(".search-box > .nav-tabs").children("li").each(function() {
 
             if ($(this).hasClass("active")) {
