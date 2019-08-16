@@ -369,7 +369,7 @@ class DataController extends base\BaseController
 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
 
-                if($get['pmx'] == 0) {
+                if ($get['pmx'] == 0) {
 
                     $modelBusiness = $modelBusiness->andFilterWhere([
                         'OR',

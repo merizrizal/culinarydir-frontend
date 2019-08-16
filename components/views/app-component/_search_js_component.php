@@ -1130,7 +1130,7 @@ $jscript = '
 
                 $(".search-box > .nav-tabs").children("li").each(function() {
 
-                   var hrefSearchBox = $(this).children().attr("href");
+                    var hrefSearchBox = $(this).children().attr("href");
 
                     if ($(this).children().attr("class") != navTabModal) {
 
@@ -1173,7 +1173,6 @@ $jscript = '
 
     $(".btn-close").on("click", function() {
 
-        $(".search-input").removeAttr("disabled");
         $(".search-box-modal").fadeOut("medium");
     });
 
@@ -1209,7 +1208,6 @@ $jscript = '
         } else {
 
             $(".search-input, .search-input-modal").val("");
-            $(".search-input").siblings(".search-field-box-clear").remove();
         }
 
         return false;

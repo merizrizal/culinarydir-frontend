@@ -19,7 +19,7 @@ $widgetSearchInput ='
     	</div>
     	<div class="row mt-20">
             <div class="btn-widget-search">
-            	<div class="col-sm-2 col-sm-offset-6 col-xs-offset-0 col-xs-4 p-5">
+            	<div class="col-sm-2 col-sm-offset-6 col-xs-4 p-5">
                     <div class="form-group">
                         ' . Html::Button('<i class="fa fa-filter"></i> Filter', ['class' => 'btn btn-block btn-round btn-d btn-search filter-input']) . '
                     </div>
@@ -69,11 +69,11 @@ else: ?>
                     'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
         	    [
                     'class' => 'search-favorite'
-                ]);
+                ]); ?>
 
-                echo $widgetSearchInput;
+                	<?= $widgetSearchInput; ?>
 
-        		echo Html::endForm(); ?>
+        		<?= Html::endForm(); ?>
 
     		</div>
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special">
@@ -82,17 +82,15 @@ else: ?>
                     'cty' => $keyword['city'],
                     'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
                     'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
-                    'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
-                    'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
                     'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
                     'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
         	    [
                     'class' => 'search-special'
-                ]);
+                ]); ?>
 
-            	echo $widgetSearchInput;
+            		<?= $widgetSearchInput; ?>
 
-            	echo Html::endForm(); ?>
+            	<?= Html::endForm(); ?>
 
     		</div>
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order">
@@ -100,18 +98,17 @@ else: ?>
     			<?= Html::beginForm(['page/result-list', 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'bandung',
                     'cty' => $keyword['city'],
                     'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
-                    'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
                     'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
                     'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
                     'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
                     'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
 			    [
                     'class' => 'search-order'
-                ]);
+                ]); ?>
 
-        		echo $widgetSearchInput;
+        			<?= $widgetSearchInput; ?>
 
-            	echo Html::endForm(); ?>
+            	<?= Html::endForm(); ?>
 
     		</div>
     	</div>
