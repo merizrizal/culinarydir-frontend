@@ -1130,14 +1130,16 @@ $jscript = '
 
                 $(".search-box > .nav-tabs").children("li").each(function() {
 
+                   var hrefSearchBox = $(this).children().attr("href");
+
                     if ($(this).children().attr("class") != navTabModal) {
 
                         $(this).removeClass("active");
-                        $(".search-box").find(hrefTabModal).removeClass("active");
+                        $(".search-box").find(hrefSearchBox).removeClass("active");
                     } else {
 
                         $(this).addClass("active");
-                        $(".search-box-modal").find(hrefTabModal).addClass("active");
+                        $(".search-box").find(hrefSearchBox).addClass("active");
                     }
                 });
             });
