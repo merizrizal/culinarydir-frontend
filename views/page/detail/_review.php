@@ -490,6 +490,9 @@ $urlMyReviewDetail = [
                                     </div>
                                 </div>
                             </div>
+
+                            <small id="error-rating" class="form-text text-muted text-danger hidden"><?= \Yii::t('app', 'Please fill in the rating first') ?></small>
+
                         </div>
 
                         <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 col-xs-12">
@@ -500,6 +503,8 @@ $urlMyReviewDetail = [
                                     'placeholder' => \Yii::t('app', 'What do you like about this place? Criticism and suggestions for improvement?'),
                                     'rows' => 6,
                                 ]); ?>
+
+                                <small id="error-review" class="form-text text-muted text-danger hidden"><?= \Yii::t('app', 'Please fill in the review column first') ?></small>
 
                             </div>
 
@@ -1075,7 +1080,21 @@ $jscript = '
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
 
-                    messageResponse(response.icon, response.title, response.message, response.type);
+                    var postReview = $("#post-review-text").val();
+                    var postRating = $(".rating-overall").children().html();
+
+                    if (postReview == "") {
+
+                        $("#error-review").removeClass("hidden");
+                    } else {
+
+                        $("#error-review").addClass("hidden");
+                    }
+
+                    if (postRating == 0) {
+
+                        $("#error-rating").removeClass("hidden");
+                    }
                 }
 
                 $("#title-write-review").siblings(".overlay").hide();
