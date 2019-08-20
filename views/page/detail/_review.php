@@ -504,8 +504,6 @@ $urlMyReviewDetail = [
                                     'rows' => 6,
                                 ]); ?>
 
-                                <small id="error-review" class="form-text text-muted text-danger hidden"><?= \Yii::t('app', 'Please fill in the review column first') ?></small>
-
                             </div>
 
                             <div class="form-group">
@@ -558,7 +556,8 @@ $urlMyReviewDetail = [
                                         'layoutTemplates' => [
                                             'footer' => '',
                                         ],
-                                        'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos')
+                                        'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos'),
+                                        'maxFileCount' => 10,
                                     ]
                                 ]); ?>
 
@@ -741,6 +740,8 @@ $jscript = '
                 $("#write-review-trigger").fadeOut();
                 $("#edit-review-container").fadeIn();
             }
+
+            $("#error-rating").addClass("hidden");
 
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         });
@@ -1077,21 +1078,12 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
+                    $("#error-rating").addClass("hidden");
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
 
-                    var postReview = $("#post-review-text").val();
-                    var postRating = $(".rating-overall").children().html();
-
-                    if (postReview == "") {
-
-                        $("#error-review").removeClass("hidden");
-                    } else {
-
-                        $("#error-review").addClass("hidden");
-                    }
-
-                    if (postRating == 0) {
+                    if (response.errorVote) {
 
                         $("#error-rating").removeClass("hidden");
                     }

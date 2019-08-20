@@ -59,17 +59,24 @@ else: ?>
 		<div class="tab-content">
     		<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite">
 
-            	<?= Html::beginForm(['page/result-list', 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'bandung',
-                    'cty' => $keyword['city'],
-                    'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
-                    'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
-                    'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
-                    'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
-                    'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
-                    'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''], 'get',
-        	    [
-                    'class' => 'search-favorite'
-                ]); ?>
+            	<?= Html::beginForm(
+            	    [
+                	    'page/result-list',
+            	        'searchType' => \Yii::t('app', 'favorite'),
+            	        'city' => 'bandung',
+                        'cty' => $keyword['city'],
+                        'pct' => !empty($keyword['product']['id']) ? $keyword['product']['id'] : '',
+                        'ctg' => !empty($keyword['category']) ? $keyword['category'] : '',
+                        'pmn' => !empty($keyword['price']['min']) ? $keyword['price']['min'] : '',
+                        'pmx' => !empty($keyword['price']['max']) ? $keyword['price']['max'] : '',
+                        'cmp' => !empty($keyword['map']['coordinate']) ? $keyword['map']['coordinate'] : '',
+                        'rmp' => !empty($keyword['map']['radius']) ? $keyword['map']['radius'] : ''
+            	    ],
+            	       'get',
+            	    [
+                        'class' => 'search-favorite'
+                    ]
+        	    ); ?>
 
                 	<?= $widgetSearchInput; ?>
 

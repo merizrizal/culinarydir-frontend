@@ -96,6 +96,10 @@ class UserController extends base\BaseHistoryUrlController
             $transaction = \Yii::$app->db->beginTransaction();
             $flag = false;
 
+            $modelPerson->email = $post['User']['email'];
+            $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
+            $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
+
             if (($flag = $modelPerson->save())) {
 
                 if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {

@@ -472,6 +472,7 @@ class ActionController extends base\BaseController
     {
         $transaction = \Yii::$app->db->beginTransaction();
         $flag = false;
+        $result = [];
 
         $modelUserPostMain = new UserPostMain();
 
@@ -558,6 +559,7 @@ class ActionController extends base\BaseController
 
                 if (!($flag = $modelUserVote->save())) {
 
+                    $result['errorVote'] = $modelUserVote->getErrors();
                     break;
                 }
             }
@@ -609,8 +611,6 @@ class ActionController extends base\BaseController
             }
         }
 
-        $result = [];
-
         if ($flag) {
 
             $transaction->commit();
@@ -652,6 +652,7 @@ class ActionController extends base\BaseController
     {
         $transaction = \Yii::$app->db->beginTransaction();
         $flag = false;
+        $result = [];
 
         $isUpdate = $modelUserPostMain->is_publish;
 
@@ -665,18 +666,15 @@ class ActionController extends base\BaseController
 
             $modelUserPost = new UserPost();
 
-            if (!empty($post['Post']['review']['text'])) {
+            $modelUserPost->business_id = $modelUserPostMain->business_id;
+            $modelUserPost->type = $modelUserPostMain->type;
+            $modelUserPost->user_id = $modelUserPostMain->user_id;
+            $modelUserPost->text = $modelUserPostMain->text;
+            $modelUserPost->is_publish = $modelUserPostMain->is_publish;
+            $modelUserPost->love_value = $modelUserPostMain->love_value;
+            $modelUserPost->user_post_main_id = $modelUserPostMain->id;
 
-                $modelUserPost->business_id = $modelUserPostMain->business_id;
-                $modelUserPost->type = $modelUserPostMain->type;
-                $modelUserPost->user_id = $modelUserPostMain->user_id;
-                $modelUserPost->text = $modelUserPostMain->text;
-                $modelUserPost->is_publish = $modelUserPostMain->is_publish;
-                $modelUserPost->love_value = $modelUserPostMain->love_value;
-                $modelUserPost->user_post_main_id = $modelUserPostMain->id;
-
-                $flag = $modelUserPost->save();
-            }
+            $flag = $modelUserPost->save();
         }
 
         if ($flag) {
@@ -716,7 +714,7 @@ class ActionController extends base\BaseController
 
                     if (!($flag = $modelUserPostPhoto->save())) {
 
-                        break;
+                       break;
                     }
                 } else {
 
@@ -768,6 +766,7 @@ class ActionController extends base\BaseController
 
                 if (!($flag = $modelUserVote->save())) {
 
+                    $result['errorVote'] = $modelUserVote->getErrors();
                     break;
                 }
             }
@@ -815,8 +814,6 @@ class ActionController extends base\BaseController
             }
         }
 
-        $result = [];
-
         if ($flag) {
 
             $transaction->commit();
@@ -843,8 +840,6 @@ class ActionController extends base\BaseController
         } else {
 
             $transaction->rollBack();
-
-            print_r($modelUserVote->getErrors());exit;
 
             $result['success'] = false;
             $result['icon'] = 'aicon aicon-icon-info';
