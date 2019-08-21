@@ -634,15 +634,6 @@ class ActionController extends base\BaseController
             $transaction->rollBack();
 
             $result['success'] = false;
-            $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Review Gagal';
-            $result['message'] = '
-                <ol>
-                    <li>Mohon isi Rating dan Review.</li>
-                    <li>Jumlah foto maksimum 10.</li>
-                </ol>
-            ';
-            $result['type'] = 'danger';
         }
 
         return $result;
@@ -842,15 +833,6 @@ class ActionController extends base\BaseController
             $transaction->rollBack();
 
             $result['success'] = false;
-            $result['icon'] = 'aicon aicon-icon-info';
-            $result['title'] = 'Review Gagal.';
-            $result['message'] = '
-                <ol>
-                    <li>Mohon isi Rating dan Review.</li>
-                    <li>Jumlah foto maksimum 10.</li>
-                </ol>
-            ';
-            $result['type'] = 'danger';
         }
 
         return $result;

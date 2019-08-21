@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 /* @var $isOrderOnline boolean */
+/* @var $businessPhone string */
 
 common\assets\OwlCarouselAsset::register($this);
 
@@ -473,7 +474,7 @@ $noImg = \Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=7
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
                                             ]);
 
-                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
+                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', $businessPhone, [
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
                                             ]); ?>
 
@@ -819,6 +820,15 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
+        'id' => 'modal-not-found',
+        'size' => Modal::SIZE_SMALL,
+    ]);
+
+    echo 'Nomor telepon tidak tersedia';
+
+    Modal::end();
+
+    Modal::begin([
         'header' => '<i class="aicon aicon-warning"></i> ' . \Yii::t('app', 'Report'),
         'id' => 'modal-report',
     ]);
@@ -1002,9 +1012,10 @@ $jscript = '
 
     $(".message-feature").on("click", function() {
 
-        $("#modal-coming-soon").modal("show");
+        if ($(this).attr("href") == null) {
 
-        return false;
+            $("#modal-not-found").modal("show");
+        }
     });
 
     $(".share-feature").on("click", function() {

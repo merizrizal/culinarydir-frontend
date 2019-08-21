@@ -302,6 +302,8 @@ class PageController extends base\BaseHistoryUrlController
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
 
+        $businessPhone = (!empty($modelBusiness['phone3'])) ? 'https://api.whatsapp.com/send?phone=62' . substr(str_replace('-', '', $modelBusiness['phone3']), 1) : null;
+
         \Yii::$app->formatter->timeZone = 'UTC';
 
         return $this->render('detail', [
@@ -315,7 +317,8 @@ class PageController extends base\BaseHistoryUrlController
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => \Yii::$app->request->getQueryParams(),
-            'isOrderOnline' => $isOrderOnline
+            'isOrderOnline' => $isOrderOnline,
+            'businessPhone' => $businessPhone
         ]);
     }
 

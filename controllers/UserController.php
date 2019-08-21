@@ -91,51 +91,54 @@ class UserController extends base\BaseHistoryUrlController
             return ActiveForm::validate($modelUser);
         }
 
-        if (!empty(($post = \Yii::$app->request->post())) && $modelPerson->load($post) && $modelUser->load($post)) {
+        if (!empty(($post = \Yii::$app->request->post()))) {
 
-            $transaction = \Yii::$app->db->beginTransaction();
-            $flag = false;
+            if ($modelPerson->load($post) && $modelUser->load($post)) {
 
-            $modelPerson->email = $post['User']['email'];
-            $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
-            $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
+                $transaction = \Yii::$app->db->beginTransaction();
+                $flag = false;
 
-            if (($flag = $modelPerson->save())) {
+                $modelPerson->email = $post['User']['email'];
+                $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
+                $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
-                if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
+                if (($flag = $modelPerson->save())) {
 
-                    $modelUser->image = $modelUser->oldAttributes['image'];
+                    if (!($modelUser->image = Tools::uploadFile('/img/user/', $modelUser, 'image', 'username', $modelUser->username))) {
+
+                        $modelUser->image = $modelUser->oldAttributes['image'];
+                    }
+
+                    $modelUser->full_name = $modelPerson->first_name . ' ' . $modelPerson->last_name;
+
+                    $flag = $modelUser->save();
                 }
 
-                $modelUser->full_name = $modelPerson->first_name . ' ' . $modelPerson->last_name;
+                if ($flag) {
 
-                $flag = $modelUser->save();
-            }
+                    $transaction->commit();
 
-            if ($flag) {
+                    \Yii::$app->session->setFlash('message', [
+                        'type' => 'success',
+                        'delay' => 1000,
+                        'icon' => 'aicon aicon-icon-tick-in-circle',
+                        'message' => 'Anda berhasil mengubah profile Anda di Asikmakan',
+                        'title' => 'Berhasil Update Profile',
+                    ]);
 
-                $transaction->commit();
+                    return $this->redirect(['user/update-profile']);
+                } else {
 
-                \Yii::$app->session->setFlash('message', [
-                    'type' => 'success',
-                    'delay' => 1000,
-                    'icon' => 'aicon aicon-icon-tick-in-circle',
-                    'message' => 'Anda berhasil mengubah profile Anda di Asikmakan',
-                    'title' => 'Berhasil Update Profile',
-                ]);
+                    $transaction->rollBack();
 
-                return $this->redirect(['user/update-profile']);
-            } else {
-
-                $transaction->rollBack();
-
-                \Yii::$app->session->setFlash('message', [
-                    'type' => 'danger',
-                    'delay' => 1000,
-                    'icon' => 'aicon aicon-icon-info',
-                    'message' => 'Gagal mengubah profile Anda di Asikmakan',
-                    'title' => 'Gagal Update Profile',
-                ]);
+                    \Yii::$app->session->setFlash('message', [
+                        'type' => 'danger',
+                        'delay' => 1000,
+                        'icon' => 'aicon aicon-icon-info',
+                        'message' => 'Gagal mengubah profile Anda di Asikmakan',
+                        'title' => 'Gagal Update Profile',
+                    ]);
+                }
             }
         }
 
