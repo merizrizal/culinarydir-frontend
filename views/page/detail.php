@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 /* @var $isOrderOnline boolean */
-/* @var $businessPhone string */
+/* @var $businessWhatsApp string */
 
 common\assets\OwlCarouselAsset::register($this);
 
@@ -474,7 +474,7 @@ $noImg = \Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=7
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
                                             ]);
 
-                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', $businessPhone, [
+                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', $businessWhatsApp, [
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
                                             ]); ?>
 
@@ -820,11 +820,11 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
-        'id' => 'modal-not-found',
+        'id' => 'modal-not-available',
         'size' => Modal::SIZE_SMALL,
     ]);
 
-    echo 'Nomor telepon tidak tersedia';
+        echo \Yii::t('app', 'Phone number not available');
 
     Modal::end();
 
@@ -1014,7 +1014,7 @@ $jscript = '
 
         if ($(this).attr("href") == null) {
 
-            $("#modal-not-found").modal("show");
+            $("#modal-not-available").modal("show");
         }
     });
 

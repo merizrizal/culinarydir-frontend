@@ -78,20 +78,20 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite-modal" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-id" class="favorite-class"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite-modal" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-modal-id" class="favorite-class"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special-modal" aria-controls="special" role="tab" data-toggle="tab" id="special-id" class="special-class"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special-modal" aria-controls="special" role="tab" data-toggle="tab" id="special-modal-id" class="special-class"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order-modal" aria-controls="order" role="tab" data-toggle="tab" id="order-id" class="order-class"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order-modal" aria-controls="order" role="tab" data-toggle="tab" id="order-modal-id" class="order-class"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
                 <div class="tab-content">
                 	<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
-                    	    'class' => 'search-favorite'
+                    	    'class' => 'search-favorite-modal'
                     	]) ?>
 
                         	<div class="row">
@@ -292,7 +292,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                     <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
-                            'class' => 'search-special'
+                            'class' => 'search-special-modal'
                         ]) ?>
 
                         	<div class="row">
@@ -410,7 +410,7 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                     <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order-modal">
 
                     	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
-                            'class' => 'search-order'
+                            'class' => 'search-order-modal'
                         ]) ?>
 
                         	<div class="row">
@@ -1076,7 +1076,7 @@ $jscript = '
         return false;
     });
 
-    $(".search-favorite, .search-special, .search-order").on("submit", function() {
+    $(".search-favorite-modal, .search-special-modal, .search-order-modal").on("submit", function() {
 
         var action = $(this).attr("action").replace("city_name", $(this).find(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
 
@@ -1146,6 +1146,27 @@ $jscript = '
         });
 
         $(".search-box-modal").fadeIn("medium");
+    });
+
+    $(".search-box").find(".nav-tabs").children("li").on("click", function() {
+
+        var thisObj = $(this);
+        $(".search-box > .nav-tabs").children("li").each(function() {
+
+            var homeNavTab;
+            var homeFormId;
+
+            homeFormId = thisObj.parent().siblings().attr("class");
+            console.log(homeFormId);
+
+            if ($(this).hasClass("active")) {
+
+                homeNavTab = thisObj.children().attr("class");
+
+            }
+
+
+        });
     });
 
     if ($(".btn-search-map-toggle").length) {
