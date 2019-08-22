@@ -557,9 +557,10 @@ $urlMyReviewDetail = [
                                             'footer' => '',
                                         ],
                                         'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos'),
-                                        'maxFileCount' => 10,
                                     ]
                                 ]); ?>
+
+                                <small id="error-photo" class="form-text text-muted text-danger hidden"></small>
 
                             </div>
                             <div class="form-group">
@@ -742,6 +743,7 @@ $jscript = '
             }
 
             $("#error-rating").addClass("hidden");
+            $("#error-photo").addClass("hidden");
 
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         });
@@ -1079,13 +1081,29 @@ $jscript = '
                     });
 
                     $("#error-rating").addClass("hidden");
+                    $("#error-photo").addClass("hidden");
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
 
+                    messageResponse(response.icon, response.title, response.message, response.type);
+
                     if (response.errorVote) {
 
                         $("#error-rating").removeClass("hidden");
+                    } else {
+
+                        $("#error-rating").addClass("hidden");
+                    }
+
+                    if (response.errorPhoto) {
+
+                        $("#error-photo").removeClass("hidden");
+                        $("#error-photo").text(response.errorPhoto);
+                    } else {
+
+                        $("#error-photo").addClass("hidden");
+                        $("#error-photo").empty();
                     }
                 }
 

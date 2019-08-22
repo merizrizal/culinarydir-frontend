@@ -16,6 +16,7 @@ use core\models\UserVote;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use frontend\models\Post;
 
 /**
  * Action Controller
@@ -475,6 +476,7 @@ class ActionController extends base\BaseController
         $result = [];
 
         $modelUserPostMain = new UserPostMain();
+        $modelPost = new Post();
 
         $modelUserPostMain->unique_id = $post['business_id'] . '-' . \Yii::$app->user->getIdentity()->id;
         $modelUserPostMain->business_id = $post['business_id'];
@@ -484,9 +486,7 @@ class ActionController extends base\BaseController
         $modelUserPostMain->is_publish = true;
         $modelUserPostMain->love_value = 0;
 
-        $flag = $modelUserPostMain->save();
-
-        if ($flag) {
+        if (($flag = $modelUserPostMain->save())) {
 
             $modelUserPost = new UserPost();
 
@@ -497,53 +497,69 @@ class ActionController extends base\BaseController
             $modelUserPost->is_publish = $modelUserPostMain->is_publish;
             $modelUserPost->love_value = $modelUserPostMain->love_value;
             $modelUserPost->user_post_main_id = $modelUserPostMain->id;
-
-            $flag = $modelUserPost->save();
         }
 
-        if ($flag) {
+        if (($flag = $modelUserPost->save())) {
+
+            $maxFiles = 0;
+
+            foreach ($modelPost->getValidators() as $postValidator) {
+
+                if (!empty($postValidator->maxFiles)) {
+
+                    $maxFiles = $postValidator->maxFiles;
+                }
+            }
 
             $images = Tools::uploadFilesWithoutModel('/img/user_post/', 'Post[photo][image]', $modelUserPostMain->id, '', true);
 
             $dataUserPostMainPhoto = [];
 
-            foreach ($images as $photoIndex => $image) {
+            if (count($images) <= $maxFiles) {
 
-                $modelUserPostMainPhoto = new UserPostMain();
+                foreach ($images as $photoIndex => $image) {
 
-                $modelUserPostMainPhoto->parent_id = $modelUserPostMain->id;
-                $modelUserPostMainPhoto->unique_id = \Yii::$app->security->generateRandomString() . $photoIndex;
-                $modelUserPostMainPhoto->business_id = $post['business_id'];
-                $modelUserPostMainPhoto->user_id = \Yii::$app->user->getIdentity()->id;
-                $modelUserPostMainPhoto->type = 'Photo';
-                $modelUserPostMainPhoto->image = $image;
-                $modelUserPostMainPhoto->is_publish = true;
-                $modelUserPostMainPhoto->love_value = 0;
+                    $modelUserPostMainPhoto = new UserPostMain();
 
-                if (($flag = $modelUserPostMainPhoto->save())) {
+                    $modelUserPostMainPhoto->parent_id = $modelUserPostMain->id;
+                    $modelUserPostMainPhoto->unique_id = \Yii::$app->security->generateRandomString() . $photoIndex;
+                    $modelUserPostMainPhoto->business_id = $post['business_id'];
+                    $modelUserPostMainPhoto->user_id = \Yii::$app->user->getIdentity()->id;
+                    $modelUserPostMainPhoto->type = 'Photo';
+                    $modelUserPostMainPhoto->image = $image;
+                    $modelUserPostMainPhoto->is_publish = true;
+                    $modelUserPostMainPhoto->love_value = 0;
 
-                    $modelUserPostMainPhoto->image = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
+                    if (($flag = $modelUserPostMainPhoto->save())) {
 
-                    array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
+                        $modelUserPostMainPhoto->image = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
 
-                    $modelUserPostPhoto = new UserPost();
+                        array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
 
-                    $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                    $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
-                    $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
-                    $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
-                    $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
-                    $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
-                    $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
+                        $modelUserPostPhoto = new UserPost();
 
-                    if (!($flag = $modelUserPostPhoto->save())) {
+                        $modelUserPostPhoto->parent_id = $modelUserPost->id;
+                        $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
+                        $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
+                        $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
+                        $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
+                        $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
+                        $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
+
+                        if (!($flag = $modelUserPostPhoto->save())) {
+
+                            break;
+                        }
+                    } else {
 
                         break;
                     }
-                } else {
-
-                    break;
                 }
+            } else {
+
+                $flag = false;
+
+                $result['errorPhoto'] = \Yii::t('app', 'You can upload up to {limit} photos', ['limit' => $maxFiles]);
             }
         }
 
@@ -580,11 +596,9 @@ class ActionController extends base\BaseController
             $modelBusinessDetail->voters += 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
-
-            $flag = $modelBusinessDetail->save();
         }
 
-        if ($flag) {
+        if (($flag = $modelBusinessDetail->save())) {
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
@@ -634,6 +648,10 @@ class ActionController extends base\BaseController
             $transaction->rollBack();
 
             $result['success'] = false;
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Review Gagal.';
+            $result['message'] = 'Review anda gagal disimpan.';
+            $result['type'] = 'danger';
         }
 
         return $result;
@@ -647,13 +665,13 @@ class ActionController extends base\BaseController
 
         $isUpdate = $modelUserPostMain->is_publish;
 
+        $modelPost = new Post();
+
         $modelUserPostMain->text = preg_replace("/\r\n/", " ", $post['Post']['review']['text']);
         $modelUserPostMain->is_publish = true;
         $modelUserPostMain->created_at = \Yii::$app->formatter->asDatetime(time());
 
-        $flag = $modelUserPostMain->save();
-
-        if ($flag) {
+        if (($flag = $modelUserPostMain->save())) {
 
             $modelUserPost = new UserPost();
 
@@ -664,53 +682,69 @@ class ActionController extends base\BaseController
             $modelUserPost->is_publish = $modelUserPostMain->is_publish;
             $modelUserPost->love_value = $modelUserPostMain->love_value;
             $modelUserPost->user_post_main_id = $modelUserPostMain->id;
-
-            $flag = $modelUserPost->save();
         }
 
-        if ($flag) {
+        if (($flag = $modelUserPost->save())) {
+
+            $maxFiles = 0;
+
+            foreach ($modelPost->getValidators() as $postValidator) {
+
+                if (!empty($postValidator->maxFiles)) {
+
+                    $maxFiles = $postValidator->maxFiles;
+                }
+            }
 
             $images = Tools::uploadFilesWithoutModel('/img/user_post/', 'Post[photo][image]', $modelUserPostMain->id, '', true);
 
             $dataUserPostMainPhoto = [];
 
-            foreach ($images as $photoIndex => $image) {
+            if (count($images) <= $maxFiles) {
 
-                $modelUserPostMainPhoto = new UserPostMain();
+                foreach ($images as $photoIndex => $image) {
 
-                $modelUserPostMainPhoto->parent_id = $modelUserPostMain->id;
-                $modelUserPostMainPhoto->unique_id = \Yii::$app->security->generateRandomString() . $photoIndex;
-                $modelUserPostMainPhoto->business_id = $post['business_id'];
-                $modelUserPostMainPhoto->user_id = \Yii::$app->user->getIdentity()->id;
-                $modelUserPostMainPhoto->type = 'Photo';
-                $modelUserPostMainPhoto->image = $image;
-                $modelUserPostMainPhoto->is_publish = true;
-                $modelUserPostMainPhoto->love_value = 0;
+                    $modelUserPostMainPhoto = new UserPostMain();
 
-                if (($flag = $modelUserPostMainPhoto->save())) {
+                    $modelUserPostMainPhoto->parent_id = $modelUserPostMain->id;
+                    $modelUserPostMainPhoto->unique_id = \Yii::$app->security->generateRandomString() . $photoIndex;
+                    $modelUserPostMainPhoto->business_id = $post['business_id'];
+                    $modelUserPostMainPhoto->user_id = \Yii::$app->user->getIdentity()->id;
+                    $modelUserPostMainPhoto->type = 'Photo';
+                    $modelUserPostMainPhoto->image = $image;
+                    $modelUserPostMainPhoto->is_publish = true;
+                    $modelUserPostMainPhoto->love_value = 0;
 
-                    $modelUserPostMainPhoto->image = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
+                    if (($flag = $modelUserPostMainPhoto->save())) {
 
-                    array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
+                        $modelUserPostMainPhoto->image = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $modelUserPostMainPhoto->image . '&w=72&h=72';
 
-                    $modelUserPostPhoto = new UserPost();
+                        array_push($dataUserPostMainPhoto, $modelUserPostMainPhoto->toArray());
 
-                    $modelUserPostPhoto->parent_id = $modelUserPost->id;
-                    $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
-                    $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
-                    $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
-                    $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
-                    $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
-                    $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
+                        $modelUserPostPhoto = new UserPost();
 
-                    if (!($flag = $modelUserPostPhoto->save())) {
+                        $modelUserPostPhoto->parent_id = $modelUserPost->id;
+                        $modelUserPostPhoto->business_id = $modelUserPostMainPhoto->business_id;
+                        $modelUserPostPhoto->type = $modelUserPostMainPhoto->type;
+                        $modelUserPostPhoto->user_id = $modelUserPostMainPhoto->user_id;
+                        $modelUserPostPhoto->image = $modelUserPostMainPhoto->image;
+                        $modelUserPostPhoto->is_publish = $modelUserPostMainPhoto->is_publish;
+                        $modelUserPostPhoto->love_value = $modelUserPostMainPhoto->love_value;
 
-                       break;
+                        if (!($flag = $modelUserPostPhoto->save())) {
+
+                            break;
+                        }
+                    } else {
+
+                        break;
                     }
-                } else {
-
-                    break;
                 }
+            } else {
+
+                $flag = false;
+
+                $result['errorPhoto'] = \Yii::t('app', 'You can upload up to {limit} photos', ['limit' => $maxFiles]);
             }
 
             if ($flag && !empty($post['ImageReviewDelete'])) {
@@ -780,11 +814,9 @@ class ActionController extends base\BaseController
             $modelBusinessDetail->voters = (!$isUpdate) ? $modelBusinessDetail->voters + 1 : $modelBusinessDetail->voters;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
-
-            $flag = $modelBusinessDetail->save();
         }
 
-        if ($flag) {
+        if (($flag = $modelBusinessDetail->save())) {
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
@@ -812,7 +844,7 @@ class ActionController extends base\BaseController
             $result['success'] = true;
             $result['icon'] = 'aicon aicon-icon-tick-in-circle';
             $result['title'] = 'Review Tersimpan.';
-            $result['message'] = 'Review baru anda berhasil disimpan.';
+            $result['message'] = 'Review anda berhasil disimpan.';
             $result['type'] = 'success';
             $result['updated'] = $isUpdate;
             $result['user'] = \Yii::$app->user->getIdentity()->full_name;
@@ -833,6 +865,10 @@ class ActionController extends base\BaseController
             $transaction->rollBack();
 
             $result['success'] = false;
+            $result['icon'] = 'aicon aicon-icon-info';
+            $result['title'] = 'Review Gagal.';
+            $result['message'] = 'Review anda gagal disimpan.';
+            $result['type'] = 'danger';
         }
 
         return $result;
