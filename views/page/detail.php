@@ -820,6 +820,7 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
+        'header' => \Yii::t('app', 'Information'),
         'id' => 'modal-not-available',
         'size' => Modal::SIZE_SMALL,
     ]);

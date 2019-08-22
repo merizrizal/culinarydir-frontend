@@ -78,444 +78,217 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite-modal" aria-controls="favorite" role="tab" data-toggle="tab" id="favorite-modal-id" class="favorite-class"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorit" class="favorite"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special-modal" aria-controls="special" role="tab" data-toggle="tab" id="special-modal-id" class="special-class"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="promo" class="special"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order-modal" aria-controls="order" role="tab" data-toggle="tab" id="order-modal-id" class="order-class"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="pesan-online" class="order"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
-                <div class="tab-content">
-                	<div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'favorite') ? 'in active' : '' ?>" id="favorite-modal">
 
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'favorite'), 'city' => 'city_name'], 'get', [
-                    	    'class' => 'search-favorite-modal'
-                    	]) ?>
+            	<?= Html::beginForm(['page/result-' . $pageType], 'get', [
+            	    'class' => 'search-favorite'
+            	]) ?>
 
-                        	<div class="row">
-                            	<div class="col-sm-9 col-tab-10 col-xs-11">
-                            		<div class="form-group">
+            		<?php
+            		echo Html::hiddenInput('searchType', \Yii::t('app', 'favorit'), ['class' => 'search-type']);
+            		echo Html::hiddenInput('city', strtolower($keyword['cityName'])); ?>
 
-                                        <?= Html::dropDownList('cty', $keywordCity,
-                                            ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
-                                                'id',
-                                                function($data) {
+                	<div class="row">
+                    	<div class="col-sm-9 col-tab-10 col-xs-11">
+                    		<div class="form-group">
 
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'class' => 'form-control city-id',
-                                                'style' => 'width: 100%',
-                                            ]) ?>
+                                <?= Html::dropDownList('cty', $keywordCity,
+                                    ArrayHelper::map(
+                                        City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
+                                        'id',
+                                        function($data) {
 
-                                    </div>
-                                </div>
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control city-id',
+                                        'style' => 'width: 100%',
+                                    ]) ?>
+
                             </div>
-
-                			<div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-    									<?php
-                                        echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control search-input-modal',
-                                            'placeholder' => 'Nama Tempat / Makanan / Alamat',
-                                            'data-keyword' => $keyword,
-                                            'data-type' => 'favorit'
-                                        ]);
-
-                                        echo !empty($keywordName) ? $spanClear : null; ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                    	<?php
-                                    	echo !empty($keywordProductId) ? $spanClear : null;
-                                    	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
-                                    	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-    						<div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?= Html::dropDownList('ctg', $keywordCategory,
-                                            ArrayHelper::map(
-                                                Category::find()->orderBy('name')->asArray()->all(),
-                                                'id',
-                                                function($data) {
-
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'class' => 'form-control category-id',
-                                                'style' => 'width: 100%'
-                                            ]) ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
-                                        echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
-                                        echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
-                                        echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
-                                        echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
-                                        echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
-                                        echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <?php
-                            if ($showFacilityFilter):
-
-                                $modelFacility = Facility::find()
-                                    ->orderBy('name')
-                                    ->asArray()->all();
-
-                                $colDivider = ceil(count($modelFacility) / 3);
-
-                                $column = '<div class="col-sm-4 col-tab-6 col-xs-6 col">'; ?>
-
-                                <a class="search-label more-option" data-toggle="collapse" href=".facility-collapse">More Options
-                                    <span class="fa fa-chevron-circle-down"></span>
-                                </a>
-                                <div class="facility-collapse collapse <?= !empty($keywordFacility) ? 'in' : '' ?>">
-                                	<div class="form-group">
-                                    	<div class="row mt-10">
-
-                                            <?= Html::checkboxList('fct', $keywordFacility,
-                                                ArrayHelper::map(
-                                                    $modelFacility,
-                                                    'id',
-                                                    function($data) {
-
-                                                        return $data['name'];
-                                                    }
-                                                ),
-                                                [
-                                                    'item' => function ($index, $label, $name, $checked, $value) use ($colDivider, $column, $modelFacility) {
-
-                                                        $checkboxes = '
-                                                            <div class="row">
-                                                                <div class="col-xs-12 col">
-                                                                    <label>' .
-                                                                        Html::checkbox($name, $checked, [
-                                                                            'value' => $value,
-                                                                            'class' => 'facility icheck',
-                                                                        ]) . ' ' . $label .
-                                                                    '</label>
-                                                                </div>
-                                                            </div>
-                                                        ';
-
-                                                        $index++;
-
-                                                        if ($index === 1) {
-
-                                                            return $column . $checkboxes;
-                                                        } else if ($index === count($modelFacility)) {
-
-                                                            return $checkboxes . '</div>';
-                                                        } else if ($index % $colDivider === 0) {
-
-                                                            return $checkboxes . '</div>' . $column;
-                                                        } else {
-
-                                                            return $checkboxes;
-                                                        }
-                                                    }
-                                                ]) ?>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <?php
-                            endif; ?>
-
-                            <div class="row mt-10">
-                            	<div class="col-sm-4 col-tab-4 col-xs-5">
-                                    <div class="form-group">
-                                        <?= $btnSubmit ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?= Html::endForm(); ?>
-
+                        </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'promo') ? 'in active' : '' ?>" id="special-modal">
+        			<div class="row">
+                        <div class="col-sm-9 col-tab-10 col-xs-11">
+                            <div class="form-group">
 
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'promo'), 'city' => 'city_name'], 'get', [
-                            'class' => 'search-special-modal'
-                        ]) ?>
+								<?php
+                                echo Html::textInput('nm', $keywordName, [
+                                    'class' => 'form-control search-input-modal',
+                                    'placeholder' => 'Nama Tempat / Makanan / Alamat',
+                                    'data-keyword' => $keyword,
+                                    'data-type' => 'favorit'
+                                ]);
 
-                        	<div class="row">
-                            	<div class="col-sm-9 col-tab-10 col-xs-11">
-                            		<div class="form-group">
+                                echo !empty($keywordName) ? $spanClear : null; ?>
 
-                                        <?= Html::dropDownList('cty', $keywordCity,
-                                            ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
-                                                'id',
-                                                function($data) {
-
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'class' => 'form-control city-id',
-                                                'style' => 'width: 100%',
-                                            ]) ?>
-
-                                    </div>
-                                </div>
                             </div>
-
-                			<div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control search-input-modal',
-                                            'placeholder' => 'Nama Tempat / Makanan / Alamat',
-                                            'data-keyword' => $keyword,
-                                            'data-type' => 'promo'
-                                        ]);
-                                        echo !empty($keywordName) ? $spanClear : null; ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                    	<?php
-                                    	echo !empty($keywordProductId) ? $spanClear : null;
-                                    	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
-                                    	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-    						<div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?= Html::dropDownList('ctg', $keywordCategory,
-                                            ArrayHelper::map(
-                                                Category::find()->orderBy('name')->asArray()->all(),
-                                                'id',
-                                                function($data) {
-
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'class' => 'form-control category-id',
-                                                'style' => 'width: 100%'
-                                            ]) ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
-                                        echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
-                                        echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
-                                        echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                            	<div class="col-sm-4 col-tab-4 col-xs-5">
-                                    <div class="form-group">
-                                        <?= $btnSubmit ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?= Html::endForm(); ?>
-
+                        </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane <?= $keywordType == \Yii::t('app', 'online-order') ? 'in active' : '' ?>" id="order-modal">
+                    <div class="row">
+                        <div class="col-sm-9 col-tab-10 col-xs-11">
+                            <div class="form-group">
 
-                    	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => \Yii::t('app', 'online-order'), 'city' => 'city_name'], 'get', [
-                            'class' => 'search-order-modal'
-                        ]) ?>
+                            	<?php
+                            	echo !empty($keywordProductId) ? $spanClear : null;
+                            	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
+                            	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
 
-                        	<div class="row">
-                            	<div class="col-sm-9 col-tab-10 col-xs-11">
-                            		<div class="form-group">
-
-                                        <?= Html::dropDownList('cty', $keywordCity,
-                                            ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->andWhere(['name' => 'Bandung'])->all(),
-                                                'id',
-                                                function($data) {
-
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'class' => 'form-control city-id',
-                                                'style' => 'width: 100%',
-                                            ]) ?>
-
-                                    </div>
-                                </div>
                             </div>
-
-                			<div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo Html::textInput('nm', $keywordName, [
-                                            'class' => 'form-control search-input-modal',
-                                            'placeholder' => 'Nama Tempat / Makanan / Alamat',
-                                            'data-keyword' => $keyword,
-                                            'data-type' => 'pesan-online'
-                                        ]);
-                                        echo !empty($keywordName) ? $spanClear : null; ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                    	<?php
-                                    	echo !empty($keywordProductId) ? $spanClear : null;
-                                    	echo Html::hiddenInput('pct', $keywordProductId, ['class' => 'product-category-id']);
-                                    	echo Html::a($productLabel, '', ['class' => 'form-control search-field-box btn-product-category', 'style' => $styleProductLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
-                                        echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
-                                        echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
-                                        echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-9 col-tab-10 col-xs-11">
-                                    <div class="form-group">
-
-                                        <?php
-                                        echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
-                                        echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
-                                        echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
-                                        echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                            	<div class="col-sm-4 col-tab-4 col-xs-5">
-                                    <div class="form-group">
-                                        <?= $btnSubmit ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                                <div class="col-tab-4 col-xs-offset-2 visible-tab">
-                                    <div class="btn-clear-container">
-                                        <?= $btnClear ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?= Html::endForm(); ?>
-
+                        </div>
                     </div>
-                </div>
+
+					<div class="row">
+                        <div class="col-sm-9 col-tab-10 col-xs-11">
+                            <div class="form-group">
+
+                                <?= Html::dropDownList('ctg', $keywordCategory,
+                                    ArrayHelper::map(
+                                        Category::find()->orderBy('name')->asArray()->all(),
+                                        'id',
+                                        function($data) {
+
+                                            return $data['name'];
+                                        }
+                                    ),
+                                    [
+                                        'prompt' => '',
+                                        'class' => 'form-control category-id',
+                                        'style' => 'width: 100%'
+                                    ]) ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9 col-tab-10 col-xs-11">
+                            <div class="form-group">
+
+                                <?php
+                                echo $keywordPriceMin !== null && $keywordPriceMax !== null ? $spanClear : null;
+                                echo Html::hiddenInput('pmn', $keywordPriceMin, ['class' => 'price-min']);
+                                echo Html::hiddenInput('pmx', $keywordPriceMax, ['class' => 'price-max']);
+                                echo Html::a($priceLabel, '', ['class' => 'form-control search-field-box btn-price', 'style' => $stylePriceLabel]) ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9 col-tab-10 col-xs-11">
+                            <div class="form-group">
+
+                                <?php
+                                echo !empty($keywordCoordinate) && !empty($keywordRadius) ? $spanClear : null;
+                                echo Html::hiddenInput('cmp', $keywordCoordinate, ['class' => 'coordinate-map']);
+                                echo Html::hiddenInput('rmp', $keywordRadius, ['class' => 'radius-map']);
+                                echo Html::a($radiusLabel, '', ['class' => 'form-control search-field-box btn-region', 'style' => $styleRadiusLabel]); ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                    if ($showFacilityFilter):
+
+                        $modelFacility = Facility::find()
+                            ->orderBy('name')
+                            ->asArray()->all();
+
+                        $colDivider = ceil(count($modelFacility) / 3);
+
+                        $column = '<div class="col-sm-4 col-tab-6 col-xs-6 col">'; ?>
+
+                        <a class="search-label more-option" data-toggle="collapse" href=".facility-collapse">More Options
+                            <span class="fa fa-chevron-circle-down"></span>
+                        </a>
+                        <div class="facility-collapse collapse <?= !empty($keywordFacility) ? 'in' : '' ?>">
+                        	<div class="form-group">
+                            	<div class="row mt-10">
+
+                                    <?= Html::checkboxList('fct', $keywordFacility,
+                                        ArrayHelper::map(
+                                            $modelFacility,
+                                            'id',
+                                            function($data) {
+
+                                                return $data['name'];
+                                            }
+                                        ),
+                                        [
+                                            'item' => function ($index, $label, $name, $checked, $value) use ($colDivider, $column, $modelFacility) {
+
+                                                $checkboxes = '
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col">
+                                                            <label>' .
+                                                                Html::checkbox($name, $checked, [
+                                                                    'value' => $value,
+                                                                    'class' => 'facility icheck',
+                                                                ]) . ' ' . $label .
+                                                            '</label>
+                                                        </div>
+                                                    </div>
+                                                ';
+
+                                                $index++;
+
+                                                if ($index === 1) {
+
+                                                    return $column . $checkboxes;
+                                                } else if ($index === count($modelFacility)) {
+
+                                                    return $checkboxes . '</div>';
+                                                } else if ($index % $colDivider === 0) {
+
+                                                    return $checkboxes . '</div>' . $column;
+                                                } else {
+
+                                                    return $checkboxes;
+                                                }
+                                            }
+                                        ]) ?>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php
+                    endif; ?>
+
+                    <div class="row mt-10">
+                    	<div class="col-sm-4 col-tab-4 col-xs-5">
+                            <div class="form-group">
+                                <?= $btnSubmit ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-tab-4 col-xs-offset-1 col-xs-5 visible-lg visible-md visible-sm visible-xs">
+                            <div class="btn-clear-container">
+                                <?= $btnClear ?>
+                            </div>
+                        </div>
+                        <div class="col-tab-4 col-xs-offset-2 visible-tab">
+                            <div class="btn-clear-container">
+                                <?= $btnClear ?>
+                            </div>
+                        </div>
+                    </div>
+
+                <?= Html::endForm(); ?>
+
             </div>
         </div>
     </div>
@@ -1106,6 +879,7 @@ $jscript = '
             if ($(this).hasClass("active")) {
 
                 navTab = $(this).children().attr("class");
+                navTabId = $(this).children().attr("id");
                 return false;
             }
         });
@@ -1119,11 +893,11 @@ $jscript = '
             if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
-                $(".search-box-modal").find(hrefTabModal).removeClass("active");
+                thisObj.parent().siblings("form").find(".search-type").attr("value", navTabId);
+
             } else {
 
                 thisObj.addClass("active");
-                $(".search-box-modal").find(hrefTabModal).addClass("active");
             }
 
             thisObj.on("click", function() {
@@ -1145,28 +919,44 @@ $jscript = '
             });
         });
 
+        var classNavTabModal = $(this).children().attr("class");
+
+        $(".search-box-modal").find(".nav-tabs").children("li").on("click", function() {
+
+            var classNavTabModal = $(this).children().attr("class");
+            var idNavTabModal = $(this).children().attr("id");
+
+            $(this).parent().siblings("form").attr("class", "search-" + classNavTabModal);
+            $(this).parent().siblings("form").find(".search-type").attr("value", idNavTabModal);
+
+            var hideInputPrice = $(".search-" + classNavTabModal).find(".btn-price").parent();
+            var hideInputBusinessCategory = $(".search-" + classNavTabModal).find(".category-id").parent();
+
+            if (classNavTabModal == "favorite") {
+
+                hideInputPrice.removeClass("hidden");
+                hideInputBusinessCategory.removeClass("hidden");
+            } else if (classNavTabModal == "special") {
+
+                hideInputPrice.addClass("hidden");
+                hideInputBusinessCategory.removeClass("hidden");
+            } else if (classNavTabModal == "order") {
+
+                hideInputPrice.removeClass("hidden");
+                hideInputBusinessCategory.addClass("hidden");
+            }
+        });
+
         $(".search-box-modal").fadeIn("medium");
     });
 
     $(".search-box").find(".nav-tabs").children("li").on("click", function() {
 
-        var thisObj = $(this);
-        $(".search-box > .nav-tabs").children("li").each(function() {
+        var classNavTab = $(this).children().attr("class");
+        var idNavTab = $(this).children().attr("id");
 
-            var homeNavTab;
-            var homeFormId;
-
-            homeFormId = thisObj.parent().siblings().attr("class");
-            console.log(homeFormId);
-
-            if ($(this).hasClass("active")) {
-
-                homeNavTab = thisObj.children().attr("class");
-
-            }
-
-
-        });
+        $(this).parent().siblings("form").attr("class", "search-" + classNavTab);
+        $(this).parent().siblings("form").find(".search-type").attr("value", idNavTab);
     });
 
     if ($(".btn-search-map-toggle").length) {
@@ -1209,7 +999,6 @@ $jscript = '
             $(".search-input, .search-input-modal").val($(this).val());
         } else {
 
-            $(".search-input, .search-input-modal").val("");
             $(".search-input-modal").siblings(".search-field-box-clear").remove();
         }
 
@@ -1229,6 +1018,7 @@ $jscript = '
         } else {
 
             $(".search-input, .search-input-modal").val("");
+            $(".search-input-modal").siblings(".search-field-box-clear").remove();
         }
 
         return false;
