@@ -17,13 +17,13 @@ else: ?>
 	<div class="search-box <?= !empty($type) ? $type : "" ?>">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'favorite') ? 'active' : '' ?>">
-                <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite')?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite') ?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
             </li>
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'promo') ? 'active' : '' ?>">
-                <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo')?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo') ?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
             </li>
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'online-order') ? 'active' : '' ?>">
-                <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order')?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order') ?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
             </li>
         </ul>
 
@@ -39,13 +39,13 @@ else: ?>
         	    	echo Html::hiddenInput('searchType', $keywordType, ['class' => 'search-type']);
         	    	echo Html::hiddenInput('city', strtolower($keyword['cityName']));
         	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
-        	    	echo Html::hiddenInput('cty', $keyword['city']);
-        	    	echo Html::hiddenInput('pct', $keyword['product']['id']);
-        	    	echo Html::hiddenInput('ctg', $keyword['category']);
-        	    	echo Html::hiddenInput('pmn', $keyword['price']['min']);
-        	    	echo Html::hiddenInput('pmx', $keyword['price']['max']);
-        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate']);
-        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius']); ?>
+        	    	echo Html::hiddenInput('cty', $keyword['city'], ['class' => 'city']);
+        	    	echo Html::hiddenInput('pct', $keyword['product']['id'], ['class' => 'product-id']);
+        	    	echo Html::hiddenInput('ctg', $keyword['category'], ['class' => 'category']);
+        	    	echo Html::hiddenInput('pmn', $keyword['price']['min'], ['class' => 'price-min']);
+        	    	echo Html::hiddenInput('pmx', $keyword['price']['max'], ['class' => 'price-max']);
+        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate'], ['class' => 'map-coordinate']);
+        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius'], ['class' => 'map-radius']); ?>
 
 				</div>
 				<div class="row mt-20">

@@ -78,13 +78,13 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite')?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite') ?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo')?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo') ?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order')?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order') ?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
 
@@ -866,7 +866,6 @@ $jscript = '
     $(".filter-input").on("click", function() {
 
         var navTab;
-        var navTabId;
         var inputPrice;
         var inputBusinessCategory;
         var moreFacility;
@@ -890,6 +889,8 @@ $jscript = '
             inputBusinessCategory = $(".search-modal").find(".category-id").parent();
             moreFacility = $(".search-modal").find(".more-option");
             facilityCollapse = moreFacility.siblings(".facility-collapse");
+
+            thisObj.parent().siblings("form").find(".search-type").val(navTab);
 
             if (navTabModal != navTab) {
 
@@ -955,8 +956,6 @@ $jscript = '
                     facilityCollapse.addClass("hidden").removeClass("in");
                 }
             });
-
-            thisObj.parent().siblings("form").find(".search-type").val(navTab);
         });
 
         $(".search-box-modal").fadeIn("medium");
@@ -1003,14 +1002,14 @@ $jscript = '
 
             if ($(this).siblings(".search-field-box-clear").length == 0) {
 
-                $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
+                $(this).parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
             $(".search-input").val($(this).val());
         } else {
 
-            $(".search-input, .search-input-modal").val("");
-            $(".search-input-modal").siblings(".search-field-box-clear").remove();
+            $(".search-input").val("");
+            $(this).siblings(".search-field-box-clear").remove();
         }
 
         return false;
