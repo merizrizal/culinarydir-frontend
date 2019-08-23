@@ -28,7 +28,7 @@ else: ?>
         </ul>
 
     	<?= Html::beginForm(['page/result-list'], 'get', [
-            'class' => 'search-favorite-class'
+            'class' => 'search-favorite'
         ]) ?>
 
 	    	<div class="form-group">
@@ -38,23 +38,23 @@ else: ?>
                 	</div>
 
         	    	<?php
-        	    	echo Html::hiddenInput('searchType', \Yii::t('app', 'favorit'), ['class' => 'search-type']);
+        	    	echo Html::hiddenInput('searchType', \Yii::t('app', 'favorite'), ['class' => 'search-type']);
         	    	echo Html::hiddenInput('city', strtolower($keyword['cityName']));
         	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
-        	    	echo Html::hiddenInput('cty', $keyword['city'], ['class' => 'city']);
-        	    	echo Html::hiddenInput('pct', $keyword['product']['id'], ['class' => 'product-category']);
-        	    	echo Html::hiddenInput('ctg', $keyword['category'], ['class' => 'category']);
-        	    	echo Html::hiddenInput('pmn', $keyword['price']['min'], ['class' => 'price-min']);
-        	    	echo Html::hiddenInput('pmx', $keyword['price']['max'], ['class' => 'price-max']);
-        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate'], ['class' => 'coordinate-map']);
-        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius'], ['class' => 'radius-map']); ?>
+        	    	echo Html::hiddenInput('cty', $keyword['city']);
+        	    	echo Html::hiddenInput('pct', $keyword['product']['id']);
+        	    	echo Html::hiddenInput('ctg', $keyword['category']);
+        	    	echo Html::hiddenInput('pmn', $keyword['price']['min']);
+        	    	echo Html::hiddenInput('pmx', $keyword['price']['max']);
+        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate']);
+        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius']); ?>
 
 				</div>
 				<div class="row mt-20">
                     <div class="btn-widget-search">
                     	<div class="col-sm-2 col-sm-offset-6 col-xs-2 p-5">
                             <div class="form-group">
-                                <?= Html::Button('<i class="fa fa-filter"></i><span class="btn-filter hidden-xs"> Filter</span>', ['class' => 'btn btn-block btn-round btn-d btn-search filter-input']) ?>
+                                <?= Html::Button('<i class="fa fa-filter"></i><span class="hidden-xs"> Filter</span>', ['class' => 'btn btn-block btn-round btn-d btn-search filter-input']) ?>
                             </div>
                         </div>
                         <div class="col-sm-2 col-xs-5 p-5">

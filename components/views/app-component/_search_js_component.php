@@ -849,13 +849,6 @@ $jscript = '
         return false;
     });
 
-    $(".search-favorite-modal, .search-special-modal, .search-order-modal").on("submit", function() {
-
-        var action = $(this).attr("action").replace("city_name", $(this).find(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
-
-        $(this).attr("action", action);
-    });
-
     $(".lbl-clear").on("click", function() {
 
         $(".search-input, .search-input-modal, .product-category-id, .coordinate-map, .radius-map, .price-min, .price-max").val("");
@@ -873,6 +866,10 @@ $jscript = '
     $(".filter-input").on("click", function() {
 
         var navTab;
+        var navTabId;
+        var hideInputPrice;
+        var hideInputBusinessCategory;
+        var hideMoreFacility;
 
         $(".search-box > .nav-tabs").children("li").each(function() {
 
@@ -888,16 +885,35 @@ $jscript = '
 
             var thisObj = $(this);
             var navTabModal = thisObj.children("a").attr("class");
-            var hrefTabModal = thisObj.children("a").attr("href");
+
+            hideInputPrice = $(".search-" + navTabModal).find(".btn-price").parent();
+            hideInputBusinessCategory = $(".search-" + navTabModal).find(".category-id").parent();
+            hideMoreFacility = $(".search-" + navTabModal).find(".more-option");
 
             if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
                 thisObj.parent().siblings("form").find(".search-type").attr("value", navTabId);
-
             } else {
 
                 thisObj.addClass("active");
+            }
+
+            if (navTab == "favorite") {
+
+                hideInputPrice.removeClass("hidden");
+                hideInputBusinessCategory.removeClass("hidden");
+                hideMoreFacility.removeClass("hidden");
+            } else if (navTab == "special") {
+
+                hideInputPrice.addClass("hidden");
+                hideInputBusinessCategory.removeClass("hidden");
+                hideMoreFacility.addClass("hidden");
+            } else if (navTab == "order") {
+
+                hideInputPrice.removeClass("hidden");
+                hideInputBusinessCategory.addClass("hidden");
+                hideMoreFacility.addClass("hidden");
             }
 
             thisObj.on("click", function() {
@@ -909,42 +925,12 @@ $jscript = '
                     if ($(this).children().attr("class") != navTabModal) {
 
                         $(this).removeClass("active");
-                        $(".search-box").find(hrefSearchBox).removeClass("active");
                     } else {
 
                         $(this).addClass("active");
-                        $(".search-box").find(hrefSearchBox).addClass("active");
                     }
                 });
             });
-        });
-
-        var classNavTabModal = $(this).children().attr("class");
-
-        $(".search-box-modal").find(".nav-tabs").children("li").on("click", function() {
-
-            var classNavTabModal = $(this).children().attr("class");
-            var idNavTabModal = $(this).children().attr("id");
-
-            $(this).parent().siblings("form").attr("class", "search-" + classNavTabModal);
-            $(this).parent().siblings("form").find(".search-type").attr("value", idNavTabModal);
-
-            var hideInputPrice = $(".search-" + classNavTabModal).find(".btn-price").parent();
-            var hideInputBusinessCategory = $(".search-" + classNavTabModal).find(".category-id").parent();
-
-            if (classNavTabModal == "favorite") {
-
-                hideInputPrice.removeClass("hidden");
-                hideInputBusinessCategory.removeClass("hidden");
-            } else if (classNavTabModal == "special") {
-
-                hideInputPrice.addClass("hidden");
-                hideInputBusinessCategory.removeClass("hidden");
-            } else if (classNavTabModal == "order") {
-
-                hideInputPrice.removeClass("hidden");
-                hideInputBusinessCategory.addClass("hidden");
-            }
         });
 
         $(".search-box-modal").fadeIn("medium");
@@ -957,6 +943,36 @@ $jscript = '
 
         $(this).parent().siblings("form").attr("class", "search-" + classNavTab);
         $(this).parent().siblings("form").find(".search-type").attr("value", idNavTab);
+    });
+
+    $(".search-box-modal").find(".nav-tabs").children("li").on("click", function() {
+
+        classNavTabModal = $(this).children().attr("class");
+        idNavTabModal = $(this).children().attr("id");
+
+        $(this).parent().siblings("form").attr("class", "search-" + classNavTabModal);
+        $(this).parent().siblings("form").find(".search-type").attr("value", idNavTabModal);
+
+        hideInputPrice = $(".search-" + classNavTabModal).find(".btn-price").parent();
+        hideInputBusinessCategory = $(".search-" + classNavTabModal).find(".category-id").parent();
+        hideMoreFacility = $(".search-" + classNavTabModal).find(".more-option");
+
+        if (classNavTabModal == "favorite") {
+
+            hideInputPrice.removeClass("hidden");
+            hideInputBusinessCategory.removeClass("hidden");
+            hideMoreFacility.removeClass("hidden");
+        } else if (classNavTabModal == "special") {
+
+            hideInputPrice.addClass("hidden");
+            hideInputBusinessCategory.removeClass("hidden");
+            hideMoreFacility.addClass("hidden");
+        } else if (classNavTabModal == "order") {
+
+            hideInputPrice.removeClass("hidden");
+            hideInputBusinessCategory.addClass("hidden");
+            hideMoreFacility.addClass("hidden");
+        }
     });
 
     if ($(".btn-search-map-toggle").length) {
