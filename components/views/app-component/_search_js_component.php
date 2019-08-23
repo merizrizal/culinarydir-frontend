@@ -78,22 +78,22 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
             <div class="col-md-6 col-md-offset-4 col-sm-offset-3 col-sm-8 col-tab-12 col-xs-offset-1 col-xs-11">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation">
-                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorit" class="favorite"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                        <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite')?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="promo" class="special"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                        <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo')?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
                     </li>
                     <li role="presentation">
-                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="pesan-online" class="order"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                        <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order')?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
                     </li>
                 </ul>
 
             	<?= Html::beginForm(['page/result-' . $pageType], 'get', [
-            	    'class' => 'search-favorite'
+            	    'class' => 'search-modal'
             	]) ?>
 
             		<?php
-            		echo Html::hiddenInput('searchType', \Yii::t('app', 'favorit'), ['class' => 'search-type']);
+            		echo Html::hiddenInput('searchType', $keywordType, ['class' => 'search-type']);
             		echo Html::hiddenInput('city', strtolower($keyword['cityName'])); ?>
 
                 	<div class="row">
@@ -867,16 +867,16 @@ $jscript = '
 
         var navTab;
         var navTabId;
-        var hideInputPrice;
-        var hideInputBusinessCategory;
-        var hideMoreFacility;
+        var inputPrice;
+        var inputBusinessCategory;
+        var moreFacility;
+        var facilityCollapse;
 
         $(".search-box > .nav-tabs").children("li").each(function() {
 
             if ($(this).hasClass("active")) {
 
-                navTab = $(this).children().attr("class");
-                navTabId = $(this).children().attr("id");
+                navTab = $(this).children().attr("id");
                 return false;
             }
         });
@@ -884,53 +884,79 @@ $jscript = '
         $(".search-box-modal").find(".nav-tabs").children("li").each(function() {
 
             var thisObj = $(this);
-            var navTabModal = thisObj.children("a").attr("class");
+            var navTabModal = thisObj.children("a").attr("id");
 
-            hideInputPrice = $(".search-" + navTabModal).find(".btn-price").parent();
-            hideInputBusinessCategory = $(".search-" + navTabModal).find(".category-id").parent();
-            hideMoreFacility = $(".search-" + navTabModal).find(".more-option");
+            inputPrice = $(".search-modal").find(".btn-price").parent();
+            inputBusinessCategory = $(".search-modal").find(".category-id").parent();
+            moreFacility = $(".search-modal").find(".more-option");
+            facilityCollapse = moreFacility.siblings(".facility-collapse");
 
             if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
-                thisObj.parent().siblings("form").find(".search-type").attr("value", navTabId);
             } else {
 
                 thisObj.addClass("active");
             }
 
-            if (navTab == "favorite") {
+            if (navTab == "' . \Yii::t('app','favorite') . '") {
 
-                hideInputPrice.removeClass("hidden");
-                hideInputBusinessCategory.removeClass("hidden");
-                hideMoreFacility.removeClass("hidden");
-            } else if (navTab == "special") {
+                inputPrice.removeClass("hidden");
+                inputBusinessCategory.removeClass("hidden");
+                moreFacility.removeClass("hidden");
+                facilityCollapse.removeClass("hidden");
+            } else if (navTab == "' . \Yii::t('app','promo') . '") {
 
-                hideInputPrice.addClass("hidden");
-                hideInputBusinessCategory.removeClass("hidden");
-                hideMoreFacility.addClass("hidden");
-            } else if (navTab == "order") {
+                inputPrice.addClass("hidden");
+                inputBusinessCategory.removeClass("hidden");
+                moreFacility.addClass("hidden");
+                facilityCollapse.addClass("hidden");
+            } else if (navTab == "' . \Yii::t('app','online-order') . '") {
 
-                hideInputPrice.removeClass("hidden");
-                hideInputBusinessCategory.addClass("hidden");
-                hideMoreFacility.addClass("hidden");
+                inputPrice.removeClass("hidden");
+                inputBusinessCategory.addClass("hidden");
+                moreFacility.addClass("hidden");
             }
 
             thisObj.on("click", function() {
 
                 $(".search-box > .nav-tabs").children("li").each(function() {
 
-                    var hrefSearchBox = $(this).children().attr("href");
-
-                    if ($(this).children().attr("class") != navTabModal) {
+                    if ($(this).children().attr("id") != navTabModal) {
 
                         $(this).removeClass("active");
                     } else {
 
                         $(this).addClass("active");
                     }
+
+                    $(this).parent().siblings("form").find(".search-type").val(navTabModal);
                 });
+
+                $(this).parent().siblings("form").find(".search-type").val(navTabModal);
+
+                if (navTabModal == "' . \Yii::t('app','favorite') . '") {
+
+                    inputPrice.removeClass("hidden");
+                    inputBusinessCategory.removeClass("hidden");
+                    moreFacility.removeClass("hidden");
+                    facilityCollapse.removeClass("hidden");
+                } else if (navTabModal == "' . \Yii::t('app','promo') . '") {
+
+                    inputPrice.addClass("hidden");
+                    inputBusinessCategory.removeClass("hidden");
+                    moreFacility.addClass("hidden");
+                    facilityCollapse.addClass("hidden").removeClass("in");
+                } else if (navTabModal == "' . \Yii::t('app','online-order') . '") {
+
+                    inputPrice.removeClass("hidden");
+                    inputBusinessCategory.addClass("hidden");
+                    moreFacility.addClass("hidden");
+                    facilityCollapse.addClass("hidden").removeClass("in");
+                }
             });
+
+            thisObj.parent().siblings("form").find(".search-type").val(navTab);
         });
 
         $(".search-box-modal").fadeIn("medium");
@@ -938,41 +964,9 @@ $jscript = '
 
     $(".search-box").find(".nav-tabs").children("li").on("click", function() {
 
-        var classNavTab = $(this).children().attr("class");
         var idNavTab = $(this).children().attr("id");
 
-        $(this).parent().siblings("form").attr("class", "search-" + classNavTab);
-        $(this).parent().siblings("form").find(".search-type").attr("value", idNavTab);
-    });
-
-    $(".search-box-modal").find(".nav-tabs").children("li").on("click", function() {
-
-        classNavTabModal = $(this).children().attr("class");
-        idNavTabModal = $(this).children().attr("id");
-
-        $(this).parent().siblings("form").attr("class", "search-" + classNavTabModal);
-        $(this).parent().siblings("form").find(".search-type").attr("value", idNavTabModal);
-
-        hideInputPrice = $(".search-" + classNavTabModal).find(".btn-price").parent();
-        hideInputBusinessCategory = $(".search-" + classNavTabModal).find(".category-id").parent();
-        hideMoreFacility = $(".search-" + classNavTabModal).find(".more-option");
-
-        if (classNavTabModal == "favorite") {
-
-            hideInputPrice.removeClass("hidden");
-            hideInputBusinessCategory.removeClass("hidden");
-            hideMoreFacility.removeClass("hidden");
-        } else if (classNavTabModal == "special") {
-
-            hideInputPrice.addClass("hidden");
-            hideInputBusinessCategory.removeClass("hidden");
-            hideMoreFacility.addClass("hidden");
-        } else if (classNavTabModal == "order") {
-
-            hideInputPrice.removeClass("hidden");
-            hideInputBusinessCategory.addClass("hidden");
-            hideMoreFacility.addClass("hidden");
-        }
+        $(this).parent().siblings("form").find(".search-type").val(idNavTab);
     });
 
     if ($(".btn-search-map-toggle").length) {
@@ -1012,9 +1006,10 @@ $jscript = '
                 $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
-            $(".search-input, .search-input-modal").val($(this).val());
+            $(".search-input").val($(this).val());
         } else {
 
+            $(".search-input, .search-input-modal").val("");
             $(".search-input-modal").siblings(".search-field-box-clear").remove();
         }
 
@@ -1030,10 +1025,10 @@ $jscript = '
                 $(".search-input-modal").parent().append("<span class=\"search-field-box-clear\">×</span>");
             }
 
-            $(".search-input, .search-input-modal").val($(this).val());
+            $(".search-input-modal").val($(this).val());
         } else {
 
-            $(".search-input, .search-input-modal").val("");
+            $(".search-input-modal").val("");
             $(".search-input-modal").siblings(".search-field-box-clear").remove();
         }
 

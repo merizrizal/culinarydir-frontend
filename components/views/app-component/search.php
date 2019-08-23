@@ -17,19 +17,17 @@ else: ?>
 	<div class="search-box <?= !empty($type) ? $type : "" ?>">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'favorite') ? 'active' : '' ?>">
-                <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="favorit" class="favorite"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
+                <a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab" id="<?= \Yii::t('app','favorite')?>"><strong><?= \Yii::t('app', 'Favorite') ?></strong></a>
             </li>
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'promo') ? 'active' : '' ?>">
-                <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="promo" class="special"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
+                <a href="#special" aria-controls="special" role="tab" data-toggle="tab" id="<?= \Yii::t('app','promo')?>"><strong><?= \Yii::t('app', 'Promo') ?></strong></a>
             </li>
             <li role="presentation" class="<?= $keywordType == \Yii::t('app', 'online-order') ? 'active' : '' ?>">
-                <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="pesan-online" class="order"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
+                <a href="#order" aria-controls="order" role="tab" data-toggle="tab" id="<?= \Yii::t('app','online-order')?>"><strong><?= \Yii::t('app', 'Online Order') ?></strong></a>
             </li>
         </ul>
 
-    	<?= Html::beginForm(['page/result-list'], 'get', [
-            'class' => 'search-favorite'
-        ]) ?>
+    	<?= Html::beginForm(['page/result-list'], 'get') ?>
 
 	    	<div class="form-group">
                 <div class="input-group">
@@ -38,7 +36,7 @@ else: ?>
                 	</div>
 
         	    	<?php
-        	    	echo Html::hiddenInput('searchType', \Yii::t('app', 'favorite'), ['class' => 'search-type']);
+        	    	echo Html::hiddenInput('searchType', $keywordType, ['class' => 'search-type']);
         	    	echo Html::hiddenInput('city', strtolower($keyword['cityName']));
         	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
         	    	echo Html::hiddenInput('cty', $keyword['city']);
