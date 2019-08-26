@@ -890,14 +890,13 @@ $jscript = '
             moreFacility = $(".search-modal").find(".more-option");
             facilityCollapse = moreFacility.siblings(".facility-collapse");
 
-            thisObj.parent().siblings("form").find(".search-type").val(navTab);
-
             if (navTabModal != navTab) {
 
                 thisObj.removeClass("active");
             } else {
 
                 thisObj.addClass("active");
+                thisObj.parent().siblings("form").find(".search-type").val(navTab);
             }
 
             if (navTab == "' . \Yii::t('app','favorite') . '") {
@@ -921,6 +920,8 @@ $jscript = '
 
             thisObj.on("click", function() {
 
+                $(this).parent().siblings("form").find(".search-type").val(navTabModal);
+
                 $(".search-box > .nav-tabs").children("li").each(function() {
 
                     if ($(this).children().attr("id") != navTabModal) {
@@ -929,12 +930,9 @@ $jscript = '
                     } else {
 
                         $(this).addClass("active");
+                        $(this).parent().siblings("form").find(".search-type").val(navTabModal);
                     }
-
-                    $(this).parent().siblings("form").find(".search-type").val(navTabModal);
                 });
-
-                $(this).parent().siblings("form").find(".search-type").val(navTabModal);
 
                 if (navTabModal == "' . \Yii::t('app','favorite') . '") {
 
