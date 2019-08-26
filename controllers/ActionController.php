@@ -13,10 +13,10 @@ use core\models\UserPromoItem;
 use core\models\UserReport;
 use core\models\UserVisit;
 use core\models\UserVote;
+use frontend\models\Post;
 use sycomponent\Tools;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use frontend\models\Post;
 
 /**
  * Action Controller
@@ -596,9 +596,11 @@ class ActionController extends base\BaseController
             $modelBusinessDetail->voters += 1;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
+
+            $flag = $modelBusinessDetail->save();
         }
 
-        if (($flag = $modelBusinessDetail->save())) {
+        if ($flag) {
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 
@@ -814,9 +816,11 @@ class ActionController extends base\BaseController
             $modelBusinessDetail->voters = (!$isUpdate) ? $modelBusinessDetail->voters + 1 : $modelBusinessDetail->voters;
             $modelBusinessDetail->vote_points = $modelBusinessDetail->total_vote_points / count($post['Post']['review']['rating']);
             $modelBusinessDetail->vote_value = $modelBusinessDetail->vote_points / $modelBusinessDetail->voters;
+
+            $flag = $modelBusinessDetail->save();
         }
 
-        if (($flag = $modelBusinessDetail->save())) {
+        if ($flag) {
 
             foreach ($post['Post']['review']['rating'] as $ratingComponentId => $votePoint) {
 

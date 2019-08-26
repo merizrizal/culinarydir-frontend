@@ -39,13 +39,13 @@ else: ?>
         	    	echo Html::hiddenInput('searchType', $keywordType, ['class' => 'search-type']);
         	    	echo Html::hiddenInput('city', strtolower($keyword['cityName']));
         	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
-        	    	echo Html::hiddenInput('cty', $keyword['city'], ['class' => 'city']);
-        	    	echo Html::hiddenInput('pct', $keyword['product']['id'], ['class' => 'product-id']);
-        	    	echo Html::hiddenInput('ctg', $keyword['category'], ['class' => 'category']);
-        	    	echo Html::hiddenInput('pmn', $keyword['price']['min'], ['class' => 'price-min']);
-        	    	echo Html::hiddenInput('pmx', $keyword['price']['max'], ['class' => 'price-max']);
-        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate'], ['class' => 'map-coordinate']);
-        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius'], ['class' => 'map-radius']); ?>
+        	    	echo Html::hiddenInput('cty', $keyword['city']);
+        	    	echo Html::hiddenInput('pct', $keyword['product']['id']);
+        	    	echo Html::hiddenInput('ctg', $keyword['category']);
+        	    	echo Html::hiddenInput('pmn', $keyword['price']['min']);
+        	    	echo Html::hiddenInput('pmx', $keyword['price']['max']);
+        	    	echo Html::hiddenInput('cmp', $keyword['map']['coordinate']);
+        	    	echo Html::hiddenInput('rmp', $keyword['map']['radius']); ?>
 
 				</div>
 				<div class="row mt-20">
