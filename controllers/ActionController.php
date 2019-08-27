@@ -577,6 +577,13 @@ class ActionController extends base\BaseController
 
                     $result['errorVote'] = $modelUserVote->getErrors();
                     break;
+                } else {
+
+                    if ($voteValue == 0) {
+
+                        $flag = false;
+                        $result['errorVote'] = $modelUserVote->getErrors();
+                    }
                 }
             }
         }
