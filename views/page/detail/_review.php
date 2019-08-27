@@ -742,8 +742,7 @@ $jscript = '
                 $("#edit-review-container").fadeIn();
             }
 
-            $("#error-rating").addClass("hidden");
-            $("#error-photo").addClass("hidden");
+            $("#error-rating, #error-photo").addClass("hidden");
 
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         });
@@ -1080,8 +1079,7 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
-                    $("#error-rating").addClass("hidden");
-                    $("#error-photo").addClass("hidden");
+                    $("#error-rating, #error-photo").addClass("hidden");
 
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
