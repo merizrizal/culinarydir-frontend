@@ -88,13 +88,11 @@ $this->params['beforeEndBody'][] = function() use ($keyword, $pageType, $showFac
                     </li>
                 </ul>
 
-            	<?= Html::beginForm(['page/result-' . $pageType], 'get', [
+            	<?= Html::beginForm(['page/result-' . $pageType, 'searchType' => 'search_type', 'city' => 'city_name'], 'get', [
             	    'class' => 'search-modal'
             	]) ?>
 
-            		<?php
-            		echo Html::hiddenInput('searchType', $keywordType, ['class' => 'search-type']);
-            		echo Html::hiddenInput('city', strtolower($keyword['cityName'])); ?>
+            		<?= Html::hiddenInput('', $keywordType, ['class' => 'search-type']) ?>
 
                 	<div class="row">
                     	<div class="col-sm-9 col-tab-10 col-xs-11">
@@ -847,6 +845,13 @@ $jscript = '
         $(".search-input-modal").siblings(".search-field-box-clear").remove();
 
         return false;
+    });
+
+    $(".search-form, .search-modal").on("submit", function() {
+
+        var action = $(this).attr("action").replace("search_type", $(".search-type").val()).replace("city_name", $(".city-id").find(":selected")[0].label.toLowerCase().replace(" ", "-"));
+
+        $(this).attr("action", action);
     });
 
     $(".lbl-clear").on("click", function() {
