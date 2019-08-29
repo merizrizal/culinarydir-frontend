@@ -207,10 +207,11 @@ $linkPager = LinkPager::widget([
 
 <?php
 $jscript = '
+    var mapResult;
+    var mapOptions;
+
     function initMap() {
 
-        var mapResult;
-        var mapOptions;
         var mapResultDefaultLatLng = {lat: -6.9175, lng: 107.6191};
 
         var mapResultContainer = document.getElementById("maps");
@@ -257,7 +258,7 @@ $jscript = '
                 };
 
                 $.each(businessDetail, function(keyCoordinate, businessData) {
-
+                    
                     var coordinate = keyCoordinate.split(",");
                     businessLatLng[keyCoordinate] = new google.maps.LatLng(coordinate[0], coordinate[1]);
 
@@ -278,7 +279,7 @@ $jscript = '
                     markers[keyCoordinate] = businessMarker;
 
                     $.each(businessData, function(key, value) {
-
+                        
                         $(".place-" + value.businessId).on("click", callbackMarkerListener(keyCoordinate));
 
                         infoWindowContent[keyCoordinate] +=
@@ -320,8 +321,25 @@ $jscript = '
                     google.maps.event.addListener(businessMarker, "click", callbackMarkerListener(keyCoordinate));
 
                     markerBounds.extend(businessLatLng[keyCoordinate]);
-                });
 
+                    mapResult.addListener("idle", function() {
+                        var bounds = mapResult.getBounds();
+                        
+                        $.each(businessData, function(key, value) {
+
+                            var listResult = $(".place-" + value.businessId);
+
+                            if(bounds.contains(businessMarker.getPosition()) === true) {
+                                
+                                listResult.show();
+                            } else {
+                                
+                                listResult.hide();
+                            }
+                        });
+                    });
+                });
+                
                 mapResult.fitBounds(markerBounds);
             } else {
 
@@ -339,6 +357,8 @@ $jscript = '
 
     initMap();
 
+    google.maps.event.addDomListener(window, "load", init);
+    
     ratingColor($(".rating"), "span");
 
     $(".result-map-image").owlCarousel({
