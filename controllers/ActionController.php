@@ -583,6 +583,8 @@ class ActionController extends base\BaseController
 
                         $flag = false;
                         $result['errorVote'] = $modelUserVote->getErrors();
+
+                        break;
                     }
                 }
             }
@@ -808,6 +810,8 @@ class ActionController extends base\BaseController
 
                         $flag = false;
                         $result['errorVote'] = $modelUserVote->getErrors();
+
+                        break;
                     }
                 }
             }
