@@ -93,6 +93,7 @@ class PageController extends base\BaseHistoryUrlController
         $keyword = [];
         $keyword['searchType'] = \Yii::t('app', 'favorite');
         $keyword['city'] = $city['id'];
+        $keyword['cityName'] = $city['name'];
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
         $keyword['product']['name'] = null;
@@ -309,6 +310,8 @@ class PageController extends base\BaseHistoryUrlController
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
 
+        $businessWhatsApp = !empty($modelBusiness['phone3']) ? 'https://api.whatsapp.com/send?phone=62' . substr(str_replace('-', '', $modelBusiness['phone3']), 1) : null;
+
         \Yii::$app->formatter->timeZone = 'UTC';
 
         return $this->render('detail', [
@@ -322,7 +325,8 @@ class PageController extends base\BaseHistoryUrlController
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => \Yii::$app->request->getQueryParams(),
-            'isOrderOnline' => $isOrderOnline
+            'isOrderOnline' => $isOrderOnline,
+            'businessWhatsApp' => $businessWhatsApp
         ]);
     }
 
@@ -624,6 +628,7 @@ class PageController extends base\BaseHistoryUrlController
 
         $keyword = [];
         $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : \Yii::t('app', 'favorite');
+        $keyword['cityName'] = $city['name'];
         $keyword['city'] = !empty($get['cty']) ? $get['cty'] : $city['id'];
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;

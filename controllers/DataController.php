@@ -370,13 +370,24 @@ class DataController extends base\BaseController
 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
 
-                $modelBusiness = $modelBusiness->andFilterWhere([
-                    'OR',
-                    $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
-                    $get['pmx'] . ' >= "business_detail"."price_min" AND ' . $get['pmx'] . ' <= "business_detail"."price_max"',
-                    '"business_detail"."price_min" >= ' . $get['pmn'] . ' AND "business_detail"."price_min" <= ' . $get['pmx'],
-                    '"business_detail"."price_max" >= ' . $get['pmn'] . ' AND "business_detail"."price_max" <= ' . $get['pmx']
-                ]);
+                if ($get['pmx'] == 0) {
+
+                    $modelBusiness = $modelBusiness->andFilterWhere([
+                        'OR',
+                        $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
+                        '"business_detail"."price_min" >= ' . $get['pmn'],
+                        '"business_detail"."price_max" >= ' . $get['pmn']
+                    ]);
+                } else {
+
+                    $modelBusiness = $modelBusiness->andFilterWhere([
+                        'OR',
+                        $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
+                        $get['pmx'] . ' >= "business_detail"."price_min" AND ' . $get['pmx'] . ' <= "business_detail"."price_max"',
+                        '"business_detail"."price_min" >= ' . $get['pmn'] . ' AND "business_detail"."price_min" <= ' . $get['pmx'],
+                        '"business_detail"."price_max" >= ' . $get['pmn'] . ' AND "business_detail"."price_max" <= ' . $get['pmx']
+                    ]);
+                }
             }
 
             if (!empty($get['cmp'])) {

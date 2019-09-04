@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 /* @var $isOrderOnline boolean */
+/* @var $businessWhatsApp string */
 
 common\assets\OwlCarouselAsset::register($this);
 
@@ -473,7 +474,7 @@ $noImg = \Yii::$app->params['endPointLoadImage'] . 'registry-business?image=&w=7
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 report-business-trigger'
                                             ]);
 
-                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', '', [
+                                            $messagebtn = Html::a('<i class="aicon aicon-icon-envelope aicon-1-2x"></i> Message', $businessWhatsApp, [
                                                 'class' => 'btn btn-standard btn-d btn-block btn-round-4 message-feature'
                                             ]); ?>
 
@@ -819,6 +820,16 @@ $this->params['beforeEndBody'][] = function() use ($modelBusiness, $modelUserRep
     Modal::end();
 
     Modal::begin([
+        'header' => \Yii::t('app', 'Information'),
+        'id' => 'modal-not-available',
+        'size' => Modal::SIZE_SMALL,
+    ]);
+
+        echo \Yii::t('app', 'Phone number not available');
+
+    Modal::end();
+
+    Modal::begin([
         'header' => '<i class="aicon aicon-warning"></i> ' . \Yii::t('app', 'Report'),
         'id' => 'modal-report',
     ]);
@@ -1002,9 +1013,10 @@ $jscript = '
 
     $(".message-feature").on("click", function() {
 
-        $("#modal-coming-soon").modal("show");
+        if ($(this).attr("href") == null) {
 
-        return false;
+            $("#modal-not-available").modal("show");
+        }
     });
 
     $(".share-feature").on("click", function() {

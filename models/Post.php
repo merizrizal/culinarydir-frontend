@@ -26,7 +26,9 @@ class Post extends \sybase\SybaseModel
     public function rules()
     {
         return [
-            [['rating','text'], 'string'],
+            [['text'], 'string'],
+            [['rating'], 'required'],
+            [['rating'], 'safe'],
             [['image'], 'required', 'on' => 'postPhoto'],
             [['image'], 'file', 'maxSize' => 1024*1024*2, 'maxFiles' => 10],
         ];

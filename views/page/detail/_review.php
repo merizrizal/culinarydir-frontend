@@ -490,6 +490,9 @@ $urlMyReviewDetail = [
                                     </div>
                                 </div>
                             </div>
+
+                            <small id="error-rating" class="form-text text-muted text-danger hidden"><?= \Yii::t('app', 'Please fill in the rating first') ?></small>
+
                         </div>
 
                         <div class="col-lg-8 col-md-7 col-sm-7 col-tab-6 col-xs-12">
@@ -553,9 +556,11 @@ $urlMyReviewDetail = [
                                         'layoutTemplates' => [
                                             'footer' => '',
                                         ],
-                                        'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos')
+                                        'dropZoneTitle' => \Yii::t('app', 'Drag and drop photos here. Maximum upload of 10 photos'),
                                     ]
                                 ]); ?>
+
+                                <small id="error-photo" class="form-text text-muted text-danger hidden"></small>
 
                             </div>
                             <div class="form-group">
@@ -736,6 +741,8 @@ $jscript = '
                 $("#write-review-trigger").fadeOut();
                 $("#edit-review-container").fadeIn();
             }
+
+            $("#error-rating, #error-photo").addClass("hidden");
 
             $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
         });
@@ -1072,10 +1079,30 @@ $jscript = '
                         $("html, body").animate({ scrollTop: $("#title-write-review").offset().top }, "slow");
                     });
 
+                    $("#error-rating, #error-photo").addClass("hidden");
+
                     messageResponse(response.icon, response.title, response.message, response.type);
                 } else {
 
                     messageResponse(response.icon, response.title, response.message, response.type);
+
+                    if (response.errorVote) {
+
+                        $("#error-rating").removeClass("hidden");
+                    } else {
+
+                        $("#error-rating").addClass("hidden");
+                    }
+
+                    if (response.errorPhoto) {
+
+                        $("#error-photo").removeClass("hidden");
+                        $("#error-photo").text(response.errorPhoto);
+                    } else {
+
+                        $("#error-photo").addClass("hidden");
+                        $("#error-photo").empty();
+                    }
                 }
 
                 $("#title-write-review").siblings(".overlay").hide();

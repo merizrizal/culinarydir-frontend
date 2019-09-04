@@ -71,94 +71,96 @@ $linkPager = LinkPager::widget([
 
                     $img = \Yii::$app->params['endPointLoadImage'] . 'registry-business?image=' . (!empty($dataBusiness['businessImages']) ? $dataBusiness['businessImages'][0]['image'] : '') . '&w=429&h=241'; ?>
 
-                    <div class="row mb-10">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="box box-small place-<?= $dataBusiness['id']; ?>" role="button">
-                                <div class="row">
-                                    <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
-                                        <div class="result-map-image owl-carousel owl-theme">
-                                            <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
-                                        </div>
-                                    </div>
-
-									<?php
-									$voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
-									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
-
-									$layoutRatings = '
-                                        <div class="rating rating-top">
-                                            <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
-                                            \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
-                                        </div>
-                                    '; ?>
-
-                                    <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
-                                        <?= $layoutRatings ?>
-                                    </div>
-
-                                    <div class="col-xs-5 col visible-xs text-center">
-                                        <?= $layoutRatings ?>
-                                    </div>
-
-                                    <div class="col-md-7 col-sm-12 col-xs-12 col">
-                                        <div class="short-desc">
-                                            <div class="row">
-                                                <div class="col-sm-12 col-xs-12 col">
-                                                    <h4 class="m-0"><?= $dataBusiness['name'] ?></h4>
-                                                </div>
+					<div class="business-result">
+                        <div class="row mb-10">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="box box-small place-<?= $dataBusiness['id']; ?>" role="button">
+                                    <div class="row">
+                                        <div class="col-md-5 col-sm-7 col-tab-7 col-xs-7 col">
+                                            <div class="result-map-image owl-carousel owl-theme">
+                                                <?= Html::img(null, ['class' => 'owl-lazy', 'data-src' => $img]); ?>
                                             </div>
+                                        </div>
 
-                                            <div class="row">
-                                                <div class="col-md-9 col-sm-12 col-xs-12 col">
-                                                    <h4 class="m-0">
+    									<?php
+    									$voteValue = !empty($dataBusiness['businessDetail']['vote_value']) ? $dataBusiness['businessDetail']['vote_value'] : 0;
+    									$voters = !empty($dataBusiness['businessDetail']['voters']) ? $dataBusiness['businessDetail']['voters'] : 0;
 
-                                                        <?php
-                                                        $businessCategory = '';
+    									$layoutRatings = '
+                                            <div class="rating rating-top">
+                                                <h2 class="mt-10 mb-0"><span class="label label-success pt-10">' . number_format($voteValue, 1) . '</span></h2>' .
+                                                \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) . '
+                                            </div>
+                                        '; ?>
 
-                                                        foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
+                                        <div class="col-tab-5 col-sm-5 col visible-tab visible-sm text-center">
+                                            <?= $layoutRatings ?>
+                                        </div>
 
-                                                            $businessCategory .= $dataBusinessCategories['category']['name'] . ' / ';
-                                                        }
+                                        <div class="col-xs-5 col visible-xs text-center">
+                                            <?= $layoutRatings ?>
+                                        </div>
 
-                                                        $businessCategory = trim($businessCategory, ' / '); ?>
-
-                                                        <small class="mt-10"><?= $businessCategory ?></small>
-
-                                                    </h4>
-                                                    <div class="widget">
-                                                        <ul class="icon-list">
-                                                            <li>
-                                                                <i class="aicon aicon-home1"></i>
-                                                                <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
-                                                            </li>
-                                                            <li>
-                                                                <i class="aicon aicon-rupiah"></i>
-
-                                                                <?php
-                                                                $businessPrice = '-';
-
-                                                                if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
-
-                                                                    $businessPrice = \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
-                                                                } else if (empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
-
-                                                                    $businessPrice = \Yii::t('app', 'Under') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
-                                                                } else if (empty($dataBusiness['businessDetail']['price_max']) && !empty($dataBusiness['businessDetail']['price_min'])) {
-
-                                                                    $businessPrice = \Yii::t('app', 'Above') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
-                                                                }
-
-                                                                echo $businessPrice ?>
-
-                                                            </li>
-                                                        </ul>
+                                        <div class="col-md-7 col-sm-12 col-xs-12 col">
+                                            <div class="short-desc">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-xs-12 col">
+                                                        <h4 class="m-0"><?= $dataBusiness['name'] ?></h4>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3 col visible-lg visible-md text-center">
-                                                    <div class="rating pull-right">
-                                                        <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($voteValue, 1); ?></span></h3>
-                                                        <?= \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
+                                                <div class="row">
+                                                    <div class="col-md-9 col-sm-12 col-xs-12 col">
+                                                        <h4 class="m-0">
+
+                                                            <?php
+                                                            $businessCategory = '';
+
+                                                            foreach ($dataBusiness['businessCategories'] as $dataBusinessCategories) {
+
+                                                                $businessCategory .= $dataBusinessCategories['category']['name'] . ' / ';
+                                                            }
+
+                                                            $businessCategory = trim($businessCategory, ' / '); ?>
+
+                                                            <small class="mt-10"><?= $businessCategory ?></small>
+
+                                                        </h4>
+                                                        <div class="widget">
+                                                            <ul class="icon-list">
+                                                                <li>
+                                                                    <i class="aicon aicon-home1"></i>
+                                                                    <?= AddressType::widget(['businessLocation' => $dataBusiness['businessLocation']]) ?>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="aicon aicon-rupiah"></i>
+
+                                                                    <?php
+                                                                    $businessPrice = '-';
+
+                                                                    if (!empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
+
+                                                                        $businessPrice = \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']) . ' - ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
+                                                                    } else if (empty($dataBusiness['businessDetail']['price_min']) && !empty($dataBusiness['businessDetail']['price_max'])) {
+
+                                                                        $businessPrice = \Yii::t('app', 'Under') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_max']);
+                                                                    } else if (empty($dataBusiness['businessDetail']['price_max']) && !empty($dataBusiness['businessDetail']['price_min'])) {
+
+                                                                        $businessPrice = \Yii::t('app', 'Above') . ' ' . \Yii::$app->formatter->asShortCurrency($dataBusiness['businessDetail']['price_min']);
+                                                                    }
+
+                                                                    echo $businessPrice ?>
+
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col visible-lg visible-md text-center">
+                                                        <div class="rating pull-right">
+                                                            <h3 class="mt-0 mb-0"><span class="label label-success pt-10"><?= number_format($voteValue, 1); ?></span></h3>
+                                                            <?= \Yii::t('app', '{value, plural, =0{# Vote} =1{# Vote} other{# Votes}}', ['value' => $voters]) ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,10 +209,11 @@ $linkPager = LinkPager::widget([
 
 <?php
 $jscript = '
+    var mapResult;
+    var mapOptions;
+
     function initMap() {
 
-        var mapResult;
-        var mapOptions;
         var mapResultDefaultLatLng = {lat: -6.9175, lng: 107.6191};
 
         var mapResultContainer = document.getElementById("maps");
@@ -320,6 +323,23 @@ $jscript = '
                     google.maps.event.addListener(businessMarker, "click", callbackMarkerListener(keyCoordinate));
 
                     markerBounds.extend(businessLatLng[keyCoordinate]);
+
+                    mapResult.addListener("idle", function() {
+                        var bounds = mapResult.getBounds();
+
+                        $.each(businessData, function(key, value) {
+
+                            var listResult = $(".place-" + value.businessId).parents(".business-result");
+
+                            if(bounds.contains(businessMarker.getPosition()) === true) {
+
+                                listResult.show();
+                            } else {
+
+                                listResult.hide();
+                            }
+                        });
+                    });
                 });
 
                 mapResult.fitBounds(markerBounds);

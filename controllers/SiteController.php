@@ -101,6 +101,8 @@ class SiteController extends base\BaseController
                     if (($flag = $modelUserRegister->save())) {
 
                         $modelPerson->email = $post['UserRegister']['email'];
+                        $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
+                        $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
                         if (($flag = $modelPerson->save())) {
 
