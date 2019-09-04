@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use core\models\Business;
+use core\models\BusinessHour;
+use core\models\BusinessProductCategory;
 use core\models\BusinessPromo;
 use core\models\City;
 use core\models\ProductCategory;
@@ -140,25 +142,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessLocation.city',
                 'businessLocation.district',
                 'businessLocation.village',
-                'businessProducts' => function ($query) {
-
-                    $query->andOnCondition(['business_product.not_active' => false]);
-                },
-                'businessProductCategories' => function ($query) {
-
-                    $query->andOnCondition(['business_product_category.is_active' => true]);
-                },
-                'businessProductCategories.productCategory' => function ($query) {
-
-                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
-                },
                 'businessDetail',
-                'businessHours' => function ($query) {
-
-                    $query->andOnCondition(['business_hour.is_open' => true])
-                        ->orderBy(['business_hour.day' => SORT_ASC]);
-                },
-                'businessHours.businessHourAdditionals',
                 'businessDetailVotes',
                 'businessDetailVotes.ratingComponent rating_component' => function ($query) {
 
@@ -195,7 +179,28 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
+            ->cache(60)
             ->asArray()->one();
+
+        $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
+            ->joinWith([
+                'productCategory' => function ($query) {
+
+                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                }
+            ])
+            ->andWhere(['business_product_category.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_product_category.is_active' => true])
+            ->cache(60)
+            ->asArray()->all();
+
+        $modelBusiness['businessHours'] = BusinessHour::find()
+            ->joinWith(['businessHourAdditionals'])
+            ->andWhere(['business_hour.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_hour.is_open' => true])
+            ->orderBy(['business_hour.day' => SORT_ASC])
+            ->cache(60)
+            ->asArray()->all();
 
         $isOrderOnline = false;
 
@@ -246,6 +251,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->cache(60)
             ->asArray()->one();
 
         $modelRatingComponent = RatingComponent::find()
@@ -257,6 +263,7 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.is_closed' => false])
+            ->cache(60)
             ->asArray()->one();
 
         $modelUserReport = new UserReport();

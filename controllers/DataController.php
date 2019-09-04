@@ -47,6 +47,7 @@ class DataController extends base\BaseController
             ->andWhere(['<>', 'type', 'Menu'])
             ->andWhere(['is_active' => true])
             ->orderBy(['name' => SORT_ASC])
+            ->cache(60)
             ->asArray()->all();
 
         $productCategory = [];
@@ -428,6 +429,7 @@ class DataController extends base\BaseController
 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
                 ->distinct()
+                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
@@ -496,6 +498,7 @@ class DataController extends base\BaseController
 
             $modelBusinessPromo = $modelBusinessPromo->orderBy(['business_promo.id' => SORT_DESC])
                 ->distinct()
+                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
