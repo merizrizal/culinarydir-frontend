@@ -7,10 +7,8 @@ use core\models\Business;
 use core\models\Person;
 use core\models\User;
 use core\models\UserAkses;
-use core\models\UserAksesAppModule;
 use core\models\UserLevel;
 use core\models\UserPerson;
-use core\models\UserRole;
 use core\models\UserSocialMedia;
 use frontend\models\RequestResetPassword;
 use frontend\models\ResetPassword;
@@ -107,6 +105,10 @@ class SiteController extends base\BaseController
                         $modelUserRole->is_active = true;
 
                         if (($flag = $modelUserRole->save())) {
+
+                            $modelPerson->email = $post['UserRegister']['email'];
+                            $modelPerson->phone = !empty($post['Person']['phone']) ? $post['Person']['phone'] : null;
+                            $modelPerson->city_id = !empty($post['Person']['city_id']) ? $post['Person']['city_id'] : null;
 
                             $modelUserAkses = UserAkses::find()
                                 ->andWhere(['user_level_id' => $modelUserRole->user_level_id])

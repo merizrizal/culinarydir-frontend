@@ -47,6 +47,7 @@ class DataController extends base\BaseController
             ->andWhere(['<>', 'type', 'Menu'])
             ->andWhere(['is_active' => true])
             ->orderBy(['name' => SORT_ASC])
+            ->cache(60)
             ->asArray()->all();
 
         $productCategory = [];
@@ -369,13 +370,24 @@ class DataController extends base\BaseController
 
             if (!empty($get['pmn']) || !empty($get['pmx'])) {
 
-                $modelBusiness = $modelBusiness->andFilterWhere([
-                    'OR',
-                    $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
-                    $get['pmx'] . ' >= "business_detail"."price_min" AND ' . $get['pmx'] . ' <= "business_detail"."price_max"',
-                    '"business_detail"."price_min" >= ' . $get['pmn'] . ' AND "business_detail"."price_min" <= ' . $get['pmx'],
-                    '"business_detail"."price_max" >= ' . $get['pmn'] . ' AND "business_detail"."price_max" <= ' . $get['pmx']
-                ]);
+                if ($get['pmx'] == 0) {
+
+                    $modelBusiness = $modelBusiness->andFilterWhere([
+                        'OR',
+                        $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
+                        '"business_detail"."price_min" >= ' . $get['pmn'],
+                        '"business_detail"."price_max" >= ' . $get['pmn']
+                    ]);
+                } else {
+
+                    $modelBusiness = $modelBusiness->andFilterWhere([
+                        'OR',
+                        $get['pmn'] . ' >= "business_detail"."price_min" AND ' . $get['pmn'] . ' <= "business_detail"."price_max"',
+                        $get['pmx'] . ' >= "business_detail"."price_min" AND ' . $get['pmx'] . ' <= "business_detail"."price_max"',
+                        '"business_detail"."price_min" >= ' . $get['pmn'] . ' AND "business_detail"."price_min" <= ' . $get['pmx'],
+                        '"business_detail"."price_max" >= ' . $get['pmn'] . ' AND "business_detail"."price_max" <= ' . $get['pmx']
+                    ]);
+                }
             }
 
             if (!empty($get['cmp'])) {
@@ -417,6 +429,7 @@ class DataController extends base\BaseController
 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
                 ->distinct()
+                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
@@ -485,6 +498,7 @@ class DataController extends base\BaseController
 
             $modelBusinessPromo = $modelBusinessPromo->orderBy(['business_promo.id' => SORT_DESC])
                 ->distinct()
+                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([

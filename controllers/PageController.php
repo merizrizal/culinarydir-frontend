@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use core\models\Business;
+use core\models\BusinessHour;
+use core\models\BusinessProductCategory;
 use core\models\BusinessPromo;
 use core\models\City;
 use core\models\ProductCategory;
@@ -91,6 +93,7 @@ class PageController extends base\BaseHistoryUrlController
         $keyword = [];
         $keyword['searchType'] = \Yii::t('app', 'favorite');
         $keyword['city'] = $city['id'];
+        $keyword['cityName'] = $city['name'];
         $keyword['name'] = null;
         $keyword['product']['id'] = null;
         $keyword['product']['name'] = null;
@@ -139,25 +142,7 @@ class PageController extends base\BaseHistoryUrlController
                 'businessLocation.city',
                 'businessLocation.district',
                 'businessLocation.village',
-                'businessProducts' => function ($query) {
-
-                    $query->andOnCondition(['business_product.not_active' => false]);
-                },
-                'businessProductCategories' => function ($query) {
-
-                    $query->andOnCondition(['business_product_category.is_active' => true]);
-                },
-                'businessProductCategories.productCategory' => function ($query) {
-
-                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
-                },
                 'businessDetail',
-                'businessHours' => function ($query) {
-
-                    $query->andOnCondition(['business_hour.is_open' => true])
-                        ->orderBy(['business_hour.day' => SORT_ASC]);
-                },
-                'businessHours.businessHourAdditionals',
                 'businessDetailVotes',
                 'businessDetailVotes.ratingComponent rating_component' => function ($query) {
 
@@ -194,7 +179,28 @@ class PageController extends base\BaseHistoryUrlController
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
+            ->cache(60)
             ->asArray()->one();
+
+        $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
+            ->joinWith([
+                'productCategory' => function ($query) {
+
+                    $query->andOnCondition(['<>', 'product_category.type', 'Menu']);
+                }
+            ])
+            ->andWhere(['business_product_category.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_product_category.is_active' => true])
+            ->cache(60)
+            ->asArray()->all();
+
+        $modelBusiness['businessHours'] = BusinessHour::find()
+            ->joinWith(['businessHourAdditionals'])
+            ->andWhere(['business_hour.business_id' => $modelBusiness['id']])
+            ->andWhere(['business_hour.is_open' => true])
+            ->orderBy(['business_hour.day' => SORT_ASC])
+            ->cache(60)
+            ->asArray()->all();
 
         $isOrderOnline = false;
 
@@ -245,6 +251,7 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
+            ->cache(60)
             ->asArray()->one();
 
         $modelRatingComponent = RatingComponent::find()
@@ -256,6 +263,7 @@ class PageController extends base\BaseHistoryUrlController
             ->joinWith(['business'])
             ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['transaction_session.status' => 'Open'])
+            ->cache(60)
             ->asArray()->one();
 
         $modelUserReport = new UserReport();
@@ -302,6 +310,8 @@ class PageController extends base\BaseHistoryUrlController
             $dataBusinessImage[$businessImage['category']][] = $businessImage;
         }
 
+        $businessWhatsApp = !empty($modelBusiness['phone3']) ? 'https://api.whatsapp.com/send?phone=62' . substr(str_replace('-', '', $modelBusiness['phone3']), 1) : null;
+
         \Yii::$app->formatter->timeZone = 'UTC';
 
         return $this->render('detail', [
@@ -315,7 +325,8 @@ class PageController extends base\BaseHistoryUrlController
             'modelUserReport' => $modelUserReport,
             'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => \Yii::$app->request->getQueryParams(),
-            'isOrderOnline' => $isOrderOnline
+            'isOrderOnline' => $isOrderOnline,
+            'businessWhatsApp' => $businessWhatsApp
         ]);
     }
 
@@ -617,6 +628,7 @@ class PageController extends base\BaseHistoryUrlController
 
         $keyword = [];
         $keyword['searchType'] = !empty($get['searchType']) ? $get['searchType'] : \Yii::t('app', 'favorite');
+        $keyword['cityName'] = $city['name'];
         $keyword['city'] = !empty($get['cty']) ? $get['cty'] : $city['id'];
         $keyword['name'] = !empty($get['nm']) ? $get['nm'] : null;
         $keyword['product']['id'] = !empty($get['pct']) ? $get['pct'] : null;

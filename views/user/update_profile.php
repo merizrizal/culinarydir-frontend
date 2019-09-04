@@ -110,15 +110,9 @@ $this->registerMetaTag([
                                                     'placeholder' => \Yii::t('app', 'First Name'),
                                                 ]) ?>
 
-
                                                 <?= $form->field($modelPerson, 'last_name')->textInput([
                                                     'class' => 'form-control',
                                                     'placeholder' => \Yii::t('app', 'Last Name'),
-                                                ]) ?>
-
-                                                <?= $form->field($modelPerson, 'about_me')->textarea([
-                                                    'rows' => 3,
-                                                    'placeholder' => \Yii::t('app', 'About Me')
                                                 ]) ?>
 
                                                 <?= $form->field($modelPerson, 'city_id')->dropDownList(
@@ -133,11 +127,6 @@ $this->registerMetaTag([
                                                         'prompt' => '',
                                                         'style' => 'width: 100%'
                                                     ]) ?>
-
-                                                <?= $form->field($modelPerson, 'address')->textarea([
-                                                    'rows' => 3,
-                                                    'placeholder' => \Yii::t('app', 'Address')
-                                                ]) ?>
 
                                                 <?= $form->field($modelPerson, 'phone')->widget(MaskedInput::className(), [
                                                     'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
