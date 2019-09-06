@@ -53,7 +53,6 @@ class OrderActionController extends base\BaseController
             $modelTransactionSession->business_id = $post['business_id'];
             $modelTransactionSession->total_price = $post['product_price'];
             $modelTransactionSession->total_amount = 1;
-            $modelTransactionSession->order_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6) . '_' . time();
             $modelTransactionSession->status = 'Open';
         }
 
