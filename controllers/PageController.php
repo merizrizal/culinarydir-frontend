@@ -11,8 +11,10 @@ use core\models\ProductCategory;
 use core\models\Promo;
 use core\models\RatingComponent;
 use core\models\TransactionSession;
+use core\models\UserLove;
 use core\models\UserPostMain;
 use core\models\UserReport;
+use core\models\UserVisit;
 use frontend\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -165,22 +167,24 @@ class PageController extends base\BaseHistoryUrlController
 
                     $query->andOnCondition(['product_service.code_name' => 'order-online'])
                         ->andOnCondition(['product_service.not_active' => false]);
-                },
-                'userLoves' => function ($query) {
-
-                    $query->andOnCondition(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-                        ->andOnCondition(['user_love.is_active' => true]);
-                },
-                'userVisits' => function ($query) {
-
-                    $query->andOnCondition(['user_visit.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-                        ->andOnCondition(['user_visit.is_active' => true]);
                 }
             ])
             ->andWhere(['business.unique_name' => $uniqueName])
             ->andWhere(['lower(city.name)' => str_replace('-', ' ', $city)])
             ->cache(60)
             ->asArray()->one();
+
+        $modelBusiness['userLoves'] = UserLove::find()
+            ->andWhere(['user_love.business_id' => $modelBusiness['id']])
+            ->andWhere(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['user_love.is_active' => true])
+            ->asArray()->all();
+
+        $modelBusiness['userVisits'] = UserVisit::find()
+            ->andWhere(['user_visit.business_id' => $modelBusiness['id']])
+            ->andWhere(['user_visit.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['user_visit.is_active' => true])
+            ->asArray()->all();
 
         $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
             ->joinWith([
