@@ -255,20 +255,12 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['user_post_main.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
             ->andWhere(['user_post_main.type' => 'Review'])
             ->andWhere(['user_post_main.is_publish' => true])
-            ->cache(60)
             ->asArray()->one();
 
         $modelRatingComponent = RatingComponent::find()
             ->where(['is_active' => true])
             ->orderBy(['order' => SORT_ASC])
             ->asArray()->all();
-
-        $modelTransactionSession = TransactionSession::find()
-            ->joinWith(['business'])
-            ->andWhere(['transaction_session.user_ordered' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-            ->andWhere(['transaction_session.status' => 'Open'])
-            ->cache(60)
-            ->asArray()->one();
 
         $modelUserReport = new UserReport();
 
@@ -327,7 +319,6 @@ class PageController extends base\BaseHistoryUrlController
             'modelPostPhoto' => $modelPostPhoto,
             'modelRatingComponent' => $modelRatingComponent,
             'modelUserReport' => $modelUserReport,
-            'modelTransactionSession' => $modelTransactionSession,
             'queryParams' => \Yii::$app->request->getQueryParams(),
             'isOrderOnline' => $isOrderOnline,
             'businessWhatsApp' => $businessWhatsApp
