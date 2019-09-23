@@ -856,83 +856,80 @@ $jscript = '
 
         $("#modal-confirmation").find("#btn-delete").data("href", $(this).attr("href"));
 
-        $("#modal-confirmation").find("#btn-delete").on("click", function() {
-
-            $("#modal-confirmation").find("#btn-delete").off("click");
-
-            $("#modal-confirmation").modal("hide");
-
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url: $(this).data("href"),
-                beforeSend: function(xhr) {
-
-                    $("#title-write-review").siblings(".overlay").show();
-                    $("#title-write-review").siblings(".loading-img").show();
-                },
-                success: function(response) {
-
-                    $("#title-write-review").find("h4").html("' . \Yii::t('app', 'Write a Review') . '");
-
-                    if (response.success) {
-
-                        var totalUserPost = parseInt($(".total-review").html());
-                        $(".total-review").html(totalUserPost - 1);
-
-                        $("#edit-review-container").fadeOut(100, function() {
-
-                            $("#write-review-trigger").fadeIn();
-                        });
-
-                        $(".temp-overall-rating").val(0);
-                        $("#overall-rating").rating("clear");
-
-                        $(".rating-component-id").each(function() {
-
-                            $(".temp-rating-" + $(this).val()).val(0);
-                            $(this).parent().find("#rating-" + $(this).val()).rating("clear");
-                            $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val()).val());
-                        });
-
-                        $("#post-review-text").val("");
-
-                        $("#form-review-uploaded-photo").children().remove();
-                        $("#review-uploaded-photo").children().remove();
-                        $(".my-total-photos-review").html(0);
-
-                        if ($(".my-likes-review-trigger").hasClass("selected")) {
-
-                            $(".my-likes-review-trigger").removeClass("selected");
-                            $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
-                        }
-
-                        getBusinessRating($("#business_id").val());
-
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    } else {
-
-                        messageResponse(response.icon, response.title, response.message, response.type);
-                    }
-
-                    $("#title-write-review").siblings(".overlay").hide();
-                    $("#title-write-review").siblings(".loading-img").hide();
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-
-                    messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
-
-                    $("#title-write-review").siblings(".overlay").show();
-                    $("#title-write-review").siblings(".loading-img").show();
-                }
-            });
-        });
-
         $("#modal-confirmation").modal("show");
 
         $(this).parent().parent().siblings("a").dropdown("toggle");
 
         return false;
+    });
+
+    $("#modal-confirmation").find("#btn-delete").on("click", function() {
+
+        $("#modal-confirmation").modal("hide");
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: $(this).data("href"),
+            beforeSend: function(xhr) {
+
+                $("#title-write-review").siblings(".overlay").show();
+                $("#title-write-review").siblings(".loading-img").show();
+            },
+            success: function(response) {
+
+                $("#title-write-review").find("h4").html("' . \Yii::t('app', 'Write a Review') . '");
+
+                if (response.success) {
+
+                    var totalUserPost = parseInt($(".total-review").html());
+                    $(".total-review").html(totalUserPost - 1);
+                    $("#edit-review-container").fadeOut(100, function() {
+
+                        $("#write-review-trigger").fadeIn();
+                    });
+
+                    $(".temp-overall-rating").val(0);
+                    $("#overall-rating").rating("clear");
+
+                    $(".rating-component-id").each(function() {
+
+                        $(".temp-rating-" + $(this).val()).val(0);
+                        $(this).parent().find("#rating-" + $(this).val()).rating("clear");
+                        $("#post-review-rating-" + $(this).val() + "").val($("#rating-" + $(this).val()).val());
+                    });
+
+                    $("#post-review-text").val("");
+
+                    $("#form-review-uploaded-photo").children().remove();
+                    $("#review-uploaded-photo").children().remove();
+                    $(".my-total-photos-review").html(0);
+
+                    if ($(".my-likes-review-trigger").hasClass("selected")) {
+
+                        $(".my-likes-review-trigger").removeClass("selected");
+                        $(".my-total-likes-review").html(parseInt($(".my-total-likes-review").html()) - 1);
+                    }
+
+                    getBusinessRating($("#business_id").val());
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                } else {
+
+                    messageResponse(response.icon, response.title, response.message, response.type);
+                }
+
+                $("#title-write-review").siblings(".overlay").hide();
+                $("#title-write-review").siblings(".loading-img").hide();
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+                messageResponse("aicon aicon-icon-info", xhr.status, xhr.responseText, "danger");
+
+                $("#title-write-review").siblings(".overlay").show();
+                $("#title-write-review").siblings(".loading-img").show();
+            }
+        });
     });
 
     $("#overall-rating").on("change", function() {

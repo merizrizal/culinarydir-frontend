@@ -18,7 +18,6 @@ use yii\widgets\ActiveForm;
 /* @var $modelUserPostMain core\models\UserPostMain */
 /* @var $modelPost frontend\models\Post */
 /* @var $modelPostPhoto frontend\models\Post */
-/* @var $modelTransactionSession core\models\TransactionSession */
 /* @var $dataUserVoteReview array */
 /* @var $queryParams array */
 /* @var $isOrderOnline boolean */
