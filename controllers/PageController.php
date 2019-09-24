@@ -174,18 +174,6 @@ class PageController extends base\BaseHistoryUrlController
             ->cache(60)
             ->asArray()->one();
 
-        $modelBusiness['userLoves'] = UserLove::find()
-            ->andWhere(['user_love.business_id' => $modelBusiness['id']])
-            ->andWhere(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-            ->andWhere(['user_love.is_active' => true])
-            ->asArray()->all();
-
-        $modelBusiness['userVisits'] = UserVisit::find()
-            ->andWhere(['user_visit.business_id' => $modelBusiness['id']])
-            ->andWhere(['user_visit.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-            ->andWhere(['user_visit.is_active' => true])
-            ->asArray()->all();
-
         $modelBusiness['businessProductCategories'] = BusinessProductCategory::find()
             ->joinWith([
                 'productCategory' => function ($query) {
@@ -204,6 +192,18 @@ class PageController extends base\BaseHistoryUrlController
             ->andWhere(['business_hour.is_open' => true])
             ->orderBy(['business_hour.day' => SORT_ASC])
             ->cache(60)
+            ->asArray()->all();
+
+        $modelBusiness['userLoves'] = UserLove::find()
+            ->andWhere(['user_love.business_id' => $modelBusiness['id']])
+            ->andWhere(['user_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['user_love.is_active' => true])
+            ->asArray()->all();
+
+        $modelBusiness['userVisits'] = UserVisit::find()
+            ->andWhere(['user_visit.business_id' => $modelBusiness['id']])
+            ->andWhere(['user_visit.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
+            ->andWhere(['user_visit.is_active' => true])
             ->asArray()->all();
 
         $isOrderOnline = false;

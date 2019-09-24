@@ -182,9 +182,8 @@ $jscript = '
 
         $("#modal-confirmation").find("#btn-delete").data("href", thisObj.attr("href"));
 
+        $("#modal-confirmation").find("#btn-delete").off("click");
         $("#modal-confirmation").find("#btn-delete").on("click", function() {
-
-            $("#modal-confirmation").find("#btn-delete").off("click");
 
             $.ajax({
                 cache: false,
