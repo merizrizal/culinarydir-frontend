@@ -362,8 +362,10 @@ class DataController extends base\BaseController
                 ->andFilterWhere(['lower(city.name)' => str_replace('-', ' ', $get['city'])])
                 ->andFilterWhere([
                     'OR',
-                    ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']],
-                    ['ilike', 'business_location.address', $get['nm']], ['ilike', 'business_location.address_info', $get['nm']]
+                    ['ilike', 'business.name', $get['nm']],
+                    ['ilike', 'product_category.name', $get['nm']],
+                    ['ilike', 'business_location.address', $get['nm']],
+                    ['ilike', 'business_location.address_info', $get['nm']]
                 ])
                 ->andFilterWhere(['business_product_category.product_category_id' => $get['pct']])
                 ->andWhere(['membership_type.as_archive' => false]);
@@ -429,7 +431,6 @@ class DataController extends base\BaseController
 
             $modelBusiness = $modelBusiness->orderBy(['business.id' => SORT_DESC])
                 ->distinct()
-                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
@@ -475,7 +476,8 @@ class DataController extends base\BaseController
                 ->andFilterWhere(['business_location.city_id' => $get['cty']])
                 ->andFilterWhere([
                     'OR',
-                    ['ilike', 'business.name', $get['nm']], ['ilike', 'product_category.name', $get['nm']],
+                    ['ilike', 'business.name', $get['nm']],
+                    ['ilike', 'product_category.name', $get['nm']],
                     ['ilike', 'business_location.address', $get['nm']],
                     ['ilike', 'business_location.address_info', $get['nm']]
                 ])
@@ -498,7 +500,6 @@ class DataController extends base\BaseController
 
             $modelBusinessPromo = $modelBusinessPromo->orderBy(['business_promo.id' => SORT_DESC])
                 ->distinct()
-                ->cache(60)
                 ->asArray();
 
             $provider = new ActiveDataProvider([
