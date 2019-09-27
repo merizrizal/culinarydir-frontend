@@ -2,6 +2,8 @@
 
 use frontend\components\AppComponent;
 use frontend\components\GrowlCustom;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\View;
 
@@ -25,7 +27,6 @@ $this->registerMetaTag([
 $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
 
 <div class="main">
-
     <section class="module-extra-small in-result bg-main">
         <div class="container">
         	<div class="row mb-20">
@@ -35,6 +36,17 @@ $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>
                         'keyword' => $keyword,
                         'type' => 'result-list-page'
                     ]); ?>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-7">
+
+                    <?php
+                    $urlResultMap = ArrayHelper::merge(['result-map'], $params);
+
+                    echo Html::a('<i class="fa fa-list"></i> List', '', ['class' => 'btn btn-round btn-d btn-list']) . '&nbsp';
+                    echo Html::a('<i class="fa fa-location-arrow"></i> ' . \Yii::t('app', 'Map'), $urlResultMap, ['class' => 'btn btn-round btn-default btn-map']) ?>
 
                 </div>
             </div>
