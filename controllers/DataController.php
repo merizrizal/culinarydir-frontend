@@ -114,8 +114,8 @@ class DataController extends base\BaseController
                 },
                 'userPostLoves' => function ($query) {
 
-                $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
-                    ->andOnCondition(['user_post_love.is_active' => true]);
+                    $query->andOnCondition(['user_post_love.user_id' => !empty(\Yii::$app->user->getIdentity()->id) ? \Yii::$app->user->getIdentity()->id : null])
+                        ->andOnCondition(['user_post_love.is_active' => true]);
                 },
                 'userPostComments',
                 'userPostComments.user user_comment',
