@@ -61,6 +61,12 @@ $linkPager = LinkPager::widget([
 
             foreach ($modelUserPostMain as $dataUserPostMain):
 
+                $urlReviewDetail = [
+                    'page/review',
+                    'id' => $dataUserPostMain['id'],
+                    'uniqueName' => $dataUserPostMain['business']['unique_name']
+                ];
+
                 $img = !empty($dataUserPostMain['user']['image']) ? $dataUserPostMain['user']['image'] . '&w=64&h=64' : 'default-avatar.png';
 
                 $totalVoteValue = 0;
@@ -212,9 +218,11 @@ $linkPager = LinkPager::widget([
                                                         <div class="work-descr">
 
                                                         	<?php
-                                                        	if ($i == 4) {
+                                                        	$hiddenPhotos = count($dataUserPostMain['userPostMains']) - ($i + 1);
 
-                                                        	    echo Html::a('+' . (count($dataUserPostMain['userPostMains']) - $i), ['page/review', 'id' => $dataUserPostMain['id']], ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
+                                                        	if ($i == 4 && $hiddenPhotos != 0) {
+
+                                                        	    echo Html::a('+' . $hiddenPhotos, \Yii::$app->urlManager->createUrl($urlReviewDetail), ['class' => 'btn btn-d btn-small btn-xs btn-circle']);
                                                         	    echo Html::a('<i class="fa fa-search"></i>', \Yii::$app->params['endPointLoadImage'] . 'user-post?image=' . $dataUserPostMainChild['image'], ['class' => 'btn btn-d btn-small btn-xs btn-circle show-image hidden']);
                                                         	} else {
 
@@ -291,13 +299,7 @@ $linkPager = LinkPager::widget([
                         <div class="col-sm-5 col-tab-5 text-right visible-lg visible-md visible-sm visible-tab">
                             <ul class="list-inline list-review mt-0 mb-0">
                                 <li>
-
-                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', \Yii::$app->urlManager->createAbsoluteUrl([
-                                        'page/review',
-                                        'id' => $dataUserPostMain['id'],
-                                        'uniqueName' => $dataUserPostMain['business']['unique_name'],
-                                    ]), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
-
+                                    <?= Html::a('<i class="fa fa-share-alt"></i> Share', \Yii::$app->urlManager->createAbsoluteUrl($urlReviewDetail), ['class' => 'btn btn-default btn-small btn-round-4 share-review-trigger']); ?>
                                 </li>
                             </ul>
                         </div>
