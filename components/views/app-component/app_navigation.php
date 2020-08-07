@@ -14,9 +14,9 @@ use yii\helpers\Html;
             </button>
 
             <?php
-            $img = Html::img(\Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-logo.png', ['class' => 'img-responsive img-component']);
+            //$img = Html::img(\Yii::$app->urlManager->baseUrl . '/media/img/asikmakan-logo.png', ['class' => 'img-responsive img-component']);
 
-            echo Html::a($img, ['page/index'], ['class' => 'navbar-brand']) ?>
+            echo Html::a('Kuliner Bandung Club', ['page/index'], ['class' => 'navbar-brand']) ?>
 
         </div>
         <div class="collapse navbar-collapse" id="custom-collapse">

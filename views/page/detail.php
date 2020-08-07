@@ -70,6 +70,8 @@ if (!empty($modelBusiness['businessDetail']['price_min']) && !empty($modelBusine
     $ogPriceRange =  \Yii::t('app', 'Above') . ' ' . \Yii::$app->formatter->asShortCurrency($modelBusiness['businessDetail']['price_min']);
 }
 
+print_r($modelBusiness['businessProductCategories']);exit;
+
 foreach ($modelBusiness['businessProductCategories'] as $dataBusinessProductCategory) {
 
     $ogProductCategory .= $dataBusinessProductCategory['productCategory']['name'] . ',';

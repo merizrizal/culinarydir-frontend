@@ -39,7 +39,7 @@ else: ?>
 
         	    	<?php
         	    	echo Html::hiddenInput('', $keywordType, ['class' => 'search-type']);
-        	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari apa di Asikmakan?']);
+        	    	echo Html::textInput('nm', $keyword['name'], ['class' => 'form-control search-input', 'placeholder' => 'Mau cari kuliner apa hari ini?']);
         	    	echo Html::hiddenInput('cty', $keyword['city']);
         	    	echo Html::hiddenInput('pct', $keyword['product']['id']);
         	    	echo Html::hiddenInput('ctg', $keyword['category']);
