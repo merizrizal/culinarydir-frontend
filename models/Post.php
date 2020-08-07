@@ -30,7 +30,7 @@ class Post extends \sybase\SybaseModel
             [['rating'], 'required'],
             [['rating'], 'safe'],
             [['image'], 'required', 'on' => 'postPhoto'],
-            [['image'], 'file', 'maxSize' => 1024*1024*2, 'maxFiles' => 10],
+            [['image'], 'file', 'maxSize' => 1024 * 1024 * 7, 'maxFiles' => 10],
         ];
     }
 
