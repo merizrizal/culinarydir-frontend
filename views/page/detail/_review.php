@@ -18,9 +18,11 @@ use yii\widgets\ActiveForm;
 
 kartik\popover\PopoverXAsset::register($this);
 
+$modelUserPostMainId = $modelUserPostMain['id'] ?? null;
+
 $urlMyReviewDetail = [
     'page/review',
-    'id' => $modelUserPostMain['id'],
+    'id' => $modelUserPostMainId,
     'uniqueName' => $modelBusiness['unique_name'],
 ]; ?>
 
@@ -46,7 +48,7 @@ $urlMyReviewDetail = [
             	        $img = !empty(\Yii::$app->user->getIdentity()->image) ? \Yii::$app->user->getIdentity()->image . '&w=64&h=64' : 'default-avatar.png';
                     	$overallValue = !empty($dataUserVoteReview['overallValue']) ? $dataUserVoteReview['overallValue'] : 0;
 
-                    	echo Html::hiddenInput('user_post_main_id', $modelUserPostMain['id'], ['class' => 'my-user-post-main-id']); ?>
+                    	echo Html::hiddenInput('user_post_main_id', $modelUserPostMainId, ['class' => 'my-user-post-main-id']); ?>
 
                         <div class="row">
                             <div class="col-md-12">
@@ -64,7 +66,7 @@ $urlMyReviewDetail = [
                                             <div class="widget-posts-body">
                                                 <?= Html::a(\Yii::$app->user->getIdentity()->full_name, ['user/user-profile', 'user' => \Yii::$app->user->getIdentity()->username], ['class' => 'my-review-user-name']) ?>
                                                 <br>
-                                                <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at']) ?></small>
+                                                <small class="my-review-created"><?= Helper::asRelativeTime($modelUserPostMain['created_at'] ?? '') ?></small>
                                             </div>
                                         </div>
                                     </div>
@@ -141,7 +143,7 @@ $urlMyReviewDetail = [
 
                                                     <?= StarRating::widget([
                                                         'id' => 'my-overall-rating',
-                                                        'name' => 'rating_' . $modelUserPostMain['id'],
+                                                        'name' => 'rating_' . ($modelUserPostMainId),
                                                         'value' => $overallValue,
                                                         'pluginOptions' => [
                                                             'displayOnly' => true,
@@ -285,7 +287,7 @@ $urlMyReviewDetail = [
                                                            	<?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'edit-my-review-trigger']) ?>
                                                         </li>
                                                         <li>
-                                                           	<?= Html::a('<i class="fa fa-trash"></i> ' . \Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'delete-my-review-trigger']) ?>
+                                                           	<?= Html::a('<i class="fa fa-trash"></i> ' . \Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMainId], ['class' => 'delete-my-review-trigger']) ?>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -301,7 +303,7 @@ $urlMyReviewDetail = [
                                                 <?= Html::a('<i class="fa fa-edit"></i> Edit', '', ['class' => 'btn btn-default btn-small btn-round-4 edit-my-review-trigger']) ?>
                                             </li>
                                             <li>
-                                                <?= Html::a('<i class="fa fa-trash"></i> ' . \Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMain['id']], ['class' => 'btn btn-default btn-small btn-round-4 delete-my-review-trigger']) ?>
+                                                <?= Html::a('<i class="fa fa-trash"></i> ' . \Yii::t('app', 'Delete'), ['user-action/delete-user-post', 'id' => $modelUserPostMainId], ['class' => 'btn btn-default btn-small btn-round-4 delete-my-review-trigger']) ?>
                                             </li>
                                         </ul>
                                     </div>
