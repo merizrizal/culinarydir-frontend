@@ -45,7 +45,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club'
 ]);
 
 $this->registerMetaTag([
