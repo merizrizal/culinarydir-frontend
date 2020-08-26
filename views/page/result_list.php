@@ -21,7 +21,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club.com'
 ]);
 
 $appComponent = new AppComponent(['showFacilityFilter' => true]); ?>

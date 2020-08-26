@@ -51,7 +51,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:title',
-    'content' => !empty($modelPromo['title']) ? $modelPromo['title'] : 'Promo di Asikmakan'
+    'content' => !empty($modelPromo['title']) ? $modelPromo['title'] : 'Promo di Kuliner Bandung Club'
 ]);
 
 $this->registerMetaTag([

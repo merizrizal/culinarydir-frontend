@@ -42,7 +42,7 @@ $jscript = '
 
         var url = $(this).attr("href");
         var title = "Foto untuk " + $(this).parents(".work-item").find(".business-name").val();
-        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
+        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club.com";
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src");
 
         facebookShare({

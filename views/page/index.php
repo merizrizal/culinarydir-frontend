@@ -40,7 +40,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'property' => 'og:title',
-    'content' => 'Asikmakan'
+    'content' => 'Kuliner Bandung Club'
 ]);
 
 $this->registerMetaTag([

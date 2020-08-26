@@ -11,7 +11,7 @@ use yii\web\View;
 
 $this->title = $modelUser['full_name'];
 
-$ogDescription = $modelUser['full_name'] . ' telah bergabung Asikmakan.com sejak ' . \Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
+$ogDescription = $modelUser['full_name'] . ' telah bergabung Kuliner Bandung Club.com sejak ' . \Yii::$app->formatter->asDate($modelUser['created_at'], 'long');
 $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user?image=default-avatar.png';
 
 if (!empty($modelUser['userPerson']['person']['about_me'])) {
@@ -31,7 +31,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club.com'
 ]);
 
 $this->registerMetaTag([

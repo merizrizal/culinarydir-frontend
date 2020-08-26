@@ -228,7 +228,7 @@ class SiteController extends base\BaseController
                             'type' => 'danger',
                             'delay' => 1000,
                             'icon' => 'aicon aicon-icon-info',
-                            'message' => 'Gagal mendaftar di Asikmakan',
+                            'message' => 'Gagal mendaftar di Kuliner Bandung Club',
                             'title' => 'Gagal Mendaftar',
                         ]);
                     }

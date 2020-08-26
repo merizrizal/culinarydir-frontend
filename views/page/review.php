@@ -22,7 +22,7 @@ $ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
 ]);
 
 $ogOverallValue = number_format($dataUserVoteReview['overallValue'], 1);
-$ogTitle = !empty($modelUserPostMain['business']['name']) && !empty($dataUserVoteReview['overallValue']) ? 'Rating ' . $ogOverallValue . ' untuk ' . $modelUserPostMain['business']['name'] : 'Review di Asikmakan';
+$ogTitle = !empty($modelUserPostMain['business']['name']) && !empty($dataUserVoteReview['overallValue']) ? 'Rating ' . $ogOverallValue . ' untuk ' . $modelUserPostMain['business']['name'] : 'Review di Kuliner Bandung Club';
 $ogPerson = $modelUserPostMain['user']['full_name'];
 
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;

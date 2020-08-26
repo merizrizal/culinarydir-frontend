@@ -227,7 +227,7 @@ $jscript = '
 
         var url = $(this).attr("href");
         var title = "Foto untuk " + $(".business-name").text().trim();
-        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).parents(".work-item").find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com";
+        var description = $(this).parents(".work-item").find(".photo-caption").text() !== "" ? $(this).parents(".work-item").find(".photo-caption").text() : "Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club.com";
         var image = window.location.protocol + "//" + window.location.hostname + $(this).parents(".work-item").find(".work-image img").attr("src").replace("200x200", "");
 
         facebookShare({

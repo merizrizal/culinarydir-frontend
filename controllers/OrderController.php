@@ -124,7 +124,7 @@ class OrderController extends base\BaseController
                     $result = [];
                     $result['detail'] = [];
 
-                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . \Yii::$app->user->getIdentity()->full_name . ' (via Asikmakan) ingin memesan:\n\n';
+                    $messageOrder = 'Halo ' . $modelTransactionSession['business']['name'] . ',\nsaya ' . \Yii::$app->user->getIdentity()->full_name . ' (via Kuliner Bandung Club) ingin memesan:\n\n';
 
                     foreach ($modelTransactionSession['transactionItems'] as $i => $dataTransactionItem) {
 

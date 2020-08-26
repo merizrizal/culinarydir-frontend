@@ -19,7 +19,7 @@ $ogUrl = \Yii::$app->urlManager->createAbsoluteUrl([
     'uniqueName' => $modelUserPostMain['business']['unique_name'],
 ]);
 
-$ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Asikmakan';
+$ogTitle = !empty($modelUserPostMain['business']['name']) ? 'Foto untuk ' . $modelUserPostMain['business']['name'] : 'Foto di Kuliner Bandung Club';
 $ogDescription = !empty($modelUserPostMain['text']) ? $modelUserPostMain['text'] : $this->title;
 $ogImage = \Yii::$app->params['endPointLoadImage'] . 'user-post?image=&w=490&h=276';
 

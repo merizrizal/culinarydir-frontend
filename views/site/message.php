@@ -8,7 +8,7 @@ use yii\helpers\Html;
 /* @var $messages frontend\controllers\SiteController */
 /* @var $links frontend\controllers\SiteController */
 
-$this->title = 'Mau Makan Asik, Ya Asikmakan';
+$this->title = 'Mau Makan Asik, Ya Kuliner Bandung Club';
 
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -17,7 +17,7 @@ $this->registerMetaTag([
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Asikmakan.com'
+    'content' => 'Temukan Bisnis Kuliner Favorit Anda di Kuliner Bandung Club.com'
 ]); ?>
 
 <div class="main">

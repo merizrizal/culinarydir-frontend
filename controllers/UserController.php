@@ -122,7 +122,7 @@ class UserController extends base\BaseHistoryUrlController
                         'type' => 'success',
                         'delay' => 1000,
                         'icon' => 'aicon aicon-icon-tick-in-circle',
-                        'message' => 'Anda berhasil mengubah profile Anda di Asikmakan',
+                        'message' => 'Anda berhasil mengubah profile Anda di Kuliner Bandung Club',
                         'title' => 'Berhasil Update Profile',
                     ]);
 
@@ -135,7 +135,7 @@ class UserController extends base\BaseHistoryUrlController
                         'type' => 'danger',
                         'delay' => 1000,
                         'icon' => 'aicon aicon-icon-info',
-                        'message' => 'Gagal mengubah profile Anda di Asikmakan',
+                        'message' => 'Gagal mengubah profile Anda di Kuliner Bandung Club',
                         'title' => 'Gagal Update Profile',
                     ]);
                 }
@@ -160,7 +160,7 @@ class UserController extends base\BaseHistoryUrlController
         if ($modelChangePassword->load(\Yii::$app->request->post()) && $modelChangePassword->validate() && $modelChangePassword->changePassword()) {
 
             \Yii::$app->session->setFlash('message', [
-                'message' => 'Anda berhasil mengubah password baru di Asikmakan',
+                'message' => 'Anda berhasil mengubah password baru di Kuliner Bandung Club',
             ]);
         }
 
