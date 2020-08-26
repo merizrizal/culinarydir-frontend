@@ -470,7 +470,7 @@ $this->title = 'Checkout'; ?>
                 <tbody>
                 	<tr>
                         <th class="font-alt">Total</th>
-                        <td class="total-price"><?= $modelTransactionSession['total_price'] ?></td>
+                        <td class="total-price"><?= !empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0 ?></td>
                     </tr>
                     <tr class="promo-amount-confirm" style="display:none">
                         <th class="font-alt">Promo</th>
@@ -500,7 +500,7 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/jquery-c
 $this->registerJs(GrowlCustom::messageResponse(), View::POS_HEAD);
 
 $jscript = '
-    var totalPrice = ' . $modelTransactionSession['total_price'] . ';
+    var totalPrice = ' . (!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) . ';
 
     var formIsValid = false;
 

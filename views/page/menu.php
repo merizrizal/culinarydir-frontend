@@ -382,12 +382,12 @@ $jscript .= '
 
     if ($(".transaction-session-id").length) {
 
-        totalPrice = $("<span>").html("' . $modelTransactionSession['total_price'] . '").currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
+        totalPrice = $("<span>").html("' . (!empty($modelTransactionSession['total_price']) ? $modelTransactionSession['total_price'] : 0) . '").currency({' . \Yii::$app->params['currencyOptions'] . '}).html();
 
         cart = stickyGrowl(
             "aicon aicon-icon-online-ordering aicon-1x",
-            "' . $modelTransactionSession['total_amount'] . '" + " menu | total : " + totalPrice,
-            "' . $modelTransactionSession['business']['name'] . '",
+            "' . (!empty($modelTransactionSession['total_amount']) ? $modelTransactionSession['total_amount'] : 0) . '" + " menu | total : " + totalPrice,
+            "' . (!empty($modelTransactionSession['business']) ? $modelTransactionSession['business']['name'] : '') . '",
             "info"
         );
     }
