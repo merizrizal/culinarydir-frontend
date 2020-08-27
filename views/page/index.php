@@ -76,7 +76,7 @@ $appComponent = new AppComponent(); ?>
 
                 	<?php
                 	echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'load-image?image=sudah-mendata.jpg&w=875&h=385'));
-                	echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385'), 'https://play.google.com/store/apps/details?id=com.asikmakan.app');
+                	echo Html::a(Html::img(\Yii::$app->params['endPointLoadImage'] . 'load-image?image=google-play.jpg&w=875&h=385'), 'https://play.google.com/');
 
                 	if (!empty($modelPromo)) {
 
